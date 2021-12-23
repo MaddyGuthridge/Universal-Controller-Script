@@ -1,0 +1,38 @@
+{{! Google Docstring Template }}
+{{! Modified to be markdown-friendly}}
+{{! Originally sourced from: https://github.com/NilsJPWerner/autoDocstring/blob/master/src/docstring/templates/google.mustache}}
+
+{{summaryPlaceholder}}
+
+{{extendedSummaryPlaceholder}}
+
+{{#parametersExist}}
+### Args:
+{{#args}}
+* `{{var}}` (`{{typePlaceholder}}`): {{descriptionPlaceholder}}
+{{/args}}
+{{#kwargs}}
+* `{{var}}` (`{{typePlaceholder}}`, optional): {{descriptionPlaceholder}}. Defaults to `{{&default}}`.
+{{/kwargs}}
+{{/parametersExist}}
+
+{{#exceptionsExist}}
+### Raises:
+{{#exceptions}}
+* `{{type}}`: {{descriptionPlaceholder}}
+{{/exceptions}}
+{{/exceptionsExist}}
+
+{{#returnsExist}}
+### Returns:
+{{#returns}}
+* `{{typePlaceholder}}`: {{descriptionPlaceholder}}
+{{/returns}}
+{{/returnsExist}}
+
+{{#yieldsExist}}
+### Yields:
+{{#yields}}
+* `{{typePlaceholder}}`: {{descriptionPlaceholder}}
+{{/yields}}
+{{/yieldsExist}}

@@ -8,6 +8,8 @@ Author: Miguel Guthridge [hdsq@outlook.com.au]
 
 from typing import Optional, Callable
 
+from logger import log, verbosity
+
 class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
     components of script to be dynamically refreshed and reloaded, as well as
@@ -19,6 +21,7 @@ class DeviceContextManager:
     def __init__(self) -> None:
         """Initialise the context manager, including reloading
         """
+        log("bootstrap.context.create", "Device context created", verbosity.INFO)
     
     def initialise(self) -> None:
         """Initialise the controller associated with this context manager.
@@ -87,5 +90,9 @@ def resetContext(reason:str="") -> None:
         ContextResetException: halt the event's processing
     """
     global _context
+    log(
+        "bootstrap.context.reset",
+        f"Device context reset with reason: {reason}",
+        verbosity.WARNING)
     _context = DeviceContextManager()
     raise ContextResetException(reason)

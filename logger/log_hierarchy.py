@@ -25,8 +25,5 @@ HIERARCHY = {
             "effect": {}
         }
     },
-    "general": {
-        "error": {},
-        "warning": {}
-    }
+    "general": {}
 }

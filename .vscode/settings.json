@@ -1,0 +1,3 @@
+{
+    "autoDocstring.customTemplatePath": "resources/docstring_template.mustache"
+}

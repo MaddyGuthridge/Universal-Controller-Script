@@ -12,15 +12,18 @@ Author: Miguel Guthridge [hdsq@outlook.com.au]
 
 from .bootstrap import getContext, resetContext, catchContextResetException
 
+@catchContextResetException
 def onInit() -> None:
     getContext().initialise()
     
+@catchContextResetException
 def onMidiIn(event) -> None:
     # TODO: Parse event and stuff
     getContext().processEvent(event)
 
+@catchContextResetException
 def onIdle() -> None:
     getContext().tick()
 
 if __name__ == "__main__":
-    resetContext()
+    resetContext("Initial context")
