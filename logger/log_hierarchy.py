@@ -2,7 +2,8 @@
 HIERARCHY = {
     "bootstrap": {
         "context": {
-            "reset": {}
+            "reset": {},
+            "create": {}
         },
         "device": {
             "type_detect": {}
