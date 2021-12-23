@@ -7,21 +7,25 @@ class Log:
     def __init__(self) -> None:
         self._history: list[LogItem] = []
     
-    def _shouldPrint(self, item: LogItem, category: str=None, verbosity:Verbosity=None) -> bool:
-        """Returns whether the logger should print this particular item.
+    def _conditionalPrint(self, item: LogItem, category: str=None, verbosity:Verbosity=None) -> None:
+        """If the logger should print this particular item, prints it
         
-        By default (no category or verbosity specified), it checks whether it
+        * By default (no category or verbosity specified), it checks whether the
+          item's categories are in the watched categories. If so, it will print
+          out if the verbosity is less than the given verbosity, or the
+          `logger.max_watched_verbosity` setting if that isn't provided.
+          Otherwise it will print out if the verbosity is less than the given
+          verbosity, or the `logger.max_verbosity` setting if that isn't 
+          provided.
+        * If a category is specified, it will print if the item is in that
+          category and the verbosity is less than the given verbosity, or the
+          `logger.max_watched_verbosity` setting if that isn't provided.
 
         Args:
          * `item` (`LogItem`): item to check
          * `category` (`str`, optional): category  to filter by. Defaults to `None`.
          * `verbosity` (`Verbosity`, optional): greatest verbosity to print. Defaults to `None`.
-
-        Returns:
-         * `bool`: whether to print
         """
-        # TODO: Implement using settings
-        return True
     
     def recall(self, category: str, verbosity: Verbosity = DEFAULT):
         """
@@ -33,9 +37,8 @@ class Log:
         * `verbosity` (`Verbosity`, optional): verbosity level. Defaults to `DEFAULT`.
         """
         for item in self._history:
-            # Check for matching entry types
-            if self._shouldPrint(item, category, verbosity):
-                print(item)
+            # Print if required
+            self._conditionalPrint(item, category, verbosity)
 
     def __call__(self, category: str, msg: str, verbosity: Verbosity = DEFAULT) -> None:
         """
@@ -53,7 +56,7 @@ class Log:
         # TODO: Maybe get traceback
         item = LogItem(category, msg, verbosity)
         self._history.append(item)
-        if self._shouldPrint(item):
-            print(item)
+        # Print if required
+        self._conditionalPrint(item)
 
 log = Log()
