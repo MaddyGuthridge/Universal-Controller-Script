@@ -7,7 +7,8 @@ class Log:
     def __init__(self) -> None:
         self._history: list[LogItem] = []
     
-    def _conditionalPrint(self, item: LogItem, category: str=None, verbosity:Verbosity=None) -> None:
+    @staticmethod
+    def _conditionalPrint(item: LogItem, category: str=None, verbosity:Verbosity=None) -> None:
         """If the logger should print this particular item, prints it
         
         * By default (no category or verbosity specified), it checks whether the
