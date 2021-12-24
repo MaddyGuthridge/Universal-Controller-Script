@@ -9,7 +9,7 @@ from pprint import pprint
 import sys
 from typing import Any
 
-from . import util
+from .util import dicttools
 
 from . import defaultconfig as d
 
@@ -28,8 +28,8 @@ class Settings:
         """
         
         import config as c
-        config = util.expandDictShorthand(c.CONFIG)
-        self._settings_dict = util.recursiveMergeDictionaries(d.CONFIG, config)
+        config = dicttools.expandDictShorthand(c.CONFIG)
+        self._settings_dict = dicttools.recursiveMergeDictionaries(d.CONFIG, config)
         
         sys.modules.pop(c.__name__)
         del c

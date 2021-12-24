@@ -1,5 +1,5 @@
 """
-common > util
+common > util > dicttools
 
 Contains utility functions used within the rest of the code
 """
@@ -97,7 +97,7 @@ def expandDictShorthand(d: dict[str, Any], path:str='') -> dict:
     would expand to
     ```py
     {
-        "foo": {
+        "foo": {bootstrap
             "bar": 1,
             "baz"2
         },

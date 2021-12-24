@@ -4,7 +4,7 @@ tests > test_util
 Basic tests for utility functions of the script
 """
 
-from common.util import recursiveMergeDictionaries, expandDictShorthand
+from common.util.dicttools import recursiveMergeDictionaries, expandDictShorthand
 
 def test_expand_dict_shorthand():
     t = {
