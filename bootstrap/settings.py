@@ -1,8 +1,11 @@
 
+from pprint import pprint
 import sys
 from typing import Any
 
 from . import util
+
+from . import defaultconfig as d
 
 class Settings:
     """
@@ -17,14 +20,13 @@ class Settings:
         """
         Initialise and load the settings
         """
-        from . import defaultconfig as d
+        
         import config as c
         config = util.expandDictShorthand(c.CONFIG)
         self._settings_dict = util.recursiveMergeDictionaries(d.CONFIG, config)
-        sys.modules.pop(c.__file__)
-        sys.modules.pop(d.__file__)
+        
+        sys.modules.pop(c.__name__)
         del c
-        del d
     
     @staticmethod
     def _recursiveGet(keys: list[str], settings: dict):

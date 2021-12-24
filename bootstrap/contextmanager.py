@@ -7,8 +7,11 @@ Author: Miguel Guthridge [hdsq@outlook.com.au]
 """
 
 from typing import Optional, Callable
+from pprint import pprint
 
 from logger import log, verbosity
+
+from .settings import Settings
 
 class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
@@ -19,9 +22,14 @@ class DeviceContextManager:
     """
     
     def __init__(self) -> None:
-        """Initialise the context manager, including reloading
+        """Initialise the context manager, including reloading any required
+        modules
         """
         log("bootstrap.context.create", "Device context created", verbosity.INFO)
+        
+        self._settings = Settings()
+        
+        pprint(self._settings._settings_dict)
     
     def initialise(self) -> None:
         """Initialise the controller associated with this context manager.
@@ -61,7 +69,8 @@ def catchContextResetException(func: Callable)-> Callable:
     return wrapper
 
 # The context manager's instance
-# This should be the only non-constant global variable in the entire program
+# This should be the only non-constant global variable in the entire program,
+# except for the log
 _context: Optional[DeviceContextManager] = None
 
 def getContext() -> DeviceContextManager:
