@@ -1,5 +1,10 @@
+"""
+tests > test_util
 
-from bootstrap.util import recursiveMergeDictionaries, expandDictShorthand
+Basic tests for utility functions of the script
+"""
+
+from common.util import recursiveMergeDictionaries, expandDictShorthand
 
 def test_expand_dict_shorthand():
     t = {

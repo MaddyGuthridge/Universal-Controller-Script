@@ -10,7 +10,7 @@ full copy.
 Author: Miguel Guthridge [hdsq@outlook.com.au]
 """
 
-from bootstrap import getContext, resetContext, catchContextResetException
+from common import getContext, resetContext, catchContextResetException
 
 @catchContextResetException
 def onInit() -> None:
@@ -30,6 +30,4 @@ def bootstrap():
     resetContext("Initial context")
 
 if __name__ == "__main__":
-    bootstrap()
-    bootstrap()
     bootstrap()

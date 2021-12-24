@@ -1,5 +1,5 @@
 """
-bootstrap > util
+common > util
 
 Contains utility functions used within the rest of the code
 """

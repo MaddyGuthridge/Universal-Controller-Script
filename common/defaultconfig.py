@@ -1,5 +1,5 @@
 """
-config.py
+common > defaultconfig
 
 Stores the default configuration for the script. The user configuration will
 override any existing settings here.

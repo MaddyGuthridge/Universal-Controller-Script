@@ -1,4 +1,5 @@
-"""bootstrap > contextmanager
+"""
+common > contextmanager
 
 Contains the DeviceContextManager class, used to manage the state of the script,
 allowing for soft resets of the script when required.
@@ -6,7 +7,7 @@ allowing for soft resets of the script when required.
 Author: Miguel Guthridge [hdsq@outlook.com.au]
 """
 
-from typing import Optional, Callable
+from typing import NoReturn, Optional, Callable
 from pprint import pprint
 
 from logger import log, verbosity
@@ -27,9 +28,7 @@ class DeviceContextManager:
         """
         log("bootstrap.context.create", "Device context created", verbosity.INFO)
         
-        self._settings = Settings()
-        
-        pprint(self._settings._settings_dict)
+        self.settings = Settings()
     
     def initialise(self) -> None:
         """Initialise the controller associated with this context manager.
@@ -38,8 +37,8 @@ class DeviceContextManager:
     def processEvent(self, event) -> None:
         """Process a MIDI event
 
-        Args:
-            event (event): event to process
+        ### Args:
+        * `event` (`event`): event to process
         """
     
     def tick(self) -> None:
@@ -55,11 +54,11 @@ def catchContextResetException(func: Callable)-> Callable:
     """A decorator for catching ContextResetExceptions so that the program
     continues normally
 
-    Args:
-        func (Callable): function to decorate
+    ### Args:
+    * `func` (`Callable`): function to decorate
 
-    Returns:
-        Callable: decorated function
+    ### Returns:
+    * `Callable`: decorated function
     """
     def wrapper(*args, **kwargs):
         try:
@@ -76,27 +75,27 @@ _context: Optional[DeviceContextManager] = None
 def getContext() -> DeviceContextManager:
     """Returns a reference to the device context
 
-    Raises:
-        Exception: when the context is `None`, indicating that it wasn't
-        initialised
+    ### Raises:
+    * `Exception`: when the context is `None`, indicating that it wasn't
+      initialised
 
-    Returns:
-        DeviceContextManager: context
+    ### Returns:
+    * `DeviceContextManager`: context
     """
     if _context is None:
         raise Exception("Context isn't initialised")
     
     return _context
 
-def resetContext(reason:str="") -> None:
+def resetContext(reason:str="") -> NoReturn:
     """Resets the context of the script to the default, before raising a
     ContextResetException to halt the current event
 
-    Args:
-        reason (str, optional): reason for resetting. Defaults to "".
+    ### Args:
+    * `reason` (`str`, optional): reason for resetting. Defaults to "".
 
-    Raises:
-        ContextResetException: halt the event's processing
+    ### Raises:
+    * `ContextResetException`: halt the event's processing
     """
     global _context
     log(

@@ -1,3 +1,9 @@
+"""
+common > settings
+
+Contains a wrapper class for the settings, allowing for an effective way to
+check the configuration of the script.
+"""
 
 from pprint import pprint
 import sys
@@ -18,7 +24,7 @@ class Settings:
     
     def __init__(self) -> None:
         """
-        Initialise and load the settings
+        Initialise and load the script's settings
         """
         
         import config as c
@@ -29,7 +35,19 @@ class Settings:
         del c
     
     @staticmethod
-    def _recursiveGet(keys: list[str], settings: dict):
+    def _recursiveGet(keys: list[str], settings: dict) -> Any:
+        """
+        Recursive function for getting settings value
+
+        [extended_summary]
+
+        ### Args:
+        * `keys` (`list[str]`): list of keys
+        * `settings` (`dict`): settings dictionary to search
+
+        ### Returns:
+        * any: value
+        """
         if len(keys) == 1:
             return settings[keys[0]]
         else:
@@ -37,19 +55,16 @@ class Settings:
 
     def get(self, key: str) -> Any:
         """
-        Get an entry from 
-
-        [extended_summary]
+        Get an entry in the settings
 
         ### Args:
-        * `key` (`str`): [description]
+        * `key` (`str`): key to access settings from
 
         ### Raises:
-        * `KeyError`: [description]
-        * `KeyError`: [description]
+        * `KeyError`: Unable to find settings
 
         ### Returns:
-        * `Any`: [description]
+        * any: Value
         """
         try:
             return Settings._recursiveGet(key.split('.'), self._settings_dict)
