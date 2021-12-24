@@ -6,10 +6,9 @@ check the configuration of the script.
 """
 
 from pprint import pprint
-import sys
 from typing import Any
 
-from .util import dicttools
+from .util import dicttools, hotreload
 
 from . import defaultconfig as d
 
@@ -27,12 +26,9 @@ class Settings:
         Initialise and load the script's settings
         """
         
-        import config as c
+        c = hotreload.getTemporaryModule('config')
         config = dicttools.expandDictShorthand(c.CONFIG)
         self._settings_dict = dicttools.recursiveMergeDictionaries(d.CONFIG, config)
-        
-        sys.modules.pop(c.__name__)
-        del c
     
     @staticmethod
     def _recursiveGet(keys: list[str], settings: dict) -> Any:
