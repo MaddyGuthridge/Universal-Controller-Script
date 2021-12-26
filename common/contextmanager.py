@@ -24,14 +24,13 @@ class DeviceContextManager:
         """Initialise the context manager, including reloading any required
         modules
         """
-        # log("bootstrap.context.create", "Device context created", verbosity.INFO)
         
         self.settings = Settings()
     
     def initialise(self) -> None:
         """Initialise the controller associated with this context manager.
         """
-        
+
     def processEvent(self, event) -> None:
         """Process a MIDI event
 
