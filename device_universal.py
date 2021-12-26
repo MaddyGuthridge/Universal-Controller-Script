@@ -27,7 +27,8 @@ def onIdle() -> None:
 
 @catchContextResetException
 def bootstrap():
-    resetContext("Initial context")
+    # resetContext("Initial context")
+    pass
 
 if __name__ == "__main__":
     bootstrap()

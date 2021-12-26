@@ -23,10 +23,19 @@ class Log:
           `logger.max_watched_verbosity` setting if that isn't provided.
 
         Args:
-         * `item` (`LogItem`): item to check
-         * `category` (`str`, optional): category  to filter by. Defaults to `None`.
-         * `verbosity` (`Verbosity`, optional): greatest verbosity to print. Defaults to `None`.
+        * `item` (`LogItem`): item to check
+        * `category` (`str`, optional): category  to filter by. Defaults to `None`.
+        * `verbosity` (`Verbosity`, optional): greatest verbosity to print. Defaults to `None`.
         """
+        if verbosity is None:
+            if item.category in common.getContext().settings.get("logger.watched_categories"):
+                verbosity = common.getContext().settings.get("logger.max_watched_verbosity")
+            else:
+                verbosity = common.getContext().settings.get("logger.max_verbosity")
+        
+        assert(verbosity is not None)
+        if item.verbosity <= verbosity:
+            print(item.message)
     
     def recall(self, category: str, verbosity: Verbosity = DEFAULT):
         """
@@ -61,3 +70,5 @@ class Log:
         self._conditionalPrint(item)
 
 log = Log()
+
+import common

@@ -13,7 +13,9 @@ CONFIG = {
         # Maximum verbosity for which all logged messages will be printed 
         "max_verbosity": verbosity.WARNING,
         # Categories to watch
-        "watched_categories": [],
+        "watched_categories": [
+            "general"
+        ],
         # Maximum verbosity for which watched categories of logged messages
         # will be printed 
         "max_watched_verbosity": verbosity.INFO,

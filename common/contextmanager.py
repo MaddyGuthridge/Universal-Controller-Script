@@ -10,8 +10,6 @@ Author: Miguel Guthridge [hdsq@outlook.com.au]
 from typing import NoReturn, Optional, Callable
 from pprint import pprint
 
-from logger import log, verbosity
-
 from .settings import Settings
 
 class DeviceContextManager:
@@ -26,7 +24,7 @@ class DeviceContextManager:
         """Initialise the context manager, including reloading any required
         modules
         """
-        log("bootstrap.context.create", "Device context created", verbosity.INFO)
+        # log("bootstrap.context.create", "Device context created", verbosity.INFO)
         
         self.settings = Settings()
     
@@ -98,9 +96,17 @@ def resetContext(reason:str="") -> NoReturn:
     * `ContextResetException`: halt the event's processing
     """
     global _context
-    log(
+    logger.log(
         "bootstrap.context.reset",
         f"Device context reset with reason: {reason}",
-        verbosity.WARNING)
+        logger.verbosity.WARNING)
     _context = DeviceContextManager()
     raise ContextResetException(reason)
+
+def _initContext() -> None:
+    global _context
+    _context = DeviceContextManager()
+
+_initContext()
+
+import logger
