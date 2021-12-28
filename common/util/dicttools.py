@@ -2,6 +2,9 @@
 common > util > dicttools
 
 Contains utility functions used within the rest of the code
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
 """
 
 from typing import Any

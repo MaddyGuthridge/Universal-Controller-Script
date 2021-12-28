@@ -3,7 +3,14 @@ common > settings
 
 Contains a wrapper class for the settings, allowing for an effective way to
 check the configuration of the script.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
 """
+
+__all__ = [
+    'Settings'
+]
 
 from pprint import pprint
 from typing import Any

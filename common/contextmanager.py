@@ -4,8 +4,15 @@ common > contextmanager
 Contains the DeviceContextManager class, used to manage the state of the script,
 allowing for soft resets of the script when required.
 
-Author: Miguel Guthridge [hdsq@outlook.com.au]
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
 """
+
+__all__ = [
+    'catchContextResetException',
+    'getContext',
+    'resetContext'
+]
 
 from typing import NoReturn, Optional, Callable
 # from pprint import pprint

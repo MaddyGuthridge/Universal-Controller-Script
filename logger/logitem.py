@@ -1,3 +1,11 @@
+"""
+logger > logitem
+
+Contains LogItem, a class used to represent an entry in the script's log
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
+"""
 
 import time
 import traceback

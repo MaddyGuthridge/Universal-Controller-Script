@@ -1,8 +1,10 @@
-"""common
+"""
+common
 
 Contains common functions and code required to initialise and manage the script.
 
-Author: Miguel Guthridge [hdsq@outlook.com.au]
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
 """
 
 from . import consts

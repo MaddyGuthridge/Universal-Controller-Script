@@ -1,3 +1,12 @@
+"""
+logger > verbosity
+
+Contains the definitions for all verbosity levels used by the script.
+When logging something, these constants should be used.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
+"""
 
 from typing import NewType
 

@@ -1,3 +1,12 @@
+"""
+logger > hierarchy
+
+Contains a formal definition of the logging hierarchy, used to verify
+logging into particular categories
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
+"""
 
 HIERARCHY = {
     "bootstrap": {

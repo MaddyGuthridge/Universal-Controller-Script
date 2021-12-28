@@ -2,6 +2,9 @@
 common > consts
 
 Constants used within the script
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
 """
 
 # Version info

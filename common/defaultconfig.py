@@ -3,6 +3,9 @@ common > defaultconfig
 
 Stores the default configuration for the script. The user configuration will
 override any existing settings here.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
 """
 
 from logger import verbosity

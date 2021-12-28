@@ -7,7 +7,7 @@ contains a context object used throughout the script.
 This entire script is licensed under GPL v3. Refer to the `LICENSE` file for a
 full copy.
 
-Refer to module `common.consts` for a list of authors
+Refer to module `common.consts` for a list of authors for the project
 """
 
 # Get context, and context reset wrapper

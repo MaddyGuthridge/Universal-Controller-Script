@@ -1,3 +1,16 @@
+"""
+logger > logger
+
+Contains the definition of the log class, which maintains the script's log,
+and allows for log information to be searched and recalled
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
+"""
+
+__all__ = [
+    'log'
+]
 
 from .logitem import LogItem
 from .verbosity import Verbosity, DEFAULT, MOST_VERBOSE
@@ -32,6 +45,7 @@ class Log:
         """
         # Make sure we log things, even if the context isn't loaded
         # They will still (hopefully) be recallable later
+        import common
         try:
             context = common.getContext()
         except common.contextmanager.MissingContextException:
@@ -98,5 +112,3 @@ class Log:
         self._conditionalPrint(item)
 
 log = Log()
-
-import common

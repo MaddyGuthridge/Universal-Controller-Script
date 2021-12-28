@@ -2,6 +2,9 @@
 common > util > hotreload
 
 Contains helper functions for hot reloading components of the script
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
 """
 
 import sys

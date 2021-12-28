@@ -3,6 +3,9 @@ common > util > consolehelpers
 
 Contains helper functions for interacting with the script through the
 console, which may assist in debugging.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
 """
 
 __all__ = [
@@ -59,5 +62,5 @@ credits = ConsoleCommand(
     f"{_credit_str}\n"
     f"---------------------------\n"
     f"This project is free and open source, under the GNU GPL v3 License.\n"
-    f"A copy of this license is available in the file 'LICENSE'.\n"
+    f"A copy of this is available in the file 'LICENSE'.\n"
 )
