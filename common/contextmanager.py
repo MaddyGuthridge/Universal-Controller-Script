@@ -8,7 +8,7 @@ Author: Miguel Guthridge [hdsq@outlook.com.au]
 """
 
 from typing import NoReturn, Optional, Callable
-from pprint import pprint
+# from pprint import pprint
 
 from .settings import Settings
 
@@ -39,12 +39,19 @@ class DeviceContextManager:
         """
     
     def tick(self) -> None:
-        """Called frequently to allow any required updates to the controller
+        """
+        Called frequently to allow any required updates to the controller
         """
 
 class ContextResetException(Exception):
-    """Raised when the context is reset, so as to prevent any other operations
+    """
+    Raised when the context is reset, so as to prevent any other operations
     using the old context from succeeding
+    """
+
+class MissingContextException(Exception):
+    """
+    Raised when the context hasn't been initialised yet
     """
 
 def catchContextResetException(func: Callable)-> Callable:

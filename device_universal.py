@@ -7,10 +7,13 @@ contains a context object used throughout the script.
 This entire script is licensed under GPL v3. Refer to the `LICENSE` file for a
 full copy.
 
-Author: Miguel Guthridge [hdsq@outlook.com.au]
+Refer to module `common.consts` for a list of authors
 """
 
 from common import getContext, resetContext, catchContextResetException
+
+# Import console helpers
+from common.util.consolehelpers import *
 
 @catchContextResetException
 def onInit() -> None:

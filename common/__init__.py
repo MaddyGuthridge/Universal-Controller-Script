@@ -8,3 +8,5 @@ Author: Miguel Guthridge [hdsq@outlook.com.au]
 from .contextmanager import getContext, resetContext, catchContextResetException
 
 from . import util
+
+import consts
