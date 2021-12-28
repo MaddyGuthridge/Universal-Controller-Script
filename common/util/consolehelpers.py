@@ -39,16 +39,21 @@ help = ConsoleCommand(
     f"  {common.consts.DISCORD}\n"
     f"---------------------------\n"
     f"List of commands (enter into the console to use it):\n"
-    f" * help: display this message\n"
-    f" * log:\n"
-    f"    * log.recall(): recall log entries\n"
+    f" * help(): display this message\n"
+    f" * log(): log a message\n"
+    f"    * log.recall(category): recall log entries from a category\n"
     f"    * log.details(entry_number): print info about a log entry\n"
-    f" * credits: print credits for the script\n"
+    f" * credits(): print credits for the script\n"
+    f" * reset(): reset the script and reload modular components\n"
 )
 
 # Damn this is an awful way of formatting this, but I can't think of anything
 # better
-_credit_str = "\n".join(f"{key}:\n{'\n'.join([f' * {p}' for p in value])}" for key, value in common.consts.AUTHORS)
+_newline = '\n'
+_credit_str = "\n".join(
+    f"{key}:{_newline}{_newline.join([f' * {p}' for p in value])}"
+        for key, value in common.consts.AUTHORS.items()
+)
 credits = ConsoleCommand(
     f"Credits:\n"
     f"{_credit_str}\n"

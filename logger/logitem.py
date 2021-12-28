@@ -12,14 +12,14 @@ class LogItem:
         self.verbosity = verbosity
         self.index = index
         self.time = time.localtime()
-        self.trace = traceback.extract_stack()
+        self.trace = traceback.extract_stack(limit=-2)
     
     @staticmethod
     def _formatTime(time) -> str:
-        return f"{time.tm_hour:.02}:{time.tm_min:.02}:{time.tm_sec:.02}"
+        return f"{time.tm_hour:02}:{time.tm_min:02}:{time.tm_sec:02}"
 
     def __str__(self) -> str:
-        index = f"[#{self.index:.5d}]"
+        index = f"[#{self.index:5d}]"
         time  = LogItem._formatTime(self.time)
         return \
             f"{index}: {time} | {self.category.ljust(30)} : {self.message}"

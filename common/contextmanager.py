@@ -91,12 +91,12 @@ def getContext() -> DeviceContextManager:
     
     return _context
 
-def resetContext(reason:str="") -> NoReturn:
+def resetContext(reason:str="none") -> NoReturn:
     """Resets the context of the script to the default, before raising a
     ContextResetException to halt the current event
 
     ### Args:
-    * `reason` (`str`, optional): reason for resetting. Defaults to "".
+    * `reason` (`str`, optional): reason for resetting. Defaults to "none".
 
     ### Raises:
     * `ContextResetException`: halt the event's processing
@@ -108,6 +108,22 @@ def resetContext(reason:str="") -> NoReturn:
         logger.verbosity.WARNING)
     _context = DeviceContextManager()
     raise ContextResetException(reason)
+
+@catchContextResetException
+def unsafeResetContext(reason:str="none") -> None:
+    """
+    Reset the context of the script to the default, without raising a
+    ContextResetException to halt the current event.
+
+    WARNING: Calling this inside the main components of the script is a very
+    bad idea, as your code will interact with a context it isn't prepared for,
+    leading to undefined behaviour. This should only ever be called by the user
+    through the console.
+
+    ### Args:
+    * `reason` (`str`, optional): Reason for reset. Defaults to `"none"`.
+    """
+    resetContext(reason)
 
 def _initContext() -> None:
     global _context

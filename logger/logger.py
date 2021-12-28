@@ -45,11 +45,11 @@ class Log:
         
         assert(verbosity is not None)
         if item.verbosity <= verbosity:
-            print(item.message)
+            print(item)
             return True
         else:
             return False
-    
+
     def recall(self, category: str, verbosity: Verbosity = DEFAULT, number: int = -1):
         """
         Recall and print all matching log entries for the provided category at 

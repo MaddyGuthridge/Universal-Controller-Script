@@ -10,10 +10,15 @@ full copy.
 Refer to module `common.consts` for a list of authors
 """
 
-from common import getContext, resetContext, catchContextResetException
+# Get context, and context reset wrapper
+from common import getContext, catchContextResetException
+# Function to allow user to reset context
+from common.contextmanager import unsafeResetContext as reset
 
 # Import console helpers
 from common.util.consolehelpers import *
+
+from logger import verbosity
 
 @catchContextResetException
 def onInit() -> None:
