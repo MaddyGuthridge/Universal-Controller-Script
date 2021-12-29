@@ -1,5 +1,5 @@
 
-class Event:
+class MatchedEvent:
     """
     A class representing a MIDI event mapped to a control surface
 

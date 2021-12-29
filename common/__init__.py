@@ -12,3 +12,5 @@ from . import consts
 from .contextmanager import getContext, resetContext, catchContextResetException
 
 from . import util
+
+from .util import eventData

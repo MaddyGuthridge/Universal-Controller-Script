@@ -7,7 +7,10 @@ matchers can be derived.
 """
 
 from __future__ import annotations
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from . import eventData
 
 class IEventPattern:
     """
@@ -18,7 +21,7 @@ class IEventPattern:
     pattern for a case where the standard EventPattern class doesn't suffice.
     """
     
-    def recogniseEvent(self, event) -> bool:
+    def recogniseEvent(self, event: eventData) -> bool:
         """
         Return whether the given event matches the pattern
 
@@ -114,3 +117,6 @@ class EventPattern(IEventPattern):
             self.status = status_sysex
             self.data1 = data1
             self.data2 = data2
+
+    def recogniseEvent(self, event: eventData) -> bool:
+        return False
