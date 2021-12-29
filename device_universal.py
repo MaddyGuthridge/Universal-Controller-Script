@@ -18,8 +18,6 @@ from common.contextmanager import unsafeResetContext as reset
 # Import console helpers
 from common.util.consolehelpers import *
 
-from logger import verbosity
-
 @catchContextResetException
 def onInit() -> None:
     getContext().initialise()

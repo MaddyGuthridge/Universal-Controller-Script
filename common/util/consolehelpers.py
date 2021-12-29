@@ -11,12 +11,13 @@ Authors:
 __all__ = [
     'help',
     'credits',
-    'log'
+    'log',
+    'verbosity'
 ]
 
 import common
 
-from logger import log
+from logger import log, verbosity
 
 class ConsoleCommand:
     """
