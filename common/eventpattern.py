@@ -7,10 +7,13 @@ matchers can be derived.
 """
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, TypeVar
 
 if TYPE_CHECKING:
     from . import eventData
+
+# Variable type for byte match expression
+ByteMatch = TypeVar("ByteMatch", int, range, tuple[int], ellipsis)
 
 class IEventPattern:
     """
@@ -21,7 +24,7 @@ class IEventPattern:
     pattern for a case where the standard EventPattern class doesn't suffice.
     """
     
-    def recogniseEvent(self, event: eventData) -> bool:
+    def matchEvent(self, event: eventData) -> bool:
         """
         Return whether the given event matches the pattern
 
@@ -47,10 +50,10 @@ class EventPattern(IEventPattern):
     def __init__(
         self,
         # Status byte or sysex data
-        status_sysex:   int|slice|tuple[int]|ellipsis
-                 | list[int|slice|tuple[int]|ellipsis]=None,
-        data1: Optional[int|slice|tuple[int]|ellipsis]=None,
-        data2: Optional[int|slice|tuple[int]|ellipsis]=None
+        status_sysex:   ByteMatch
+                 | list[ByteMatch]=None,
+        data1: Optional[ByteMatch]=None,
+        data2: Optional[ByteMatch]=None
     ) -> None:
         """
         Create an event pattern
@@ -60,7 +63,7 @@ class EventPattern(IEventPattern):
         
         Each parameter can be one of multiple types:
         * `int`: A strict value: any value other than this will not match.
-        * `slice`: A range of values (eg 2:10): values within the range
+        * `range`: A range of values (eg 2:10): values within the range
           (excluding the upper bound, like in standard slices) will match.
         * `tuple[int]`: Any value included in the tuple will match.
         * `...`: A wildcard: any value will match.
@@ -78,11 +81,11 @@ class EventPattern(IEventPattern):
         * `EventPattern(0x7F, 0x03, ...)`: Recognise an event, where the status
           is 127, data1 is 3, and data2 is any value
         
-        * `EventPattern((0x90, 0x80), 0x04, slice(10, 20))`: Recognise an event,
+        * `EventPattern((0x90, 0x80), 0x04, range(10, 20))`: Recognise an event,
           where the status is either 128 or 144, data1 is 4, and data2 is any
           value between 10 and 20
           
-        * `EventPattern([0x30, 0x40, slice(0, 20, 2), ...])`: Recognise a 
+        * `EventPattern([0x30, 0x40, range(0, 20, 2), ...])`: Recognise a 
           sysex event, where the first byte is 48, the second is 64, the third
           is an even number less than 20, and the 4th is any value.
         """
@@ -118,5 +121,53 @@ class EventPattern(IEventPattern):
             self.data1 = data1
             self.data2 = data2
 
-    def recogniseEvent(self, event: eventData) -> bool:
-        return False
+    def matchEvent(self, event: eventData) -> bool:
+        if self.sysex_event:
+            return self._matchSysex(event)
+        else:
+            return self._matchStandard(event)
+    
+    @staticmethod
+    def _matchByteConst(expected: int, actual: int) -> bool:
+        return expected == actual
+    
+    @staticmethod
+    def _matchByteRange(expected: range, actual: int) -> bool:
+        return actual in expected
+    
+    @staticmethod
+    def _matchByteTuple(expected: tuple[int], actual: int) -> bool:
+        return actual in expected
+    
+    @staticmethod
+    def _matchByteEllipsis(expected: ellipsis, actual: int) -> bool:
+        return 0 <= actual <= 127
+
+    @staticmethod
+    def _matchByte(expected: ByteMatch, actual: int) -> bool:
+        """
+        Matcher function for a single byte
+        """
+        matches = {
+            int: EventPattern._matchByteConst,
+            range: EventPattern._matchByteRange,
+            tuple: EventPattern._matchByteTuple,
+            ellipsis: EventPattern._matchByteEllipsis
+        }
+        return matches[type(expected)](expected, actual)
+
+    def _matchSysex(self, event: eventData) -> bool:
+        """
+        Matcher function for sysex events
+        """
+        return all(map(self._matchByte, self.sysex, event.sysex))
+
+    def _matchStandard(self, event: eventData) -> bool:
+        """
+        Matcher function for standard events
+        """
+        return all(self._matchByte(expected, actual) for expected, actual in
+                   zip(
+                       [self.status, self.data1, self.data2],
+                       [event.status, event.data1, event.data2]
+                    ))
