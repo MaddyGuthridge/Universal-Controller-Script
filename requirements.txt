@@ -1,5 +1,5 @@
 attrs==21.2.0
-FL-Studio-API-Stubs==14.0
+FL-Studio-API-Stubs==15.0
 iniconfig==1.1.1
 packaging==21.3
 pluggy==1.0.0
