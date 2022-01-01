@@ -13,7 +13,9 @@ if TYPE_CHECKING:
     from . import eventData
 
 # Variable type for byte match expression
-ByteMatch = Union[int, range, tuple[int], ellipsis]
+# This isn't actually an error - just a bug in Pylance and MyPy
+# https://github.com/microsoft/pylance-release/issues/2203
+ByteMatch = Union[int, range, tuple[int], type(...)]
 
 class IEventPattern:
     """
@@ -64,17 +66,16 @@ class EventPattern(IEventPattern):
         Each parameter can be one of multiple types:
         * `int`: A strict value: any value other than this will not match.
         * `range`: A range of values (eg 2:10): values within the range
-          (excluding the upper bound, like in standard slices) will match.
+          (excluding the upper bound, like in standard ranges) will match.
         * `tuple[int]`: Any value included in the tuple will match.
         * `...`: A wildcard: any value will match.
         
         For sysex-type events, a list of objects of that type must be provided.
 
         ### Args:
-        * `status_sysex` (`eventType`, optional): Status byte or sysex data.
-          Defaults to `None`.
-        * `data1` (`eventType`, optional): data1 byte. Defaults to `None`.
-        * `data2` (`eventType`, optional): data2 byte. Defaults to `None`.
+        * `status_sysex` (`ByteMatch | list[ByteMatch]`): Status byte or sysex data.
+        * `data1` (`ByteMatch`, optional): data1 byte. Defaults to `None`.
+        * `data2` (`ByteMatch`, optional): data2 byte. Defaults to `None`.
         
         ### Example Usage
         
@@ -117,8 +118,6 @@ class EventPattern(IEventPattern):
         
             # Store the data
             if TYPE_CHECKING:
-                assert status_sysex is not None
-                assert not isinstance(status_sysex, list)
                 assert data1 is not None
                 assert data2 is not None
             self.sysex_event = False
