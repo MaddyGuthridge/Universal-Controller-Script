@@ -5,12 +5,13 @@ Contains the definition for the FL Studio MIDI Event Data type, to use with type
 annotations so that we can get those sweet, sweet autocompletions.
 """
 
+from __future__ import annotations
+
 __all__ = [
     'eventData'
 ]
 
 from typing import Optional, TypeVar, Generic
-from __future__ import annotations
 
 PropType = TypeVar("PropType")
 

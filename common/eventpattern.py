@@ -7,13 +7,13 @@ matchers can be derived.
 """
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, TypeVar
+from typing import TYPE_CHECKING, Optional, TypeVar, Union
 
 if TYPE_CHECKING:
     from . import eventData
 
 # Variable type for byte match expression
-ByteMatch = TypeVar("ByteMatch", int, range, tuple[int], ellipsis)
+ByteMatch = Union[int, range, tuple[int], ellipsis]
 
 class IEventPattern:
     """
@@ -95,7 +95,7 @@ class EventPattern(IEventPattern):
         # Lambda to check if values are none
         isNone = lambda x: x is None
         # Lambda to check if values are of the required type
-        typeCheck = lambda x: isinstance(x, (int, range, ellipsis))\
+        typeCheck = lambda x: isinstance(x, (int, range, type(...)))\
             or (isinstance(x, tuple) and all(isinstance(y, (int, range)) for y in x))
         
         # Check for sysex event
@@ -108,8 +108,7 @@ class EventPattern(IEventPattern):
             
         # Otherwise check for standard event
         else:
-            status: ByteMatch = status_sysex
-            if any(map(isNone, [data1, data2])):
+            if any(x is None for x in [data1, data2]):
                 raise TypeError("Incorrect number of arguments for a non-sysex "
                                 "event type. Refer to object documentation.")
             if not all(map(typeCheck, [status_sysex, data1, data2])):
@@ -118,8 +117,10 @@ class EventPattern(IEventPattern):
         
             # Store the data
             if TYPE_CHECKING:
-                assert(status_sysex is not None)
-                assert(not isinstance(status_sysex, list))
+                assert status_sysex is not None
+                assert not isinstance(status_sysex, list)
+                assert data1 is not None
+                assert data2 is not None
             self.sysex_event = False
             self.status = status_sysex
             self.data1 = data1
@@ -156,7 +157,7 @@ class EventPattern(IEventPattern):
             int: EventPattern._matchByteConst,
             range: EventPattern._matchByteRange,
             tuple: EventPattern._matchByteTuple,
-            ellipsis: EventPattern._matchByteEllipsis
+            type(...): EventPattern._matchByteEllipsis
         }
         return matches[type(expected)](expected, actual)
 
@@ -170,7 +171,6 @@ class EventPattern(IEventPattern):
         """
         Matcher function for standard events
         """
-        assert(type(self.status) != list)
         return all(self._matchByte(expected, actual) for expected, actual in
                    zip(
                        [self.status, self.data1, self.data2],
