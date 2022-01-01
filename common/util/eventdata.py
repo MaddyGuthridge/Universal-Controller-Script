@@ -9,7 +9,8 @@ __all__ = [
     'eventData'
 ]
 
-from typing import TypeVar, Generic
+from typing import Optional, TypeVar, Generic
+from __future__ import annotations
 
 PropType = TypeVar("PropType")
 
@@ -27,6 +28,8 @@ class ReadOnly(Generic[PropType]):
     def __set__(self, value) -> None:
         raise AttributeError("This value is read-only")
 
+# StatusSysex = TypeVar('StatusSysex', int, list[int])
+
 class eventData:
     """
     A simple reproduction of the eventData object used by FL Studio.
@@ -35,13 +38,17 @@ class eventData:
     
     Read-only types are marked as such
     """
-    def __init__(self) -> None:
-        
+    def __init__(
+        self,
+        status_sysex: int | list[int],
+        data1: Optional[int]=None,
+        data2:Optional[int]=None
+    ) -> None:
         self.handled = False
         self.timestamp = ReadOnly(0.0)
-        self.status = 0x00
-        self.data1 = 0x00
-        self.data2 = 0x00
+        self.status = 0 if isinstance(status_sysex, list) else status_sysex
+        self.data1 = 0 if data1 is None else data1
+        self.data2 = 0 if data2 is None else data2
         self.port = ReadOnly(0)
         self.note = 0
         self.velocity = 0
@@ -50,7 +57,7 @@ class eventData:
         self.controlNum = ReadOnly(0)
         self.controlVal = ReadOnly(0)
         self.pitchBend = ReadOnly(0)
-        self.sysex = bytes()
+        self.sysex = bytes(status_sysex) if isinstance(status_sysex, list) else bytes()
         self.isIncrement = False
         self.res = 0.0
         self.inEv = 0
@@ -59,6 +66,3 @@ class eventData:
         self.midiChan = 0
         self.midiChanEx = 0
         self.pmeflags = ReadOnly(0)
-
-e = eventData()
-a = e.timestamp

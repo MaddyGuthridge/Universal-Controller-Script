@@ -51,7 +51,7 @@ class EventPattern(IEventPattern):
         self,
         # Status byte or sysex data
         status_sysex:   ByteMatch
-                 | list[ByteMatch]=None,
+                 | list[ByteMatch],
         data1: Optional[ByteMatch]=None,
         data2: Optional[ByteMatch]=None
     ) -> None:
@@ -95,8 +95,8 @@ class EventPattern(IEventPattern):
         # Lambda to check if values are none
         isNone = lambda x: x is None
         # Lambda to check if values are of the required type
-        typeCheck = lambda x: isinstance(x, (int, slice, ellipsis))\
-            or (isinstance(x, tuple) and all(isinstance(y, (int, slice)) for y in x))
+        typeCheck = lambda x: isinstance(x, (int, range, ellipsis))\
+            or (isinstance(x, tuple) and all(isinstance(y, (int, range)) for y in x))
         
         # Check for sysex event
         if isinstance(status_sysex, list):
@@ -108,7 +108,8 @@ class EventPattern(IEventPattern):
             
         # Otherwise check for standard event
         else:
-            if any(map(isNone, [status_sysex, data1, data2])):
+            status: ByteMatch = status_sysex
+            if any(map(isNone, [data1, data2])):
                 raise TypeError("Incorrect number of arguments for a non-sysex "
                                 "event type. Refer to object documentation.")
             if not all(map(typeCheck, [status_sysex, data1, data2])):
@@ -116,6 +117,9 @@ class EventPattern(IEventPattern):
                                 "object docmentation.")
         
             # Store the data
+            if TYPE_CHECKING:
+                assert(status_sysex is not None)
+                assert(not isinstance(status_sysex, list))
             self.sysex_event = False
             self.status = status_sysex
             self.data1 = data1
@@ -166,6 +170,7 @@ class EventPattern(IEventPattern):
         """
         Matcher function for standard events
         """
+        assert(type(self.status) != list)
         return all(self._matchByte(expected, actual) for expected, actual in
                    zip(
                        [self.status, self.data1, self.data2],
