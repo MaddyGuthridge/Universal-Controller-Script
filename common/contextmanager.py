@@ -19,6 +19,8 @@ from typing import NoReturn, Optional, Callable
 
 from .settings import Settings
 
+from .types import eventData
+
 class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
     components of script to be dynamically refreshed and reloaded, as well as
@@ -38,7 +40,7 @@ class DeviceContextManager:
         """Initialise the controller associated with this context manager.
         """
 
-    def processEvent(self, event) -> None:
+    def processEvent(self, event: eventData) -> None:
         """Process a MIDI event
 
         ### Args:

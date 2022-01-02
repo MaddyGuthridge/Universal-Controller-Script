@@ -8,7 +8,10 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au]
 """
 
-from common.eventpattern import IEventPattern
+from typing import Optional
+
+from common import IEventPattern, MatchedEvent
+from common.types import eventData, Color
 
 class ControlSurface:
     """
@@ -17,5 +20,46 @@ class ControlSurface:
     This class is extended by all other control surfaces.
     """
     
-    def __init__(self, event: IEventPattern) -> None:
-        pass
+    def __init__(self, event_pattern: IEventPattern) -> None:
+        """
+        Create a ControlSurface
+
+        ### Args:
+        * `event_pattern` (`IEventPattern`): pattern to use when recognising the
+        event
+        """
+        self._pattern =  event_pattern
+        self.__color = Color()
+
+    def match(self, event: eventData) -> Optional[MatchedEvent]:
+        """
+        Returns a MatchedEvent if the given event matches this control surface,
+        otherwise returns None
+
+        ### Args:
+        * `event` (`eventData`): event to potentially match
+
+        ### Returns:
+        * `Optional[MatchedEvent]`: match design
+        """
+        if self._pattern.matchEvent(event):
+            return MatchedEvent(self, self.getValueFromEvent(event))
+        else:
+            return None
+
+    def getValueFromEvent(self, event: eventData) -> float:
+        """
+        Returns the value of an event as a float between (0.0 - 1.0)
+
+        ### Args:
+        * `event` (`eventData`): event to get value from
+
+        ### Returns:
+        * `float`: value
+        """
+        raise NotImplementedError("This function should be overridden by a "
+                                  "child class")
+
+    @property
+    def color(self) -> Color:
+        return self.__color

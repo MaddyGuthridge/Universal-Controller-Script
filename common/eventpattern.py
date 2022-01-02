@@ -8,14 +8,15 @@ matchers can be derived.
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, TypeVar, Union
+# from types import Type
 
 if TYPE_CHECKING:
     from . import eventData
 
+EllipsisType = type(Ellipsis)
+
 # Variable type for byte match expression
-# This isn't actually an error - just a bug in Pylance and MyPy
-# https://github.com/microsoft/pylance-release/issues/2203
-ByteMatch = Union[int, range, tuple[int], type(...)]
+ByteMatch = Union[int, range, tuple[int], EllipsisType]
 
 class IEventPattern:
     """

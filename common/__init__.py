@@ -13,4 +13,8 @@ from .contextmanager import getContext, resetContext, catchContextResetException
 
 from . import util
 
-from .util import eventData
+from .types import eventData, Color
+
+from .eventpattern import EventPattern, IEventPattern
+
+from .matchedevent import MatchedEvent

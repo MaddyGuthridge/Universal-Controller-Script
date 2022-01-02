@@ -10,5 +10,3 @@ Authors:
 from . import dicttools
 from . import hotreload
 from . import consolehelpers
-
-from .eventdata import eventData
