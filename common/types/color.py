@@ -14,6 +14,9 @@ class Color:
 
     Defines an RGB color, as well as useful functions for converting between
     various color types.
+    
+    NOTE: colors are stored as separate red, green and blue components
+    internally. Calculations for HSV representations are made when required
     """
     
     def __init__(self) -> None:
