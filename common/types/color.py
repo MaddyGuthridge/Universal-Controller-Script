@@ -5,8 +5,101 @@ Contains definition for color type.
 """
 from __future__ import annotations
 
-import utils
 from math import floor
+
+def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
+    """
+    Convert HSV to RGB color spaces
+
+    ### Args:
+    * `h` (`float`): Hue (degrees: 0-360)
+    * `s` (`float`): Saturation (0-1.0)
+    * `v` (`float`): Value (0-1.0)
+
+    ### Returns:
+    * `tuple[int, int, int]`: Red, Green, Blue (all 0-255)
+    
+    ### Credits
+    * Adapted from [Wikipedia](https://en.wikipedia.org/wiki/HSL_and_HSV)
+    """
+    # First, we find chroma:
+    c = v * s
+    
+    # Find a point on the bottom three faces of the RGB cube with the same hue
+    # and chroma as our color
+    h_ = h / 60
+    # intermediate value x for  second largest component of the color
+    x = c * (1 - abs(h_ % 2 - 1))
+    
+    if h_ < 1:
+        r, g, b = c, x, 0
+    elif h_ < 2:
+        r, g, b = x, c, 0
+    elif h_ < 3:
+        r, g, b = 0, c, x
+    elif h_ < 4:
+        r, g, b = 0, x, c
+    elif h_ < 5:
+        r, g, b = x, 0, c
+    else: #h_ < 6
+        r, g, b = c, 0, x
+    
+    # Finally, get a median value to add to each component
+    m = v - c
+    r, g, b = r+m, g+m, b+m
+    
+    # And return them in a reasonable format
+    # 0-255
+    return int(r*255), int(g*255), int(b*255)
+
+def rgbToHsv(r: int, g: int, b: int) -> tuple[float, float, float]:
+    """
+    Convert RGB to HSV color spaces
+
+    ### Args:
+    * `r` (`int`): red (0-255)
+    * `g` (`int`): green (0-255)
+    * `b` (`int`): blue (0-255)
+
+    ### Returns:
+    * `tuple[float, float, float]`:
+        * Hue: degrees (0-360)
+        * Saturation: 0-1.0
+        * Value: 0-1.0
+    
+    ### Credits
+    * Adapted from [Wikipedia](https://en.wikipedia.org/wiki/HSL_and_HSV)
+    """
+    # Put RGB values into 0-1.0 range
+    r_, g_, b_ = r/255, g/255, b/255
+    
+    x_max = max(r_, g_, b_)
+    x_min = min(r_, g_, b_)
+    
+    # Find chroma
+    c = x_max - x_min
+    
+    # Value is x_max
+    v = x_max
+    
+    # Lightness (middle value) for HSL
+    # l = (x_max + x_min) / 2
+    
+    # Calculate hue
+    if c == 0:
+        h = 0
+    elif v == r_:
+        h = ((g_ - b_) / c)
+    elif v == g_:
+        h = (2 + (b_ - r_)/c)
+    else: #  v == b
+        h = (4 + (r_ - g_)/c)
+    h *= 60
+    
+    # Calculate saturation
+    s = c/v if v == 0 else 0
+    
+    return h, s, v
 
 class Color:
     """
@@ -161,7 +254,7 @@ class Color:
     def hsv(self) -> tuple[float, float, float]:
         """
         Represents the colour as a tuple of floats representing hue, saturation,
-        and value (luminosity)
+        and value
 
         NOTE: Under the hood, values are still stored as RGB - conversions are
         made as required.
@@ -169,7 +262,7 @@ class Color:
         ### Returns:
         * `tuple[float, float, float]`: color data, all between 0.0-1.0
         """
-        return utils.RGBToHSVColor(self.integer)
+        return rgbToHsv(self.red, self.green, self.blue)
     @hsv.setter
     def hsv(self, hsv: tuple[float, float, float]) -> None:
         """
@@ -187,9 +280,9 @@ class Color:
         # Get within range
         # h
         if h < 0:
-            h += floor(h)
+            h += floor(h / 360) * 360
         if h >= 1.0:
-            h -= floor(h)
+            h -= floor(h / 360) * 360
         # s
         if s < 0:
             s = 0.0
@@ -201,10 +294,10 @@ class Color:
         if v > 1.0:
             v = 1.0
         
-        r, g, b = utils.HSVtoRGB(h, s, v)
-        self.red = int(r * 255)
-        self.green = int(g * 255)
-        self.blue = int(b * 255)
+        r, g, b = hsvToRgb(h, s, v)
+        self.red = r
+        self.green = g
+        self.blue = b
     
     @property
     def red(self) -> int:
