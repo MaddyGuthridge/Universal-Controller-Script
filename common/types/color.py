@@ -3,10 +3,9 @@ common > util > color
 
 Contains definition for color type.
 """
+from __future__ import annotations
 
 import utils
-
-from __future__ import annotations
 
 class Color:
     """

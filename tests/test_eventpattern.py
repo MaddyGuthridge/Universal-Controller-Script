@@ -5,7 +5,7 @@ Tests for event pattern matching
 """
 
 from common.eventpattern import EventPattern
-from common.util import eventData
+from common.types import eventData
 
 def test_basic_pattern():
     p = EventPattern(10, 10, 10)
