@@ -165,12 +165,21 @@ class EventPattern(IEventPattern):
         """
         Matcher function for sysex events
         """
+        if event.sysex is None:
+            return False
         return all(map(self._matchByte, self.sysex, event.sysex))
 
     def _matchStandard(self, event: eventData) -> bool:
         """
         Matcher function for standard events
         """
+        if (
+            event.status is None
+        ):
+            return False
+        if TYPE_CHECKING:
+            assert event.data1 is not None
+            assert event.data2 is not None
         return all(self._matchByte(expected, actual) for expected, actual in
                    zip(
                        [self.status, self.data1, self.data2],

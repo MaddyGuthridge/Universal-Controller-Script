@@ -26,3 +26,12 @@ def test_ellipsis_pattern():
     p = EventPattern(..., 4, 5)
     assert p.matchEvent(eventData(12, 4, 5))
     assert not p.matchEvent(eventData(128, 4, 5))
+
+def test_sysex_pattern():
+    p = EventPattern([1, 3, 5, 7])
+    assert p.matchEvent(eventData([1, 3, 5, 7]))
+    assert not p.matchEvent(eventData(1, 3, 5))
+    
+    p2 = EventPattern(10, 10, 10)
+    assert not p2.matchEvent(eventData([1, 3, 5, 7]))
+    

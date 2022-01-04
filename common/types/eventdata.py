@@ -47,9 +47,9 @@ class eventData:
     ) -> None:
         self.handled = False
         self.timestamp = ReadOnly(0.0)
-        self.status = 0 if isinstance(status_sysex, list) else status_sysex
-        self.data1 = 0 if data1 is None else data1
-        self.data2 = 0 if data2 is None else data2
+        self.status = None if isinstance(status_sysex, list) else status_sysex
+        self.data1 = data1
+        self.data2 = data2
         self.port = ReadOnly(0)
         self.note = 0
         self.velocity = 0
@@ -58,7 +58,7 @@ class eventData:
         self.controlNum = ReadOnly(0)
         self.controlVal = ReadOnly(0)
         self.pitchBend = ReadOnly(0)
-        self.sysex = bytes(status_sysex) if isinstance(status_sysex, list) else bytes()
+        self.sysex = bytes(status_sysex) if isinstance(status_sysex, list) else None
         self.isIncrement = False
         self.res = 0.0
         self.inEv = 0
