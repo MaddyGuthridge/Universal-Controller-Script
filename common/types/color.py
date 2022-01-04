@@ -6,6 +6,7 @@ Contains definition for color type.
 from __future__ import annotations
 
 import utils
+from math import floor
 
 class Color:
     """
@@ -56,9 +57,7 @@ class Color:
         """
         c = Color()
         
-        c.red = (rgb & 0xFF0000) >> 4
-        c.green = (rgb & 0x00FF00) >> 2
-        c.blue = (rgb & 0x0000FF)
+        c.integer = rgb
         
         return c
     
@@ -138,8 +137,8 @@ class Color:
         * `int`: color rgb
         """
         return (
-            self.red << 4
-          + self.green << 2
+            (self.red << 16)
+          + (self.green << 8)
           + self.blue
         )
     @integer.setter
@@ -154,8 +153,8 @@ class Color:
         ### Args:
         * `i` (`int`): color integer
         """
-        self.red = (i & 0xFF0000) >> 4
-        self.green = (i & 0x00FF00) >> 2
+        self.red = (i & 0xFF0000) >> 16
+        self.green = (i & 0x00FF00) >> 8
         self.blue = (i & 0x0000FF)
     
     @property
@@ -183,7 +182,26 @@ class Color:
         * `hsv` (`tuple[float, float, float]`): hue, saturation and value 
           (luminosity). Each between 0.0-1.0
         """
-        r, g, b = utils.HSVtoRGB(*hsv)
+        h, s, v = hsv
+        
+        # Get within range
+        # h
+        if h < 0:
+            h += floor(h)
+        if h >= 1.0:
+            h -= floor(h)
+        # s
+        if s < 0:
+            s = 0.0
+        if s > 1.0:
+            s = 1.0
+        # v
+        if v < 0:
+            v = 0.0
+        if v > 1.0:
+            v = 1.0
+        
+        r, g, b = utils.HSVtoRGB(h, s, v)
         self.red = int(r * 255)
         self.green = int(g * 255)
         self.blue = int(b * 255)
