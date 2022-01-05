@@ -518,6 +518,60 @@ class Color:
             color.value
         )
         return Color.fade(color, gray, position)
+
+    @staticmethod
+    def distance(start: Color, end: Color) -> float:
+        """
+        Calculate the 'distance' between two colors, using the HSV color space
+        to ensure that the closest visibly similar color is chosen.
+
+        ### Args:
+        * `start` (`Color`): starting color
+        * `end` (`Color`): finishing color
+
+        ### Returns:
+        * `float`: distance
+        """
+        h1, s1, v1 = start.hsv
+        h2, s2, v2 = end.hsv
+        
+        # Ensure hues are within 180 deg
+        if h1 - h1 > 180:
+            h1 -= 360
+        elif h2 - h1 > 180:
+            h2 -= 360
+        
+        # Get deltas
+        delta_h = abs(h2 - h1) / 360
+        delta_s = abs(s2 - s1)
+        delta_v = abs(v2 - v1)
+        
+        # Don't bother doing square root since it's arbitrary anyway
+        return delta_h**2 + delta_s**2 + delta_v**2
+    
+    def closest(self, others: list[Color]) -> Color:
+        """
+        Given a set of colors, find the closest one and return it
+
+        ### Args:
+        * `others` (`list[Color]`): List of colors to pick from
+
+        ### Returns:
+        * `Color`: closest match
+        """
+        if len(others) == 0:
+            raise ValueError("Set cannot be empty")
+        
+        closest = others[0]
+        closest_dist = Color.distance(self, closest)
+        
+        for c in others[1:]:
+            dist = Color.distance(self, c)
+            if dist < closest_dist:
+                closest = c
+                closest_dist = dist
+        
+        return closest
     
     def __add__(self, other) -> Color:
         if isinstance(other, Color):
