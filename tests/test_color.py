@@ -48,5 +48,8 @@ def test_assign_out_of_bounds():
     c.red = -12
     assert c.red == 0
     
-    c.hue = 1.2
-    assert floatApproxEq(0.2, c.hue)
+    c.saturation = 1.2
+    assert floatApproxEq(1.0, c.saturation)
+    
+    c.hue = 370.0
+    assert floatApproxEq(10.0, c.hue)
