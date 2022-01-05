@@ -79,5 +79,30 @@ def test_fade():
     c3 = Color.fromRgb(255, 255, 0)
     
     assert Color.fade(c1, c2) == 0xFFFF00
-
     assert Color.fade(c1, c3) == 0xFF7F00
+
+def test_distance():
+    c1 = Color.fromHsv(180, 1, 1)
+    c2 = Color.fromHsv(160, 1, 1)
+    c3 = Color.fromHsv(140, 1, 1)
+    c4 = Color.fromHsv(180, 0.8, 1)
+    c5 = Color.fromHsv(180, 0.6, 1)
+    
+    dist = Color.distance
+    
+    assert dist(c1, c2) < dist(c1, c3)
+    assert dist(c1, c4) < dist(c1, c5)
+
+def test_closest():
+    c = Color.fromInteger(0xFF0000)
+    
+    options = [
+        Color.fromHsv(0, 1, 0.9),
+        Color.fromHsv(10, 1, 1),
+        Color.fromHsv(11, 1, 0.8),
+        Color.fromHsv(355, 1, 0.9),
+        Color.fromHsv(355, 0.99, 1),
+        Color.fromHsv(354, 1, 1)
+    ]
+    
+    assert c.closest(options) == options[-2]

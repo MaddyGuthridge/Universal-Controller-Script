@@ -485,8 +485,7 @@ class Color:
             end.value * position + start.value * rev_pos
         )
     
-    @staticmethod
-    def fadeBlack(color: Color, position:float=0.5) -> Color:
+    def fadeBlack(self: Color, position:float=0.5) -> Color:
         """
         Fade between this color and black
 
@@ -498,10 +497,9 @@ class Color:
         * `Color`: Faded color
         """
         black = Color()
-        return Color.fade(color, black, position)
+        return Color.fade(self, black, position)
     
-    @staticmethod
-    def fadeGray(color: Color, position:float=0.5) -> Color:
+    def fadeGray(self: Color, position:float=0.5) -> Color:
         """
         Fade between this color and gray
 
@@ -513,11 +511,11 @@ class Color:
         * `Color`: Faded color
         """
         gray = Color.fromHsv(
-            color.hue,
+            self.hue,
             0.0,
-            color.value
+            self.value
         )
-        return Color.fade(color, gray, position)
+        return Color.fade(self, gray, position)
 
     @staticmethod
     def distance(start: Color, end: Color) -> float:
