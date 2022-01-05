@@ -9,6 +9,7 @@
         "capsys",
         "dicttools",
         "pmeflags",
+        "RRGGBB",
         "sysex"
     ]
 }
