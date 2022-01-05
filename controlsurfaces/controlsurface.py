@@ -21,14 +21,16 @@ class ControlSurface:
     """
     
     @staticmethod
-    def getControlAssignmentPriorities() -> list[str]:
+    def getControlAssignmentPriorities() -> list[type]:
         """
         Returns a list of the control's assignment priorities
 
-        These determine what controls are assigned to what parameters
+        These determine what controls are assigned to what parameters. If an
+        assignment can't be made to this type, then it will be made to the next
+        available type in the list, and so on...
 
         ### Returns:
-        * `list[str]`: control assignment priorities
+        * `list[type]`: control assignment priorities
         """
         raise NotImplementedError("This function should be overridden in "
                                   "child classes")
