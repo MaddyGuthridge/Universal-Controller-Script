@@ -114,10 +114,9 @@ class Color:
     
     def __init__(self) -> None:
         """
-        Create a blank color object.
-
-        WARNING: This should only be called internally. Use any of the following
-        instead:
+        Create an empty color object: Color(0, 0, 0)
+        
+        To start from another value, use one of the creation functions:
         * `Color.fromInt()`
         * `Color.fromRgb()`
         * `Color.fromHsv()`
@@ -139,6 +138,9 @@ class Color:
         c = Color()
         c.integer = self.integer
         return c
+    
+    ############################################################################
+    # Creation functions
         
     @staticmethod
     def fromInteger(rgb: int) -> Color:
@@ -199,6 +201,9 @@ class Color:
         
         return c
     
+    ############################################################################
+    # Helper functions
+    
     @staticmethod
     def __valCheckRgb(val: int) -> int:
         """
@@ -219,6 +224,9 @@ class Color:
         if val < 0: return 0
         if val > 255: return 255
         else: return val
+    
+    ############################################################################
+    # Properties
     
     @property
     def integer(self) -> int:
@@ -441,3 +449,122 @@ class Color:
         """
         h, s, _ = self.hsv
         self.hsv = h, s, v
+
+    ############################################################################
+    # Operators
+    
+    def fade(self, other: Color, position:float=0.5) -> Color:
+        """
+        Fade between two colors, using the HSV color space to ensure that
+        intermediate colors remain vibrant
+
+        ### Args:
+        * `other` (`Color`): color to fade with
+        * `position` (`float`, optional): position of the fade to use (0-1.0).
+          Defaults to `0.5`.
+
+        ### Returns:
+        * `Color`: faded color
+        """
+        hue_self = self.hue
+        hue_other = other.hue
+        # Ensure hues are within 180 deg
+        if hue_self - hue_self > 180:
+            hue_self -= 360
+        elif hue_other - hue_self > 180:
+            hue_other -= 360
+        
+        # Reverse Position
+        rev_pos = 1 - position
+        
+        return Color.fromHsv(
+            hue_other * position + hue_self * rev_pos,
+            other.saturation * position + self.saturation * rev_pos,
+            other.value * position + self.value * rev_pos
+        )
+    
+    def fadeBlack(self, position:float=0.5) -> Color:
+        """
+        Fade between this color and black
+
+        ### Args:
+        * `position` (`float`, optional): position of the fade to use (0-1.0).
+          Defaults to `0.5`.
+
+        ### Returns:
+        * `Color`: Faded color
+        """
+        black = Color()
+        return self.fade(black, position)
+    
+    def fadeGray(self, position:float=0.5) -> Color:
+        """
+        Fade between this color and gray
+
+        ### Args:
+        * `position` (`float`, optional): position of the fade to use (0-1.0).
+          Defaults to `0.5`.
+
+        ### Returns:
+        * `Color`: Faded color
+        """
+        gray = Color.fromHsv(
+            self.hue,
+            0.0,
+            self.value
+        )
+        return self.fade(gray, position)
+    
+    def __add__(self, other) -> Color:
+        if isinstance(other, Color):
+            return Color.fromRgb(
+                self.red + other.red,
+                self.green + other.green,
+                self.blue + other.blue
+            )
+        elif isinstance(other, int):
+            return Color.fromRgb(
+                self.red + other,
+                self.green + other,
+                self.blue + other
+            )
+        else:
+            return NotImplemented
+    
+    def __radd__(self, other) -> Color:
+        # Addition is commutative
+        return self + other
+    
+    def __sub__(self, other) -> Color:
+        if isinstance(other, Color):
+            return Color.fromRgb(
+                self.red - other.red,
+                self.green - other.green,
+                self.blue - other.blue
+            )
+        elif isinstance(other, int):
+            return Color.fromRgb(
+                self.red - other,
+                self.green - other,
+                self.blue - other
+            )
+        else:
+            return NotImplemented
+
+    def __rsub__(self, other) -> Color:
+        if isinstance(other, int):
+            return Color.fromRgb(
+                other - self.red,
+                other - self.green,
+                other - self.blue
+            )
+        else:
+            return NotImplemented
+    
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Color):
+            return self.integer == other.integer
+        elif isinstance(other, int):
+            return self.integer == other
+        else:
+            return NotImplemented

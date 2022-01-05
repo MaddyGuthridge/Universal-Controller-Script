@@ -48,8 +48,36 @@ def test_assign_out_of_bounds():
     c.red = -12
     assert c.red == 0
     
+    c.green = 270
+    assert c.green == 255
+    
     c.saturation = 1.2
     assert floatApproxEq(1.0, c.saturation)
     
     c.hue = 370.0
     assert floatApproxEq(10.0, c.hue)
+
+def test_add():
+    c1 = Color.fromRgb(255, 0, 0)
+    c2 = Color.fromRgb(0, 255, 0)
+    
+    assert c1 + c2 == 0xFFFF00
+
+    assert c1 + 0xFF == 0xFFFFFF
+
+def test_sub():
+    c1 = Color.fromRgb(255, 0, 0)
+    c2 = Color.fromRgb(10, 15, 0)
+    
+    assert c1 - c2 == Color.fromRgb(245, 0, 0)
+
+    assert c1 - 0xFF == 0
+
+def test_fade():
+    c1 = Color.fromRgb(255, 0, 0)
+    c2 = Color.fromRgb(0, 255, 0)
+    c3 = Color.fromRgb(255, 255, 0)
+    
+    assert Color.fade(c1, c2) == 0xFFFF00
+
+    assert Color.fade(c1, c3) == 0xFF7F00
