@@ -13,6 +13,8 @@ from typing import Optional
 from common import IEventPattern, MatchedEvent
 from common.types import eventData, Color
 
+from .valuestrategies import IValueStrategy
+
 class ControlSurface:
     """
     Defines an abstract base class for a control surface.
@@ -35,7 +37,7 @@ class ControlSurface:
         raise NotImplementedError("This function should be overridden in "
                                   "child classes")
     
-    def __init__(self, event_pattern: IEventPattern, name: str) -> None:
+    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
         """
         Create a ControlSurface
 
@@ -46,8 +48,8 @@ class ControlSurface:
         self._pattern =  event_pattern
         self.__color = Color()
         self.__annotation = ""
-        self.__value = 0
-        self.__name = name
+        self.__value = None
+        self.__value_strategy = value_strategy
 
     def match(self, event: eventData) -> Optional[MatchedEvent]:
         """
@@ -61,74 +63,33 @@ class ControlSurface:
         * `Optional[MatchedEvent]`: match design
         """
         if self._pattern.matchEvent(event):
-            
+            self.__value = self.__value_strategy.getValueFromEvent(event)
             return MatchedEvent(self, self.value)
         else:
             return None
 
-    def setValueFromEvent(self, event: eventData) -> None:
-        """
-        Sets the value of an event as a float between (0.0 - 1.0) from an event
-
-        ### Args:
-        * `event` (`eventData`): event to set value from
-        """
-        raise NotImplementedError("This function should be overridden by a "
-                                  "child class")
-
     ############################################################################
     # Properties
-
-    @property
-    def name(self) -> str:
-        """
-        The name of the control. Read only.
-        """
-        return self.__name
 
     @property
     def color(self) -> Color:
         return self.__color
     @color.setter
     def color(self, c: Color):
+        prev = self.__color
         self.__color = c
+        if prev != c:
+            self.onColorChange()
 
     @property
     def annotation(self) -> str:
         return self.__annotation
     @annotation.setter
     def annotation(self, a: str):
+        prev = self.__annotation
         self.__annotation = a
-
-    def _getValue(self) -> float:
-        """
-        Getter for control surface's value. Can be overridden by an event to
-        manage the value differently if necessary
-
-        This should return a floating point value between 0-1.0
-        
-        NOTE: This function shouldn't be called manually, but should be accessed
-        through the property
-
-        ### Returns:
-        * `float`: Value
-        """
-        return self.__value
-    
-    def _setValue(self, newValue: float) -> None:
-        """
-        Setter for control surface's value. Can be overridden by an event to
-        manage the value differently if necessary
-
-        This should accept a floating point value between 0-1.0
-        
-        NOTE: This function shouldn't be called manually, but should be accessed
-        through the property
-
-        ### Args:
-        * `newValue` (`float`): Value
-        """
-        self.__value = newValue
+        if prev != a:
+            self.onAnnotationChange()
     
     @property
     def value(self) -> float:
@@ -140,14 +101,14 @@ class ControlSurface:
         represented in other ways inside the class. The way it is gotten and set
         is determined by the functions _getValue() and _setValue() respectively.
         """
-        return self._getValue()
+        return self.__value_strategy.getFloatFromValue(self.__value)
     @value.setter
     def value(self, newValue: float) -> None:
         # Ensure value is within bounds
         if not (0 < newValue < 1):
-            raise ValueError(f"Value for control {self.name} must be between "
+            raise ValueError(f"Value for control must be between "
                              f"0 and 1")
-        self._setValue(newValue)
+        self.__value = self.__value_strategy.getValueFromFloat(newValue)
 
     ############################################################################
     # Events
