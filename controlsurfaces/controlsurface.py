@@ -7,13 +7,17 @@ all control surfaces
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au]
 """
+from __future__ import annotations
 
 from typing import Optional
 
-from common import IEventPattern, MatchedEvent
+from common import IEventPattern
 from common.types import eventData, Color
 
 from .valuestrategies import IValueStrategy
+
+from .controlshadow import ControlShadow
+from .controlmapping import ControlMapping
 
 class ControlSurface:
     """
@@ -50,21 +54,24 @@ class ControlSurface:
         self.__annotation = ""
         self.__value = None
         self.__value_strategy = value_strategy
+        
+    def getMapping(self) -> ControlMapping:
+        return ControlMapping(self)
 
-    def match(self, event: eventData) -> Optional[MatchedEvent]:
+    def match(self, event: eventData) -> Optional[ControlMapping]:
         """
-        Returns a MatchedEvent if the given event matches this control surface,
-        otherwise returns None
+        Returns a control mapping of this control if the given event matches this 
+        control surface, otherwise returns None
 
         ### Args:
         * `event` (`eventData`): event to potentially match
 
         ### Returns:
-        * `Optional[MatchedEvent]`: match design
+        * `Optional[ControlMapping]`: match design
         """
         if self._pattern.matchEvent(event):
             self.__value = self.__value_strategy.getValueFromEvent(event)
-            return MatchedEvent(self, self.value)
+            return self.getMapping()
         else:
             return None
 

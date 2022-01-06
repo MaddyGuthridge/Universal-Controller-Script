@@ -16,5 +16,3 @@ from . import util
 from .types import eventData, Color
 
 from .eventpattern import EventPattern, IEventPattern
-
-from .matchedevent import MatchedEvent
