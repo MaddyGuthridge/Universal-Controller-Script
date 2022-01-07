@@ -8,15 +8,17 @@ from controlsurfaces import ControlShadow, ControlMapping
 class DeviceShadow:
     
     def __init__(self, device: Device) -> None:
-        self.__free_controls = device.getControlShadows()
-        self.__assigned_controls = {}
+        self.__device = device
+        self.__all_controls = device.getControlShadows()
+        self.__free_controls = self.__all_controls.copy()
+        self.__assigned_controls: dict[ControlMapping, tuple] = {}
     
-    def getControlMatches(self, control: type) -> list[ControlShadow]:
+    def getControlMatches(self, control: type, target_num:int=-1) -> list[ControlShadow]:
         """
         Returns a list of matching controls
 
-        A matching control is defined as inheriting from the given type, and
-        which isn't already assigned
+        A matching control is defined as inheriting from the given type, is a
+        member of the same group, and which isn't already assigned.
 
         ### Args:
         * `control` (`type`): Type of control to match
@@ -24,11 +26,11 @@ class DeviceShadow:
         ### Returns:
         * `list[ControlShadow]`: List of matches
         """
-        matches = []
+        num_group_matches = dict.fromkeys(self.__device.getGroups(), 0)
         for c in self.__free_controls:
             if isinstance(c, control):
-                matches.append(c)
-        return matches
+                num_group_matches[c.group] += 1
+        
     
     def getNumControlMatches(self, control: type) -> int:
         """
@@ -91,3 +93,10 @@ class DeviceShadow:
             return
         # Call the bound function with any extra required args
         fn(control, *args)
+
+    def apply(self) -> None:
+        """
+        Apply the configuration of the device shadow to the control it represents
+        """
+        for c in self.__all_controls:
+            c.apply()

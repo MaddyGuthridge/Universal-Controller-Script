@@ -1,7 +1,7 @@
 """
-events
+controlsurfaces
 
-Contains definitions for basic event types, which are extended by
+Contains definitions for basic control surface types, which can be extended by
 controllers if necessary.
 """
 

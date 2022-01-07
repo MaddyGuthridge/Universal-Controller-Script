@@ -83,6 +83,13 @@ class ControlShadow:
     @annotation.setter
     def annotation(self, newAnnotation: str) -> None:
         self.__annotation = newAnnotation
+    
+    @property
+    def group(self) -> str:
+        """
+        The group that the control is in
+        """
+        return self.__control.group
 
     def apply(self) -> None:
         """
