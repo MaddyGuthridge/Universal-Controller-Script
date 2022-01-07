@@ -7,8 +7,16 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au]
 """
 
-from typing import Any
+from typing import Any, Protocol, TypeVar
 from copy import deepcopy
+
+class SupportsComparison(Protocol):
+    def __gt__(self, __other: Any) -> bool: ...
+    def __ge__(self, __other: Any) -> bool: ...
+    def __lt__(self, __other: Any) -> bool: ...
+    def __le__(self, __other: Any) -> bool: ...
+K = TypeVar("K")
+V = TypeVar("V", bound=SupportsComparison)
 
 def recursiveMergeDictionaries(ref: dict, override: dict, path:str='') -> dict:
     """
@@ -128,3 +136,15 @@ def expandDictShorthand(d: dict[str, Any], path:str='') -> dict:
         dictKeyRecursiveInsert(new, split_path, value, full_key)
         
     return new
+
+def lowestKeyGrEqTarget(d: dict[K, V], target: V) -> K:
+    highest = None
+    highest_val = None
+    
+    for k, v in d.items():
+        if v > target and (highest_val is None or v < highest_val):
+            highest = k
+            highest_val = v
+    if highest == None:
+        raise ValueError("No values are above the target value")
+    return highest
