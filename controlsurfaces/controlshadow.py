@@ -1,4 +1,5 @@
 
+from common.types import Color
 from .controlmapping import ControlMapping
 from . import ControlSurface
 
@@ -21,6 +22,8 @@ class ControlShadow:
         """
         self.__control = control
         self.__value = control.value
+        self.__color = control.color.copy()
+        self.__annotation = control.annotation
 
     def getControl(self):
         """
@@ -58,3 +61,33 @@ class ControlShadow:
         if not (0 <= newVal <= 1):
             raise ValueError("Value must be within range 0-1")
         self.__value = newVal
+    
+    @property
+    def color(self) -> Color:
+        """
+        Represents the color that will be applied to the control after the event
+        has been processed.
+        """
+        return self.__color
+    @color.setter
+    def color(self, newColor: Color) -> None:
+        self.__color = newColor
+
+    @property
+    def annotation(self) -> str:
+        """
+        Represents the annotation that will be applied to the control after the
+        event has been processed.
+        """
+        return self.__annotation
+    @annotation.setter
+    def annotation(self, newAnnotation: str) -> None:
+        self.__annotation = newAnnotation
+
+    def apply(self) -> None:
+        """
+        Apply the configuration of the control shadow to the control it represents
+        """
+        self.__control.color = self.color
+        self.__control.annotation = self.annotation
+        self.__control.value = self.value

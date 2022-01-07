@@ -41,21 +41,44 @@ class ControlSurface:
         raise NotImplementedError("This function should be overridden in "
                                   "child classes")
     
-    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
+    def __init__(
+        self,
+        event_pattern: IEventPattern,
+        value_strategy: IValueStrategy,
+        group: str,
+        coordinate:tuple[int, int]=(0, 0)
+    ) -> None:
         """
         Create a ControlSurface
 
         ### Args:
         * `event_pattern` (`IEventPattern`): pattern to use when recognising the
-        event
+          event
+        * `value_strategy` (`IValueStrategy`): strategy for getting values from
+          events
+        * `group` (`str`): group that this control belongs to. Controls in
+          different groups are never assigned together.
+        * `coordinate` (`tuple[int, int]`, optional): coordinate of controls.
+          Used if controls form a 2D grid (eg, drum pads). Defaults to (0, 0).
         """
         self._pattern =  event_pattern
         self.__color = Color()
         self.__annotation = ""
         self.__value = None
         self.__value_strategy = value_strategy
+        self.__group = group
+        self.__coord = coordinate
         
     def getMapping(self) -> ControlMapping:
+        """
+        Returns a mapping to this control
+
+        Mappings are used to refer to a control without being able to easily
+        modify its value.
+
+        ### Returns:
+        * `ControlMapping`: A mapping to this control
+        """
         return ControlMapping(self)
 
     def match(self, event: eventData) -> Optional[ControlMapping]:
@@ -67,7 +90,7 @@ class ControlSurface:
         * `event` (`eventData`): event to potentially match
 
         ### Returns:
-        * `Optional[ControlMapping]`: match design
+        * `Optional[ControlMapping]`: control mapping, if the event maps
         """
         if self._pattern.matchEvent(event):
             self.__value = self.__value_strategy.getValueFromEvent(event)
@@ -77,9 +100,29 @@ class ControlSurface:
 
     ############################################################################
     # Properties
+    
+    @property
+    def coordinate(self) -> tuple[int, int]:
+        """
+        Coordinate of the control. Read only.
+        """
+        return self.__coord
+    
+    @property
+    def group(self) -> str:
+        """
+        The group that this control is a member of.
+        """
+        return self.__group
 
     @property
     def color(self) -> Color:
+        """
+        Represents the color of the control
+        
+        On compatible controllers, this can be displayed on the control using
+        LED lighting.
+        """
         return self.__color
     @color.setter
     def color(self, c: Color):
@@ -90,6 +133,12 @@ class ControlSurface:
 
     @property
     def annotation(self) -> str:
+        """
+        Represents the annotation of the control
+
+        On compatible controllers, this can be displayed as text near the
+        control.
+        """
         return self.__annotation
     @annotation.setter
     def annotation(self, a: str):
@@ -125,7 +174,7 @@ class ControlSurface:
         Called when the color of the control changes
 
         This can be overridden to send a MIDI message to the controller if
-        required
+        required, so that the color can be shown on compatible controls.
         """
     
     def onAnnotationChange(self) -> None:
@@ -133,7 +182,15 @@ class ControlSurface:
         Called when the annotation of the control changes
 
         This can be overridden to send a MIDI message to the controller if
-        required
+        required, so that the annotation can be shown on compatible controls.
+        """
+    
+    def onValueChange(self) -> None:
+        """
+        Called when the value of the control changes
+
+        This can be overridden to send a MIDI message to the controller if
+        required, so that the value can be shown on compatible controls.
         """
 
     def tick(self) -> None:
