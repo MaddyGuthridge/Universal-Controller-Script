@@ -1,5 +1,7 @@
 
-from typing import Any, Callable, Optional, Protocol
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol
 
 from common.util.dicttools import lowestValueGrEqTarget, greatestKey
 from controlsurfaces import ControlSurface
@@ -36,7 +38,7 @@ class DeviceShadow:
     def _getMatches(
         self, 
         expr: Callable[[ControlSurface], bool], 
-        target_num:int=...
+        target_num:int=None
     ) -> list[ControlShadow]:
         """
         Returns a list of control matches for a give condition lambda
@@ -63,14 +65,14 @@ class DeviceShadow:
                 else:
                     group_matches[c.group] = [c]
         
-        if target_num is Ellipsis:
+        if target_num is None:
             highest = greatestKey(num_group_matches)
         else:
             highest = lowestValueGrEqTarget(num_group_matches, target_num)
         
         return group_matches[highest]
     
-    def getControlMatches(self, control: type[ControlSurface], target_num:int=...) -> list[ControlShadow]:
+    def getControlMatches(self, control: type[ControlSurface], target_num:int=None) -> list[ControlShadow]:
         """
         Returns a list of matching controls
 
@@ -107,7 +109,7 @@ class DeviceShadow:
         """
         return len(self.getControlMatches(control))
         
-    def getSubsControlMatches(self, control: type[ControlSurface], target_num:int=...) -> list[ControlShadow]:
+    def getSubsControlMatches(self, control: type[ControlSurface], target_num:int=None) -> list[ControlShadow]:
         """
         Returns a list of matching controls
 
@@ -149,7 +151,7 @@ class DeviceShadow:
         self,
         control: ControlShadow,
         bind_to: EventCallback,
-        args:tuple=...
+        args:tuple|ellipsis=...
     ) -> None:
         """
         Binds a callback function to a control, so the function will be called
@@ -168,17 +170,25 @@ class DeviceShadow:
         if control not in self.__free_controls:
             raise ValueError("Control must be free to bind to")
         
+        if args is Ellipsis:
+            args_: tuple = tuple()
+        else:
+            if TYPE_CHECKING:
+                assert not isinstance(args, ellipsis)
+            args_ = args
+        
+        
         # Remove from free controls
         self.__free_controls.remove(control)
         
         # Bind to callable
-        self.__assigned_controls[control.getMapping()] = (control, bind_to, args)
+        self.__assigned_controls[control.getMapping()] = (control, bind_to, args_)
 
     def bindControls(
         self,
         controls: list[ControlShadow],
         bind_to: EventCallback,
-        args_list: Optional[list[tuple]]=...
+        args_list: Optional[list[tuple]]|ellipsis=...
     ) -> None:
         """
         Binds a single function all controls in a list.
@@ -210,6 +220,8 @@ class DeviceShadow:
             args_list = [tuple() for _ in range(len(controls))]
         # Otherwise, check length
         else:
+            if TYPE_CHECKING:
+                assert isinstance(args_list, list)
             if not len(args_list) == len(controls):
                 raise ValueError("Args list must be of the same length as "
                                  "controls list")

@@ -124,7 +124,7 @@ def expandDictShorthand(d: dict[str, Any], path:str='') -> dict:
     ### Returns:
     * `dict`: new dictionary that is expanded
     """
-    new = {}
+    new: dict[str, Any] = {}
     
     for key, value in d.items():
         full_key = path + '.' + key
@@ -145,7 +145,7 @@ def greatestKey(d: dict[K, V]) -> K:
         if highest_val is None or v < highest_val:
             highest = k
             highest_val = v
-    if highest == None:
+    if highest is None:
         raise ValueError("Dictionary cannot be empty")
     return highest
 
@@ -157,6 +157,6 @@ def lowestValueGrEqTarget(d: dict[K, V], target:V) -> K:
         if v > target and (highest_val is None or v < highest_val):
             highest = k
             highest_val = v
-    if highest == None:
+    if highest is None:
         raise ValueError("No values are above the target value")
     return highest

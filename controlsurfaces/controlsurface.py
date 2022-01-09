@@ -27,7 +27,7 @@ class ControlSurface:
     """
     
     @staticmethod
-    def getControlAssignmentPriorities() -> tuple[type[ControlSurface]]:
+    def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
         """
         Returns a list of the control's assignment priorities
 

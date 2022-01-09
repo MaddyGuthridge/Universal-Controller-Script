@@ -4,7 +4,7 @@ from common import IEventPattern
 from common.types import eventData
 from controlsurfaces import ControlShadow
 
-from controlsurfaces import ControlSurface
+from controlsurfaces import ControlSurface, ControlMapping
 from devices import IControlMatcher
 
 class Device:
@@ -23,16 +23,16 @@ class Device:
         """
         raise NotImplementedError("This method must be overridden by child classes")
 
-    def matchEvent(self, event: eventData) -> Optional[ControlShadow]:
+    def matchEvent(self, event: eventData) -> Optional[ControlMapping]:
         """
         Match an event from the device, so that the script can operator on it
 
         ### Returns:
         * `MatchedEvent`: event data
         """
-        self.__matcher.matchEvent(event)
+        return self.__matcher.matchEvent(event)
     
-    def getControlShadows(self, group:str=...) -> list[ControlShadow]:
+    def getControlShadows(self, group:str=None) -> list[ControlShadow]:
         """
         Returns a list of new control shadows representing all the controls
         available on the device.

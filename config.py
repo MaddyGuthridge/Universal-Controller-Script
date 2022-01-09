@@ -10,8 +10,9 @@ Authors:
 * You
 """
 
+from typing import Any
 from logger import verbosity
 
-CONFIG = {
+CONFIG: dict[str, Any] = {
     
 }

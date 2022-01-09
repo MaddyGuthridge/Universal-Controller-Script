@@ -13,7 +13,7 @@ class IControlMatcher:
         raise NotImplementedError("This function should be implemented by "
                                   "child classes")
     
-    def getControls(self, group:str=...) -> list[ControlSurface]:
+    def getControls(self, group:str=None) -> list[ControlSurface]:
         raise NotImplementedError("This function should be implemented by "
                                   "child classes")
 
@@ -36,8 +36,8 @@ class BasicControlMatcher(IControlMatcher):
     def getGroups(self) -> set[str]:
         return self.__groups
     
-    def getControls(self, group: str = ...) -> list[ControlSurface]:
-        if group is Ellipsis:
+    def getControls(self, group: str = None) -> list[ControlSurface]:
+        if group is None:
             return self.__controls
         else:
             ret = []

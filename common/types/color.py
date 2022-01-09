@@ -32,20 +32,20 @@ def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
     x = c * (1 - abs(h_ % 2 - 1))
     
     if h_ < 1:
-        r, g, b = c, x, 0
+        r, g, b = int(c), int(x), 0
     elif h_ < 2:
-        r, g, b = x, c, 0
+        r, g, b = int(x), int(c), 0
     elif h_ < 3:
-        r, g, b = 0, c, x
+        r, g, b = 0, int(c), int(x)
     elif h_ < 4:
-        r, g, b = 0, x, c
+        r, g, b = 0, int(x), int(c)
     elif h_ < 5:
-        r, g, b = x, 0, c
+        r, g, b = int(x), 0, int(c)
     else: #h_ < 6
-        r, g, b = c, 0, x
+        r, g, b = int(c), 0, int(x)
     
     # Finally, get a median value to add to each component
-    m = v - c
+    m = int(v - c)
     r, g, b = r+m, g+m, b+m
     
     # And return them in a reasonable format
@@ -87,7 +87,7 @@ def rgbToHsv(r: int, g: int, b: int) -> tuple[float, float, float]:
     
     # Calculate hue
     if c == 0:
-        h = 0
+        h = 0.0
     elif v == r_:
         h = ((g_ - b_) / c)
     elif v == g_:

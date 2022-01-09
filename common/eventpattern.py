@@ -7,16 +7,16 @@ matchers can be derived.
 """
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Callable, Optional, TypeVar, Union, Type
 # from types import Type
 
 if TYPE_CHECKING:
     from . import eventData
 
-EllipsisType = type(Ellipsis)
+EllipsisType: Type = type(Ellipsis)
 
 # Variable type for byte match expression
-ByteMatch = Union[int, range, tuple[int, ...], EllipsisType]
+ByteMatch = Union[int, range, tuple[int, ...]]
 
 class IEventPattern:
     """
@@ -153,7 +153,8 @@ class EventPattern(IEventPattern):
         """
         Matcher function for a single byte
         """
-        matches = {
+        # This is type-safe, I promise
+        matches: dict[type, Callable[[Any, int], bool]] = {
             int: EventPattern._matchByteConst,
             range: EventPattern._matchByteRange,
             tuple: EventPattern._matchByteTuple,

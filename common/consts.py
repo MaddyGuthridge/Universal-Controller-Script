@@ -22,7 +22,7 @@ WEBSITE = "https://github.com/MiguelGuthridge/Universal-Controller-Script"
 DISCORD = "https://discord.gg/6vpfJUF"
 
 # Contributor information
-AUTHORS = {
+AUTHORS: dict[str, list[str]] = {
     "Designers": [
         "Miguel Guthridge"
     ],
