@@ -137,7 +137,19 @@ def expandDictShorthand(d: dict[str, Any], path:str='') -> dict:
         
     return new
 
-def lowestKeyGrEqTarget(d: dict[K, V], target: V) -> K:
+def greatestKey(d: dict[K, V]) -> K:
+    highest = None
+    highest_val = None
+    
+    for k, v in d.items():
+        if highest_val is None or v < highest_val:
+            highest = k
+            highest_val = v
+    if highest == None:
+        raise ValueError("Dictionary cannot be empty")
+    return highest
+
+def lowestValueGrEqTarget(d: dict[K, V], target:V) -> K:
     highest = None
     highest_val = None
     
