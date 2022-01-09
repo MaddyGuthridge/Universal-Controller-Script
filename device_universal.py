@@ -21,10 +21,9 @@ from common.util.consolehelpers import *
 @catchContextResetException
 def onInit() -> None:
     getContext().initialise()
-    
+
 @catchContextResetException
 def onMidiIn(event) -> None:
-    # TODO: Parse event and stuff
     getContext().processEvent(event)
 
 @catchContextResetException
