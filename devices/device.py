@@ -1,16 +1,22 @@
 
+from __future__ import annotations
+
 from typing import Optional
 from common import IEventPattern
 from common.types import eventData
 from controlsurfaces import ControlShadow
 
-from controlsurfaces import ControlSurface, ControlMapping
+from controlsurfaces import ControlMapping
 from devices import IControlMatcher
 
 class Device:
     
     def __init__(self, control_matcher: IControlMatcher) -> None:
         self.__matcher = control_matcher
+    
+    @classmethod
+    def create(cls, event: eventData) -> Device:
+        raise NotImplementedError("This method must be overridden by child classes")
     
     @staticmethod
     def getUniversalEnquiryResponsePattern() -> IEventPattern:
