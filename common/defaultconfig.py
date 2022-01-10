@@ -22,5 +22,14 @@ CONFIG = {
         # Maximum verbosity for which watched categories of logged messages
         # will be printed 
         "max_watched_verbosity": verbosity.INFO,
+    },
+    # Device settings
+    "device": {
+        # Associations between device name (as shown in FL Studio) and device id
+        # to register (listed in class under id function)
+        "name_associations": [
+            # For example:
+            # ("my device name", "Manufacturer.Model.Mark.Variant")
+        ]
     }
 }

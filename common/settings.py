@@ -42,8 +42,6 @@ class Settings:
         """
         Recursive function for getting settings value
 
-        [extended_summary]
-
         ### Args:
         * `keys` (`list[str]`): list of keys
         * `settings` (`dict`): settings dictionary to search
