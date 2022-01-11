@@ -1,4 +1,12 @@
+"""
+controlsurfaces > controlshadow
 
+Represents a "shadow" control surface, which can be modified as necessary
+without affecting the original control, unless it is specifically applied
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 from common.types import Color
 from .controlmapping import ControlMapping
 from . import ControlSurface

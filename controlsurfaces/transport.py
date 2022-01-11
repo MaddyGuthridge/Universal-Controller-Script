@@ -1,4 +1,11 @@
+"""
+controlsurfaces > transport
 
+Defines transport control surfaces
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 from .button import Button
 
 class TransportButton(Button):

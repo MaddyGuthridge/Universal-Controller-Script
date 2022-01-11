@@ -1,3 +1,11 @@
+"""
+controlsurfaces > controlmapping
+
+Defines a mapping to a control surface.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from __future__ import annotations
 

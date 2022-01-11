@@ -5,7 +5,7 @@ Contains the ControlSurface class, which defines the abstract base type for
 all control surfaces
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 from __future__ import annotations
 
