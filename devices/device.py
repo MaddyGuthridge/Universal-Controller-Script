@@ -1,4 +1,12 @@
+"""
+devices > device
 
+Contains the Device class, used to represent a MIDI controller device within
+the script.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 from __future__ import annotations
 
 from typing import Optional
@@ -10,8 +18,23 @@ from controlsurfaces import ControlMapping
 from devices import IControlMatcher
 
 class Device:
-    
+    """
+    Base class for device types.
+
+    All device objects should inherit from this definition and implement its
+    functions.
+    """
     def __init__(self, control_matcher: IControlMatcher) -> None:
+        """
+        Create a device object.
+
+        This __init__ call should be conducted by a subclass, providing the
+        control matcher to the parent class so that events can be matched
+        correctly.
+
+        ### Args:
+        * `control_matcher` (`IControlMatcher`): Control matching strategy.
+        """
         self.__matcher = control_matcher
     
     @classmethod
@@ -78,4 +101,13 @@ class Device:
         return [ControlShadow(c) for c in self.__matcher.getControls(group)]
     
     def getGroups(self) -> set[str]:
+        """
+        Returns a set of groups that controls are placed into.
+
+        Refer to the documentation for the group property in the ControlSurface
+        type.
+
+        ### Returns:
+        * `set[str]`: Set of groups
+        """
         return self.__matcher.getGroups()

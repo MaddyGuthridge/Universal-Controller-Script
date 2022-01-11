@@ -1,4 +1,12 @@
+"""
+devices > deviceshadow
 
+Contains the DeviceShadow class, representing a shadow of the device which can
+be manipulated without modifying the original device.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol
@@ -25,8 +33,18 @@ class EventCallback(Protocol):
         ...
 
 class DeviceShadow:
-    
+    """
+    Represents the "shadow" of a device, allowing plugins to bind parameters to
+    the device's control surfaces independently of other plugins, and without
+    affecting the actual device unless the script chooses to apply this shadow.
+    """
     def __init__(self, device: Device) -> None:
+        """
+        Create a device shadow
+
+        ### Args:
+        * `device` (`Device`): device to shadow
+        """
         self.__device = device
         self.__all_controls = device.getControlShadows()
         self.__free_controls = self.__all_controls.copy()
