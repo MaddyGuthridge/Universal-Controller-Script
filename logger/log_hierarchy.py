@@ -5,7 +5,7 @@ Contains a formal definition of the logging hierarchy, used to verify
 logging into particular categories
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 HIERARCHY = {

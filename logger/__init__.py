@@ -5,7 +5,7 @@ random debugging info. It allows for the user to specify what types of things
 should be logged and when.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 from .logger import log

@@ -5,8 +5,19 @@ Contains the definitions for all verbosity levels used by the script.
 When logging something, these constants should be used.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
+
+__all__ = [
+    'Verbosity',
+    'MOST_VERBOSE',
+    'NOTE',
+    'INFO',
+    "WARNING",
+    'ERROR',
+    'CRITICAL',
+    'DEFAULT'
+]
 
 from typing import NewType
 

@@ -5,7 +5,7 @@ Contains the definition of the log class, which maintains the script's log,
 and allows for log information to be searched and recalled
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 __all__ = [
@@ -16,7 +16,12 @@ from .logitem import LogItem
 from .verbosity import Verbosity, DEFAULT, MOST_VERBOSE
 
 class Log:
-    
+    """
+    Represents the log of the script.
+
+    This allows information such as errors or warnings to be logged and searched
+    through as required.
+    """
     def __init__(self) -> None:
         self._history: list[LogItem] = []
     
