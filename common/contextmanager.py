@@ -5,7 +5,7 @@ Contains the DeviceContextManager class, used to manage the state of the script,
 allowing for soft resets of the script when required.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 __all__ = [
@@ -135,6 +135,9 @@ def unsafeResetContext(reason:str="none") -> None:
     resetContext(reason)
 
 def _initContext() -> None:
+    """
+    Initialises the context manager for the script
+    """
     global _context
     _context = DeviceContextManager()
 

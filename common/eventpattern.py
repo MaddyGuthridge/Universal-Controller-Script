@@ -4,10 +4,21 @@ common > eventpattern
 Contains code for pattern matching with MIDI events, including EventPattern,
 a standard way to match events, and IEventPattern, from which custom pattern
 matchers can be derived.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any, Callable, Optional, TypeVar, Union, Type
+from typing import (TYPE_CHECKING,
+    Any,
+    Callable,
+    Optional,
+    TypeVar,
+    Union,
+    Type,
+    overload
+)
 # from types import Type
 
 if TYPE_CHECKING:
@@ -95,7 +106,8 @@ class EventPattern(IEventPattern):
         # Ensure that we are given valid data
         
         # Lambda to check if values are none
-        isNone = lambda x: x is None
+        # isNone = lambda x: x is None
+        
         # Lambda to check if values are of the required type
         typeCheck = lambda x: isinstance(x, (int, range, type(...)))\
             or (isinstance(x, tuple) and all(isinstance(y, (int, range)) for y in x))
@@ -127,6 +139,15 @@ class EventPattern(IEventPattern):
             self.data2 = data2
 
     def matchEvent(self, event: eventData) -> bool:
+        """
+        Returns whether an event matches this pattern.
+
+        ### Args:
+        * `event` (`eventData`): Event to attempt to match
+
+        ### Returns:
+        * `bool`: whether there is a match
+        """
         if self.sysex_event:
             return self._matchSysex(event)
         else:

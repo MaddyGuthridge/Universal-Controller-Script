@@ -4,7 +4,7 @@ common > consts
 Constants used within the script
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 # Version info
@@ -14,7 +14,10 @@ VERSION_MAJOR = VERSION[0]
 VERSION_MINOR = VERSION[1]
 VERSION_REVISION = VERSION[2]
 
-def getVersionString():
+def getVersionString() -> str:
+    """
+    Returns the version string of the script
+    """
     return ".".join(map(str, VERSION))
 
 # Website
@@ -28,6 +31,8 @@ AUTHORS: dict[str, list[str]] = {
     ],
     "Primary Developers": [
         "Miguel Guthridge"
+    ],
+    "Minor Contributors": [
     ],
     "Plugin Contributors": [
     ],

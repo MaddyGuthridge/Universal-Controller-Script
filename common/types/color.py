@@ -1,11 +1,18 @@
 """
-common > util > color
+common > types > color
 
 Contains definition for color type.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 from __future__ import annotations
 
 from math import floor
+
+__all__ = [
+    'Color'
+]
 
 def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
     """

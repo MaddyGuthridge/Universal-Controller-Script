@@ -1,3 +1,12 @@
+"""
+common > scriptstate
+
+Contains the IScriptState interface, which contains a state used by the script's
+context manager.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from common.types import eventData
 

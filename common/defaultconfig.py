@@ -5,7 +5,7 @@ Stores the default configuration for the script. The user configuration will
 override any existing settings here.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 from logger import verbosity

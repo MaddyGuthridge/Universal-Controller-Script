@@ -1,8 +1,11 @@
 """
-common > util > eventdata
+common > types > eventdata
 
-Contains the definition for the FL Studio MIDI Event Data type, to use with type
+Contains a shadow of the FL Studio MIDI Event Data type, to use with type
 annotations so that we can get those sweet, sweet autocompletions.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 from __future__ import annotations

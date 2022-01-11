@@ -2,10 +2,11 @@
 common > util > consolehelpers
 
 Contains helper functions for interacting with the script through the
-console, which may assist in debugging.
+console, which may assist in debugging, or using the script with a controller
+that doesn't have as many built-in commands.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 __all__ = [

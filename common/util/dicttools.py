@@ -4,17 +4,27 @@ common > util > dicttools
 Contains utility functions used within the rest of the code
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 from typing import Any, Protocol, TypeVar
 from copy import deepcopy
 
 class SupportsComparison(Protocol):
+    """
+    Defines a protocol for objects that can be used with comparison operators:
+    * equals ==
+    * greater than >
+    * less than <
+    * greater than or equals >=
+    * less than or equals <=
+    """
+    def __eq__(self, __other: Any) -> bool: ...
     def __gt__(self, __other: Any) -> bool: ...
     def __ge__(self, __other: Any) -> bool: ...
     def __lt__(self, __other: Any) -> bool: ...
     def __le__(self, __other: Any) -> bool: ...
+
 K = TypeVar("K")
 V = TypeVar("V", bound=SupportsComparison)
 
@@ -108,7 +118,7 @@ def expandDictShorthand(d: dict[str, Any], path:str='') -> dict:
     would expand to
     ```py
     {
-        "foo": {bootstrap
+        "foo": {
             "bar": 1,
             "baz"2
         },
@@ -138,6 +148,19 @@ def expandDictShorthand(d: dict[str, Any], path:str='') -> dict:
     return new
 
 def greatestKey(d: dict[K, V]) -> K:
+    """
+    Returns the key which maps to the greatest value
+
+    ### Args:
+    * `d` (`dict[K, V]`): Dictionary mapping between key and value, where
+      values can be compared using greater than operator
+
+    ### Raises:
+    * `ValueError`: Dictionary is empty
+
+    ### Returns:
+    * `K`: Key that maps to the greatest value
+    """
     highest = None
     highest_val = None
     
@@ -150,11 +173,27 @@ def greatestKey(d: dict[K, V]) -> K:
     return highest
 
 def lowestValueGrEqTarget(d: dict[K, V], target:V) -> K:
+    """
+    Returns the key which maps to the lowest value that is still above the
+    threshold value.
+
+    ### Args:
+    * `d` (`dict[K, V]`): Dictionary mapping between key and value, where
+      values can be compared using the greater than or equal to, and the less
+      than operator
+    * `target` (`V`): Minimum value
+
+    ### Raises:
+    * `ValueError`: Dictionary is empty
+
+    ### Returns:
+    * `K`: Key that maps to the greatest value
+    """
     highest = None
     highest_val = None
     
     for k, v in d.items():
-        if v > target and (highest_val is None or v < highest_val):
+        if v >= target and (highest_val is None or v < highest_val):
             highest = k
             highest_val = v
     if highest is None:

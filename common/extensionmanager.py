@@ -1,3 +1,12 @@
+"""
+common > extensionmanager
+
+Contains the static class for registering extensions to the script,
+including device and plugin definitions.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, overload
@@ -48,30 +57,19 @@ class ExtensionManager:
     @overload
     @classmethod
     def getDevice(cls, arg: eventData) -> Device:
-        """
-        Returns a new instance of a device, given a universal device enquiry
-        response.
-
-        ### Args:
-        * `arg` (`str`): event to match with devices
-
-        ### Raises:
-        * `ValueError`: Device not recognised
-
-        ### Returns:
-        * `Device`: device object instance
-        """
+        ...
     @overload
     @classmethod
     def getDevice(cls, arg: str) -> Device:
+        ...
+    @classmethod
+    def getDevice(cls, arg: eventData | str) -> Device:
         """
-        Returns a new instance of a device, given a deviceID.
-
-        This function should be called as a fallback when using a universal
-        device enquiry fails
+        Returns a new instance of a device, given a universal device enquiry
+        response or a device identifier (as a fallback)
 
         ### Args:
-        * `arg` (`str`): device ID
+        * `arg` (``eventData | str`): event to match with devices
 
         ### Raises:
         * `ValueError`: Device not recognised
@@ -79,8 +77,6 @@ class ExtensionManager:
         ### Returns:
         * `Device`: device object instance
         """
-    @classmethod
-    def getDevice(cls, arg: eventData | str) -> Device:
         # Sysex event
         if isinstance(arg, eventData):
             for device in cls._devices:

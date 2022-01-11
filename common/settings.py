@@ -5,7 +5,7 @@ Contains a wrapper class for the settings, allowing for an effective way to
 check the configuration of the script.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 __all__ = [
