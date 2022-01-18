@@ -21,7 +21,8 @@ from .settings import Settings
 
 from .types import eventData
 
-from .devicedetect import DeviceNotRecognised
+from .scriptstate import IScriptState
+from .devicedetect import WaitingForDevice
 
 class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
@@ -37,12 +38,12 @@ class DeviceContextManager:
         """
         self.settings = Settings()
         # TODO: Set to waiting for device
-        self.state = DeviceNotRecognised()
+        self._state = WaitingForDevice()
     
     def initialise(self) -> None:
         """Initialise the controller associated with this context manager.
         """
-        self.state.initialise()
+        self._state.initialise()
 
     def processEvent(self, event: eventData) -> None:
         """Process a MIDI event
@@ -50,13 +51,24 @@ class DeviceContextManager:
         ### Args:
         * `event` (`event`): event to process
         """
-        self.state.processEvent(event)
+        self._state.processEvent(event)
     
     def tick(self) -> None:
         """
         Called frequently to allow any required updates to the controller
         """
-        self.state.tick()
+        self._state.tick()
+    
+    def setState(self, new_state: IScriptState):
+        """
+        Set the state of the script to a new state
+
+        This is used to transfer between different states
+
+        ### Args:
+        * `new_state` (`IScriptState`): state to switch to
+        """
+        self._state = new_state
 
 class ContextResetException(Exception):
     """

@@ -25,6 +25,8 @@ CONFIG = {
     },
     # Device settings
     "device": {
+        # How long to wait until the fallback device recognition method is used.
+        "detection_timeout": 5.0,
         # Associations between device name (as shown in FL Studio) and device id
         # to register (listed in class under id function)
         "name_associations": [
