@@ -11,7 +11,7 @@ Authors:
 """
 
 from typing import Any
-from logger import verbosity
+from common.logger import verbosity
 
 CONFIG: dict[str, Any] = {
     

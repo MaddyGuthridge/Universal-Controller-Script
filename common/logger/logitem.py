@@ -1,5 +1,5 @@
 """
-logger > logitem
+common > logger > logitem
 
 Contains LogItem, a class used to represent an entry in the script's log
 

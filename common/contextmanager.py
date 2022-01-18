@@ -21,6 +21,8 @@ from .settings import Settings
 
 from .types import eventData
 
+from .devicedetect import DeviceNotRecognised
+
 class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
     components of script to be dynamically refreshed and reloaded, as well as
@@ -33,12 +35,14 @@ class DeviceContextManager:
         """Initialise the context manager, including reloading any required
         modules
         """
-        
         self.settings = Settings()
+        # TODO: Set to waiting for device
+        self.state = DeviceNotRecognised()
     
     def initialise(self) -> None:
         """Initialise the controller associated with this context manager.
         """
+        self.state.initialise()
 
     def processEvent(self, event: eventData) -> None:
         """Process a MIDI event
@@ -46,11 +50,13 @@ class DeviceContextManager:
         ### Args:
         * `event` (`event`): event to process
         """
+        self.state.processEvent(event)
     
     def tick(self) -> None:
         """
         Called frequently to allow any required updates to the controller
         """
+        self.state.tick()
 
 class ContextResetException(Exception):
     """
@@ -143,4 +149,4 @@ def _initContext() -> None:
 
 _initContext()
 
-import logger
+from . import logger

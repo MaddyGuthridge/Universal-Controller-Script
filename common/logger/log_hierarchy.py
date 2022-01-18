@@ -1,5 +1,5 @@
 """
-logger > hierarchy
+common > logger > hierarchy
 
 Contains a formal definition of the logging hierarchy, used to verify
 logging into particular categories

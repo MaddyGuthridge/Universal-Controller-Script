@@ -39,3 +39,44 @@ AUTHORS: dict[str, list[str]] = {
     "Device Contributors": [
     ]
 }
+
+ASCII_HEADER_ART = """
+                                                         -**                              
+                                                       *L*.                               
+                                                     *L*.                                 
+                                                   -LL.                                   
+                              --*****--          ./F*                                     
+                          -*LFFFFFFFFFFFL*-     -LF-                                      
+                        *LFFFFFFFFFFFFFFFFFL-  -FF-                                       
+                      -LFFFFFFFFFFFFFFFFFFFFF/-LF-                                        
+                     *LFFFFFFFFFFFFFFFFFFFFFFFFFF********-.        .--***//LLLLLL/**-     
+                    -LLLLLLFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL*--**/LL/***----....--*/FL-   
+                    -LLL/**-*LLLLLFFFFFFFFFFFFFFFFFFFFFFFFFFFFF/-.                  -FF.  
+                          ./LLLLLLLLLLLFFFFFFFFFFFFFFFFFFFFFFFFF/.                  -FF.  
+                          --.     -LLLLLLLLFFFFFFFFFFFFFFFFFFFFFFL                 .LF*   
+                                   -LLLLLLLLLLLLFFFFFFFFFFFFFFFFFF*               -LF*    
+                                    LLLLLLLLLLLLLLLLLLFFFFFFFFFFFFL.            .*FL-     
+                                  --/LLLLLLLLLLLLLLLLLLLLLLFFFFFFFF-           *FF*       
+                               -****-*LLLLLLLLLLLLLLLL/LLLLLLLFFFFL.         *FF*.        
+                           .-*/*-.    .*/LLLLLL/**-.    ./LL.*LLLL*       -*FF*           
+                        .-*/*-.          ..--.           .L/  .*/*      -LFL*             
+                      -*/*-.                              L-         -*FF*-               
+                   .****.                                -/       -*LF/-                  
+                 -*/*-                                  ./.    -*LF/-                     
+               -*/-.                                    /-  -/FF/*                        
+             -**-                                      ***LFL*-                           
+           -**-                                     .-/FFL*-                              
+          */*.                                  .-*LFF*-                                  
+        .*/-                                -*/FFL*-*-                                    
+       .*/-                            --*LFF/*-   --                                     
+       -/*                       .-*/LFF/*-.      *.                                      
+       -//-               .--**LFFL/*-.         .*.                                       
+        .*//****-*****/LLFLL/**-.              --                                         
+           .-********---.                     --                                          
+                                            --                                            
+                                          .-.                                             
+                                        .-.                                               
+                                      --.                                                 
+                         .--.      ---                                                    
+                           .------.                                                       
+"""

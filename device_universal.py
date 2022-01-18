@@ -19,25 +19,44 @@ import include
 from common import getContext, catchContextResetException
 # Function to allow user to reset context
 from common.contextmanager import unsafeResetContext as reset
+# Import constants and logger
+from common import consts, log, verbosity
 
 # Import console helpers
 from common.util.consolehelpers import *
 
-@catchContextResetException
-def onInit() -> None:
-    getContext().initialise()
+class OverallDevice:
+    @catchContextResetException
+    def onInit(self) -> None:
+        getContext().initialise()
 
-@catchContextResetException
-def onMidiIn(event) -> None:
-    getContext().processEvent(event)
+    @catchContextResetException
+    def onMidiIn(self, event) -> None:
+        getContext().processEvent(event)
 
-@catchContextResetException
-def onIdle() -> None:
-    getContext().tick()
+    @catchContextResetException
+    def onIdle(self) -> None:
+        getContext().tick()
 
-@catchContextResetException
+    @catchContextResetException
+    def bootstrap(self):
+        log("bootstrap", "Load success", verbosity.INFO)
+        print(consts.ASCII_HEADER_ART)
+        print("Type `help` for help using the script")
+
+device = OverallDevice()
+
+def OnInit():
+    device.onInit()
+
+def OnMidiIn(event):
+    device.onMidiIn()
+
+def OnIdle():
+    device.onIdle()
+
 def bootstrap():
-    log("bootstrap", "Load success", verbosity.INFO)
+    device.bootstrap()
 
 if __name__ == "__main__":
     bootstrap()

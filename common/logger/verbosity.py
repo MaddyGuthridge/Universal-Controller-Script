@@ -1,5 +1,5 @@
 """
-logger > verbosity
+common > logger > verbosity
 
 Contains the definitions for all verbosity levels used by the script.
 When logging something, these constants should be used.

@@ -1,5 +1,5 @@
 """
-logger > logger
+common > logger > logger
 
 Contains the definition of the log class, which maintains the script's log,
 and allows for log information to be searched and recalled
@@ -15,7 +15,7 @@ __all__ = [
 from .logitem import LogItem
 from .verbosity import Verbosity, DEFAULT, MOST_VERBOSE
 
-from common.util.misc import NoneNoPrintout
+from ..util.misc import NoneNoPrintout
 
 class Log:
     """
