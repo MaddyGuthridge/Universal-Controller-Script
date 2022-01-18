@@ -37,7 +37,7 @@ def onIdle() -> None:
 
 @catchContextResetException
 def bootstrap():
-    log("bootstrap", "Load success!", verbosity.INFO)
+    log("bootstrap", "Load success", verbosity.INFO)
 
 if __name__ == "__main__":
     bootstrap()

@@ -29,7 +29,8 @@ class ConsoleCommand:
         self.printout = printout
     
     def __repr__(self) -> str:
-        return self.printout
+        print(self.printout)
+        return ''
 
     def __call__(self) -> None:
         print(self)

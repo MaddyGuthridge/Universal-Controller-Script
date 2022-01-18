@@ -15,6 +15,8 @@ __all__ = [
 from .logitem import LogItem
 from .verbosity import Verbosity, DEFAULT, MOST_VERBOSE
 
+from common.util.misc import NoneNoPrintout
+
 class Log:
     """
     Represents the log of the script.
@@ -87,6 +89,8 @@ class Log:
                 num_prints += 1
             if num_prints == number:
                 break
+        
+        return NoneNoPrintout
     
     def details(self, itemNumber: int):
         """
