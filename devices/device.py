@@ -55,6 +55,16 @@ class Device:
         raise NotImplementedError("This method must be overridden by child classes")
     
     @staticmethod
+    def getName() -> str:
+        """
+        Returns the name of the device
+        
+        ### Returns:
+        * `str`: device name
+        """
+        raise NotImplementedError("This method must be overridden by child classes")
+    
+    @staticmethod
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
         """
         Returns the event pattern from which a device can be recognised so that

@@ -40,7 +40,7 @@ class OverallDevice:
 
     @catchContextResetException
     def bootstrap(self):
-        log("bootstrap", "Load success", verbosity.INFO)
+        log("bootstrap.initialize", "Load success", verbosity.INFO)
         print(consts.ASCII_HEADER_ART)
         print("Type `help` for help using the script")
 
@@ -50,7 +50,7 @@ def OnInit():
     device.onInit()
 
 def OnMidiIn(event):
-    device.onMidiIn()
+    device.onMidiIn(event)
 
 def OnIdle():
     device.onIdle()

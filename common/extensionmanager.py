@@ -8,7 +8,6 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from __future__ import annotations
 from typing import TYPE_CHECKING, overload
 
 from common.types.eventdata import eventData
@@ -23,7 +22,7 @@ class ExtensionManager:
     """
     
     _plugins: dict[str, type] = dict()
-    _devices: list[type[Device]] = []
+    _devices: list[type['Device']] = []
     
     def __init__(self) -> None:
         raise TypeError("ExtensionManager is a static class and cannot be instantiated.")
@@ -33,7 +32,7 @@ class ExtensionManager:
         pass
 
     @classmethod
-    def registerDevice(cls, device: type[Device]) -> None:
+    def registerDevice(cls, device: type['Device']) -> None:
         """
         Register a device type
 
@@ -56,14 +55,14 @@ class ExtensionManager:
 
     @overload
     @classmethod
-    def getDevice(cls, arg: eventData) -> Device:
+    def getDevice(cls, arg: eventData) -> 'Device':
         ...
     @overload
     @classmethod
-    def getDevice(cls, arg: str) -> Device:
+    def getDevice(cls, arg: str) -> 'Device':
         ...
     @classmethod
-    def getDevice(cls, arg: eventData | str) -> Device:
+    def getDevice(cls, arg: 'eventData | str') -> 'Device':
         """
         Returns a new instance of a device, given a universal device enquiry
         response or a device identifier (as a fallback)

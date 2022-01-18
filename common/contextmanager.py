@@ -69,6 +69,7 @@ class DeviceContextManager:
         * `new_state` (`IScriptState`): state to switch to
         """
         self._state = new_state
+        new_state.initialise()
 
 class ContextResetException(Exception):
     """

@@ -14,7 +14,7 @@ CONFIG = {
     # Logging settings
     "logger": {
         # Maximum verbosity for which all logged messages will be printed 
-        "max_verbosity": verbosity.WARNING,
+        "max_verbosity": verbosity.ERROR,
         # Categories to watch
         "watched_categories": [
             "general"
@@ -23,8 +23,11 @@ CONFIG = {
         # will be printed 
         "max_watched_verbosity": verbosity.INFO,
     },
-    # Device settings
-    "device": {
+    # Settings used during script initialisation
+    "bootstrap": {
+        # Whether to skip sending sysex messages when attempting to recognise
+        # devices... may improve startup time for some devices
+        "skip_enquiry": False,
         # How long to wait until the fallback device recognition method is used.
         "detection_timeout": 5.0,
         # Associations between device name (as shown in FL Studio) and device id

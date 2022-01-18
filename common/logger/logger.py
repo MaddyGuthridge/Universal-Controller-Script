@@ -28,8 +28,8 @@ class Log:
         self._history: list[LogItem] = []
     
     @staticmethod
-    def _conditionalPrint(item: LogItem, category: str=None, verbosity:Verbosity=None) -> bool:
-        """If the logger should print this particular item, prints it
+    def _shouldPrint(item: LogItem, category: str=None, verbosity:Verbosity=None) -> bool:
+        """Returns whether the logger should print an item
         
         * By default (no category or verbosity specified), it checks whether the
           item's categories are in the watched categories. If so, it will print
@@ -66,30 +66,67 @@ class Log:
         
         assert(verbosity is not None)
         if item.verbosity <= verbosity:
+            return True
+        else:
+            return False
+    
+    @staticmethod
+    def _conditionalPrint(item: LogItem, category: str=None, verbosity:Verbosity=None) -> bool:
+        """If the logger should print this particular item, prints it
+        
+        * By default (no category or verbosity specified), it checks whether the
+          item's categories are in the watched categories. If so, it will print
+          out if the verbosity is less than the given verbosity, or the
+          `logger.max_watched_verbosity` setting if that isn't provided.
+          Otherwise it will print out if the verbosity is less than the given
+          verbosity, or the `logger.max_verbosity` setting if that isn't 
+          provided.
+        * If a category is specified, it will print if the item is in that
+          category and the verbosity is less than the given verbosity, or the
+          `logger.max_watched_verbosity` setting if that isn't provided.
+
+        Args:
+        * `item` (`LogItem`): item to check
+        * `category` (`str`, optional): category  to filter by. Defaults to `None`.
+        * `verbosity` (`Verbosity`, optional): greatest verbosity to print. Defaults to `None`.
+        
+        Returns:
+        * `bool`: whether it was printed
+        """
+        if Log._shouldPrint(item, category, verbosity):
             print(item)
             return True
         else:
             return False
 
-    def recall(self, category: str, verbosity: Verbosity = DEFAULT, number: int = -1):
+    def recall(self, category: str = "", verbosity: Verbosity = DEFAULT, number: int = -1):
         """
         Recall and print all matching log entries for the provided category at 
         the given verbosity level or higher, with the latest item being logged
-        first
+        last
 
         ### Args:
-        * `category` (`str`): category to match
+        * `category` (`str`, optional): category to match, defaults to all.
         * `verbosity` (`Verbosity`, optional): verbosity level. Defaults to `DEFAULT`.
-        * `number` (`int`): number of values to recall
+        * `number` (`int`, optional): number of values to recall, defaults to all.
         """
+        # Figure out what to print
         num_prints = 0
+        prints = []
         for item in reversed(self._history):
             # Print if required
-            if self._conditionalPrint(item, category, verbosity):
+            if self._shouldPrint(item, category, verbosity):
                 num_prints += 1
+                prints.insert(0, item)
             if num_prints == number:
                 break
         
+        # Then print it
+        print(f"----------------------------------------")
+        print("Begin recall:")
+        for item in prints:
+            print(item)
+        print(f"----------------------------------------")
         return NoneNoPrintout
     
     def details(self, itemNumber: int):
