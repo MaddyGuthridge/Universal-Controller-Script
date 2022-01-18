@@ -13,8 +13,11 @@ from .logger import verbosity
 CONFIG = {
     # Logging settings
     "logger": {
+        # Verbosity for which full details will be printed to the console when
+        # it is logged.
+        "critical_verbosity": verbosity.ERROR,
         # Maximum verbosity for which all logged messages will be printed 
-        "max_verbosity": verbosity.ERROR,
+        "max_verbosity": verbosity.WARNING,
         # Categories to watch
         "watched_categories": [
             "general"

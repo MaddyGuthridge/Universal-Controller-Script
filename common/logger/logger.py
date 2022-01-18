@@ -13,7 +13,7 @@ __all__ = [
 ]
 
 from .logitem import LogItem
-from .verbosity import Verbosity, DEFAULT, MOST_VERBOSE
+from .verbosity import Verbosity, DEFAULT, ERROR
 
 from ..util.misc import NoneNoPrintout
 
@@ -71,8 +71,31 @@ class Log:
             return False
     
     @staticmethod
+    def _shouldDetailedPrint(item: LogItem) -> bool:
+        """
+        Returns whether the logger should do a detailed printout of the item.
+
+        Reserved for errors that the user should be notified of.
+
+        ### Args:
+        * `item` (`LogItem`): item to check
+
+        ### Returns:
+        * `bool`: whether we should detailed print it
+        """
+        # Make sure we log things, even if the context isn't loaded
+        # They will still (hopefully) be recallable later
+        import common
+        try:
+            verbosity = common.getContext().settings.get("logger.critical_verbosity")
+        except common.contextmanager.MissingContextException:
+            verbosity = ERROR
+        return item.verbosity <= verbosity
+    
+    @staticmethod
     def _conditionalPrint(item: LogItem, category: str=None, verbosity:Verbosity=None) -> bool:
-        """If the logger should print this particular item, prints it
+        """If the logger should print this particular item, prints it. It does
+        a detailed print if required.
         
         * By default (no category or verbosity specified), it checks whether the
           item's categories are in the watched categories. If so, it will print
@@ -93,8 +116,12 @@ class Log:
         Returns:
         * `bool`: whether it was printed
         """
-        if Log._shouldPrint(item, category, verbosity):
+        if Log._shouldDetailedPrint(item):
+            item.printDetails()
+            print()
+        elif Log._shouldPrint(item, category, verbosity):
             print(item)
+            print()
             return True
         else:
             return False

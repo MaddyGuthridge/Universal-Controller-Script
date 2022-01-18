@@ -42,7 +42,7 @@ class OverallDevice:
     def bootstrap(self):
         log("bootstrap.initialize", "Load success", verbosity.INFO)
         print(consts.ASCII_HEADER_ART)
-        print("Type `help` for help using the script")
+        print("Type `help` for help using the script\n")
 
 device = OverallDevice()
 
