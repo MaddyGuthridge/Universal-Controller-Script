@@ -33,10 +33,10 @@ class DeviceNotRecognised(IScriptState):
     """
     def initialise(self) -> None:
         print("Failed to recognise device")
-        ui.setHintMessage("Failed to recognise device")
+        ui.setHintMsg("Failed to recognise device")
     
     def tick(self) -> None:
-        ui.setHintMessage("Failed to recognise device")
+        ui.setHintMsg("Failed to recognise device")
     
     def processEvent(self, event: eventData) -> None:
         return
