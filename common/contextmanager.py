@@ -21,7 +21,7 @@ from .settings import Settings
 
 from .types import eventData
 
-from .scriptstate import IScriptState
+from .scriptstate import IScriptState, StateChangeException, catchStateChangeException
 from .devicedetect import WaitingForDevice
 
 class DeviceContextManager:
@@ -37,14 +37,16 @@ class DeviceContextManager:
         modules
         """
         self.settings = Settings()
-        # TODO: Set to waiting for device
+        # Set the state of the script to wait for the device to be recognised
         self._state = WaitingForDevice()
     
+    @catchStateChangeException
     def initialise(self) -> None:
         """Initialise the controller associated with this context manager.
         """
         self._state.initialise()
 
+    @catchStateChangeException
     def processEvent(self, event: eventData) -> None:
         """Process a MIDI event
 
@@ -53,13 +55,14 @@ class DeviceContextManager:
         """
         self._state.processEvent(event)
     
+    @catchStateChangeException
     def tick(self) -> None:
         """
         Called frequently to allow any required updates to the controller
         """
         self._state.tick()
     
-    def setState(self, new_state: IScriptState):
+    def setState(self, new_state: IScriptState) -> NoReturn:
         """
         Set the state of the script to a new state
 
@@ -67,9 +70,13 @@ class DeviceContextManager:
 
         ### Args:
         * `new_state` (`IScriptState`): state to switch to
+        
+        ### Raises:
+        * `StateChangeException`: state changed successfully
         """
         self._state = new_state
         new_state.initialise()
+        raise StateChangeException("State changed")
 
 class ContextResetException(Exception):
     """

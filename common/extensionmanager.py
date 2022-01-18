@@ -86,11 +86,28 @@ class ExtensionManager:
                     # If it matches the pattern, then we found the right device
                     # create an instance and return it
                     return device.create(arg)
-        # Device ID
+        # Device name
         elif isinstance(arg, str):
             for device in cls._devices:
-                if device.matchDeviceId(arg):
+                if device.matchDeviceName(arg):
                     # If it matches the pattern, then we found the right device
                     # create an instance and return it
                     return device.create(None)
         raise ValueError("Device not recognised")
+    
+    @classmethod
+    def getDeviceById(cls, id: str) -> 'Device':
+        """
+        Returns a new instance of a device, given a device ID, which should
+        match a return value of Device.getId()
+
+        ### Raises:
+        * `ValueError`: Device not found
+
+        ### Returns:
+        * `Device`: matching device
+        """
+        for device in cls._devices:
+            if device.getId() == id:
+                return device.create(None)
+        raise ValueError(f"Device with ID {id} not found")

@@ -119,6 +119,7 @@ class Log:
         if Log._shouldDetailedPrint(item):
             item.printDetails()
             print()
+            return True
         elif Log._shouldPrint(item, category, verbosity):
             print(item)
             print()

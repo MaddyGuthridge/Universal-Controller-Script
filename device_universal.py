@@ -55,6 +55,9 @@ def OnMidiIn(event):
 def OnIdle():
     device.onIdle()
 
+def OnRefresh():
+    device.onIdle()
+
 def bootstrap():
     device.bootstrap()
 

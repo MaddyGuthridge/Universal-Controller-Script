@@ -30,19 +30,43 @@ class WaitingForDevice(IScriptState):
     def __init__(self) -> None:
         self._init_time = None
     
+    def nameAssociations(self) -> None:
+        """
+        Uses the name associations setting to get device mappings
+
+        ### Returns:
+        * `bool`: whether we found a match
+        """
+        name_associations = common.getContext().settings.get("name_associations")
+        
+        device_name = device.getName()
+        for name, id in name_associations:
+            if name == device_name:
+                try:
+                    dev = ExtensionManager.getDeviceById(id)
+                    # Assign device (causes StateChangeException)
+                except ValueError:
+                    return
+        return
+    
     def detectFallback(self) -> None:
         """
         Fallback method for device detection, using device name
         """
         name = device.getName()
         try:
-            ExtensionManager.getDevice(name)
+            dev = ExtensionManager.getDevice(name)
         except ValueError:
             log(LOG_CAT, f"Failed to recognise device via fallback method", verbosity.WARNING)
             common.getContext().setState(DeviceNotRecognised())
     
     def initialise(self) -> None:
         self._init_time = time.time()
+        # Check if there's an association between the device name and a device
+        # If so, a StateChangeException will be raised so this function will
+        # return early
+        self.nameAssociations()
+        
         # If the user specified to skip sending enquiry event
         if common.getContext().settings.get("bootstrap.skip_enquiry"):
             log(
@@ -74,8 +98,9 @@ class WaitingForDevice(IScriptState):
         # Ignore all events unless they are Sysex
         if event.sysex is not None:
             try:
-                device = ExtensionManager.getDevice(event)
-                log(LOG_CAT, f"Recognised device via sysex: {device.getName()}", verbosity.INFO)
+                dev = ExtensionManager.getDevice(event)
+                log(LOG_CAT, f"Recognised device via sysex: {dev.getId()}", verbosity.INFO)
+                event.handled = True
             except ValueError:
                 log(
                     LOG_CAT,

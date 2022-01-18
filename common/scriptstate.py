@@ -8,6 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+from typing import Callable
 from common.types import eventData
 
 class IScriptState:
@@ -39,3 +40,25 @@ class IScriptState:
         Called frequently to allow any required updates to the controller
         """
         raise NotImplementedError("This method must be overridden by child classes")
+
+class StateChangeException(Exception):
+    """
+    Raised when the the state of the controller has been reset
+    """
+
+def catchStateChangeException(func: Callable)-> Callable:
+    """A decorator for catching StateChangeExceptions so that the program
+    continues normally
+
+    ### Args:
+    * `func` (`Callable`): function to decorate
+
+    ### Returns:
+    * `Callable`: decorated function
+    """
+    def wrapper(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except StateChangeException:
+            pass
+    return wrapper

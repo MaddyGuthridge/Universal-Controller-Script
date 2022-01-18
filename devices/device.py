@@ -55,12 +55,14 @@ class Device:
         raise NotImplementedError("This method must be overridden by child classes")
     
     @staticmethod
-    def getName() -> str:
+    def getId() -> str:
         """
-        Returns the name of the device
+        Returns the id of the device, in the form:
+        
+        "Manufacturer.Model.Mark.Variant"
         
         ### Returns:
-        * `str`: device name
+        * `str`: device id
         """
         raise NotImplementedError("This method must be overridden by child classes")
     
@@ -76,15 +78,16 @@ class Device:
         raise NotImplementedError("This method must be overridden by child classes")
     
     @staticmethod
-    def matchDeviceId(id: str) -> bool:
+    def matchDeviceName(name: str) -> bool:
         """
-        Returns whether this device matches the identifier given
+        Returns whether this device matches the name given, where the name is
+        the return value of `device.getName()`
 
         This is used as a fallback for  matching the device if no universal
         device enquiry response is given.
 
         ### Args:
-        * `id` (`str`): identifier for device
+        * `name` (`str`): name of the device
 
         ### Returns:
         * `bool`: whether there was a match
