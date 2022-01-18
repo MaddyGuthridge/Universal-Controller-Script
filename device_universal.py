@@ -37,9 +37,7 @@ def onIdle() -> None:
 
 @catchContextResetException
 def bootstrap():
-    # resetContext("Initial context")
-    pass
+    log("bootstrap", "Load success!", verbosity.INFO)
 
 if __name__ == "__main__":
-    print("Hello")
     bootstrap()

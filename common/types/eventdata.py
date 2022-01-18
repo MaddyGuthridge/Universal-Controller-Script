@@ -8,7 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from __future__ import annotations
+# from __future__ import annotations
 
 __all__ = [
     'eventData'
@@ -44,7 +44,7 @@ class eventData:
     """
     def __init__(
         self,
-        status_sysex: int | list[int],
+        status_sysex: 'int | list[int]',
         data1: Optional[int]=None,
         data2:Optional[int]=None
     ) -> None:

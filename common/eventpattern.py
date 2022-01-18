@@ -9,7 +9,8 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from __future__ import annotations
+# from __future__ import annotations
+
 from typing import (TYPE_CHECKING,
     Any,
     Callable,
@@ -35,7 +36,7 @@ class IEventPattern:
     pattern for a case where the standard EventPattern class doesn't suffice.
     """
     
-    def matchEvent(self, event: eventData) -> bool:
+    def matchEvent(self, event: 'eventData') -> bool:
         """
         Return whether the given event matches the pattern
 
@@ -61,8 +62,7 @@ class EventPattern(IEventPattern):
     def __init__(
         self,
         # Status byte or sysex data
-        status_sysex:   ByteMatch
-                 | list[ByteMatch],
+        status_sysex:  'ByteMatch | list[ByteMatch]',
         data1: Optional[ByteMatch]=None,
         data2: Optional[ByteMatch]=None
     ) -> None:
@@ -135,7 +135,7 @@ class EventPattern(IEventPattern):
             self.data1 = data1
             self.data2 = data2
 
-    def matchEvent(self, event: eventData) -> bool:
+    def matchEvent(self, event: 'eventData') -> bool:
         """
         Returns whether an event matches this pattern.
 
@@ -163,7 +163,7 @@ class EventPattern(IEventPattern):
         return actual in expected
     
     @staticmethod
-    def _matchByteEllipsis(expected: ellipsis, actual: int) -> bool:
+    def _matchByteEllipsis(expected: 'ellipsis', actual: int) -> bool:
         return 0 <= actual <= 127
 
     @staticmethod
@@ -180,7 +180,7 @@ class EventPattern(IEventPattern):
         }
         return matches[type(expected)](expected, actual)
 
-    def _matchSysex(self, event: eventData) -> bool:
+    def _matchSysex(self, event: 'eventData') -> bool:
         """
         Matcher function for sysex events
         """
@@ -188,7 +188,7 @@ class EventPattern(IEventPattern):
             return False
         return all(map(self._matchByte, self.sysex, event.sysex))
 
-    def _matchStandard(self, event: eventData) -> bool:
+    def _matchStandard(self, event: 'eventData') -> bool:
         """
         Matcher function for standard events
         """

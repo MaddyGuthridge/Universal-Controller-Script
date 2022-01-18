@@ -3,7 +3,7 @@ include > typing
 
 A basic stand-in for the typing module, to prevent crashes during runtime
 """
-print("I'm being imported")
+
 TYPE_CHECKING = False
 
 class TypeVar:
@@ -17,13 +17,19 @@ class NewType:
     def __call__(self, arg):
         return arg
 
-Any = 'Any'
-NoReturn = 'NoReturn'
-Optional = 'Optional'
-Callable = 'Callable'
-Union = 'Union'
-Type = 'Type'
-Generic = 'Generic'
+class _AnnotationType:
+    def __init__(self, name) -> None:
+        self._name = name
+    def __getitem__(self, key):
+        return object
+
+Any = _AnnotationType('Any')
+NoReturn = _AnnotationType('NoReturn')
+Optional = _AnnotationType('Optional')
+Callable = _AnnotationType('Callable')
+Union = _AnnotationType('Union')
+Type = _AnnotationType('Type')
+Generic = _AnnotationType('Generic')
 
 class Protocol:
     pass

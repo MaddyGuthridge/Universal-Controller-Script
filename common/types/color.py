@@ -6,7 +6,7 @@ Contains definition for color type.
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from __future__ import annotations
+# from __future__ import annotations
 
 from math import floor
 
@@ -135,7 +135,7 @@ class Color:
     def __repr__(self) -> str:
         return f"Color({self.__red}, {self.__green}, {self.__blue})"
         
-    def copy(self) -> Color:
+    def copy(self) -> 'Color':
         """
         Create an identical copy of this color object
 
@@ -150,7 +150,7 @@ class Color:
     # Creation functions
         
     @staticmethod
-    def fromInteger(rgb: int) -> Color:
+    def fromInteger(rgb: int) -> 'Color':
         """
         Create a color object from an FL Studio color int
 
@@ -167,7 +167,7 @@ class Color:
         return c
     
     @staticmethod
-    def fromRgb(r: int, g: int, b: int) -> Color:
+    def fromRgb(r: int, g: int, b: int) -> 'Color':
         """
         Create a color object from RGB values
 
@@ -188,7 +188,7 @@ class Color:
         return c
     
     @staticmethod
-    def fromHsv(hue: float, saturation: float, value: float) -> Color:
+    def fromHsv(hue: float, saturation: float, value: float) -> 'Color':
         """
         Crewate a color object from hue, saturation and value values
 
@@ -461,7 +461,7 @@ class Color:
     # Operators
     
     @staticmethod
-    def fade(start: Color, end: Color, position:float=0.5) -> Color:
+    def fade(start: 'Color', end: 'Color', position:float=0.5) -> 'Color':
         """
         Fade between two colors, using the HSV color space to ensure that
         intermediate colors remain vibrant
@@ -492,7 +492,7 @@ class Color:
             end.value * position + start.value * rev_pos
         )
     
-    def fadeBlack(self: Color, position:float=0.5) -> Color:
+    def fadeBlack(self: 'Color', position:float=0.5) -> 'Color':
         """
         Fade between this color and black
 
@@ -506,7 +506,7 @@ class Color:
         black = Color()
         return Color.fade(self, black, position)
     
-    def fadeGray(self: Color, position:float=0.5) -> Color:
+    def fadeGray(self: 'Color', position:float=0.5) -> 'Color':
         """
         Fade between this color and gray
 
@@ -525,7 +525,7 @@ class Color:
         return Color.fade(self, gray, position)
 
     @staticmethod
-    def distance(start: Color, end: Color) -> float:
+    def distance(start: 'Color', end: 'Color') -> float:
         """
         Calculate the 'distance' between two colors, using the HSV color space
         to ensure that the closest visibly similar color is chosen.
@@ -554,7 +554,7 @@ class Color:
         # Don't bother doing square root since it's arbitrary anyway
         return delta_h**2 + delta_s**2 + delta_v**2
     
-    def closest(self, others: list[Color]) -> Color:
+    def closest(self, others: list['Color']) -> 'Color':
         """
         Given a set of colors, find the closest one and return it
 
@@ -578,7 +578,7 @@ class Color:
         
         return closest
     
-    def __add__(self, other) -> Color:
+    def __add__(self, other) -> 'Color':
         if isinstance(other, Color):
             return Color.fromRgb(
                 self.red + other.red,
@@ -594,11 +594,11 @@ class Color:
         else:
             return NotImplemented
     
-    def __radd__(self, other) -> Color:
+    def __radd__(self, other) -> 'Color':
         # Addition is commutative
         return self + other
     
-    def __sub__(self, other) -> Color:
+    def __sub__(self, other) -> 'Color':
         if isinstance(other, Color):
             return Color.fromRgb(
                 self.red - other.red,
@@ -614,7 +614,7 @@ class Color:
         else:
             return NotImplemented
 
-    def __rsub__(self, other) -> Color:
+    def __rsub__(self, other) -> 'Color':
         if isinstance(other, int):
             return Color.fromRgb(
                 other - self.red,
