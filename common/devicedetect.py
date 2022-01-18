@@ -37,7 +37,7 @@ class WaitingForDevice(IScriptState):
         ### Returns:
         * `bool`: whether we found a match
         """
-        name_associations = common.getContext().settings.get("name_associations")
+        name_associations = common.getContext().settings.get("bootstrap.name_associations")
         
         device_name = device.getName()
         for name, id in name_associations:
@@ -46,7 +46,8 @@ class WaitingForDevice(IScriptState):
                     dev = ExtensionManager.getDeviceById(id)
                     # Assign device (causes StateChangeException)
                 except ValueError:
-                    return
+                    raise ValueError(f"Name association '{name}' -> '{id}' "
+                                     f"doesn't match an existing device") from None
         return
     
     def detectFallback(self) -> None:
