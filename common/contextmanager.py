@@ -19,6 +19,7 @@ from typing import NoReturn, Optional, Callable
 
 from .settings import Settings
 
+from .util.misc import NoneNoPrintout
 from .types import eventData
 
 from .scriptstate import IScriptState, StateChangeException, catchStateChangeException
@@ -101,9 +102,11 @@ def catchContextResetException(func: Callable)-> Callable:
     """
     def wrapper(*args, **kwargs):
         try:
-            func(*args, **kwargs)
+            ret = func(*args, **kwargs)
+            if ret is None:
+                return NoneNoPrintout
         except ContextResetException:
-            pass
+            return NoneNoPrintout
     return wrapper
 
 # The context manager's instance

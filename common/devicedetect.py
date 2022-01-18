@@ -46,8 +46,19 @@ class WaitingForDevice(IScriptState):
                     dev = ExtensionManager.getDeviceById(id)
                     # Assign device (causes StateChangeException)
                 except ValueError:
-                    raise ValueError(f"Name association '{name}' -> '{id}' "
-                                     f"doesn't match an existing device") from None
+                    log(
+                        f"bootstrap.device.type_detect",
+                        f"The device mapping '{name}' -> '{id}' didn't match "
+                        f"any known devices",
+                        verbosity.CRITICAL,
+                        "This could be caused by incorrect spelling of the "
+                        "device's ID."
+                    )
+        log(
+            f"bootstrap.device.type_detect",
+            f"No name associations found for device named '{device_name}'",
+            verbosity.INFO
+        )
         return
     
     def detectFallback(self) -> None:
