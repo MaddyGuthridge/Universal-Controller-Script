@@ -13,8 +13,9 @@ import ui
 import device
 
 import common
-from common.types import eventData
-from common import log, verbosity
+from .types import eventData
+from . import log, verbosity
+from . import consts
 
 from .extensionmanager import ExtensionManager
 
@@ -88,7 +89,14 @@ class DeviceNotRecognised(IScriptState):
     State for when device isn't recognised
     """
     def initialise(self) -> None:
-        log(LOG_CAT, "Failed to recognise device", verbosity.ERROR)
+        log(
+            LOG_CAT,
+            "Failed to recognise device",
+            verbosity.ERROR,
+            "The device was unable to be recognised. This usually means that "
+            "there is no definition available for your device. You could help "
+            "by contributing a device definition. Visit the GitHub page for "
+            "details: " + consts.WEBSITE)
         ui.setHintMsg("Failed to recognise device")
     
     def tick(self) -> None:

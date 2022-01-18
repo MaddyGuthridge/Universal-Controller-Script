@@ -20,6 +20,7 @@ class LogItem:
         self,
         category: str,
         message: str,
+        details: str,
         verbosity: Verbosity,
         index: int
     ) -> None:
@@ -29,11 +30,13 @@ class LogItem:
         ### Args:
         * `category` (`str`): category to log under
         * `message` (`str`): message to log
+        * `details` (`str`): detailed message if required
         * `verbosity` (`Verbosity`): verbosity to log at
         * `index` (`int`): index of this log item
         """
         self.category = category
         self.message = message
+        self.details = details
         self.verbosity = verbosity
         self.index = index
         self.time = time.localtime()
@@ -73,5 +76,8 @@ class LogItem:
         print(f"Category: {self.category}")
         print(f"----------------------------------------")
         print(self.message)
+        if len(self.details):
+            print()
+            print(self.details)
         print(f"----------------------------------------")
         # print(traceback.print_list(self.trace))

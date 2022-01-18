@@ -137,8 +137,10 @@ class Log:
         * `itemNumber` (`int`): entry number
         """
         self._history[itemNumber].printDetails()
+        
+        return NoneNoPrintout
 
-    def __call__(self, category: str, msg: str, verbosity: Verbosity = DEFAULT) -> None:
+    def __call__(self, category: str, msg: str, verbosity: Verbosity = DEFAULT, detailed_msg: str = '') -> None:
         """
         Add a message to the log
 
@@ -152,7 +154,7 @@ class Log:
         * `verbosity` (`Verbosity`, optional): verbosity to log under. Defaults to `DEFAULT`.
         """
         # TODO: Maybe get traceback
-        item = LogItem(category, msg, verbosity, len(self._history))
+        item = LogItem(category, msg, detailed_msg, verbosity, len(self._history))
         self._history.append(item)
         # Print if required
         self._conditionalPrint(item)
