@@ -10,6 +10,7 @@ Authors:
 
 HIERARCHY = {
     "bootstrap": {
+        "initialize": {},
         "context": {
             "reset": {},
             "create": {}
