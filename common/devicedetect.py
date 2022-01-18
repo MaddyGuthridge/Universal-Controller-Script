@@ -111,13 +111,19 @@ class WaitingForDevice(IScriptState):
         if event.sysex is not None:
             try:
                 dev = ExtensionManager.getDevice(event)
-                log(LOG_CAT, f"Recognised device via sysex: {dev.getId()}", verbosity.INFO)
+                log(
+                    LOG_CAT,
+                    f"Recognised device via sysex: {dev.getId()}",
+                    verbosity.INFO,
+                    repr(event.sysex)
+                )
                 event.handled = True
             except ValueError:
                 log(
                     LOG_CAT,
                     f"Failed to recognise device via sysex, using fallback method",
-                    verbosity.WARNING
+                    verbosity.WARNING,
+                    repr(event.sysex)
                 )
                 self.detectFallback()
 
