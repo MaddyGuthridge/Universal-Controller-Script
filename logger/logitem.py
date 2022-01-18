@@ -8,7 +8,7 @@ Authors:
 """
 
 import time
-import traceback
+# import traceback
 
 from .verbosity import Verbosity
 
@@ -37,7 +37,7 @@ class LogItem:
         self.verbosity = verbosity
         self.index = index
         self.time = time.localtime()
-        self.trace = traceback.extract_stack(limit=-2)
+        self.trace = None # traceback.extract_stack(limit=-2)
     
     @staticmethod
     def _formatTime(time) -> str:
@@ -74,4 +74,4 @@ class LogItem:
         print(f"----------------------------------------")
         print(self.message)
         print(f"----------------------------------------")
-        print(traceback.print_list(self.trace))
+        # print(traceback.print_list(self.trace))

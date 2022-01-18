@@ -8,7 +8,7 @@ Authors:
 """
 
 from typing import Any, Protocol, TypeVar
-from copy import deepcopy
+# from copy import deepcopy
 
 class SupportsComparison(Protocol):
     """
@@ -78,7 +78,7 @@ def recursiveMergeDictionaries(ref: dict, override: dict, path:str='') -> dict:
                 raise TypeError(f"{ERROR_HEADER}: expected a value of type "
                                 f"{type(ref_value)} for settings value at "
                                 f"{key_path}")
-            new[key] = deepcopy(value)
+            new[key] = value # deepcopy(value)
     
     # Finally return the new dictionary
     return new

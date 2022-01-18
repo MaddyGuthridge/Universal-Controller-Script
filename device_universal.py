@@ -1,3 +1,5 @@
+# name=Universal Controller
+# url=https://github.com/MiguelGuthridge/Universal-Controller-Script
 """device_universal.py
 
 The entrypoint for the universal controller script.
@@ -9,6 +11,9 @@ full copy.
 
 Refer to module `common.consts` for a list of authors for the project
 """
+
+# Add our additional includes to the Python environment
+import include
 
 # Get context, and context reset wrapper
 from common import getContext, catchContextResetException
@@ -36,4 +41,5 @@ def bootstrap():
     pass
 
 if __name__ == "__main__":
+    print("Hello")
     bootstrap()

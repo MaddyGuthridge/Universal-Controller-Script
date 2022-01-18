@@ -14,12 +14,9 @@ from typing import (TYPE_CHECKING,
     Any,
     Callable,
     Optional,
-    TypeVar,
     Union,
-    Type,
-    overload
+    Type
 )
-# from types import Type
 
 if TYPE_CHECKING:
     from . import eventData

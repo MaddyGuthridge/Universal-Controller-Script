@@ -12,7 +12,6 @@ __all__ = [
     'Settings'
 ]
 
-from pprint import pprint
 from typing import Any
 
 from .util import dicttools, hotreload
