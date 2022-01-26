@@ -9,17 +9,15 @@ Authors:
 """
 
 import time
-import ui
 import device
 
 import common
 from common.types import eventData
 from common import log, verbosity
-from common import consts
 
 from common.extensionmanager import ExtensionManager
 
-from .scriptstate import IScriptState
+from . import IScriptState, DeviceNotRecognised
 
 LOG_CAT = "bootstrap.device.type_detect"
 
@@ -127,23 +125,4 @@ class WaitingForDevice(IScriptState):
                 )
                 self.detectFallback()
 
-class DeviceNotRecognised(IScriptState):
-    """
-    State for when device isn't recognised
-    """
-    def initialise(self) -> None:
-        log(
-            LOG_CAT,
-            "Failed to recognise device",
-            verbosity.ERROR,
-            "The device was unable to be recognised. This usually means that "
-            "there is no definition available for your device. You could help "
-            "by contributing a device definition. Visit the GitHub page for "
-            "details: " + consts.WEBSITE)
-        ui.setHintMsg("Failed to recognise device")
-    
-    def tick(self) -> None:
-        ui.setHintMsg("Failed to recognise device")
-    
-    def processEvent(self, event: eventData) -> None:
-        return
+
