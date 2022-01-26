@@ -52,8 +52,12 @@ def OnInit():
 def OnMidiIn(event):
     device.onMidiIn(event)
 
+idle_uncalled = True
 def OnIdle():
-    log("device.idle", "OnIdle() called", verbosity.NOTE)
+    global idle_uncalled
+    if idle_uncalled:
+        log("device.idle", "OnIdle() called", verbosity.INFO)
+        idle_uncalled = False
     device.onIdle()
 
 def OnRefresh():
