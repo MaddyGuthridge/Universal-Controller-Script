@@ -23,7 +23,8 @@ HIERARCHY = {
         "event": {
             "in": {},
             "out": {},
-        }
+        },
+        "idle": {}
     },
     "plugins": {
         "special": {

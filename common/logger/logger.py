@@ -126,6 +126,18 @@ class Log:
             return True
         else:
             return False
+    
+    def __len__(self) -> int:
+        return len(self._history)
+    
+    def length(self) -> int:
+        """
+        Returns the length of the log
+
+        ### Returns:
+        * `int`: log length
+        """
+        return len(self)
 
     def recall(self, category: str = "", verbosity: Verbosity = DEFAULT, number: int = -1):
         """

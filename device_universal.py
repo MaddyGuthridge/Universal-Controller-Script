@@ -53,6 +53,7 @@ def OnMidiIn(event):
     device.onMidiIn(event)
 
 def OnIdle():
+    log("device.idle", "OnIdle() called", verbosity.NOTE)
     device.onIdle()
 
 def OnRefresh():

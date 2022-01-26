@@ -62,7 +62,7 @@ class LogItem:
         ### Returns:
         * `str`: stringified log item
         """
-        index = f"[#{self.index:5d}]"
+        index = f"[#{self.index:6d}]"
         time  = LogItem._formatTime(self.time)
         return \
             f"{index}: {time} | {self.category.ljust(30)} : {self.message}"
