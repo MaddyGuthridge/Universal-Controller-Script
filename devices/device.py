@@ -94,9 +94,15 @@ class Device:
         """
         raise NotImplementedError("This method must be overridden by child classes")
 
+    def tick(self) -> None:
+        """
+        Called frequently, so that the device can perform any required actions,
+        such as maintaining a heartbeat event.
+        """
+
     def matchEvent(self, event: eventData) -> Optional[ControlMapping]:
         """
-        Match an event from the device, so that the script can operator on it
+        Match an event from the device, so that the script can operate on it
 
         ### Returns:
         * `MatchedEvent`: event data
