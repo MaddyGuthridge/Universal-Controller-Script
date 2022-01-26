@@ -60,7 +60,7 @@ def OnIdle():
         idle_uncalled = False
     device.onIdle()
 
-def OnRefresh():
+def OnRefresh(flags: int):
     device.onIdle()
 
 def bootstrap():

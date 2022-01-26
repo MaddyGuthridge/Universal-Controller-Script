@@ -41,42 +41,27 @@ AUTHORS: dict[str, list[str]] = {
 }
 
 ASCII_HEADER_ART = """
-                                                         -**                              
-                                                       *L*.                               
-                                                     *L*.                                 
-                                                   -LL.                                   
-                              --*****--          ./F*                                     
-                          -*LFFFFFFFFFFFL*-     -LF-                                      
-                        *LFFFFFFFFFFFFFFFFFL-  -FF-                                       
-                      -LFFFFFFFFFFFFFFFFFFFFF/-LF-                                        
-                     *LFFFFFFFFFFFFFFFFFFFFFFFFFF********-.        .--***//LLLLLL/**-     
-                    -LLLLLLFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL*--**/LL/***----....--*/FL-   
-                    -LLL/**-*LLLLLFFFFFFFFFFFFFFFFFFFFFFFFFFFFF/-.                  -FF.  
-                          ./LLLLLLLLLLLFFFFFFFFFFFFFFFFFFFFFFFFF/.                  -FF.  
-                          --.     -LLLLLLLLFFFFFFFFFFFFFFFFFFFFFFL                 .LF*   
-                                   -LLLLLLLLLLLLFFFFFFFFFFFFFFFFFF*               -LF*    
-                                    LLLLLLLLLLLLLLLLLLFFFFFFFFFFFFL.            .*FL-     
-                                  --/LLLLLLLLLLLLLLLLLLLLLLFFFFFFFF-           *FF*       
-                               -****-*LLLLLLLLLLLLLLLL/LLLLLLLFFFFL.         *FF*.        
-                           .-*/*-.    .*/LLLLLL/**-.    ./LL.*LLLL*       -*FF*           
-                        .-*/*-.          ..--.           .L/  .*/*      -LFL*             
-                      -*/*-.                              L-         -*FF*-               
-                   .****.                                -/       -*LF/-                  
-                 -*/*-                                  ./.    -*LF/-                     
-               -*/-.                                    /-  -/FF/*                        
-             -**-                                      ***LFL*-                           
-           -**-                                     .-/FFL*-                              
-          */*.                                  .-*LFF*-                                  
-        .*/-                                -*/FFL*-*-                                    
-       .*/-                            --*LFF/*-   --                                     
-       -/*                       .-*/LFF/*-.      *.                                      
-       -//-               .--**LFFL/*-.         .*.                                       
-        .*//****-*****/LLFLL/**-.              --                                         
-           .-********---.                     --                                          
-                                            --                                            
-                                          .-.                                             
-                                        .-.                                               
-                                      --.                                                 
-                         .--.      ---                                                    
-                           .------.                                                       
+                                '                 
+                             ';;'                 
+                            ;;'                   
+             ',;/\\/;,    ,L,                     
+           ,\FFFFFFFFFF; ;L'                      
+          ;FFFFFFFFFFFFFFF/;;;,,    ',,;;;;;/;;'  
+         .FLL\LFFFFFFFFFFFFFFFFFFLL;;,.''    ',L, 
+             ;//;/FFFFFFFFFFFFFFFFF\           L; 
+                  ;FFFFFFFFFFFFFFFFF/        'L/  
+                 ';LFFFFFFFFFFFFFFFFL      ';L,   
+              .;;;.'/LFFFL\;;,;LL\FF/    ./L,     
+           .;;,'      '.'      ;; ,;   ;L/,       
+        ',;,'                  ;'   ,\\;          
+      .;;.                    ,,';\\;'            
+    .;;'                    ';L\/,                
+   ;;'                  ',/\L;'                   
+  ;/               ',;/\/,'..                     
+  /;        '.,;///;;.    ,'                      
+   ,;;;;;;//;;,.         ,                        
+                       .'                         
+                     ..                           
+            '.'   '''                             
+              '.''                                
 """
