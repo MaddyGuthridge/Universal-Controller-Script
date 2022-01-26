@@ -13,11 +13,11 @@ import ui
 import device
 
 import common
-from .types import eventData
-from . import log, verbosity
-from . import consts
+from common.types import eventData
+from common import log, verbosity
+from common import consts
 
-from .extensionmanager import ExtensionManager
+from common.extensionmanager import ExtensionManager
 
 from .scriptstate import IScriptState
 

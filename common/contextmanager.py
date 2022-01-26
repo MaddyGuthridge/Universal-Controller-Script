@@ -22,8 +22,12 @@ from .settings import Settings
 from .util.misc import NoneNoPrintout
 from .types import eventData
 
-from .scriptstate import IScriptState, StateChangeException, catchStateChangeException
-from .devicedetect import WaitingForDevice
+from .states import (
+    IScriptState,
+    StateChangeException,
+    catchStateChangeException,
+    WaitingForDevice
+)
 
 class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
