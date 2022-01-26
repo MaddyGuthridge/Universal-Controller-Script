@@ -7,9 +7,13 @@ without affecting the original control, unless it is specifically applied
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
+
+from typing import TYPE_CHECKING
 from common.types import Color
 from .controlmapping import ControlMapping
-from . import ControlSurface
+
+if TYPE_CHECKING:
+    from . import ControlSurface
 
 class ControlShadow:
     """
@@ -19,7 +23,7 @@ class ControlShadow:
     can then be processed by plugin modules.
     """
     
-    def __init__(self, control: ControlSurface) -> None:
+    def __init__(self, control: 'ControlSurface') -> None:
         """
         Create an event object
 

@@ -1,4 +1,5 @@
 
 from .scriptstate import IScriptState, catchStateChangeException, StateChangeException
-from .devicedetect import DeviceNotRecognised, WaitingForDevice
+from .notrecognised import DeviceNotRecognised
+from .devicedetect import WaitingForDevice
 from .mainstate import MainState

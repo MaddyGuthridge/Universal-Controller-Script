@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from __future__ import annotations
+# from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
@@ -16,8 +16,8 @@ if TYPE_CHECKING:
 
 class ControlMapping:
     
-    def __init__(self, mapping: ControlSurface) -> None:
+    def __init__(self, mapping: 'ControlSurface') -> None:
         self.__mapping = mapping
     
-    def getControl(self) -> ControlSurface:
+    def getControl(self) -> 'ControlSurface':
         return self.__mapping

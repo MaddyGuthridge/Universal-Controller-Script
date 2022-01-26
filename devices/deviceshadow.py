@@ -7,7 +7,7 @@ be manipulated without modifying the original device.
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from __future__ import annotations
+# from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol
 
@@ -169,7 +169,7 @@ class DeviceShadow:
         self,
         control: ControlShadow,
         bind_to: EventCallback,
-        args:tuple|ellipsis=...
+        args:'tuple|ellipsis'=...
     ) -> None:
         """
         Binds a callback function to a control, so the function will be called
@@ -206,7 +206,7 @@ class DeviceShadow:
         self,
         controls: list[ControlShadow],
         bind_to: EventCallback,
-        args_list: Optional[list[tuple]]|ellipsis=...
+        args_list: 'Optional[list[tuple]]|ellipsis'=...
     ) -> None:
         """
         Binds a single function all controls in a list.

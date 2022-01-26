@@ -7,7 +7,7 @@ all control surfaces
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from __future__ import annotations
+# from __future__ import annotations
 
 from typing import Optional
 
@@ -27,7 +27,7 @@ class ControlSurface:
     """
     
     @staticmethod
-    def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
+    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         """
         Returns a list of the control's assignment priorities
 

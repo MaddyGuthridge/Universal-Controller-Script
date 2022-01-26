@@ -7,7 +7,7 @@ the script.
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from __future__ import annotations
+# from __future__ import annotations
 
 from typing import Optional
 from common import IEventPattern
@@ -38,7 +38,7 @@ class Device:
         self.__matcher = control_matcher
     
     @classmethod
-    def create(cls, event: Optional[eventData]) -> Device:
+    def create(cls, event: Optional[eventData]) -> 'Device':
         """
         Create an instance of this device
 

@@ -11,10 +11,10 @@ from . import consts
 
 from .logger import log, verbosity
 
+from .eventpattern import EventPattern, IEventPattern
+
 from .contextmanager import getContext, resetContext, catchContextResetException
 
 from . import util
 
 from .types import eventData, Color
-
-from .eventpattern import EventPattern, IEventPattern
