@@ -10,3 +10,4 @@ Authors:
 from . import dicttools
 from . import hotreload
 from . import consolehelpers
+from . import apifixes
