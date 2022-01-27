@@ -45,10 +45,10 @@ class DeviceShadow:
         ### Args:
         * `device` (`Device`): device to shadow
         """
-        self.__device = device
-        self.__all_controls = device.getControlShadows()
-        self.__free_controls = self.__all_controls.copy()
-        self.__assigned_controls: dict[
+        self._device = device
+        self._all_controls = device.getControlShadows()
+        self._free_controls = self._all_controls.copy()
+        self._assigned_controls: dict[
                 ControlMapping,
                 tuple[ControlShadow, EventCallback, tuple]
             ] = {}
@@ -73,9 +73,9 @@ class DeviceShadow:
         ### Returns:
         * `list[ControlShadow]`: List of available controls
         """
-        num_group_matches = dict.fromkeys(self.__device.getGroups(), 0)
+        num_group_matches = dict.fromkeys(self._device.getGroups(), 0)
         group_matches: dict[str, list] = dict()
-        for c in self.__free_controls:
+        for c in self._free_controls:
             if expr(c.getControl()):
                 num_group_matches[c.group] += 1
                 if c.group in group_matches:
@@ -185,7 +185,7 @@ class DeviceShadow:
         * `ValueError`: Control isn't free to bind to. This indicates a logic
           error in the code assigning controls
         """
-        if control not in self.__free_controls:
+        if control not in self._free_controls:
             raise ValueError("Control must be free to bind to")
         
         if args is Ellipsis:
@@ -197,10 +197,10 @@ class DeviceShadow:
         
         
         # Remove from free controls
-        self.__free_controls.remove(control)
+        self._free_controls.remove(control)
         
         # Bind to callable
-        self.__assigned_controls[control.getMapping()] = (control, bind_to, args_)
+        self._assigned_controls[control.getMapping()] = (control, bind_to, args_)
 
     def bindControls(
         self,
@@ -245,7 +245,7 @@ class DeviceShadow:
                                  "controls list")
         
         # Ensure all controls are assignable
-        if not all(c in self.__free_controls for c in controls):
+        if not all(c in self._free_controls for c in controls):
             raise ValueError("All controls must be free to bind to")
         
         # Bind each control, using the index of it as the argument
@@ -265,7 +265,7 @@ class DeviceShadow:
         """
         # Get control's mapping if it's assigned
         try:
-            control_shadow, fn, args = self.__assigned_controls[control]
+            control_shadow, fn, args = self._assigned_controls[control]
         except KeyError:
             # If we get a KeyError, the control isn't assigned and we should do
             # nothing
@@ -277,5 +277,5 @@ class DeviceShadow:
         """
         Apply the configuration of the device shadow to the control it represents
         """
-        for c in self.__all_controls:
+        for c in self._all_controls:
             c.apply()
