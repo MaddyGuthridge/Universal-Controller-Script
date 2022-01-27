@@ -10,6 +10,7 @@ Authors:
 # from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol
+from common.util.apifixes import PluginIndex
 
 from common.util.dicttools import lowestValueGrEqTarget, greatestKey
 from controlsurfaces import ControlSurface
@@ -29,7 +30,7 @@ class EventCallback(Protocol):
     ### Returns:
     * `bool`: Whether the event has been handled or not
     """
-    def __call__(self, control: ControlShadow, *args: Any) -> bool:
+    def __call__(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
         ...
 
 class DeviceShadow:
@@ -252,13 +253,15 @@ class DeviceShadow:
         for c, a in zip(controls, args_list):
             self.bindControl(c, bind_to, a)
     
-    def processEvent(self, control: ControlMapping) -> bool:
+    def processEvent(self, control: ControlMapping, index: PluginIndex) -> bool:
         """
         Process an event by calling the bound callback function associated with
         it if applicable.
 
         ### Args:
         * `control` (`ControlMapping`): Control associated with the event
+        * `index` (`PluginIndex`): Index of channel or track/slot of the
+          selected plugin
         
         ### Returns:
         * `bool`: Whether the event has been handled
@@ -271,7 +274,7 @@ class DeviceShadow:
             # nothing
             return False
         # Call the bound function with any extra required args
-        return fn(control_shadow, *args)
+        return fn(control_shadow, index, *args)
 
     def apply(self) -> None:
         """

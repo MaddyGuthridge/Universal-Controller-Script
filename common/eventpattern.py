@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 EllipsisType: Type = type(Ellipsis)
 
 # Variable type for byte match expression
-ByteMatch = Union[int, range, tuple[int, ...]]
+ByteMatch = Union[int, range, tuple[int, ...], 'ellipsis']
 
 class IEventPattern:
     """
