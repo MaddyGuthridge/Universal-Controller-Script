@@ -18,7 +18,8 @@ class Plugin:
         ### Args:
         * `shadow` (`DeviceShadow`): device shadow to interact with
         * `mapping_strategies` (`list[IMappingStrategy]`): list of strategies to
-          quickly bind reusable mappings to plugins
+          quickly bind reusable mappings to plugins. This should be implemented
+          by inheriting classes
         """
         # Bind the mapping strategies
         for strat in mapping_strategies:
