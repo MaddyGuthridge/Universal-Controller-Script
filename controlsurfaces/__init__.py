@@ -12,5 +12,6 @@ from .controlsurface import ControlSurface
 from .controlshadow import ControlShadow
 from .controlmapping import ControlMapping
 
+from .pedal import *
 from .button import *
 from .transport import *
