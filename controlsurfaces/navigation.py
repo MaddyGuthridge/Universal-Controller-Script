@@ -13,3 +13,11 @@ from . import ControlSurface
 class NavigationControl(ControlSurface):
     pass
     
+class JogWheel(NavigationControl):
+    pass
+
+class JogForwards(JogWheel):
+    pass
+
+class JogBackards(JogWheel):
+    pass

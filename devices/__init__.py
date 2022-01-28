@@ -10,3 +10,4 @@ Authors:
 from .controlmatcher import IControlMatcher
 from .device import Device
 from .deviceshadow import DeviceShadow
+from .controlmatcher import IControlMatcher, BasicControlMatcher
