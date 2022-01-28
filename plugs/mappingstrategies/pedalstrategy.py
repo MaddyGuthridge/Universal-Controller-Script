@@ -6,7 +6,7 @@ Strategy for mapping a pedal to the plugin
 
 import plugins
 
-from typing import Any, Optional
+from typing import Any
 from common.util.apifixes import PluginIndex
 
 from controlsurfaces.pedal import *
@@ -21,17 +21,37 @@ class PedalStrategy(IMappingStrategy):
         pass
     
     def apply(self, shadow: DeviceShadow) -> None:
+        """
+        Bind pedal events to the pedalCallback function
+
+        ### Args:
+        * `shadow` (`DeviceShadow`): device to bind to
+        """
         for ped in [SustainPedal, SostenutoPedal, SoftPedal]:
             matches = shadow.getControlMatches(ped, 1)
             if len(matches):
                 shadow.bindControl(matches[0], self.pedalCallback)
     
     def pedalCallback(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
+        """
+        Called when a pedal event is detected
+
+        ### Args:
+        * `control` (`ControlShadow`): control surface shadow that was detected
+        * `index` (`PluginIndex`): index of plugin to map to
+
+        ### Raises:
+        * `TypeError`: plugin doesn't support MIDI CC events
+
+        ### Returns:
+        * `bool`: whether the event was processed
+        """
         t_ped = type(control.getControl())
         
          # Filter out non-VSTs
         if 'MIDI CC' not in plugins.getParamName(CC_START, *index):
-            raise TypeError("Expected a plugin of VST type - parameters are incorrect")
+            raise TypeError("Expected a plugin of VST type - make sure that "
+                            "this plugin is a VST, and not an FL Studio plugin")
         
         # Assign parameters
         if t_ped is SustainPedal:
