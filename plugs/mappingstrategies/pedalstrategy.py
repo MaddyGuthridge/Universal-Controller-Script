@@ -28,14 +28,17 @@ class PedalStrategy(IMappingStrategy):
         * `shadow` (`DeviceShadow`): device to bind to
         """
         # Generator function for mapping out pedal events
-        def generator(shadows: list[ControlShadow]):
+        def argument_generator(shadows: list[ControlShadow]):
             for s in shadows:
                 yield (type(s), )
         
+        # Bind every pedal event to the pedalCallback() method, using the
+        # generator to make the type of pedal be used as an argument to the
+        # callback
         shadow.bindMatches(
             Pedal,
             self.pedalCallback,
-            generator,
+            argument_generator,
             raise_on_failure=False
         )
     
@@ -44,7 +47,8 @@ class PedalStrategy(IMappingStrategy):
         control: ControlShadow,
         index: PluginIndex,
         t_ped: type[Pedal],
-        *args: Any) -> bool:
+        *args: Any
+    ) -> bool:
         """
         Called when a pedal event is detected
 
@@ -72,5 +76,7 @@ class PedalStrategy(IMappingStrategy):
             plugins.setParamValue(control.getCurrentValue(), CC_START + SOSTENUTO, *index)
         elif t_ped is SustainPedal:
             plugins.setParamValue(control.getCurrentValue(), CC_START + SOFT, *index)
+        else:
+            raise NotImplementedError("Pedal type not recognised")
         
         return True
