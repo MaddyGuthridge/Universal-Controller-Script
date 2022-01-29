@@ -17,6 +17,9 @@ class PlayButton(TransportButton):
 class StopButton(TransportButton):
     pass
 
+class LoopButton(TransportButton):
+    pass
+
 class RecordButton(TransportButton):
     pass
 
