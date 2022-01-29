@@ -105,7 +105,8 @@ class DeviceShadow:
         allow_substitution: bool = False,
         target_num: int = None,
         trim: bool = True,
-        exact: bool = True
+        exact: bool = True,
+        raise_on_zero: bool = False
     ) -> list[ControlShadow]:
         """
         Returns a list of matching controls.
@@ -130,12 +131,17 @@ class DeviceShadow:
           requested amount will raise an error, and if `trim` is disabled, then
           more results than the requested amount will raise an error as well.
           Defaults to `True`.
+        * `raise_on_zero`  (`bool`, optional): Whether to raise an error if no
+          matching controls are found. This is to prevent errors when attempting
+          to bind to a control when there aren't any matches at all.
         
         ### Raises:
         * `ValueError`: Not enough matching controls found, when `exact` is 
           `True`.
         * `ValueError`: Too many matching controls, when `exact` is `True` and
           `trim` is `False`.
+        * `ValueError`: No matching controls found (when `raise_on_zero` is 
+          True)
 
         ### Returns:
         * `list[ControlShadow]`: List of matches
@@ -153,6 +159,10 @@ class DeviceShadow:
             l,
             target_num
         )
+        
+        # Make sure we have results
+        if raise_on_zero and len(ret) == 0:
+            raise ValueError("No matching controls found")
         
         # If we have no target, ignore exact and trim parameters
         if target_num is None:
@@ -194,7 +204,8 @@ class DeviceShadow:
         """
         return len(self.getControlMatches(
             control,
-            allow_substitution
+            allow_substitution,
+            raise_on_zero=False
         ))
 
     def bindControl(
