@@ -14,7 +14,7 @@ __all__ = [
     'eventData'
 ]
 
-from typing import Optional, TypeVar, Generic
+from typing import Optional, TypeVar, Generic, TYPE_CHECKING
 
 PropType = TypeVar("PropType")
 
@@ -34,6 +34,10 @@ class ReadOnly(Generic[PropType]):
 
 # StatusSysex = TypeVar('StatusSysex', int, list[int])
 
+# Define substitute type if we're type-checking
+# if TYPE_CHECKING:
+# Nope nevermind, turns out that it's impossible to access that class during
+# runtime unless you have a reference object for it.
 class eventData:
     """
     A simple reproduction of the eventData object used by FL Studio.
@@ -70,3 +74,8 @@ class eventData:
         self.midiChan = 0
         self.midiChanEx = 0
         self.pmeflags = ReadOnly(0)
+# Otherwise, define it as the build-in type flmidimsg
+# else:
+#     for k in __builtins__:
+#         print(f"{k}")
+#     eventData = globals()["__builtins__"]["flmidimsg"]

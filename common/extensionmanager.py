@@ -76,23 +76,25 @@ class ExtensionManager:
         ### Returns:
         * `Device`: device object instance
         """
-        # Sysex event
-        if isinstance(arg, eventData):
-            for device in cls._devices:
-                pattern = device.getUniversalEnquiryResponsePattern()
-                if pattern is None:
-                    continue
-                if pattern.matchEvent(arg):
-                    # If it matches the pattern, then we found the right device
-                    # create an instance and return it
-                    return device.create(arg)
         # Device name
-        elif isinstance(arg, str):
+        if isinstance(arg, str):
             for device in cls._devices:
                 if device.matchDeviceName(arg):
                     # If it matches the pattern, then we found the right device
                     # create an instance and return it
                     return device.create(None)
+        # Sysex event
+        # elif isinstance(arg, eventData):
+        # Can't runtime type check for MIDI events
+        else:
+            for device in cls._devices:
+                pattern = device.getUniversalEnquiryResponsePattern()
+                if pattern is None:
+                    pass
+                elif pattern.matchEvent(arg):
+                    # If it matches the pattern, then we found the right device
+                    # create an instance and return it
+                    return device.create(arg)
         raise ValueError("Device not recognised")
     
     @classmethod
@@ -111,3 +113,11 @@ class ExtensionManager:
             if device.getId() == id:
                 return device.create(None)
         raise ValueError(f"Device with ID {id} not found")
+
+    @classmethod
+    def getAllDevices(cls) -> list[type['Device']]:
+        return cls._devices
+    
+    @classmethod
+    def getAllPlugins(cls) -> list[type]:
+        return list(cls._plugins.values())

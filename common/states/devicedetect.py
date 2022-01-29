@@ -17,7 +17,7 @@ from common import log, verbosity
 
 from common.extensionmanager import ExtensionManager
 
-from . import IScriptState, DeviceNotRecognised
+from . import IScriptState, DeviceNotRecognised, MainState
 
 LOG_CAT = "bootstrap.device.type_detect"
 
@@ -42,7 +42,12 @@ class WaitingForDevice(IScriptState):
             if name == device_name:
                 try:
                     dev = ExtensionManager.getDeviceById(id)
-                    # Assign device (causes StateChangeException)
+                    log(
+                            LOG_CAT,
+                            f"Recognised device via device name associations: {dev.getId()}",
+                            verbosity.INFO
+                        )
+                    common.getContext().setState(MainState(dev))
                 except ValueError:
                     log(
                         f"bootstrap.device.type_detect",
@@ -66,6 +71,12 @@ class WaitingForDevice(IScriptState):
         name = device.getName()
         try:
             dev = ExtensionManager.getDevice(name)
+            log(
+                    LOG_CAT,
+                    f"Recognised device via fallback: {dev.getId()}",
+                    verbosity.INFO
+                )
+            common.getContext().setState(MainState(dev))
         except ValueError:
             log(LOG_CAT, f"Failed to recognise device via fallback method", verbosity.WARNING)
             common.getContext().setState(DeviceNotRecognised())
@@ -98,7 +109,7 @@ class WaitingForDevice(IScriptState):
             ):
                 log(
                     LOG_CAT,
-                    f"Device enquiry timeout after {time.time() - self._init_time} seconds",
+                    f"Device enquiry timeout after {(time.time() - self._init_time):.2f} seconds",
                     verbosity.INFO
                 )
                 self.detectFallback()
@@ -116,6 +127,7 @@ class WaitingForDevice(IScriptState):
                     repr(event.sysex)
                 )
                 event.handled = True
+                common.getContext().setState(MainState(dev))
             except ValueError:
                 log(
                     LOG_CAT,

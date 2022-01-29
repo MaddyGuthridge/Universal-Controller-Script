@@ -20,7 +20,7 @@ from common import getContext, catchContextResetException
 # Function to allow user to reset context
 from common.contextmanager import unsafeResetContext as reset
 # Import constants and logger
-from common import consts, log, verbosity
+from common import consts, log, verbosity, ExtensionManager
 
 # Import console helpers
 from common.util.consolehelpers import *
@@ -42,6 +42,10 @@ class OverallDevice:
     def bootstrap(self):
         log("bootstrap.initialize", "Load success", verbosity.INFO)
         print(consts.ASCII_HEADER_ART)
+        num_devs = len(ExtensionManager.getAllDevices())
+        num_plugs = len(ExtensionManager.getAllPlugins())
+        print(f"{num_devs} device{'s' if num_devs != 1 else ''}, ", end='')
+        print(f"{num_plugs} plugin{'s' if num_plugs != 1 else ''}")
         print("Type `help` for help using the script\n")
 
 device = OverallDevice()

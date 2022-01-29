@@ -7,8 +7,11 @@
     "python.testing.pytestEnabled": true,
     "cSpell.words": [
         "capsys",
+        "deinitialise",
         "dicttools",
+        "flmidimsg",
         "ivaluestrategy",
+        "Novation",
         "pmeflags",
         "RRGGBB",
         "Sostenuto",
