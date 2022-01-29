@@ -224,10 +224,7 @@ class DeviceShadow:
         if args is None:
             args_: tuple = tuple()
         else:
-            if TYPE_CHECKING:
-                assert not isinstance(args, ellipsis)
             args_ = args
-        
         
         # Remove from free controls
         self._free_controls.remove(control)
@@ -250,7 +247,7 @@ class DeviceShadow:
         * `controls` (`list[ControlShadow]`): List of controls to bind to
         * `bind_to` (`EventCallback`): callback function to bind. Refer to
           EventCallback documentation for how this should be structured.
-        * `args_iterable` (`Optional[Iterable[tuple]]`, optional): Iterable of
+        * `args_iterable` (`Iterable[tuple] | ellipsis`, optional): Iterable of
           arguments to pass to the function:
                 * `None` (default): no arguments will be given.
                 * `...`: indices of the controls (ie the first control in
@@ -354,7 +351,7 @@ class DeviceShadow:
         self,
         control: type[ControlSurface],
         bind_to: EventCallback,
-        args_iterable: 'Iterable[tuple]|ellipsis' = None,
+        args_iter_gen: 'list[tuple] | Callable[[list[ControlShadow]], Generator[tuple, None, None]] | ellipsis' = None,
         allow_substitution: bool = False,
         target_num: int = None,
         trim: bool = True,
@@ -368,8 +365,7 @@ class DeviceShadow:
         ### Args:
         * `control` (`ControlSurface`): control type to bind.
         * `bind_to` (`EventCallback`): function to bind to.
-        * `args_iterable` (`Optional[Iterable[tuple]]`, optional): Iterable of
-          arguments to pass to the function:
+        * `args_iterable`: Iterable of arguments to pass to the function:
                 * `None` (default): no arguments will be given.
                 * `...`: indices of the controls (ie the first control in
                   the list will cause the callback to be given the argument 
@@ -379,7 +375,8 @@ class DeviceShadow:
                   argument tuples will need to be at least of the same length as
                   the list of controls to bind. Any excess arguments will be 
                   ignored.
-                * `Generator[tuple, None, None]`: the generator will be iterated
+                * `GeneratorFunction (list[ControlShadow]) -> Generator -> 
+                  tuple`: the generator will be iterated
                   over in order to generate tuples of arguments for each 
                   control. Note that if the number of matches isn't guaranteed,
                   a generator should be used to get callback arguments.
@@ -404,12 +401,22 @@ class DeviceShadow:
           `False`, `0` will be returned instead. Defaults to `True`.
 
         ### Raises:
+        * `TypeError`: Potential bad number of callback arguments due to unknown
+          number of controls being bound (ie. `exact` is `False`).
         * `ValueError`: No controls were found to bind to (when 
           `raise_on_failure` is `True`)
         
         ### Returns:
         * `int`: Number of controls bound successfully
         """
+        
+        # Ensure we don't risk having too few arguments to bind to
+        if isinstance(args_iter_gen, list) and not exact:
+            raise TypeError(f"A generator function should be used to create "
+                            f"callback arguments if the number of controls to "
+                            f"be bound is unknown (ie. when {exact=})")
+        
+        # Try to get a list of matching controls
         try:
             matches = self.getControlMatches(
                 control,
@@ -423,7 +430,17 @@ class DeviceShadow:
                 raise ValueError("Error binding controls") from e
             else:
                 return 0
-        self.bindControls(matches, bind_to, args_iterable)
+        
+        # Check for generator functions
+        if not isinstance(args_iter_gen, (list, type(...), type(None))):
+            # Turn the generator function into a generator (which is iterable)
+            iterable = args_iter_gen(matches)
+        else:
+            # Otherwise it's already iterable (or will be made so by the 
+            # bindControls() method)
+            iterable = args_iter_gen
+        # Finally, bind all the controls
+        self.bindControls(matches, bind_to, iterable)
         return len(matches)
     
     def processEvent(self, control: ControlMapping, index: PluginIndex) -> bool:
