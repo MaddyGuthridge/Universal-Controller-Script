@@ -155,6 +155,7 @@ class Log:
         prints = []
         for item in reversed(self._history):
             # Print if required
+            # TODO: Count number skipped because verbosity
             if self._shouldPrint(item, category, verbosity):
                 num_prints += 1
                 prints.insert(0, item)
