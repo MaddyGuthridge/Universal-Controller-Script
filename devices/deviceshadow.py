@@ -299,7 +299,7 @@ class DeviceShadow:
         for c, a in zip(controls, args_iterable):
             self.bindControl(c, bind_to, a)
     
-    def bindFirstMatch(
+    def bindMatch(
         self,
         control: type[ControlSurface],
         bind_to: EventCallback,
