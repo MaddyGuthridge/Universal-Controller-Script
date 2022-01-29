@@ -184,7 +184,7 @@ def lowestValueGrEqTarget(d: dict[K, V], target:V) -> K:
     * `target` (`V`): Minimum value
 
     ### Raises:
-    * `ValueError`: Dictionary is empty
+    * `ValueError`: No values are above the target value
 
     ### Returns:
     * `K`: Key that maps to the greatest value

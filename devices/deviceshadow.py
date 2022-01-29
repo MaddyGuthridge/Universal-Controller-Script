@@ -87,7 +87,12 @@ class DeviceShadow:
         if target_num is None:
             highest = greatestKey(num_group_matches)
         else:
-            highest = lowestValueGrEqTarget(num_group_matches, target_num)
+            try:
+                # Find the lowest value above the allowed amount
+                highest = lowestValueGrEqTarget(num_group_matches, target_num)
+            except ValueError:
+                # If that fails, just use the highest value available
+                highest = greatestKey(num_group_matches)
         
         return group_matches[highest]
     
@@ -133,8 +138,8 @@ class DeviceShadow:
         * `list[ControlShadow]`: List of matches
         """
         ret = self.getControlMatches(control, target_num)
-        if len(ret) == target_num:
-            return ret
+        if len(ret) >= target_num:
+            return ret[:target_num]
         else:
             raise ValueError("Not enough controls of specified type found")
         
@@ -197,8 +202,8 @@ class DeviceShadow:
         * `list[ControlShadow]`: List of matches
         """
         ret = self.getSubsControlMatches(control, target_num)
-        if len(ret) == target_num:
-            return ret
+        if len(ret) >= target_num:
+            return ret[:target_num]
         else:
             raise ValueError("Not enough controls of specified type found")
     
