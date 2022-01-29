@@ -19,7 +19,7 @@ from . import Device
 from controlsurfaces import ControlShadow, ControlMapping
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Iterable, Generator
 
 class EventCallback(Protocol):
     """
@@ -239,7 +239,7 @@ class DeviceShadow:
         self,
         controls: list[ControlShadow],
         bind_to: EventCallback,
-        args_iterable: 'Iterable[tuple]|ellipsis' = None
+        args_iterable: 'Iterable[tuple] | ellipsis' = None
     ) -> None:
         """
         Binds a single function all controls in a list.
@@ -262,7 +262,9 @@ class DeviceShadow:
                   the list of controls to bind. Any excess arguments will be 
                   ignored.
                 * `Generator[tuple, None, None]`: the generator will be iterated
-                over in order to generate tuples of arguments for each control.
+                  over in order to generate tuples of arguments for each 
+                  control. Note that this refers to a generator object, not a
+                  generator function.
 
         ### Raises:
         * `ValueError`: Args list length not equal to controls list length
@@ -270,10 +272,10 @@ class DeviceShadow:
         """
         # If ellipsis given for args iterable, generate index numbers
         if args_iterable is Ellipsis:
-            args_iterable = [(i,) for i in range(len(controls))]
+            args_iter = ((i,) for i in range(len(controls)))
         # If args iterable is None, use empty args
         elif args_iterable is None:
-            args_iterable = [tuple() for _ in range(len(controls))]
+            args_iter = (tuple() for _ in range(len(controls)))
         # Otherwise, check length
         else:
             try:
@@ -282,21 +284,24 @@ class DeviceShadow:
                 if len(args_iterable) < len(controls): # type: ignore
                     raise ValueError("Args list must be of the same length as "
                                     "controls list")
+                
+                # Get rid of incorrect flag for ellipsis
+                if TYPE_CHECKING:
+                    assert not isinstance(args_iterable, type(...))
+                args_iter = (a for a in args_iterable)
             except TypeError:
                 # Iterable doesn't support len, assume it's infinite (ie a 
                 # generator)
-                pass
+                if TYPE_CHECKING:
+                    assert isinstance(args_iterable, Generator)
+                args_iter = args_iterable
         
         # Ensure all controls are assignable
         if not all(c in self._free_controls for c in controls):
             raise ValueError("All controls must be free to bind to")
         
-        # Get rid of incorrect flag for ellipsis
-        if TYPE_CHECKING:
-            assert not isinstance(args_iterable, type(...))
-        
         # Bind each control, using the index of it as the argument
-        for c, a in zip(controls, args_iterable):
+        for c, a in zip(controls, args_iter):
             self.bindControl(c, bind_to, a)
     
     def bindMatch(

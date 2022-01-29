@@ -27,8 +27,11 @@ class PedalStrategy(IMappingStrategy):
         ### Args:
         * `shadow` (`DeviceShadow`): device to bind to
         """
-        for ped in [SustainPedal, SostenutoPedal, SoftPedal]:
-            shadow.bindFirstMatchSafe(ped, self.pedalCallback, (ped,))
+        shadow.bindMatches(
+            Pedal,
+            self.pedalCallback,
+            
+        )
     
     def pedalCallback(
         self,
