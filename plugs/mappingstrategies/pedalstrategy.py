@@ -27,10 +27,16 @@ class PedalStrategy(IMappingStrategy):
         ### Args:
         * `shadow` (`DeviceShadow`): device to bind to
         """
+        # Generator function for mapping out pedal events
+        def generator(shadows: list[ControlShadow]):
+            for s in shadows:
+                yield (type(s), )
+        
         shadow.bindMatches(
             Pedal,
             self.pedalCallback,
-            
+            generator,
+            raise_on_failure=False
         )
     
     def pedalCallback(
