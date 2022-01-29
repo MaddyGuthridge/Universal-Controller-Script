@@ -201,7 +201,7 @@ class DeviceShadow:
         self,
         control: ControlShadow,
         bind_to: EventCallback,
-        args: 'tuple|ellipsis' = ...
+        args: tuple = None
     ) -> None:
         """
         Binds a callback function to a control, so the function will be called
@@ -211,7 +211,8 @@ class DeviceShadow:
         * `control` (`ControlShadow`): control to bind
         * `bind_to` (`EventCallback`): callback function to bind. Refer to
           EventCallback documentation for how this should be structured.
-        * `args` (`tuple`, optional): args for the callback function. Defaults to `...`.
+        * `args` (`tuple`, optional): arguments to give to the callback 
+          function. Defaults to `None` (no arguments).
 
         ### Raises:
         * `ValueError`: Control isn't free to bind to. This indicates a logic
@@ -220,7 +221,7 @@ class DeviceShadow:
         if control not in self._free_controls:
             raise ValueError("Control must be free to bind to")
         
-        if args is Ellipsis:
+        if args is None:
             args_: tuple = tuple()
         else:
             if TYPE_CHECKING:
@@ -302,7 +303,7 @@ class DeviceShadow:
         self,
         control: type[ControlSurface],
         bind_to: EventCallback,
-        args: 'tuple|ellipsis' = ...,
+        args: tuple = None,
         allow_substitution: bool = False,
         raise_on_failure: bool = True
     ) -> bool:
@@ -313,8 +314,8 @@ class DeviceShadow:
         ### Args:
         * `control` (`ControlSurface`): control type to bind
         * `bind_to` (`EventCallback`): function to bind to
-        * `args` (`tuple`, optional): args to give to callback. 
-          Defaults to `...`.
+        * `args` (`tuple`, optional): arguments to give to the callback 
+          function. Defaults to `None` (no arguments).
         * `allow_substitution` (`bool`, optional): whether the control can be
           substituted for a similar control. Defaults to `False`.
         * `raise_on_failure` (`bool`, optional): whether failure to assign the
