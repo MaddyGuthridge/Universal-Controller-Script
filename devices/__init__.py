@@ -11,3 +11,6 @@ from .controlmatcher import IControlMatcher
 from .device import Device
 from .deviceshadow import DeviceShadow
 from .controlmatcher import IControlMatcher, BasicControlMatcher
+
+# Device manufacturers
+from . import novation

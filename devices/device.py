@@ -52,7 +52,8 @@ class Device:
         ### Returns:
         * `Device`: instance of device object
         """
-        raise NotImplementedError("This method must be overridden by child classes")
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
     
     @staticmethod
     def getId() -> str:
@@ -64,8 +65,9 @@ class Device:
         ### Returns:
         * `str`: device id
         """
-        raise NotImplementedError("This method must be overridden by child classes")
-    
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+
     @staticmethod
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
         """
@@ -75,8 +77,9 @@ class Device:
         ### Returns:
         * `IEventPattern`: pattern to match universal device enquiry
         """
-        raise NotImplementedError("This method must be overridden by child classes")
-    
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+
     @staticmethod
     def matchDeviceName(name: str) -> bool:
         """
@@ -92,17 +95,38 @@ class Device:
         ### Returns:
         * `bool`: whether there was a match
         """
-        raise NotImplementedError("This method must be overridden by child classes")
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+
+    def initialise(self) -> None:
+        """
+        Called when the device is first recognised, and when FL Studio allows
+        communication.
+        
+        Can be overridden by child classes.
+        """
+
+    def deinitialise(self) -> None:
+        """
+        Called when FL Studio is going to start blocking communication, such as
+        when a render is going to begin, or when exiting.
+        
+        Can be overridden by child classes.
+        """
 
     def tick(self) -> None:
         """
         Called frequently, so that the device can perform any required actions,
         such as maintaining a heartbeat event.
+        
+        Can be overridden by child classes.
         """
 
     def matchEvent(self, event: eventData) -> Optional[ControlMapping]:
         """
-        Match an event from the device, so that the script can operate on it
+        Match an event from the device, so that the script can operate on it.
+        
+        This shouldn't be overridden by child classes.
 
         ### Returns:
         * `MatchedEvent`: event data
@@ -113,6 +137,8 @@ class Device:
         """
         Returns a list of new control shadows representing all the controls
         available on the device.
+        
+        This shouldn't be overridden by child classes.
 
         ### Returns:
         * `list[ControlSurface]`: Control shadows
@@ -125,6 +151,8 @@ class Device:
 
         Refer to the documentation for the group property in the ControlSurface
         type.
+        
+        This shouldn't be overridden by child classes.
 
         ### Returns:
         * `set[str]`: Set of groups
