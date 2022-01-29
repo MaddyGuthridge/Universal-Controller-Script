@@ -18,6 +18,9 @@ from . import Device
 
 from controlsurfaces import ControlShadow, ControlMapping
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
 class EventCallback(Protocol):
     """
     Type definition for a callback function, which accepts a control mapping, as
@@ -235,8 +238,7 @@ class DeviceShadow:
         self,
         controls: list[ControlShadow],
         bind_to: EventCallback,
-        # TODO: Allow the use of a generator to get arguments
-        args_list: 'list[tuple]|ellipsis' = None
+        args_iterable: 'Iterable[tuple]|ellipsis' = None
     ) -> None:
         """
         Binds a single function all controls in a list.
@@ -247,39 +249,53 @@ class DeviceShadow:
         * `controls` (`list[ControlShadow]`): List of controls to bind to
         * `bind_to` (`EventCallback`): callback function to bind. Refer to
           EventCallback documentation for how this should be structured.
-        * `args_list` (`Optional[list[tuple]]`, optional): List of arguments to
-          pass to the function:
-            * `None` (default): no arguments will be given.
-            * `...`: indices of the controls (ie the first control in
-              the list will cause the callback to be given the argument `0`).
-            * `list[tuple]`: The arguments provided in the tuple at the index
-              corresponding to the event that was called will be given to the
-              function as arguments.
+        * `args_iterable` (`Optional[Iterable[tuple]]`, optional): Iterable of
+          arguments to pass to the function:
+                * `None` (default): no arguments will be given.
+                * `...`: indices of the controls (ie the first control in
+                  the list will cause the callback to be given the argument 
+                  `0`).
+                * `list[tuple]`: each control will be associated with the tuple
+                  of arguments with the same index. Note that the list of 
+                  argument tuples will need to be at least of the same length as
+                  the list of controls to bind. Any excess arguments will be 
+                  ignored.
+                * `Generator[tuple, None, None]`: the generator will be iterated
+                over in order to generate tuples of arguments for each control.
 
         ### Raises:
         * `ValueError`: Args list length not equal to controls list length
         * `ValueError`: Not all controls in controls list are free to bind to
         """
-        # If no callback args given, generate index numbers
-        if args_list is Ellipsis:
-            args_list = [(i,) for i in range(len(controls))]
-        # If explicitly set to None, use empty args
-        elif args_list is None:
-            args_list = [tuple() for _ in range(len(controls))]
+        # If ellipsis given for args iterable, generate index numbers
+        if args_iterable is Ellipsis:
+            args_iterable = [(i,) for i in range(len(controls))]
+        # If args iterable is None, use empty args
+        elif args_iterable is None:
+            args_iterable = [tuple() for _ in range(len(controls))]
         # Otherwise, check length
         else:
-            if TYPE_CHECKING:
-                assert isinstance(args_list, list)
-            if not len(args_list) == len(controls):
-                raise ValueError("Args list must be of the same length as "
-                                 "controls list")
+            try:
+                # Ignore type checking, since we're in a try-except to avoid the
+                # error anyway
+                if len(args_iterable) < len(controls): # type: ignore
+                    raise ValueError("Args list must be of the same length as "
+                                    "controls list")
+            except TypeError:
+                # Iterable doesn't support len, assume it's infinite (ie a 
+                # generator)
+                pass
         
         # Ensure all controls are assignable
         if not all(c in self._free_controls for c in controls):
             raise ValueError("All controls must be free to bind to")
         
+        # Get rid of incorrect flag for ellipsis
+        if TYPE_CHECKING:
+            assert not isinstance(args_iterable, type(...))
+        
         # Bind each control, using the index of it as the argument
-        for c, a in zip(controls, args_list):
+        for c, a in zip(controls, args_iterable):
             self.bindControl(c, bind_to, a)
     
     def bindFirstMatch(
@@ -332,7 +348,7 @@ class DeviceShadow:
         self,
         control: type[ControlSurface],
         bind_to: EventCallback,
-        args_list:'list[tuple]|ellipsis'=None,
+        args_iterable: 'Iterable[tuple]|ellipsis' = None,
         allow_substitution: bool = False,
         target_num: int = None,
         trim: bool = True,
@@ -346,14 +362,21 @@ class DeviceShadow:
         ### Args:
         * `control` (`ControlSurface`): control type to bind.
         * `bind_to` (`EventCallback`): function to bind to.
-        * `args_list` (`Optional[list[tuple]]`, optional): List of arguments to
-          pass to the function:
+        * `args_iterable` (`Optional[Iterable[tuple]]`, optional): Iterable of
+          arguments to pass to the function:
                 * `None` (default): no arguments will be given.
                 * `...`: indices of the controls (ie the first control in
-                  the list will cause the callback to be given the argument `0`).
-                * `list[tuple]`: The arguments provided in the tuple at the index
-                  corresponding to the event that was called will be given to the
-                  function as arguments.
+                  the list will cause the callback to be given the argument 
+                  `0`).
+                * `list[tuple]`: each control will be associated with the tuple
+                  of arguments with the same index. Note that the list of 
+                  argument tuples will need to be at least of the same length as
+                  the list of controls to bind. Any excess arguments will be 
+                  ignored.
+                * `Generator[tuple, None, None]`: the generator will be iterated
+                  over in order to generate tuples of arguments for each 
+                  control. Note that if the number of matches isn't guaranteed,
+                  a generator should be used to get callback arguments.
         * `target_num` (`int`, optional): Number of matches to look for, to
           ensure we don't waste controls that can support more space. If not
           provided, the maximum sized group will be used. Note that fewer
@@ -394,7 +417,7 @@ class DeviceShadow:
                 raise ValueError("Error binding controls") from e
             else:
                 return 0
-        self.bindControls(matches, bind_to, args_list)
+        self.bindControls(matches, bind_to, args_iterable)
         return len(matches)
     
     def processEvent(self, control: ControlMapping, index: PluginIndex) -> bool:
