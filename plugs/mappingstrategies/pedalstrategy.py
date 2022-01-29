@@ -28,17 +28,21 @@ class PedalStrategy(IMappingStrategy):
         * `shadow` (`DeviceShadow`): device to bind to
         """
         for ped in [SustainPedal, SostenutoPedal, SoftPedal]:
-            matches = shadow.getControlMatches(ped, 1)
-            if len(matches):
-                shadow.bindControl(matches[0], self.pedalCallback)
+            shadow.bindFirstMatchSafe(ped, self.pedalCallback, (ped,))
     
-    def pedalCallback(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
+    def pedalCallback(
+        self,
+        control: ControlShadow,
+        index: PluginIndex,
+        t_ped: type[Pedal],
+        *args: Any) -> bool:
         """
         Called when a pedal event is detected
 
         ### Args:
         * `control` (`ControlShadow`): control surface shadow that was detected
         * `index` (`PluginIndex`): index of plugin to map to
+        * `t_ped` (`type[Pedal]`): type of pedal that was called
 
         ### Raises:
         * `TypeError`: plugin doesn't support MIDI CC events
@@ -46,7 +50,6 @@ class PedalStrategy(IMappingStrategy):
         ### Returns:
         * `bool`: whether the event was processed
         """
-        t_ped = type(control.getControl())
         
          # Filter out non-VSTs
         if 'MIDI CC' not in plugins.getParamName(CC_START, *index):
