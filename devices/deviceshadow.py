@@ -100,9 +100,11 @@ class DeviceShadow:
 
         ### Args:
         * `control` (`type`): Type of control to match
-        * `target_num` (`int`): Number of matches to look for, to ensure we
+        * `target_num` (`int`, optional): Number of matches to look for, to ensure we
           don't waste controls that can support more space. If not provided, the
-          maximum sized group will be given.
+          maximum sized group will be given. Note that fewer controls could be
+          returned if not enough are available. To ensure an exact number, use
+          getControlMatchesExact(). Defaults to `None`.
 
         ### Returns:
         * `list[ControlShadow]`: List of matches
@@ -111,6 +113,31 @@ class DeviceShadow:
             lambda x: isinstance(x, control),
             target_num
         )
+    
+    def getControlMatchesExact(self, control: type[ControlSurface], target_num:int) -> list[ControlShadow]:
+        """
+        Returns a list of matching controls
+
+        A matching control is defined as inheriting from the given type, is a
+        member of the same group, and which isn't already assigned.
+
+        ### Args:
+        * `control` (`type`): Type of control to match
+        * `target_num` (`int`): Number of matches to look for. If not enough are
+          found, a ValueError is raised.
+        
+        ### Raises:
+        * `ValueError`: Not enough matching controls found
+
+        ### Returns:
+        * `list[ControlShadow]`: List of matches
+        """
+        ret = self.getControlMatches(control, target_num)
+        if len(ret) == target_num:
+            return ret
+        else:
+            raise ValueError("Not enough controls of specified type found")
+        
     
     def getNumControlMatches(self, control: type[ControlSurface]) -> int:
         """
@@ -149,6 +176,31 @@ class DeviceShadow:
             lambda x: isinstance(x, control.getControlAssignmentPriorities()),
             target_num
         )
+    
+    def getSubsControlMatchesExact(self, control: type[ControlSurface], target_num:int) -> list[ControlShadow]:
+        """
+        Returns a list of matching controls including substitutes
+
+        A matching control is defined as a control inheriting from the given 
+        type or a substituted type, is a member of the same group as other 
+        matches, and which isn't already assigned.
+
+        ### Args:
+        * `control` (`type`): Type of control to match
+        * `target_num` (`int`): Number of matches to look for. If not enough are
+          found, a ValueError is raised.
+        
+        ### Raises:
+        * `ValueError`: Not enough matching controls found
+
+        ### Returns:
+        * `list[ControlShadow]`: List of matches
+        """
+        ret = self.getSubsControlMatches(control, target_num)
+        if len(ret) == target_num:
+            return ret
+        else:
+            raise ValueError("Not enough controls of specified type found")
     
     def getNumSubsControlMatches(self, control: type[ControlSurface]) -> int:
         """
@@ -252,6 +304,262 @@ class DeviceShadow:
         # Bind each control, using the index of it as the argument
         for c, a in zip(controls, args_list):
             self.bindControl(c, bind_to, a)
+    
+    def bindFirstMatch(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        args:'tuple|ellipsis'=...
+    ) -> None:
+        """
+        Finds the first control of a matching type and binds it to the given
+        function.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+
+        ### Raises:
+        * `ValueError`: No controls were found to bind to
+        """
+        try:
+            match = self.getControlMatches(control, 1)[0]
+        except IndexError:
+            raise ValueError("No controls found to bind to")
+        self.bindControl(match, bind_to, args)
+    
+    def bindFirstMatchSafe(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        args:'tuple|ellipsis'=...
+    ) -> bool:
+        """
+        Finds the first control of a matching type and binds it to the given
+        function, if one can be found.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+        
+        ### Returns:
+        * `bool`: whether the assignment was successful
+        """
+        try:
+            self.bindFirstMatch(control, bind_to, args)
+        except ValueError:
+            return False
+        else:
+            return True
+        
+    def bindFirstSubsMatch(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        args:'tuple|ellipsis'=...
+    ) -> None:
+        """
+        Finds the first control of a matching type, or a substitutable type,
+        and binds it to the given function.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+
+        ### Raises:
+        * `ValueError`: No controls were found to bind to
+        """
+        try:
+            match = self.getSubsControlMatches(control, 1)[0]
+        except IndexError:
+            raise ValueError("No controls found to bind to")
+        self.bindControl(match, bind_to, args)
+    
+    def bindFirstSubsMatchSafe(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        args:'tuple|ellipsis'=...
+    ) -> bool:
+        """
+        Finds the first control of a matching type, or a substitutable type,
+        and binds it to the given function.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+
+        ### Raises:
+        * `ValueError`: No controls were found to bind to
+        """
+        try:
+            self.bindFirstSubsMatch(control, bind_to, args)
+        except ValueError:
+            return False
+        else:
+            return True
+    
+    def bindMatches(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        target_num: int=None,
+        args:'Optional[list[tuple]]|ellipsis'=...
+    ) -> int:
+        """
+        Finds all controls of a matching type and binds them to the given
+        function.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `target_num` (`int`, optional): Number of matches to look for, to
+          ensure we don't waste controls that can support more space. If not
+          provided, the maximum sized group will be used. Note that fewer
+          controls could be bound if not enough are available. To ensure an
+          exact number, use bindMatchesExact(). Defaults to `None`.
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+        
+        ### Returns:
+        * `int`: Number of controls bound successfully
+        """
+        matches = self.getControlMatches(control, target_num)
+        self.bindControls(matches, bind_to, args)
+        return len(matches)
+    
+    def bindSubsMatches(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        target_num: int=None,
+        args:'Optional[list[tuple]]|ellipsis'=...
+    ) -> int:
+        """
+        Finds all controls of a matching type, or a substitutable type, and
+        binds them to the given function.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `target_num` (`int`, optional): Number of matches to look for, to
+          ensure we don't waste controls that can support more space. If not
+          provided, the maximum sized group will be used. Note that fewer
+          controls could be bound if not enough are available. To ensure an
+          exact number, use bindSubsMatchesExact(). Defaults to `None`.
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+        
+        ### Returns:
+        * `int`: Number of controls bound successfully
+        """
+        matches = self.getSubsControlMatches(control, target_num)
+        self.bindControls(matches, bind_to, args)
+        return len(matches)
+    
+    def bindMatchesExact(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        target_num: int,
+        args:'Optional[list[tuple]]|ellipsis'=...
+    ) -> None:
+        """
+        Finds all controls of a matching type and binds them to the given
+        function.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `target_num` (`int`): Number of matches to look for. If not enough are
+          found, a ValueError is raised.
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+        """
+        matches = self.getControlMatchesExact(control, target_num)
+        self.bindControls(matches, bind_to, args)
+    
+    def bindMatchesExactSafe(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        target_num: int,
+        args:'Optional[list[tuple]]|ellipsis'=...
+    ) -> bool:
+        """
+        Finds all controls of a matching type and binds them to the given
+        function.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `target_num` (`int`): Number of matches to look for. If not enough are
+          found, a ValueError is raised.
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+        """
+        try:
+            self.bindMatchesExact(control, bind_to, target_num, args)
+        except ValueError:
+            return False
+        else:
+            return True
+    
+    def bindSubsMatchesExact(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        target_num: int,
+        args:'Optional[list[tuple]]|ellipsis'=...
+    ) -> None:
+        """
+        Finds all controls of a matching type, or a substitutable type, and
+        binds them to the given function.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `target_num` (`int`): Number of matches to look for. If not enough are
+          found, a ValueError is raised.
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+        """
+        matches = self.getSubsControlMatchesExact(control, target_num)
+        self.bindControls(matches, bind_to, args)
+    
+    def bindSubsMatchesExactSafe(
+        self,
+        control: type[ControlSurface],
+        bind_to: EventCallback,
+        target_num: int,
+        args:'Optional[list[tuple]]|ellipsis'=...
+    ) -> bool:
+        """
+        Finds all controls of a matching type, or a substitutable type, and
+        binds them to the given function.
+
+        ### Args:
+        * `control` (`ControlSurface`): control type to bind
+        * `bind_to` (`EventCallback`): function to bind to
+        * `target_num` (`int`): Number of matches to look for. If not enough are
+          found, a ValueError is raised.
+        * `args` (`tuple`, optional): args to give to callback. 
+          Defaults to `...`.
+        """
+        try:
+            self.bindSubsMatchesExact(control, bind_to, target_num, args)
+        except ValueError:
+            return False
+        else:
+            return True
     
     def processEvent(self, control: ControlMapping, index: PluginIndex) -> bool:
         """
