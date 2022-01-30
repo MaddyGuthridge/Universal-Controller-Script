@@ -7,7 +7,11 @@ can be imported normally
 
 import sys
 
-directory = __file__.removesuffix("\\__init__.py")
+try:
+    import typing
+    import abc
+except ImportError:
+    directory = __file__.removesuffix("\\__init__.py")
 
-# Add right to the start of the path
-sys.path.insert(0, directory)
+    # Add right to the start of the path
+    sys.path.insert(0, directory)
