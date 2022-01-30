@@ -31,6 +31,7 @@ class Transport(SpecialPlugin):
         shadow.bindMatch(PlayButton, self.playButton, raise_on_failure=False)
         shadow.bindMatch(StopButton, self.stopButton, raise_on_failure=False)
         shadow.bindMatch(JogWheel, self.jogWheel, raise_on_failure=False)
+        # TODO: Bind navigation controls
         
     def playButton(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
         transport.start()

@@ -30,7 +30,7 @@ class PedalStrategy(IMappingStrategy):
         # Generator function for mapping out pedal events
         def argument_generator(shadows: list[ControlShadow]):
             for s in shadows:
-                yield (type(s), )
+                yield (type(s.getControl()), )
         
         # Bind every pedal event to the pedalCallback() method, using the
         # generator to make the type of pedal be used as an argument to the
