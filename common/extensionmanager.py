@@ -14,6 +14,7 @@ from common.types.eventdata import eventData
 
 if TYPE_CHECKING:
     from devices import Device
+    from plugs import StandardPlugin, SpecialPlugin
 
 class ExtensionManager:
     """
@@ -21,15 +22,72 @@ class ExtensionManager:
     to be used for plugins or devices as required.
     """
     
-    _plugins: dict[str, type] = dict()
+    # Standard plugins
+    _plugins: dict[str, type[StandardPlugin]] = dict()
+    _instantiated_plugins: dict[str, StandardPlugin] = dict()
+    
+    # Special plugins
+    _special_plugins: list[type[SpecialPlugin]] = []
+    _instantiated_special_plugins: list[SpecialPlugin] = []
+    
     _devices: list[type['Device']] = []
     
     def __init__(self) -> None:
         raise TypeError("ExtensionManager is a static class and cannot be instantiated.")
 
     @classmethod
-    def registerPlugin(cls, plugin) -> None:
-        pass
+    def registerPlugin(cls, plugin: type[StandardPlugin]) -> None:
+        """
+        Register a plugin type
+
+        This should be called after defining the class object for a plugin, so
+        that the class can be instantiated if the plugin is in use.
+
+        ### Args:
+        * `plugin` (`StandardPlugin`): plugin to register
+        
+        ### Example Usage
+        ```py
+        # Create a plugin
+        class MyPlugin(StandardPlugin):
+            ...
+        # Register it
+        ExtensionManager.registerPlugin(MyPlugin)
+        ```
+        
+        WARNING: Plugins assume that device definitions don't change over time.
+        If the active device changes, or the available controls change, the
+        function `resetPlugins()` should be called so that plugins are
+        reset to their default state and control bindings are removed.
+        """
+        cls._plugins[plugin.getPlugId()] = plugin
+    
+    @classmethod
+    def registerSpecialPlugin(cls, plugin: type[SpecialPlugin]) -> None:
+        """
+        Register a plugin type
+
+        This should be called after defining the class object for a plugin, so
+        that the class can be instantiated if the plugin is in use.
+
+        ### Args:
+        * `plugin` (`StandardPlugin`): plugin to register
+        
+        ### Example Usage
+        ```py
+        # Create a plugin
+        class MyPlugin(SpecialPlugin):
+            ...
+        # Register it
+        ExtensionManager.registerPlugin(MyPlugin)
+        ```
+        
+        WARNING: Plugins assume that device definitions don't change over time.
+        If the active device changes, or the available controls change, the
+        function `resetPlugins()` should be called so that plugins are
+        reset to their default state and control bindings are removed.
+        """
+        cls._special_plugins.append(plugin)
 
     @classmethod
     def registerDevice(cls, device: type['Device']) -> None:
@@ -117,6 +175,51 @@ class ExtensionManager:
     @classmethod
     def getAllDevices(cls) -> list[type['Device']]:
         return cls._devices
+    
+    @classmethod
+    def getPluginById(cls, id: str, device: Device) -> StandardPlugin:
+        """
+        Returns an instance of the standard plugin matching the ID provided.
+
+        If that plugin hasn't been instantiated, the device object will be used
+        to create one
+
+        ### Args:
+        * `id` (`str`): plugin ID
+        * `device` (`Device`): current device
+
+        ### Returns:
+        * `StandardPlugin`: plugin associated with ID
+        """
+        ...
+        # TODO: this
+    
+    @classmethod
+    def getSpecialPlugins(cls, device: Device) -> list[SpecialPlugin]:
+        """
+        Returns a list of the special plugins that are currently active and
+        should process the event
+
+        If an active plugin hasn't been instantiated, the device object will be
+        used to create one.
+
+        ### Args:
+        * `device` (`Device`): current device
+
+        ### Returns:
+        * `list[SpecialPlugin]`: list of active plugins
+        """
+        ...
+        # TODO: this
+    
+    @classmethod
+    def resetPlugins(cls) -> None:
+        """
+        Resets all active plugins (standard and special) which can account for
+        a device change.
+        """
+        cls._instantiated_plugins = {}
+        cls._instantiated_special_plugins = []
     
     @classmethod
     def getAllPlugins(cls) -> list[type]:
