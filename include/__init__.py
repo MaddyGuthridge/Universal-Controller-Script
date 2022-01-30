@@ -2,7 +2,10 @@
 include
 
 Initialise substitute modules to add them to the path variable, so that they
-can be imported normally
+can be imported normally.
+
+WARNING: The substitute modules aren't complete replacements, and should only
+be used for purposes that have no effect at runtime, such as type checking.
 """
 
 import sys

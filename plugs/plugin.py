@@ -1,7 +1,8 @@
 """
 plugins > plugin
 
-Contains the definition of the Plugin base class
+Contains the definition of the Plugin base class, and its two main types
+StandardPlugin and SpecialPlugin.
 """
 
 from common.util.apifixes import PluginIndex
