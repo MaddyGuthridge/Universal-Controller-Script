@@ -43,7 +43,7 @@ class DeviceContextManager:
         """
         self.settings = Settings()
         # Set the state of the script to wait for the device to be recognised
-        self._state = WaitingForDevice()
+        self._state: IScriptState = WaitingForDevice()
     
     @catchStateChangeException
     def initialise(self) -> None:

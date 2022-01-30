@@ -30,7 +30,7 @@ class Pedal(ControlSurface):
         )
     
     @staticmethod
-    def getControlAssignmentPriorities() -> tuple[type[ControlSurface]]:
+    def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
         # Pedals shouldn't be remapped
         return tuple()
 

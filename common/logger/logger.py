@@ -152,7 +152,7 @@ class Log:
         """
         # Figure out what to print
         num_prints = 0
-        prints = []
+        prints: list[LogItem] = []
         for item in reversed(self._history):
             # Print if required
             # TODO: Count number skipped because verbosity

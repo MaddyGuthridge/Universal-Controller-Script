@@ -15,13 +15,19 @@ class NavigationControl(ControlSurface):
     pass
     
 class JogWheel(NavigationControl):
-    pass
+    @staticmethod
+    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
+        return tuple()
 
 class JogForwards(JogWheel):
-    pass
+    @staticmethod
+    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
+        return (DirectionNext,)
 
 class JogBackards(JogWheel):
-    pass
+    @staticmethod
+    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
+        return (DirectionPrevious,)
 
 class DirectionButtons(Button, NavigationControl):
     pass

@@ -9,6 +9,7 @@ Authors:
 """
 
 import time
+from typing import Optional
 import device
 
 import common
@@ -26,7 +27,7 @@ class WaitingForDevice(IScriptState):
     State for when we're trying to recognise a device
     """
     def __init__(self) -> None:
-        self._init_time = None
+        self._init_time: Optional[float] = None
     
     def nameAssociations(self) -> None:
         """

@@ -47,7 +47,7 @@ class PedalStrategy(IMappingStrategy):
         control: ControlShadow,
         index: PluginIndex,
         t_ped: type[Pedal],
-        *args: Any
+        *args: tuple[Any]
     ) -> bool:
         """
         Called when a pedal event is detected

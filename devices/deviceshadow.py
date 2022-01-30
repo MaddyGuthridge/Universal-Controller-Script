@@ -9,7 +9,7 @@ Authors:
 """
 # from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol
+from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol, Union
 from common.util.apifixes import PluginIndex
 
 from common.util.dicttools import lowestValueGrEqTarget, greatestKey
@@ -21,20 +21,37 @@ from controlsurfaces import ControlShadow, ControlMapping
 if TYPE_CHECKING:
     from collections.abc import Iterable, Generator
 
-class EventCallback(Protocol):
-    """
-    Type definition for a callback function, which accepts a control mapping, as
-    well as any other unspecified arguments
-    
-    ### Args:
-    * `control` (`ControlSurface`): control associated with the event
-    * `*args` (`Any`): any other arguments, as defined when binding the function
-    
-    ### Returns:
-    * `bool`: Whether the event has been handled or not
-    """
-    def __call__(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
-        ...
+# class EventCallback(Protocol):
+#     """
+#     Type definition for a callback function, which accepts a control mapping, as
+#     well as any other unspecified arguments
+#     
+#     ### Args:
+#     * `control` (`ControlSurface`): control associated with the event
+#     * `*args` (`Any`): any other arguments, as defined when binding the function
+#     
+#     ### Returns:
+#     * `bool`: Whether the event has been handled or not
+#     """
+#     def __call__(self, control: ControlShadow, index: PluginIndex, *args: tuple[Any]) -> bool:
+#         ...
+
+# I'm so sorry about this horrendous piece of type hinting
+# There is no other way to do this that I've found
+# HELP WANTED: Can someone please fix this awfulness in a way that doesn't cause
+# MyPy to have a temper tantrum?
+EventCallback = Union[
+    Callable[[ControlShadow, PluginIndex], bool],
+    Callable[[ControlShadow, PluginIndex, Any], bool],
+    Callable[[ControlShadow, PluginIndex, Any, Any], bool],
+    Callable[[ControlShadow, PluginIndex, Any, Any, Any], bool],
+    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+]
 
 class DeviceShadow:
     """
@@ -247,7 +264,7 @@ class DeviceShadow:
         self,
         controls: list[ControlShadow],
         bind_to: EventCallback,
-        args_iterable: 'Iterable[tuple] | ellipsis' = None
+        args_iterable: 'Optional[Iterable[tuple[Any, ...]] | ellipsis]' = None
     ) -> None:
         """
         Binds a single function all controls in a list.
@@ -280,7 +297,7 @@ class DeviceShadow:
         """
         # If ellipsis given for args iterable, generate index numbers
         if args_iterable is Ellipsis:
-            args_iter = ((i,) for i in range(len(controls)))
+            args_iter: 'Iterable[tuple[Any, ...]]' = ((i,) for i in range(len(controls)))
         # If args iterable is None, use empty args
         elif args_iterable is None:
             args_iter = (tuple() for _ in range(len(controls)))
@@ -295,7 +312,7 @@ class DeviceShadow:
                 
                 # Get rid of incorrect flag for ellipsis
                 if TYPE_CHECKING:
-                    assert not isinstance(args_iterable, type(...))
+                    assert not isinstance(args_iterable, ellipsis)
                 args_iter = (a for a in args_iterable)
             except TypeError:
                 # Iterable doesn't support len, assume it's infinite (ie a 
@@ -362,7 +379,8 @@ class DeviceShadow:
         self,
         control: type[ControlSurface],
         bind_to: EventCallback,
-        args_iter_gen: 'list[tuple] | Callable[[list[ControlShadow]], Generator[tuple, None, None]] | ellipsis' = None,
+        args_iter_gen: 'list[tuple] | Callable[[list[ControlShadow]], Generator[tuple, None, None]] | ellipsis | None'\
+            = None,
         allow_substitution: bool = False,
         target_num: int = None,
         trim: bool = True,
@@ -444,8 +462,12 @@ class DeviceShadow:
         
         # Check for generator functions
         if not isinstance(args_iter_gen, (list, type(...), type(None))):
+            if TYPE_CHECKING:
+                assert not isinstance(args_iter_gen, ellipsis)
+                assert args_iter_gen is not None
             # Turn the generator function into a generator (which is iterable)
-            iterable = args_iter_gen(matches)
+            iterable: 'Iterable[tuple[Any, ...]] | ellipsis | None'\
+                = args_iter_gen(matches)
         else:
             # Otherwise it's already iterable (or will be made so by the 
             # bindControls() method)
