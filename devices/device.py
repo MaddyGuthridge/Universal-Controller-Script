@@ -9,13 +9,14 @@ Authors:
 """
 # from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, final
 from common import IEventPattern
 from common.types import eventData
 from controlsurfaces import ControlShadow
 
 from controlsurfaces import ControlMapping
 from devices import IControlMatcher
+from abc import abstractmethod
 
 class Device:
     """
@@ -37,6 +38,7 @@ class Device:
         """
         self.__matcher = control_matcher
     
+    @abstractmethod
     @classmethod
     def create(cls, event: Optional[eventData]) -> 'Device':
         """
@@ -55,6 +57,7 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
     
+    @abstractmethod
     @staticmethod
     def getId() -> str:
         """
@@ -68,6 +71,7 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
+    @abstractmethod
     @staticmethod
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
         """
@@ -80,6 +84,7 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
+    @abstractmethod
     @staticmethod
     def matchDeviceName(name: str) -> bool:
         """
@@ -122,6 +127,7 @@ class Device:
         Can be overridden by child classes.
         """
 
+    @final
     def matchEvent(self, event: eventData) -> Optional[ControlMapping]:
         """
         Match an event from the device, so that the script can operate on it.
@@ -133,6 +139,7 @@ class Device:
         """
         return self.__matcher.matchEvent(event)
     
+    @final
     def getControlShadows(self, group:str=None) -> list[ControlShadow]:
         """
         Returns a list of new control shadows representing all the controls
@@ -145,6 +152,7 @@ class Device:
         """
         return [ControlShadow(c) for c in self.__matcher.getControls(group)]
     
+    @final
     def getGroups(self) -> set[str]:
         """
         Returns a set of groups that controls are placed into.

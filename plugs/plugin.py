@@ -8,6 +8,8 @@ from common.util.apifixes import PluginIndex
 from controlsurfaces import ControlMapping
 from devices import DeviceShadow
 from plugs.mappingstrategies import IMappingStrategy
+from abc import abstractmethod
+from typing import final
 
 class Plugin:
     
@@ -25,7 +27,8 @@ class Plugin:
         for strat in mapping_strategies:
             strat.apply(shadow)
         self._shadow = shadow
-        
+    
+    @final
     def processEvent(self, mapping: ControlMapping, index: PluginIndex) -> bool:
         return self._shadow.processEvent(mapping, index)
 
@@ -34,6 +37,8 @@ class StandardPlugin(Plugin):
     Standard plugins, representing VST or FL generators and effects
     """
     
+    
+    @abstractmethod
     @staticmethod
     def getPlugId() -> str:
         """
@@ -52,6 +57,7 @@ class SpecialPlugin(Plugin):
     Special plugins, representing FL Studio windows, and the transport controls
     """
     
+    @abstractmethod
     @staticmethod
     def shouldBeActive() -> bool:
         """

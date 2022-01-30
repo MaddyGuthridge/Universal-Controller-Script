@@ -9,7 +9,8 @@ Authors:
 """
 # from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, final
+from abc import abstractmethod
 
 from common import IEventPattern
 from common.types import eventData, Color
@@ -27,6 +28,7 @@ class ControlSurface:
     This class is extended by all other control surfaces.
     """
     
+    @abstractmethod
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         """
@@ -75,7 +77,8 @@ class ControlSurface:
         String representation of the control surface
         """
         return f"{self.__class__}, ({self.__group}: {self.__coord})"
-        
+    
+    @final
     def getMapping(self) -> ControlMapping:
         """
         Returns a mapping to this control
@@ -88,6 +91,7 @@ class ControlSurface:
         """
         return ControlMapping(self)
 
+    @final
     def match(self, event: eventData) -> Optional[ControlMapping]:
         """
         Returns a control mapping of this control if the given event matches this 

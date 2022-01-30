@@ -18,6 +18,7 @@ from typing import (TYPE_CHECKING,
     Union,
     Type
 )
+from abc import abstractmethod
 
 if TYPE_CHECKING:
     from . import eventData
@@ -36,6 +37,7 @@ class IEventPattern:
     pattern for a case where the standard EventPattern class doesn't suffice.
     """
     
+    @abstractmethod
     def matchEvent(self, event: 'eventData') -> bool:
         """
         Return whether the given event matches the pattern
@@ -48,7 +50,8 @@ class IEventPattern:
         ### Returns:
         * `bool`: whether the event matches
         """
-        return False
+        raise NotImplementedError("This method should be implemented by "
+                                  "child classes")
 
 class EventPattern(IEventPattern):
     """

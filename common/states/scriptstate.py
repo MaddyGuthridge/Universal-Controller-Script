@@ -9,6 +9,7 @@ Authors:
 """
 
 from typing import Callable
+from abc import abstractmethod
 from common.types import eventData
 
 class IScriptState:
@@ -21,12 +22,15 @@ class IScriptState:
     * Main state (processing events and stuff)
     * Error state (something went horribly wrong)
     """
+    
+    @abstractmethod
     def initialise(self) -> None:
         """
         Initialise this context
         """
         raise NotImplementedError("This method must be overridden by child classes")
 
+    @abstractmethod
     def processEvent(self, event: eventData) -> None:
         """Process a MIDI event
 
@@ -35,6 +39,7 @@ class IScriptState:
         """
         raise NotImplementedError("This method must be overridden by child classes")
     
+    @abstractmethod
     def tick(self) -> None:
         """
         Called frequently to allow any required updates to the controller

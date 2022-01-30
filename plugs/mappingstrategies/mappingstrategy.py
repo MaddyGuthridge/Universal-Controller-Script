@@ -6,7 +6,7 @@ with little effort on the part of the plugin developer
 """
 
 from devices import DeviceShadow
-
+from abc import abstractmethod
 
 class IMappingStrategy:
     """
@@ -16,6 +16,7 @@ class IMappingStrategy:
     def __init__(self) -> None:
         pass
     
+    @abstractmethod
     def apply(self, shadow: DeviceShadow) -> None:
         raise NotImplementedError("This function should be implemented by child"
                                   " classes")

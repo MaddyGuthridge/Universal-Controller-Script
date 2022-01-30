@@ -36,3 +36,6 @@ class Protocol:
 
 def overload(func):
     return func
+
+def final(func):
+    return func
