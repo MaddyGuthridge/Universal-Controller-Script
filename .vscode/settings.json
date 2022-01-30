@@ -1,6 +1,7 @@
 {
     "autoDocstring.customTemplatePath": "resources/docstring_template.mustache",
-    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.typeCheckingMode": "off",
+    "mypy.runUsingActiveInterpreter": true,
     "python.testing.pytestArgs": [
         "tests"
     ],
