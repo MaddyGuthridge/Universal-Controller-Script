@@ -22,9 +22,9 @@ from controlsurfaces import (
     DirectionSelect
 )
 from devices import DeviceShadow
-from plugs import Plugin
+from plugs import SpecialPlugin
 
-class Transport(Plugin):
+class Transport(SpecialPlugin):
     
     def __init__(self, shadow: DeviceShadow) -> None:
         super().__init__(shadow, [])
