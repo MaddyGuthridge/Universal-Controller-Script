@@ -10,7 +10,16 @@ from controlsurfaces import (
     StopButton,
     JogForwards,
     JogBackards,
-    JogWheel
+    JogWheel,
+    NextPrevButtons,
+    DirectionNext,
+    DirectionPrevious,
+    DirectionButtons,
+    DirectionUp,
+    DirectionDown,
+    DirectionRight,
+    DirectionLeft,
+    DirectionSelect
 )
 from devices import DeviceShadow
 from plugs import Plugin
@@ -36,4 +45,24 @@ class Transport(Plugin):
         increment = 1 if isinstance(control.getControl(), JogForwards) else -1
         
         ui.jog(increment)
+        return True
+    
+    def navigation(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
+        c_type = type(control.getControl())
+        if c_type == DirectionUp:
+            ui.up()
+        elif c_type == DirectionDown:
+            ui.down()
+        elif c_type == DirectionLeft:
+            ui.left()
+        elif c_type == DirectionRight:
+            ui.right()
+        elif c_type == DirectionSelect:
+            ui.enter()
+        elif c_type == DirectionNext:
+            ui.next()
+        elif c_type == DirectionPrevious:
+            ui.previous()
+        else:
+            return False
         return True

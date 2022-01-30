@@ -17,6 +17,10 @@ from controlsurfaces import (
     RewindButton,
     LoopButton
 )
+from controlsurfaces import (
+    DirectionNext,
+    DirectionPrevious
+)
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
 
@@ -30,7 +34,7 @@ class LaunchkeyMk2(Device):
         # Faders added by child classes if necessary
         
         # Create knobs
-        for i in range(1, 8):
+        for i in range(1, 9):
             matcher.addControl(
                 Knob(
                     EventPattern(0xB0, 0x14 + i, ...),
@@ -43,46 +47,60 @@ class LaunchkeyMk2(Device):
         # Transport
         matcher.addControl(
             StopButton(
-                EventPattern(0xBF, 0x72, ...),
+                EventPattern(0xB0, 0x72, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             PlayButton(
-                EventPattern(0xBF, 0x73, ...),
+                EventPattern(0xB0, 0x73, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             LoopButton(
-                EventPattern(0xBF, 0x74, ...),
+                EventPattern(0xB0, 0x74, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             RecordButton(
-                EventPattern(0xBF, 0x75, ...),
+                EventPattern(0xB0, 0x75, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
-        # matcher.addControl(
-        #     NextButton(
-        #         EventPattern(0xBF, 0x67, ...),
-        #         Data2Strategy(),
-        #         "transport"
-        #     )
-        # )
-        # matcher.addControl(
-        #     PreviousButton(
-        #         EventPattern(0xBF, 0x66, ...),
-        #         Data2Strategy(),
-        #         "transport"
-        #     )
-        # )
+        matcher.addControl(
+            DirectionNext(
+                EventPattern(0xB0, 0x67, ...),
+                Data2Strategy(),
+                "transport"
+            )
+        )
+        matcher.addControl(
+            DirectionPrevious(
+                EventPattern(0xB0, 0x66, ...),
+                Data2Strategy(),
+                "transport"
+            )
+        )
+        matcher.addControl(
+            RewindButton(
+                EventPattern(0xB0, 0x70, ...),
+                Data2Strategy(),
+                "transport"
+            )
+        )
+        matcher.addControl(
+            FastForwardButton(
+                EventPattern(0xB0, 0x71, ...),
+                Data2Strategy(),
+                "transport"
+            )
+        )
         
         super().__init__(
             matcher

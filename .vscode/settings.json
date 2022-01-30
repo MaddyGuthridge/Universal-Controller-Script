@@ -9,6 +9,7 @@
         "capsys",
         "deinitialise",
         "dicttools",
+        "Dpad",
         "flmidimsg",
         "ivaluestrategy",
         "Novation",

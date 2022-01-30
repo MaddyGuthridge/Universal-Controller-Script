@@ -69,6 +69,12 @@ class ControlSurface:
         self.__value_strategy = value_strategy
         self.__group = group
         self.__coord = coordinate
+    
+    def __repr__(self) -> str:
+        """
+        String representation of the control surface
+        """
+        return f"{self.__class__}, ({self.__group}: {self.__coord})"
         
     def getMapping(self) -> ControlMapping:
         """
