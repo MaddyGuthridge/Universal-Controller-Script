@@ -1,12 +1,24 @@
 {
+    // Disable automatic indentation detection
+    // and force a tab size of 4
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4,
+
+    // Link up docstring template
     "autoDocstring.customTemplatePath": "resources/docstring_template.mustache",
+
+    // Switch off Pylance and use MyPy instead
     "python.analysis.typeCheckingMode": "off",
     "mypy.runUsingActiveInterpreter": true,
+
+    // Pytest configuration
     "python.testing.pytestArgs": [
         "tests"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+
+    // Spell checker
     "cSpell.words": [
         "capsys",
         "deinitialise",
