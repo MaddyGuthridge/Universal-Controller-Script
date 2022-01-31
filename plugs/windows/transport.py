@@ -12,9 +12,7 @@ from controlsurfaces import (
     PlayButton,
     StopButton,
     JogForwards,
-    JogBackards,
     JogWheel,
-    NextPrevButtons,
     DirectionNext,
     DirectionPrevious,
     NavigationButtons,
@@ -22,7 +20,9 @@ from controlsurfaces import (
     DirectionDown,
     DirectionRight,
     DirectionLeft,
-    DirectionSelect
+    DirectionSelect,
+    RecordButton,
+    LoopButton
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
@@ -36,6 +36,8 @@ class Transport(SpecialPlugin):
         shadow.bindMatch(PlayButton, self.playButton, raise_on_failure=False)
         shadow.bindMatch(StopButton, self.stopButton, raise_on_failure=False)
         shadow.bindMatch(JogWheel, self.jogWheel, raise_on_failure=False)
+        shadow.bindMatch(RecordButton, self.recButton, raise_on_failure=False)
+        shadow.bindMatch(LoopButton, self.loopButton, raise_on_failure=False)
         shadow.bindMatches(NavigationButtons, self.navigationButtons, raise_on_failure=False)
     
     @classmethod
@@ -54,6 +56,16 @@ class Transport(SpecialPlugin):
     @filterButtonLift
     def stopButton(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
         transport.stop()
+        return True
+
+    @filterButtonLift
+    def recButton(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
+        transport.record()
+        return True
+    
+    @filterButtonLift
+    def loopButton(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
+        transport.setLoopMode()
         return True
 
     def jogWheel(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
