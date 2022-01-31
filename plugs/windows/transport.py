@@ -5,7 +5,7 @@ import ui
 
 from typing import Any
 
-from common import ExtensionManager
+from common.extensionmanager import ExtensionManager
 from common.util.apifixes import PluginIndex
 from controlsurfaces import (
     ControlShadow,

@@ -11,7 +11,6 @@ Authors:
 from typing import TYPE_CHECKING, Optional, overload
 
 from common.types.eventdata import eventData
-from devices.deviceshadow import DeviceShadow
 
 if TYPE_CHECKING:
     from devices import Device
@@ -225,6 +224,7 @@ class ExtensionManager:
         for p in cls._special_plugins:
             # If plugin should be active
             if p.shouldBeActive():
+                print(f"Here: {p}")
                 # If it hasn't been instantiated yet, instantiate it
                 if p not in cls._instantiated_special_plugins.keys():
                     cls._instantiated_special_plugins[p] \
@@ -245,3 +245,12 @@ class ExtensionManager:
     @classmethod
     def getAllPlugins(cls) -> list[type]:
         return list(cls._plugins.values())
+    
+    @classmethod
+    def getAllSpecialPlugins(cls) -> list[type]:
+        return cls._special_plugins
+
+# Import devices
+from devices.deviceshadow import DeviceShadow
+# Import plugins
+import plugs

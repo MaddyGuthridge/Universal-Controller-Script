@@ -9,9 +9,9 @@ import ui
 
 from typing import Union, Optional
 
-PluginIndex = Union[tuple[int], tuple[int, int]]
+PluginIndex = Union[tuple[int], tuple[int, int], None]
 
-def getFocusedPluginIndex() -> Optional[PluginIndex]:
+def getFocusedPluginIndex() -> PluginIndex:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
     

@@ -5,6 +5,7 @@ Contains the definition of the Plugin base class, and its two main types
 StandardPlugin and SpecialPlugin.
 """
 
+from common import log, verbosity
 from common.util.apifixes import PluginIndex
 from controlsurfaces import ControlMapping
 from devices import DeviceShadow
@@ -43,6 +44,7 @@ class Plugin:
     
     @final
     def processEvent(self, mapping: ControlMapping, index: PluginIndex) -> bool:
+        log("plugins", f"Processing event at {type(self)}", verbosity=verbosity.NOTE)
         return self._shadow.processEvent(mapping, index)
 
 class StandardPlugin(Plugin):

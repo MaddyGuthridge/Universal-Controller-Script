@@ -44,8 +44,12 @@ class OverallDevice:
         print(consts.ASCII_HEADER_ART)
         num_devs = len(ExtensionManager.getAllDevices())
         num_plugs = len(ExtensionManager.getAllPlugins())
+        num_special_plugs = len(ExtensionManager.getAllSpecialPlugins())
         print(f"{num_devs} device{'s' if num_devs != 1 else ''}, ", end='')
-        print(f"{num_plugs} plugin{'s' if num_plugs != 1 else ''}")
+        print(f"{num_plugs} plugin{'s' if num_plugs != 1 else ''}, ", end='')
+        print(
+            f"{num_special_plugs} special plugin{'s' if num_plugs != 1 else ''}"
+        )
         print("Type `help` for help using the script\n")
 
 device = OverallDevice()

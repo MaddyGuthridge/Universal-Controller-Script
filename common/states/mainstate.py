@@ -5,9 +5,13 @@ Represents the script in its main state, where the device is recognised and
 behaving as expected.
 """
 
-from common.types import eventData
-from common.util.events import eventToString
+import plugins
+
 from common import log, verbosity
+from common.extensionmanager import ExtensionManager
+from common.types import eventData
+from common.util.apifixes import getFocusedPluginIndex
+from common.util.events import eventToString
 from devices import Device
 from .scriptstate import IScriptState
 
@@ -41,3 +45,16 @@ class MainState(IScriptState):
             
         else:
             log("device.event.in", f"Recognised event: {mapping.getControl()}", verbosity.NOTE)
+        
+        # Get active standard plugin
+        plug_idx = getFocusedPluginIndex()
+        if plug_idx is not None:
+            plug_id = plugins.getPluginName(*plug_idx)
+            plug = ExtensionManager.getPluginById(plug_id, self._device)
+            if plug is not None:
+                if plug.processEvent(mapping, plug_idx):
+                    return
+
+        # Get special plugins
+        for p in ExtensionManager.getSpecialPlugins(self._device):
+            p.processEvent(mapping, plug_idx)
