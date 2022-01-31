@@ -10,7 +10,7 @@ Authors:
 # from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol, Union
-from common.util.apifixes import PluginIndex
+from common.util.apifixes import PluginIndex, UnsafePluginIndex
 
 from common.util.dicttools import lowestValueGrEqTarget, greatestKey
 from controlsurfaces import ControlSurface
@@ -40,7 +40,7 @@ if TYPE_CHECKING:
 # There is no other way to do this that I've found
 # HELP WANTED: Can someone please fix this awfulness in a way that doesn't cause
 # MyPy to have a temper tantrum?
-EventCallback = Union[
+StandardEventCallback = Union[
     Callable[[ControlShadow, PluginIndex], bool],
     Callable[[ControlShadow, PluginIndex, Any], bool],
     Callable[[ControlShadow, PluginIndex, Any, Any], bool],
@@ -52,6 +52,20 @@ EventCallback = Union[
     Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
     Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
 ]
+SpecialEventCallback = Union[
+    Callable[[ControlShadow, UnsafePluginIndex], bool],
+    Callable[[ControlShadow, UnsafePluginIndex, Any], bool],
+    Callable[[ControlShadow, UnsafePluginIndex, Any, Any], bool],
+    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+]
+
+EventCallback = Union[StandardEventCallback, SpecialEventCallback]
 
 class DeviceShadow:
     """
@@ -509,7 +523,7 @@ class DeviceShadow:
         self.bindControls(matches, bind_to, iterable)
         return len(matches)
     
-    def processEvent(self, control: ControlMapping, index: PluginIndex) -> bool:
+    def processEvent(self, control: ControlMapping, index: UnsafePluginIndex) -> bool:
         """
         Process an event by calling the bound callback function associated with
         it if applicable.

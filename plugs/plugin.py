@@ -6,7 +6,7 @@ StandardPlugin and SpecialPlugin.
 """
 
 from common import log, verbosity
-from common.util.apifixes import PluginIndex
+from common.util.apifixes import UnsafePluginIndex
 from controlsurfaces import ControlMapping
 from devices import DeviceShadow
 from plugs.mappingstrategies import IMappingStrategy
@@ -61,7 +61,7 @@ class Plugin:
                                   "classes")
     
     @final
-    def processEvent(self, mapping: ControlMapping, index: PluginIndex) -> bool:
+    def processEvent(self, mapping: ControlMapping, index: UnsafePluginIndex) -> bool:
         log("plugins", f"Processing event at {type(self)}", verbosity=verbosity.NOTE)
         return self._shadow.processEvent(mapping, index)
 
