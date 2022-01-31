@@ -24,13 +24,13 @@ class ExtensionManager:
     """
     
     # Standard plugins
-    _plugins: dict[str, type[StandardPlugin]] = {}
-    _instantiated_plugins: dict[str, StandardPlugin] = {}
+    _plugins: 'dict[str, type[StandardPlugin]]' = {}
+    _instantiated_plugins: 'dict[str, StandardPlugin]' = {}
     
     # Special plugins
-    _special_plugins: list[type[SpecialPlugin]] = []
+    _special_plugins: 'list[type[SpecialPlugin]]' = []
     # Map types to their instance
-    _instantiated_special_plugins: dict[type[SpecialPlugin], SpecialPlugin] = {}
+    _instantiated_special_plugins: 'dict[type[SpecialPlugin], SpecialPlugin]' = {}
     
     _devices: list[type['Device']] = []
     
@@ -38,7 +38,7 @@ class ExtensionManager:
         raise TypeError("ExtensionManager is a static class and cannot be instantiated.")
 
     @classmethod
-    def registerPlugin(cls, plugin: type[StandardPlugin]) -> None:
+    def registerPlugin(cls, plugin: type['StandardPlugin']) -> None:
         """
         Register a plugin type
 
@@ -65,7 +65,7 @@ class ExtensionManager:
         cls._plugins[plugin.getPlugId()] = plugin
     
     @classmethod
-    def registerSpecialPlugin(cls, plugin: type[SpecialPlugin]) -> None:
+    def registerSpecialPlugin(cls, plugin: type['SpecialPlugin']) -> None:
         """
         Register a plugin type
 
@@ -179,7 +179,7 @@ class ExtensionManager:
         return cls._devices
     
     @classmethod
-    def getPluginById(cls, id: str, device: Device) -> Optional[StandardPlugin]:
+    def getPluginById(cls, id: str, device: 'Device') -> Optional['StandardPlugin']:
         """
         Returns an instance of the standard plugin matching the ID provided.
 
@@ -205,10 +205,9 @@ class ExtensionManager:
         # Plugin doesn't exist
         else:
             return None
-        
-    
+
     @classmethod
-    def getSpecialPlugins(cls, device: Device) -> list[SpecialPlugin]:
+    def getSpecialPlugins(cls, device: 'Device') -> list['SpecialPlugin']:
         """
         Returns a list of the special plugins that are currently active and
         should process the event
