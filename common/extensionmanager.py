@@ -14,7 +14,7 @@ from common.types.eventdata import eventData
 
 if TYPE_CHECKING:
     from devices import Device
-    from plugs import StandardPlugin, SpecialPlugin
+    from plugs import StandardPlugin, SpecialPlugin, Plugin
 
 class ExtensionManager:
     """
@@ -248,6 +248,124 @@ class ExtensionManager:
     @classmethod
     def getAllSpecialPlugins(cls) -> list[type]:
         return cls._special_plugins
+    
+    @classmethod
+    def getInfo(cls) -> str:
+        """
+        Returns basic info about the devices and plugins registered with the 
+        extension manager
+
+        ### Returns:
+        * `str`: info
+        """
+        num_devs = f"{len(cls._devices)} device{'s' if len(cls._devices) != 1 else ''}"
+        num_plugs = f"{len(cls._plugins)} plugin{'s' if len(cls._plugins) != 1 else ''}"
+        num_inst_plugs = f" ({len(cls._instantiated_plugins)} instantiated)" if len(cls._instantiated_plugins) else ""
+        num_special_plugs =f"{len(cls._special_plugins)} special plugin{'s' if len(cls._special_plugins) != 1 else ''}"
+        num_inst_special_plugs = f" ({len(cls._instantiated_special_plugins)} instantiated)" if len(cls._instantiated_special_plugins) else ""
+        return f"{num_devs}, {num_plugs}{num_inst_plugs}, {num_special_plugs}{num_inst_special_plugs}"
+
+    @classmethod
+    def _formatPlugin(cls, plug: Optional['Plugin']) -> str:
+        """
+        Format info about a plugin instance
+
+        ### Args:
+        * `plug` (`Optional[Plugin]`): plugin instance or None
+
+        ### Returns:
+        * `str`: formatted info
+        """
+        if plug is None:
+            return "(Not instantiated)"
+        else:
+            return repr(plug)
+
+    @classmethod
+    def _inspectStandardPlugin(cls, plug: type['StandardPlugin']) -> str:
+        """
+        Returns info about a standard plugin
+
+        ### Args:
+        * `plug` (`type[StandardPlugin]`): plugin to inspect
+
+        ### Returns:
+        * `str`: plugin info
+        """
+        matches: list[tuple[str, Optional['StandardPlugin']]] = []
+        
+        for id, p in cls._plugins.items():
+            if p == plug:
+                if id in cls._instantiated_plugins.keys():
+                    matches.append((id, cls._instantiated_plugins[id]))
+                else:
+                    matches.append((id, None))
+
+        if len(matches) == 0:
+            return f"Plugin {plug} isn't associated with any plugins"
+        elif len(matches) == 1:
+            id, inst_p = matches[0]
+            return f"{plug} associated with:\n{id}\n{cls._formatPlugin(inst_p)}"
+        else:
+            return f"{plug}:" + f"\n\n".join([
+                f"> {id}:\n{cls._formatPlugin(inst_p)}" for id, inst_p in matches
+            ])
+
+    @classmethod
+    def _inspectPluginId(cls, id: str) -> str:
+        """
+        Returns info about a standard plugin associated with a plugin ID
+
+        ### Args:
+        * `id` (`str`): plugin ID
+
+        ### Returns:
+        * `str`: plugin info
+        """
+        if id in cls._instantiated_plugins.keys():
+            return f"{id} associated with:\n\n{repr(cls._instantiated_plugins[id])}"
+        elif id in cls._plugins.keys():
+            return f"{id} associated with: {cls._plugins[id]} (not instantiated)"
+        else:
+            return f"ID {id} not associated with any plugins"
+    
+    @classmethod
+    def _inspectSpecialPlugin(cls, plug: type['SpecialPlugin']) -> str:
+        """
+        Returns info about a special plugin
+
+        ### Args:
+        * `plug` (`type[SpecialPlugin]`): plugin to inspect
+
+        ### Returns:
+        * `str`: plugin info
+        """
+        if plug in cls._instantiated_special_plugins.keys():
+            return repr(cls._instantiated_special_plugins[plug])
+        elif plug in cls._special_plugins:
+            return f"{plug} is registered but not instantiated"
+        else:
+            return f"{plug} isn't registered"
+
+    @classmethod
+    def inspectPlugin(cls, plug: 'type["Plugin"] | str') -> str:
+        """
+        Returns info about a plugin (standard or special)
+
+        ### Args:
+        * `plug` (`type[Plugin] | str`): plugin or ID of plugin to inspect
+
+        ### Returns:
+        * `str`: plugin info
+        """
+        if isinstance(plug, str):
+            return cls._inspectPluginId(plug)
+        elif issubclass(plug, plugs.StandardPlugin):
+            return cls._inspectStandardPlugin(plug)
+        elif issubclass(plug, plugs.SpecialPlugin):
+            return cls._inspectSpecialPlugin(plug)
+        else:
+            return f"{plug} isn't a Plugin class or plugin ID"
 
 # Import devices
 from devices.deviceshadow import DeviceShadow

@@ -74,6 +74,29 @@ class DeviceShadow:
                 tuple[ControlShadow, EventCallback, tuple]
             ] = {}
     
+    def __repr__(self) -> str:
+        """
+        Return representation of shadow, including mappings to functions
+
+        This should be used for debugging purposes
+
+        ### Returns:
+        * `str`: info on mappings
+        """
+        header = f"Shadow of device: {type(self._device)}"
+        
+        assigned = "Assigned controls:\n" + "\n * ".join([
+            f"{control.getControl()} -> {call}{args}"
+            for control, (_, call, args) in self._assigned_controls.items()
+        ])
+        
+        unassigned = "Unassigned controls:\n" + "\n * ".join([
+            f"{control.getControl()}"
+            for control in self._free_controls
+        ])
+        
+        return f"{header}\n\n{assigned}\n\n{unassigned}"
+    
     def _getMatches(
         self, 
         expr: Callable[[ControlSurface], bool], 

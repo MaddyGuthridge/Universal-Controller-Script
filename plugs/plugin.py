@@ -30,6 +30,15 @@ class Plugin:
             strat.apply(shadow)
         self._shadow = shadow
     
+    def __repr__(self) -> str:
+        """
+        Get string representation of plugin
+        
+        ### Returns:
+        * `str`: [description]
+        """
+        return f"Plugin at {type(self)}:\n\n" + repr(self._shadow)
+    
     @abstractmethod
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'Plugin':

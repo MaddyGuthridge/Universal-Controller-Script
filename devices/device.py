@@ -36,7 +36,7 @@ class Device:
         ### Args:
         * `control_matcher` (`IControlMatcher`): Control matching strategy.
         """
-        self.__matcher = control_matcher
+        self._matcher = control_matcher
     
     @abstractmethod
     @classmethod
@@ -137,7 +137,7 @@ class Device:
         ### Returns:
         * `MatchedEvent`: event data
         """
-        return self.__matcher.matchEvent(event)
+        return self._matcher.matchEvent(event)
     
     @final
     def getControlShadows(self, group:str=None) -> list[ControlShadow]:
@@ -150,7 +150,7 @@ class Device:
         ### Returns:
         * `list[ControlSurface]`: Control shadows
         """
-        return [ControlShadow(c) for c in self.__matcher.getControls(group)]
+        return [ControlShadow(c) for c in self._matcher.getControls(group)]
     
     @final
     def getGroups(self) -> set[str]:
@@ -165,4 +165,4 @@ class Device:
         ### Returns:
         * `set[str]`: Set of groups
         """
-        return self.__matcher.getGroups()
+        return self._matcher.getGroups()
