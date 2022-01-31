@@ -93,7 +93,7 @@ class DeviceShadow:
         Returns simplified representation of shadow, excluding mappings
 
         ### Returns:
-        * `str`: shorter represenation
+        * `str`: shorter representation
         """
         return f"Device shadow for {type(self._device)}. "\
                 "{len(self._assigned_controls)} assigned controls"
@@ -544,6 +544,8 @@ class DeviceShadow:
             # nothing
             return False
         # Call the bound function with any extra required args
+        # TODO: Find some way to distinguish between calls that require safe
+        # args and those that don't
         return fn(control_shadow, index, *args)
 
     def apply(self) -> None:
