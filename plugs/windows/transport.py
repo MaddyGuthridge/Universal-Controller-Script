@@ -27,6 +27,8 @@ from controlsurfaces import (
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 
+from plugs.eventfilters import filterButtonLift
+
 class Transport(SpecialPlugin):
     
     def __init__(self, shadow: DeviceShadow) -> None:
@@ -44,10 +46,12 @@ class Transport(SpecialPlugin):
     def shouldBeActive() -> bool:
         return True
     
+    @filterButtonLift
     def playButton(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
         transport.start()
         return True
 
+    @filterButtonLift
     def stopButton(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
         transport.stop()
         return True
@@ -59,6 +63,7 @@ class Transport(SpecialPlugin):
         ui.jog(increment)
         return True
     
+    @filterButtonLift
     def navigationButtons(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
         c_type = type(control.getControl())
         if c_type == DirectionUp:
