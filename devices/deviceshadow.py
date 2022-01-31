@@ -76,6 +76,16 @@ class DeviceShadow:
     
     def __repr__(self) -> str:
         """
+        Returns simplified representation of shadow, excluding mappings
+
+        ### Returns:
+        * `str`: shorter represenation
+        """
+        return f"Device shadow for {type(self._device)}. "\
+                "{len(self._assigned_controls)} assigned controls"
+    
+    def __str__(self) -> str:
+        """
         Return representation of shadow, including mappings to functions
 
         This should be used for debugging purposes
@@ -85,13 +95,13 @@ class DeviceShadow:
         """
         header = f"Shadow of device: {type(self._device)}"
         
-        assigned = "Assigned controls:\n" + "\n * ".join([
-            f"{control.getControl()} -> {call}{args}"
+        assigned = "Assigned controls:\n" + "\n".join([
+            f" * {repr(control.getControl())} -> {call}{args}"
             for control, (_, call, args) in self._assigned_controls.items()
         ])
         
-        unassigned = "Unassigned controls:\n" + "\n * ".join([
-            f"{control.getControl()}"
+        unassigned = "Unassigned controls:\n" + "\n".join([
+            f" * {control.getControl()}"
             for control in self._free_controls
         ])
         

@@ -20,7 +20,6 @@ from .valuestrategies import IValueStrategy
 from .controlshadow import ControlShadow
 from .controlmapping import ControlMapping
 
-# TODO: __repr__()
 class ControlSurface:
     """
     Defines an abstract base class for a control surface.

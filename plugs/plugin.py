@@ -32,12 +32,21 @@ class Plugin:
     
     def __repr__(self) -> str:
         """
+        Get quick representation of plugin
+
+        ### Returns:
+        * `str`: simplified representation
+        """
+        return f"Plugin at {type(self)}"
+    
+    def __str__(self) -> str:
+        """
         Get string representation of plugin
         
         ### Returns:
-        * `str`: [description]
+        * `str`: full representation
         """
-        return f"Plugin at {type(self)}:\n\n" + repr(self._shadow)
+        return f"Plugin at {type(self)}:\n\n{self._shadow}"
     
     @abstractmethod
     @classmethod

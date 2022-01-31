@@ -11,6 +11,7 @@ Authors:
 from typing import TYPE_CHECKING, Optional, overload
 
 from common.types.eventdata import eventData
+from common.util.consolehelpers import printReturn
 
 if TYPE_CHECKING:
     from devices import Device
@@ -341,13 +342,14 @@ class ExtensionManager:
         * `str`: plugin info
         """
         if plug in cls._instantiated_special_plugins.keys():
-            return repr(cls._instantiated_special_plugins[plug])
+            return str(cls._instantiated_special_plugins[plug])
         elif plug in cls._special_plugins:
             return f"{plug} is registered but not instantiated"
         else:
             return f"{plug} isn't registered"
 
     @classmethod
+    @printReturn
     def inspectPlugin(cls, plug: 'type["Plugin"] | str') -> str:
         """
         Returns info about a plugin (standard or special)

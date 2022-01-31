@@ -14,7 +14,29 @@ __all__ = [
     'credits'
 ]
 
+from typing import Callable
 import common
+from .misc import _NoneNoPrintout, NoneNoPrintout
+
+def printReturn(func: Callable) -> Callable:
+    """
+    Wrap a function so that its return is printed instead of being returned to
+    FL Studio
+
+    Useful for interface functions, as FL Studio removes newlines which is kinda
+    yucky
+
+    ### Args:
+    * `func` (`Callable[[], str]`): Function
+
+    ### Returns:
+    * `Callable[[], _NoneNoPrintout]`: Wrapped function
+    """
+    def wrapper(*args, **kwargs) -> _NoneNoPrintout:
+        ret = func(*args, **kwargs)
+        print(ret)
+        return NoneNoPrintout
+    return wrapper
 
 class ConsoleCommand:
     """
