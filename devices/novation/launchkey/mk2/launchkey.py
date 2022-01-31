@@ -75,14 +75,14 @@ class LaunchkeyMk2(Device):
         )
         matcher.addControl(
             DirectionNext(
-                EventPattern(0xB0, 0x67, ...),
+                EventPattern(0xB0, 0x66, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             DirectionPrevious(
-                EventPattern(0xB0, 0x66, ...),
+                EventPattern(0xB0, 0x67, ...),
                 Data2Strategy(),
                 "transport"
             )
