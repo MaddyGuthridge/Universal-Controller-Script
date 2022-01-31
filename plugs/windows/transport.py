@@ -1,8 +1,11 @@
 
+from abc import abstractmethod
 import transport
 import ui
 
 from typing import Any
+
+from common import ExtensionManager
 from common.util.apifixes import PluginIndex
 from controlsurfaces import (
     ControlShadow,
@@ -32,7 +35,15 @@ class Transport(SpecialPlugin):
         shadow.bindMatch(StopButton, self.stopButton, raise_on_failure=False)
         shadow.bindMatch(JogWheel, self.jogWheel, raise_on_failure=False)
         # TODO: Bind navigation controls
-        
+    
+    @classmethod
+    def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
+        return cls(shadow)
+    
+    @staticmethod
+    def shouldBeActive() -> bool:
+        return True
+    
     def playButton(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
         transport.start()
         return True
@@ -67,3 +78,5 @@ class Transport(SpecialPlugin):
         else:
             return False
         return True
+
+ExtensionManager.registerSpecialPlugin(Transport)

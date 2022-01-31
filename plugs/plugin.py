@@ -30,8 +30,8 @@ class Plugin:
         self._shadow = shadow
     
     @abstractmethod
-    @staticmethod
-    def create(shadow: DeviceShadow) -> 'Plugin':
+    @classmethod
+    def create(cls, shadow: DeviceShadow) -> 'Plugin':
         """
         Create and return an instance of this plugin
         
@@ -50,7 +50,6 @@ class StandardPlugin(Plugin):
     Standard plugins, representing VST or FL generators and effects
     """
     
-    
     @abstractmethod
     @staticmethod
     def getPlugId() -> str:
@@ -66,8 +65,8 @@ class StandardPlugin(Plugin):
                                   "classes")
     
     @abstractmethod
-    @staticmethod
-    def create(shadow: DeviceShadow) -> 'StandardPlugin':
+    @classmethod
+    def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         """
         Create and return an instance of this plugin
         """
@@ -94,8 +93,8 @@ class SpecialPlugin(Plugin):
                                   "classes")
     
     @abstractmethod
-    @staticmethod
-    def create(shadow: DeviceShadow) -> 'SpecialPlugin':
+    @classmethod
+    def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         """
         Create and return an instance of this plugin
         """
