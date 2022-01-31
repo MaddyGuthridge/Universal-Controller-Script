@@ -165,7 +165,7 @@ def greatestKey(d: dict[K, V]) -> K:
     highest_val = None
     
     for k, v in d.items():
-        if highest_val is None or v < highest_val:
+        if highest_val is None or v > highest_val:
             highest = k
             highest_val = v
     if highest is None:

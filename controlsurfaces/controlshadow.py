@@ -37,6 +37,9 @@ class ControlShadow:
         self.__color = control.color.copy()
         self.__annotation = control.annotation
 
+    def __repr__(self) -> str:
+        return f"Shadow of {self.__control}"
+
     def getControl(self):
         """
         Get a reference to the control surface associated with the event
