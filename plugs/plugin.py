@@ -29,6 +29,18 @@ class Plugin:
             strat.apply(shadow)
         self._shadow = shadow
     
+    @abstractmethod
+    @staticmethod
+    def create(shadow: DeviceShadow) -> 'Plugin':
+        """
+        Create and return an instance of this plugin
+        
+        NOTE: On release of Python 3.11, upgrade to `Self` type and remove
+        redefinitions in abstract subclasses
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+    
     @final
     def processEvent(self, mapping: ControlMapping, index: PluginIndex) -> bool:
         return self._shadow.processEvent(mapping, index)
@@ -52,6 +64,15 @@ class StandardPlugin(Plugin):
         """
         raise NotImplementedError("This method must be implemented by child "
                                   "classes")
+    
+    @abstractmethod
+    @staticmethod
+    def create(shadow: DeviceShadow) -> 'StandardPlugin':
+        """
+        Create and return an instance of this plugin
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
 
 class SpecialPlugin(Plugin):
     """
@@ -70,4 +91,13 @@ class SpecialPlugin(Plugin):
         * `bool`: whether the plugin should process the event
         """
         raise NotImplementedError("This method must be implemented by child "
+                                  "classes")
+    
+    @abstractmethod
+    @staticmethod
+    def create(shadow: DeviceShadow) -> 'SpecialPlugin':
+        """
+        Create and return an instance of this plugin
+        """
+        raise NotImplementedError("This method must be overridden by child "
                                   "classes")

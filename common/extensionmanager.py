@@ -8,9 +8,10 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, Optional, overload
 
 from common.types.eventdata import eventData
+from devices.deviceshadow import DeviceShadow
 
 if TYPE_CHECKING:
     from devices import Device
@@ -23,12 +24,13 @@ class ExtensionManager:
     """
     
     # Standard plugins
-    _plugins: dict[str, type[StandardPlugin]] = dict()
-    _instantiated_plugins: dict[str, StandardPlugin] = dict()
+    _plugins: dict[str, type[StandardPlugin]] = {}
+    _instantiated_plugins: dict[str, StandardPlugin] = {}
     
     # Special plugins
     _special_plugins: list[type[SpecialPlugin]] = []
-    _instantiated_special_plugins: list[SpecialPlugin] = []
+    # Map types to their instance
+    _instantiated_special_plugins: dict[type[SpecialPlugin], SpecialPlugin] = {}
     
     _devices: list[type['Device']] = []
     
@@ -177,12 +179,13 @@ class ExtensionManager:
         return cls._devices
     
     @classmethod
-    def getPluginById(cls, id: str, device: Device) -> StandardPlugin:
+    def getPluginById(cls, id: str, device: Device) -> Optional[StandardPlugin]:
         """
         Returns an instance of the standard plugin matching the ID provided.
 
         If that plugin hasn't been instantiated, the device object will be used
-        to create one
+        to create one, enabling lazy loading of plugins to save resources and
+        CPU.
 
         ### Args:
         * `id` (`str`): plugin ID
@@ -191,8 +194,18 @@ class ExtensionManager:
         ### Returns:
         * `StandardPlugin`: plugin associated with ID
         """
-        ...
-        # TODO: this
+        # Plugin already instantiated
+        if id in cls._instantiated_plugins.keys():
+            return cls._instantiated_plugins[id]
+        # Plugin exists but isn't instantiated
+        elif id in cls._plugins.keys():
+            cls._instantiated_plugins[id] \
+                = cls._plugins[id].create(DeviceShadow(device))
+            return cls._instantiated_plugins[id]
+        # Plugin doesn't exist
+        else:
+            return None
+        
     
     @classmethod
     def getSpecialPlugins(cls, device: Device) -> list[SpecialPlugin]:
@@ -209,8 +222,17 @@ class ExtensionManager:
         ### Returns:
         * `list[SpecialPlugin]`: list of active plugins
         """
-        ...
-        # TODO: this
+        ret: list[SpecialPlugin] = []
+        for p in cls._special_plugins:
+            # If plugin should be active
+            if p.shouldBeActive():
+                # If it hasn't been instantiated yet, instantiate it
+                if p not in cls._instantiated_special_plugins.keys():
+                    cls._instantiated_special_plugins[p] \
+                        = p.create(DeviceShadow(device))
+                ret.append(cls._instantiated_special_plugins[p])
+        
+        return ret
     
     @classmethod
     def resetPlugins(cls) -> None:
@@ -219,7 +241,7 @@ class ExtensionManager:
         a device change.
         """
         cls._instantiated_plugins = {}
-        cls._instantiated_special_plugins = []
+        cls._instantiated_special_plugins = {}
     
     @classmethod
     def getAllPlugins(cls) -> list[type]:

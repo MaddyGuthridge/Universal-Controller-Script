@@ -28,6 +28,9 @@ class PedalStrategy(IMappingStrategy):
         * `shadow` (`DeviceShadow`): device to bind to
         """
         # Generator function for mapping out pedal events
+        
+        # TODO: Use argument generators as strategies to the strategies?
+        # Could save even more repeated code
         def argument_generator(shadows: list[ControlShadow]):
             for s in shadows:
                 yield (type(s.getControl()), )
