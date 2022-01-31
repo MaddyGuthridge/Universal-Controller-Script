@@ -224,7 +224,6 @@ class ExtensionManager:
         for p in cls._special_plugins:
             # If plugin should be active
             if p.shouldBeActive():
-                print(f"Here: {p}")
                 # If it hasn't been instantiated yet, instantiate it
                 if p not in cls._instantiated_special_plugins.keys():
                     cls._instantiated_special_plugins[p] \

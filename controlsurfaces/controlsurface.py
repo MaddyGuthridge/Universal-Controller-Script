@@ -67,7 +67,7 @@ class ControlSurface:
         self._pattern =  event_pattern
         self.__color = Color()
         self.__annotation = ""
-        self.__value = None
+        self.__value = 0.0
         self.__value_strategy = value_strategy
         self.__group = group
         self.__coord = coordinate

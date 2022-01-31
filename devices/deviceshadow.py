@@ -95,7 +95,7 @@ class DeviceShadow:
         * `list[ControlShadow]`: List of available controls
         """
         num_group_matches = dict.fromkeys(self._device.getGroups(), 0)
-        group_matches: dict[str, list] = dict()
+        group_matches: dict[str, list] = {g: [] for g in self._device.getGroups()}
         for c in self._free_controls:
             if expr(c.getControl()):
                 num_group_matches[c.group] += 1
