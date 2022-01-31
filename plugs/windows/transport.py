@@ -17,7 +17,7 @@ from controlsurfaces import (
     NextPrevButtons,
     DirectionNext,
     DirectionPrevious,
-    DirectionButtons,
+    NavigationButtons,
     DirectionUp,
     DirectionDown,
     DirectionRight,
@@ -34,7 +34,7 @@ class Transport(SpecialPlugin):
         shadow.bindMatch(PlayButton, self.playButton, raise_on_failure=False)
         shadow.bindMatch(StopButton, self.stopButton, raise_on_failure=False)
         shadow.bindMatch(JogWheel, self.jogWheel, raise_on_failure=False)
-        shadow.bindMatches(DirectionButtons, self.navigation, raise_on_failure=False)
+        shadow.bindMatches(NavigationButtons, self.navigationButtons, raise_on_failure=False)
     
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
@@ -59,7 +59,7 @@ class Transport(SpecialPlugin):
         ui.jog(increment)
         return True
     
-    def navigation(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
+    def navigationButtons(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
         c_type = type(control.getControl())
         if c_type == DirectionUp:
             ui.up()

@@ -29,10 +29,10 @@ class JogBackards(JogWheel):
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         return (DirectionPrevious,)
 
-class DirectionButtons(Button, NavigationControl):
+class NavigationButtons(Button, NavigationControl):
     pass
 
-class DpadButtons(DirectionButtons):
+class DpadButtons(NavigationButtons):
     pass
 
 class DirectionUp(DpadButtons):
@@ -50,7 +50,7 @@ class DirectionRight(DpadButtons):
 class DirectionSelect(DpadButtons):
     pass
 
-class NextPrevButtons(DirectionButtons):
+class NextPrevButtons(NavigationButtons):
     pass
 
 class DirectionNext(NextPrevButtons):
