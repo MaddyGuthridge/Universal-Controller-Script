@@ -53,8 +53,11 @@ class MainState(IScriptState):
             plug = ExtensionManager.getPluginById(plug_id, self._device)
             if plug is not None:
                 if plug.processEvent(mapping, plug_idx):
+                    event.handled = True
                     return
 
         # Get special plugins
         for p in ExtensionManager.getSpecialPlugins(self._device):
-            p.processEvent(mapping, plug_idx)
+            if p.processEvent(mapping, plug_idx):
+                event.handled = True
+                return

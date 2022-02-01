@@ -117,7 +117,8 @@ class WaitingForDevice(IScriptState):
                 self.detectFallback()
     
     def processEvent(self, event: eventData) -> None:
-        
+        # Always handle all events
+        event.handled = True
         # Ignore all events unless they are Sysex
         if event.sysex is not None:
             try:
