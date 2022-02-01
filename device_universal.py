@@ -1,5 +1,6 @@
 # name=Universal Controller
 # url=https://github.com/MiguelGuthridge/Universal-Controller-Script
+# receiveFrom=Universal Event Forwarder
 """device_universal.py
 
 The entrypoint for the universal controller script.

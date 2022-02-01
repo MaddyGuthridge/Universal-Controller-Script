@@ -27,6 +27,18 @@ def eventToRawData(event: eventData) -> 'int | bytes':
     else:
         return event.sysex
 
+def bytesToString(bytes_iter: bytes) -> str:
+    """
+    Convert bytes to a fancy formatted string
+
+    ### Args:
+    * `b` (`bytes`): bytes to stringify
+
+    ### Returns:
+    * `str`: formatted string
+    """
+    return f"[{', '.join(f'0x{b:02X}' for b in bytes_iter)}]"
+
 def eventToString(event: eventData) -> str:
     """
     Convert event to string
@@ -44,4 +56,4 @@ def eventToString(event: eventData) -> str:
             assert event.data2 is not None
         return f"({event.status:x}, {event.data1:x}, {event.data2:x})"
     else:
-        return f"[{', '.join(f'0x{b:02X}' for b in event.sysex)}]"
+        return bytesToString(event.sysex)

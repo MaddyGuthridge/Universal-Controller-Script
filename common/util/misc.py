@@ -4,7 +4,9 @@ common > util > misc
 Miscellaneous tools and things
 """
 
+import math
 import sys
+import time
 
 class _NoneNoPrintout:
     """
@@ -40,3 +42,30 @@ def sizeof(obj, seen=None):
     elif hasattr(obj, '__iter__') and not isinstance(obj, (str, bytes, bytearray)):
         size += sum([sizeof(i, seen) for i in obj])
     return size
+
+def formatTime(t: float) -> str:
+    """
+    Format time as a string
+
+    ### Args:
+    * `time` (`time`): time to format
+
+    ### Returns:
+    * `str`: formatted time
+    """
+    t_obj = time.localtime(t)
+    return f"{t_obj.tm_hour:02}:{t_obj.tm_min:02}:{t_obj.tm_sec:02}"
+
+def formatLongTime(t: float) -> str:
+    """
+    Format time as a string including milliseconds
+
+    ### Args:
+    * `time` (`time`): time to format
+
+    ### Returns:
+    * `str`: formatted time
+    """
+    t_obj = time.localtime(t)
+    ms = f"{t - math.floor(t):.3}".lstrip("0.")
+    return f"{t_obj.tm_hour:02}:{t_obj.tm_min:02}:{t_obj.tm_sec:02}.{ms}"

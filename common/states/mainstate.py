@@ -43,6 +43,7 @@ class MainState(IScriptState):
                 "correctly. Please contact the device's maintainer."
             )
             # raise ValueError(f"Couldn't identify event: {eventToString(event)}")
+            return
             
         else:
             log("device.event.in", f"Recognised event: {mapping.getControl()}", verbosity.NOTE)

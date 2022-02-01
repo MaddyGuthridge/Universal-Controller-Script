@@ -7,7 +7,10 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+import math
 import time
+
+from common.util.misc import formatLongTime, formatTime
 # import traceback
 
 from .verbosity import Verbosity
@@ -39,21 +42,8 @@ class LogItem:
         self.details = details
         self.verbosity = verbosity
         self.index = index
-        self.time = time.localtime()
+        self.time = time.time()
         self.trace = None # traceback.extract_stack(limit=-2)
-    
-    @staticmethod
-    def _formatTime(time) -> str:
-        """
-        Static helper function for formatting time as a string
-
-        ### Args:
-        * `time` (`time`): time to format
-
-        ### Returns:
-        * `str`: formatted time
-        """
-        return f"{time.tm_hour:02}:{time.tm_min:02}:{time.tm_sec:02}"
 
     def __str__(self) -> str:
         """
@@ -63,7 +53,7 @@ class LogItem:
         * `str`: stringified log item
         """
         index = f"[#{self.index:6d}]"
-        time  = LogItem._formatTime(self.time)
+        time  = formatTime(self.time)
         return \
             f"{index}: {time} | {self.category.ljust(30)} : {self.message}"
 
@@ -72,7 +62,7 @@ class LogItem:
         Print full details of the log item, including time, category and
         traceback
         """
-        print(f"Log item #{self.index} ({LogItem._formatTime(self.time)})")
+        print(f"Log item #{self.index} ({formatLongTime(self.time)})")
         print(f"Category: {self.category}")
         print(f"----------------------------------------")
         print(self.message)
