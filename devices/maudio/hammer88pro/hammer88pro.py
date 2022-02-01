@@ -4,7 +4,7 @@ from typing import Optional
 from common.eventpattern import EventPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import Data2Strategy
+from controlsurfaces.valuestrategies import Data2Strategy, ButtonSinglePressStrategy
 from devices import Device
 from devices import BasicControlMatcher
 
@@ -28,7 +28,18 @@ ID_PREFIX = "Maudio.Hammer88Pro"
 class Hammer88Pro(Device):
     
     def __init__(self) -> None:
-        super().__init__(BasicControlMatcher())
+        matcher = BasicControlMatcher()
+        matcher.addControl(PlayButton(
+            EventPattern(0xFA, 0x0, 0x0),
+            ButtonSinglePressStrategy(),
+            "transport"
+        ))
+        matcher.addControl(StopButton(
+            EventPattern(0xFC, 0x0, 0x0),
+            ButtonSinglePressStrategy(),
+            "transport"
+        ))
+        super().__init__(matcher)
     
     @classmethod
     def create(cls, event: Optional[eventData]) -> Device:

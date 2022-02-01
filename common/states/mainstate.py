@@ -34,6 +34,7 @@ class MainState(IScriptState):
         mapping = self._device.matchEvent(event)
         
         if mapping is None:
+            event.handled = True
             log(
                 "device.event.in",
                 f"Failed to recognise event: {eventToString(event)}",
@@ -41,7 +42,7 @@ class MainState(IScriptState):
                 "This usually means that the device hasn't been configured "
                 "correctly. Please contact the device's maintainer."
             )
-            raise ValueError(f"Couldn't identify event: {eventToString(event)}")
+            # raise ValueError(f"Couldn't identify event: {eventToString(event)}")
             
         else:
             log("device.event.in", f"Recognised event: {mapping.getControl()}", verbosity.NOTE)
