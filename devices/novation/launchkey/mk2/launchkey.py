@@ -146,7 +146,17 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
     @staticmethod
     def getUniversalEnquiryResponsePattern():
         return EventPattern(
-            [0xF0, 0x7E, 0x00, 0x06, 0x02, 0x00, 0x20, 0x29, (0x7C, 0x7D)]
+            [
+                0xF0, # Sysex start
+                0x7E, # Device response
+                ..., # OS Device ID
+                0x06, # Separator
+                0x02, # Separator
+                0x00, # Manufacturer
+                0x20, # Manufacturer
+                0x29, # Manufacturer
+                (0x7C, 0x7D) # Family code (documented as 0x7A???)
+            ]
         )
     
     @staticmethod

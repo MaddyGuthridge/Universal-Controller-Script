@@ -13,4 +13,4 @@ from .deviceshadow import DeviceShadow, EventCallback
 from .controlmatcher import IControlMatcher, BasicControlMatcher
 
 # Device manufacturers
-from . import novation
+from . import novation, maudio
