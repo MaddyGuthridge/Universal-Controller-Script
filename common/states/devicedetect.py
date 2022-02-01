@@ -15,6 +15,7 @@ import device
 import common
 from common.types import eventData
 from common import log, verbosity
+from common.util.events import eventToString
 
 from common.extensionmanager import ExtensionManager
 
@@ -125,7 +126,7 @@ class WaitingForDevice(IScriptState):
                     LOG_CAT,
                     f"Recognised device via sysex: {dev.getId()}",
                     verbosity.INFO,
-                    repr(event.sysex)
+                    eventToString(event)
                 )
                 event.handled = True
                 common.getContext().setState(MainState(dev))
@@ -134,7 +135,7 @@ class WaitingForDevice(IScriptState):
                     LOG_CAT,
                     f"Failed to recognise device via sysex, using fallback method",
                     verbosity.WARNING,
-                    repr(event.sysex)
+                    eventToString(event)
                 )
                 self.detectFallback()
 

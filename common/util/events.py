@@ -42,6 +42,6 @@ def eventToString(event: eventData) -> str:
             assert event.status is not None
             assert event.data1 is not None
             assert event.data2 is not None
-        return f"{event.status:x} {event.data1:x} {event.data2:x}"
+        return f"({event.status:x}, {event.data1:x}, {event.data2:x})"
     else:
-        return str(event.sysex)
+        return f"[{', '.join(f'0x{b:02X}' for b in event.sysex)}]"
