@@ -25,6 +25,7 @@
         "dicttools",
         "Dpad",
         "flmidimsg",
+        "ieventpattern",
         "ivaluestrategy",
         "Maudio",
         "MIDIIN",

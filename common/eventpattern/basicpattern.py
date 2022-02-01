@@ -1,59 +1,10 @@
-"""
-common > eventpattern
 
-Contains code for pattern matching with MIDI events, including EventPattern,
-a standard way to match events, and IEventPattern, from which custom pattern
-matchers can be derived.
+from typing import TYPE_CHECKING, Any, Callable, Optional
 
-Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
-"""
+from common.types import eventData
+from . import ByteMatch, IEventPattern
 
-# from __future__ import annotations
-
-from typing import (TYPE_CHECKING,
-    Any,
-    Callable,
-    Optional,
-    Union,
-    Type
-)
-from abc import abstractmethod
-
-if TYPE_CHECKING:
-    from . import eventData
-
-EllipsisType: Type = type(Ellipsis)
-
-# Variable type for byte match expression
-ByteMatch = Union[int, range, tuple[int, ...], 'ellipsis']
-
-class IEventPattern:
-    """
-    Abstract definition for an EventPattern, used to match MIDI events with
-    ControlSurfaces.
-
-    This class can be extended if a developer wishes to create their own event
-    pattern for a case where the standard EventPattern class doesn't suffice.
-    """
-    
-    @abstractmethod
-    def matchEvent(self, event: 'eventData') -> bool:
-        """
-        Return whether the given event matches the pattern
-
-        This is an abstract method which should be implemented by child classes.
-
-        ### Args:
-        * `event` (`eventData`): Event to match against
-
-        ### Returns:
-        * `bool`: whether the event matches
-        """
-        raise NotImplementedError("This method should be implemented by "
-                                  "child classes")
-
-class EventPattern(IEventPattern):
+class BasicEventPattern(IEventPattern):
     """
     Represents a pattern to match with MIDI events.
 
@@ -178,10 +129,10 @@ class EventPattern(IEventPattern):
         """
         # This is type-safe, I promise
         matches: dict[type, Callable[[Any, int], bool]] = {
-            int: EventPattern._matchByteConst,
-            range: EventPattern._matchByteRange,
-            tuple: EventPattern._matchByteTuple,
-            type(...): EventPattern._matchByteEllipsis
+            int: BasicEventPattern._matchByteConst,
+            range: BasicEventPattern._matchByteRange,
+            tuple: BasicEventPattern._matchByteTuple,
+            type(...): BasicEventPattern._matchByteEllipsis
         }
         return matches[type(expected)](expected, actual)
 

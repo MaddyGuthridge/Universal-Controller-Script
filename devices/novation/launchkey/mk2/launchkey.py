@@ -1,6 +1,6 @@
 
 from typing import Optional
-from common.eventpattern import EventPattern
+from common.eventpattern import BasicEventPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import Data2Strategy
@@ -37,7 +37,7 @@ class LaunchkeyMk2(Device):
         for i in range(1, 9):
             matcher.addControl(
                 Knob(
-                    EventPattern(0xB0, 0x14 + i, ...),
+                    BasicEventPattern(0xB0, 0x14 + i, ...),
                     Data2Strategy(),
                     "knobs",
                     (i, 0)
@@ -47,56 +47,56 @@ class LaunchkeyMk2(Device):
         # Transport
         matcher.addControl(
             StopButton(
-                EventPattern(0xB0, 0x72, ...),
+                BasicEventPattern(0xB0, 0x72, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             PlayButton(
-                EventPattern(0xB0, 0x73, ...),
+                BasicEventPattern(0xB0, 0x73, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             LoopButton(
-                EventPattern(0xB0, 0x74, ...),
+                BasicEventPattern(0xB0, 0x74, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             RecordButton(
-                EventPattern(0xB0, 0x75, ...),
+                BasicEventPattern(0xB0, 0x75, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             DirectionNext(
-                EventPattern(0xB0, 0x66, ...),
+                BasicEventPattern(0xB0, 0x66, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             DirectionPrevious(
-                EventPattern(0xB0, 0x67, ...),
+                BasicEventPattern(0xB0, 0x67, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             RewindButton(
-                EventPattern(0xB0, 0x70, ...),
+                BasicEventPattern(0xB0, 0x70, ...),
                 Data2Strategy(),
                 "transport"
             )
         )
         matcher.addControl(
             FastForwardButton(
-                EventPattern(0xB0, 0x71, ...),
+                BasicEventPattern(0xB0, 0x71, ...),
                 Data2Strategy(),
                 "transport"
             )
@@ -117,7 +117,7 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         for i in range(1, 9):
             matcher.addControl(
                 Fader(
-                    EventPattern(0xB0, 0x28 + i, ...),
+                    BasicEventPattern(0xB0, 0x28 + i, ...),
                     Data2Strategy(),
                     "faders",
                     (i, 0)
@@ -126,7 +126,7 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         # Master fader
         matcher.addControl(
             Fader(
-                EventPattern(0xB0, 0x07, ...),
+                BasicEventPattern(0xB0, 0x07, ...),
                 Data2Strategy(),
                 "knobs",
                 (0, 0)
@@ -145,7 +145,7 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
     
     @staticmethod
     def getUniversalEnquiryResponsePattern():
-        return EventPattern(
+        return BasicEventPattern(
             [
                 0xF0, # Sysex start
                 0x7E, # Device response
@@ -181,7 +181,7 @@ class LaunchkeyMk2_25(LaunchkeyMk2):
 
     @staticmethod
     def getUniversalEnquiryResponsePattern():
-        return EventPattern(
+        return BasicEventPattern(
             [0xF0, 0x7E, 0x00, 0x06, 0x02, 0x00, 0x20, 0x29, 0x7B]
         )
     

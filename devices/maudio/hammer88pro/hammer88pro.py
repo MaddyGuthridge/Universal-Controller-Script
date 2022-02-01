@@ -1,7 +1,7 @@
 
 
 from typing import Optional
-from common.eventpattern import EventPattern
+from common.eventpattern import BasicEventPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import Data2Strategy, ButtonSinglePressStrategy
@@ -30,12 +30,12 @@ class Hammer88Pro(Device):
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
         matcher.addControl(PlayButton(
-            EventPattern(0xFA, 0x0, 0x0),
+            BasicEventPattern(0xFA, 0x0, 0x0),
             ButtonSinglePressStrategy(),
             "transport"
         ))
         matcher.addControl(StopButton(
-            EventPattern(0xFC, 0x0, 0x0),
+            BasicEventPattern(0xFC, 0x0, 0x0),
             ButtonSinglePressStrategy(),
             "transport"
         ))
@@ -51,7 +51,7 @@ class Hammer88Pro(Device):
     
     @staticmethod
     def getUniversalEnquiryResponsePattern():
-        return EventPattern(
+        return BasicEventPattern(
             [
                 0xF0, # Sysex start
                 0x7E, # Device response
