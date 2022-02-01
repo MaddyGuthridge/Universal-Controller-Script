@@ -42,10 +42,10 @@ class IEventPattern:
         """
         Return whether the given event matches the pattern
 
-        This is an abstract method which should be implemented by child classes
+        This is an abstract method which should be implemented by child classes.
 
         ### Args:
-        * `event` (`[type]`): Event to match against
+        * `event` (`eventData`): Event to match against
 
         ### Returns:
         * `bool`: whether the event matches
@@ -83,6 +83,8 @@ class EventPattern(IEventPattern):
         * `...`: A wildcard: any value will match.
         
         For sysex-type events, a list of objects of that type must be provided.
+        If given sysex messages are longer than the pattern, then any extra data
+        will be ignored, and assumed to match with any data.
 
         ### Args:
         * `status_sysex` (`ByteMatch | list[ByteMatch]`): Status byte or sysex data.
@@ -188,6 +190,9 @@ class EventPattern(IEventPattern):
         Matcher function for sysex events
         """
         if event.sysex is None:
+            return False
+        # If we have more sysex data than them, it can't possibly be a match
+        if len(self.sysex) > len(event.sysex):
             return False
         return all(map(self._matchByte, self.sysex, event.sysex))
 
