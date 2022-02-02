@@ -22,7 +22,7 @@ def fromNibbles(upper: ByteMatch, lower: ByteMatch) -> tuple:
     ### Returns:
     * `tuple`: combined ByteMatch
     """
-    def toIter(b: ByteMatch) -> Iterable[int]:
+    def toIter(b: ByteMatch) -> 'Iterable[int]':
         """
         Convert a bytematch to an iterable
         """

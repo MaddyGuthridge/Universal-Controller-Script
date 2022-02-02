@@ -78,6 +78,16 @@ class BasicControlMatcher(IControlMatcher):
         self.__controls: list[ControlSurface] = []
         self.__groups: set[str] = set()
     
+    def addControls(self, controls: list[ControlSurface]) -> None:
+        """
+        Register and add a list of controls to the control matcher.
+
+        ### Args:
+        * `controls` (`list[ControlSurface]`): Controls to add
+        """
+        for c in controls:
+            self.addControl(c)
+    
     def addControl(self, control: ControlSurface) -> None:
         """
         Register and add a control to the control matcher.
