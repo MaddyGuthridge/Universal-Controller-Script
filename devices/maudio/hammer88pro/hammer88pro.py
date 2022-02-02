@@ -4,7 +4,7 @@ from typing import Optional
 from common.eventpattern import BasicEventPattern, ForwardedEventPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import ForwardedStrategy
+from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy
 from devices import Device
 from devices import BasicControlMatcher
 
@@ -23,10 +23,14 @@ from controlsurfaces import (
     DirectionNext,
     DirectionPrevious
 )
-from .buttondatastrat import HammerButtonStrategy
 
 class Hammer88Pro(Device):
-    
+    """
+    Device definition for Hammer 88 Pro
+
+    Note: this requires the presets for both DAW and User modes to be loaded
+    on the device.
+    """
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
         # Null events
@@ -36,14 +40,36 @@ class Hammer88Pro(Device):
         matcher.addControl(NullEvent(
             BasicEventPattern(0xFC, 0x0, 0x0)
         ))
-        matcher.addControl(NullEvent(
-            ForwardedEventPattern(3, BasicEventPattern(0xB0, 0x0F, 0x0E))
-        ))
         
         # Transport buttons
+        matcher.addControl(StopButton(
+            ForwardedEventPattern(3, BasicEventPattern(0xBF, 102, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            "transport"
+        ))
         matcher.addControl(PlayButton(
-            ForwardedEventPattern(3, BasicEventPattern(0xB0, 0x2F, (0x44, 0x4))),
-            ForwardedStrategy(HammerButtonStrategy(0x44)),
+            ForwardedEventPattern(3, BasicEventPattern(0xBF, 103, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            "transport"
+        ))
+        matcher.addControl(RecordButton(
+            ForwardedEventPattern(3, BasicEventPattern(0xBF, 104, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            "transport"
+        ))
+        matcher.addControl(RewindButton(
+            ForwardedEventPattern(3, BasicEventPattern(0xBF, 105, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            "transport"
+        ))
+        matcher.addControl(FastForwardButton(
+            ForwardedEventPattern(3, BasicEventPattern(0xBF, 106, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            "transport"
+        ))
+        matcher.addControl(LoopButton(
+            ForwardedEventPattern(3, BasicEventPattern(0xBF, 107, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
             "transport"
         ))
         

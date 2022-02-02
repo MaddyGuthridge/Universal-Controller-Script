@@ -94,6 +94,7 @@ def OnMidiIn(event: eventData):
         "device.forward.out",
         "Dispatched event to main script: " + eventToString(event)
     )
+    event.handled = True
 
 def OnInit():
     global EVENT_HEADER

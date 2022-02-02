@@ -38,6 +38,7 @@ SUSTAIN = 0x40
 SOSTENUTO = 0x42
 SOFT = 0x43
 
+# TODO: Make these all channel independent
 class SustainPedal(Pedal):
     def __init__(self) -> None:
         super().__init__(BasicEventPattern(0xB0, SUSTAIN, ...))
