@@ -3,7 +3,7 @@ from common.types import eventData
 from controlsurfaces import IValueStrategy
 
 
-class HammerButtonStrat(IValueStrategy):
+class HammerButtonStrategy(IValueStrategy):
     """
     Strategy for buttons on Hammer 88 Pro
 

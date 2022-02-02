@@ -10,7 +10,7 @@ Authors:
 import device
 from typing import TYPE_CHECKING
 
-from common.util.events import eventFromForwarded
+from common.util.events import eventFromForwarded, eventToString
 from . import IEventPattern
 
 from common.types import eventData
@@ -54,5 +54,5 @@ class ForwardedEventPattern(IEventPattern):
         # If we reach this point, it's a forwarded event that matches this
         # device. Extract the event and determine if it matches with the
         # underlying pattern
-        
-        return self._pattern.matchEvent(eventFromForwarded(event, null+1))
+        # print(eventToString(eventFromForwarded(event, null+2)))
+        return self._pattern.matchEvent(eventFromForwarded(event, null+2))

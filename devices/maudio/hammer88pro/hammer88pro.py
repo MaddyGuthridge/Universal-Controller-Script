@@ -4,7 +4,7 @@ from typing import Optional
 from common.eventpattern import BasicEventPattern, ForwardedEventPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import Data2Strategy, ButtonSinglePressStrategy
+from controlsurfaces.valuestrategies import ForwardedStrategy
 from devices import Device
 from devices import BasicControlMatcher
 
@@ -23,7 +23,7 @@ from controlsurfaces import (
     DirectionNext,
     DirectionPrevious
 )
-from .buttondatastrat import HammerButtonStrat
+from .buttondatastrat import HammerButtonStrategy
 
 class Hammer88Pro(Device):
     
@@ -43,7 +43,7 @@ class Hammer88Pro(Device):
         # Transport buttons
         matcher.addControl(PlayButton(
             ForwardedEventPattern(3, BasicEventPattern(0xB0, 0x2F, (0x44, 0x4))),
-            HammerButtonStrat(0x44),
+            ForwardedStrategy(HammerButtonStrategy(0x44)),
             "transport"
         ))
         
