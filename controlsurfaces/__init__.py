@@ -14,6 +14,7 @@ from .controlmapping import ControlMapping
 from .valuestrategies import *
 
 from .nullevent import *
+from .note import Note
 from .pedal import *
 from .button import *
 from .transport import *
