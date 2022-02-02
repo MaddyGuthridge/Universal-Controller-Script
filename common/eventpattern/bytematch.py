@@ -1,8 +1,8 @@
 
 
 from typing import TYPE_CHECKING, Type, Union
-from collections.abc import Iterable
-
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 EllipsisType: Type = type(Ellipsis)
 
