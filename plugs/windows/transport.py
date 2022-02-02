@@ -9,6 +9,7 @@ from common.extensionmanager import ExtensionManager
 from common.util.apifixes import PluginIndex
 from controlsurfaces import (
     ControlShadow,
+    NullEvent,
     PlayButton,
     StopButton,
     JogForwards,
@@ -33,6 +34,7 @@ class Transport(SpecialPlugin):
     
     def __init__(self, shadow: DeviceShadow) -> None:
         super().__init__(shadow, [])
+        shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)
         shadow.bindMatch(PlayButton, self.playButton, raise_on_failure=False)
         shadow.bindMatch(StopButton, self.stopButton, raise_on_failure=False)
         shadow.bindMatch(JogWheel, self.jogWheel, raise_on_failure=False)
@@ -73,6 +75,11 @@ class Transport(SpecialPlugin):
         increment = 1 if isinstance(control.getControl(), JogForwards) else -1
         
         ui.jog(increment)
+        return True
+    
+    def nullEvent(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
+        """Handle NullEvents for which no action should be taken
+        """
         return True
     
     @filterButtonLift
