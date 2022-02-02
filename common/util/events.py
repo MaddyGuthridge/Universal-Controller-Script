@@ -25,7 +25,7 @@ def eventFromForwarded(event: eventData, type_idx:int=-1) -> eventData:
     """
     assert event.sysex is not None
     if type_idx == -1:
-        type_idx = event.sysex.index(b'\0')
+        type_idx = event.sysex.index(b'\0') + 2
     
     if event.sysex[type_idx]:
         # Remaining bytes are sysex data

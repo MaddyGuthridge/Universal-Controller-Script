@@ -75,7 +75,7 @@ class ControlSurface:
         """
         String representation of the control surface
         """
-        return f"{self.__class__}, ({self.__group}: {self.__coord})"
+        return f"{self.__class__}, ({self.__group}: {self.__coord}, {self.value})"
     
     @final
     def getMapping(self) -> ControlMapping:
