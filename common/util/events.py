@@ -54,6 +54,6 @@ def eventToString(event: eventData) -> str:
             assert event.status is not None
             assert event.data1 is not None
             assert event.data2 is not None
-        return f"({event.status:x}, {event.data1:x}, {event.data2:x})"
+        return f"(0x{event.status:X}, 0x{event.data1:X}, 0x{event.data2:X})"
     else:
         return bytesToString(event.sysex)
