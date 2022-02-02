@@ -24,7 +24,12 @@ HIERARCHY = {
             "in": {},
             "out": {},
         },
-        "idle": {}
+        "idle": {},
+        "forward": {
+            "bootstrap": {},
+            "in": {},
+            "out": {}
+        }
     },
     "plugins": {
         "special": {

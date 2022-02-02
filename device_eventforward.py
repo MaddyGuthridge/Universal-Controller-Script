@@ -54,7 +54,8 @@ as required
 import include
 import time
 from typing import TYPE_CHECKING
-from common.util.events import bytesToString
+from common import log, verbosity
+from common.util.events import bytesToString, eventToString
 from common.util.misc import formatLongTime
 from common.types import eventData
 import device
@@ -89,7 +90,11 @@ def OnMidiIn(event: eventData):
     for i in range(device.dispatchReceiverCount()):
         device.dispatch(i, 0xF0, output)
     
-    print("Dispatched at " + formatLongTime(time.time()))
+    log(
+        "device.forward.out",
+        "Dispatched event to main script",
+        detailed_msg=eventToString(event)
+    )
 
 def OnInit():
     global EVENT_HEADER
@@ -116,5 +121,13 @@ def OnInit():
        + bytes(0) \
        + bytes(dev_num)
     
-    print("Generated event header")
-    print(bytesToString(EVENT_HEADER))
+    log(
+        "device.forward.bootstrap",
+        "Generated event header",
+        detailed_msg=bytesToString(EVENT_HEADER)
+    )
+
+log(
+    "device.forward.bootstrap",
+    "Loaded script successfully"
+)
