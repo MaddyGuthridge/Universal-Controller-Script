@@ -11,6 +11,7 @@ Authors:
 from .controlsurface import ControlSurface
 from .controlshadow import ControlShadow
 from .controlmapping import ControlMapping
+from .valuestrategies import *
 
 from .nullevent import *
 from .pedal import *

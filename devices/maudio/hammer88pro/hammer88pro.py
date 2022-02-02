@@ -23,6 +23,7 @@ from controlsurfaces import (
     DirectionNext,
     DirectionPrevious
 )
+from .buttondatastrat import HammerButtonStrat
 
 class Hammer88Pro(Device):
     
@@ -35,10 +36,14 @@ class Hammer88Pro(Device):
         matcher.addControl(NullEvent(
             BasicEventPattern(0xFC, 0x0, 0x0)
         ))
+        matcher.addControl(NullEvent(
+            ForwardedEventPattern(3, BasicEventPattern(0xB0, 0x0F, 0x0E))
+        ))
+        
         # Transport buttons
         matcher.addControl(PlayButton(
-            ForwardedEventPattern(3, BasicEventPattern(0xB0, 0xF, ...)),
-            ButtonSinglePressStrategy(),
+            ForwardedEventPattern(3, BasicEventPattern(0xB0, 0x2F, (0x44, 0x4))),
+            HammerButtonStrat(0x44),
             "transport"
         ))
         

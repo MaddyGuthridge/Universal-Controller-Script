@@ -9,6 +9,8 @@ Authors:
 
 import device
 from typing import TYPE_CHECKING
+
+from common.util.events import eventToString
 from . import IEventPattern
 
 from common.types import eventData
@@ -40,9 +42,8 @@ class ForwardedEventPattern(IEventPattern):
         if event.sysex is None \
             or not event.sysex.startswith(bytes([0xF0, 0x7D])):
                 return False
-        
         # Check if it matches this device's name
-        null = event.sysex[2:].find(bytes(0))
+        null = event.sysex[2:].index(b'\0') + 2
         if event.sysex[2:null].decode() != device.getName():
             return False
         
@@ -66,4 +67,4 @@ class ForwardedEventPattern(IEventPattern):
                 event.sysex[null+3]
             )
         
-        return super().matchEvent(decoded)
+        return self._pattern.matchEvent(decoded)
