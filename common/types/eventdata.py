@@ -54,9 +54,9 @@ class eventData:
     ) -> None:
         self.handled = False
         self.timestamp = ReadOnly(0.0)
-        self.status = None if isinstance(status_sysex, list) else status_sysex
-        self.data1 = data1
-        self.data2 = data2
+        self.status = 0 if isinstance(status_sysex, list) else status_sysex
+        self.data1 = data1 if data1 is not None else 0
+        self.data2 = data2 if data2 is not None else 0
         self.port = ReadOnly(0)
         self.note = 0
         self.velocity = 0
