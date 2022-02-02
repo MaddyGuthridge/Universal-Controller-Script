@@ -6,3 +6,4 @@ controls quickly
 """
 
 from .notes import *
+from .pedals import *
