@@ -31,7 +31,10 @@ from plugs import SpecialPlugin
 from plugs.eventfilters import filterButtonLift
 
 class Transport(SpecialPlugin):
-    
+    """
+    The transport plugin manages basic transport commands, such as play/pause
+    commands and navigation commands.
+    """
     def __init__(self, shadow: DeviceShadow) -> None:
         super().__init__(shadow, [])
         shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)

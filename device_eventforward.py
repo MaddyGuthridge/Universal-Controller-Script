@@ -22,16 +22,16 @@ as required
 * 0x7D non-commercial system exclusive ID (should prevent overlap with any other
   hardware which would be using a registered system exclusive ID)
 
-* [device number] determined by the device name in FL Studio, which has
-  something like MIDIIN# where # is the device number. This allows the script
-  to determine what sub-device the message came from, and separate the events
-  properly.
-
 * [device name] a null-terminated string containing the device name (sans the
   MIDIIN# parts), to allow for the events to be filtered if the universal
   controller is being used for multiple devices
 
 * 0x00 null terminator
+
+* [device number] determined by the device name in FL Studio, which has
+  something like MIDIIN# where # is the device number. This allows the script
+  to determine what sub-device the message came from, and separate the events
+  properly.
 
 * [event category] type of event:
     * standard (0), or 
@@ -111,9 +111,10 @@ def OnInit():
     
     EVENT_HEADER = bytes([
         0xF0, # Start sysex
-        0x7D, # Non-commercial sysex ID
-        dev_num
-    ]) + name.encode() + bytes([0])
+        0x7D  # Non-commercial sysex ID
+    ]) + name.encode() \
+       + bytes(0) \
+       + bytes(dev_num)
     
     print("Generated event header")
     print(bytesToString(EVENT_HEADER))
