@@ -5,8 +5,8 @@ from common.eventpattern import BasicEventPattern, ForwardedEventPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy
-from devices import Device
-from devices import BasicControlMatcher
+from devices import Device, BasicControlMatcher
+from devices.controlgenerators import getNotesAllChannels
 
 from controlsurfaces import (
     NullEvent,
@@ -41,6 +41,9 @@ class Hammer88Pro(Device):
         matcher.addControl(NullEvent(
             BasicEventPattern(0xFC, 0x0, 0x0)
         ))
+        
+        # Notes
+        matcher.addControls(getNotesAllChannels())
         
         # Transport buttons
         matcher.addControl(StopButton(
