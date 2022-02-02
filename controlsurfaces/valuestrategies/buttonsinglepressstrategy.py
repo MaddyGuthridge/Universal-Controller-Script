@@ -1,7 +1,7 @@
 """
-controlsurfaces > valuestrategies > buttondata2strategy
+controlsurfaces > valuestrategies > buttonsinglepressstrategy
 
-Contains the definition for the button data2 value strategy
+Contains the definition for the button single press strategy
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
