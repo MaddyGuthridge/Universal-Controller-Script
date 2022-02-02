@@ -23,7 +23,8 @@ from controlsurfaces import (
     DirectionLeft,
     DirectionSelect,
     RecordButton,
-    LoopButton
+    LoopButton,
+    MetronomeButton
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
@@ -43,6 +44,7 @@ class Transport(SpecialPlugin):
         shadow.bindMatch(JogWheel, self.jogWheel, raise_on_failure=False)
         shadow.bindMatch(RecordButton, self.recButton, raise_on_failure=False)
         shadow.bindMatch(LoopButton, self.loopButton, raise_on_failure=False)
+        shadow.bindMatch(MetronomeButton, self.metroButton, raise_on_failure=False)
         shadow.bindMatches(NavigationButtons, self.navigationButtons, raise_on_failure=False)
     
     @classmethod
@@ -71,6 +73,11 @@ class Transport(SpecialPlugin):
     @filterButtonLift
     def loopButton(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
         transport.setLoopMode()
+        return True
+    
+    @filterButtonLift
+    def metroButton(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:
+        transport.globalTransport(110, 1)
         return True
 
     def jogWheel(self, control: ControlShadow, index: PluginIndex, *args: Any) -> bool:

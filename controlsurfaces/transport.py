@@ -28,3 +28,6 @@ class FastForwardButton(TransportButton):
 
 class RewindButton(TransportButton):
     pass
+
+class MetronomeButton(TransportButton):
+    pass

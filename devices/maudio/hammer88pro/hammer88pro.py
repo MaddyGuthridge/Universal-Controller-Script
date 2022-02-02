@@ -17,7 +17,8 @@ from controlsurfaces import (
     RecordButton,
     FastForwardButton,
     RewindButton,
-    LoopButton
+    LoopButton,
+    MetronomeButton
 )
 from controlsurfaces import (
     DirectionNext,
@@ -69,6 +70,11 @@ class Hammer88Pro(Device):
         ))
         matcher.addControl(LoopButton(
             ForwardedEventPattern(3, BasicEventPattern(0xBF, 107, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            "transport"
+        ))
+        matcher.addControl(MetronomeButton(
+            ForwardedEventPattern(3, BasicEventPattern(0xB9, 0x74, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
             "transport"
         ))
