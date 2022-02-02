@@ -74,14 +74,14 @@ def OnMidiIn(event: eventData):
             assert event.data2 is not None
             assert event.data1 is not None
             assert event.status is not None
-        output = EVENT_HEADER + bytes(0) + bytes([
+        output = EVENT_HEADER + bytes([0]) + bytes([
             event.data2,
             event.data1,
             event.status,
             0xF7
         ])
     else:
-        output = EVENT_HEADER + bytes(1) + bytes(event.sysex)
+        output = EVENT_HEADER + bytes([1]) + bytes(event.sysex)
     
     # print("Output sysex event:")
     # print(bytesToString(output))
@@ -117,13 +117,14 @@ def OnInit():
         0xF0, # Start sysex
         0x7D  # Non-commercial sysex ID
     ]) + name.encode() \
-       + bytes(0) \
-       + bytes(dev_num)
+       + bytes([0]) \
+       + bytes([dev_num])
     
     log(
         "device.forward.bootstrap",
         "Generated event header",
-        detailed_msg=bytesToString(EVENT_HEADER)
+        detailed_msg=f"{bytesToString(EVENT_HEADER)}\n"
+                     f"{dev_num=}"
     )
 
 log(
