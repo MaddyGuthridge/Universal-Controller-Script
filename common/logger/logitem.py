@@ -62,7 +62,7 @@ class LogItem:
         Print full details of the log item, including time, category and
         traceback
         """
-        print(f"Log item #{self.index} ({formatLongTime(self.time)})")
+        print(f"Log item #{self.index} ({formatLongTime(self.time)}), verbosity={self.verbosity}")
         print(f"Category: {self.category}")
         print(f"----------------------------------------")
         print(self.message)

@@ -92,8 +92,7 @@ def OnMidiIn(event: eventData):
     
     log(
         "device.forward.out",
-        "Dispatched event to main script",
-        detailed_msg=eventToString(event)
+        "Dispatched event to main script: " + eventToString(event)
     )
 
 def OnInit():

@@ -1,7 +1,7 @@
 
 
 from typing import Optional
-from common.eventpattern import BasicEventPattern
+from common.eventpattern import BasicEventPattern, ForwardedEventPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import Data2Strategy, ButtonSinglePressStrategy
@@ -9,6 +9,7 @@ from devices import Device
 from devices import BasicControlMatcher
 
 from controlsurfaces import (
+    NullEvent,
     Fader,
     Knob,
     PlayButton,
@@ -23,22 +24,24 @@ from controlsurfaces import (
     DirectionPrevious
 )
 
-ID_PREFIX = "Maudio.Hammer88Pro"
-
 class Hammer88Pro(Device):
     
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
+        # Null events
+        matcher.addControl(NullEvent(
+            BasicEventPattern(0xFA, 0x0, 0x0)
+        ))
+        matcher.addControl(NullEvent(
+            BasicEventPattern(0xFC, 0x0, 0x0)
+        ))
+        # Transport buttons
         matcher.addControl(PlayButton(
-            BasicEventPattern(0xFA, 0x0, 0x0),
+            ForwardedEventPattern(3, BasicEventPattern(0xB0, 0xF, ...)),
             ButtonSinglePressStrategy(),
             "transport"
         ))
-        matcher.addControl(StopButton(
-            BasicEventPattern(0xFC, 0x0, 0x0),
-            ButtonSinglePressStrategy(),
-            "transport"
-        ))
+        
         super().__init__(matcher)
     
     @classmethod
@@ -47,7 +50,7 @@ class Hammer88Pro(Device):
     
     @staticmethod
     def getId() -> str:
-        return f"{ID_PREFIX}"
+        return "Maudio.Hammer88Pro"
     
     @staticmethod
     def getUniversalEnquiryResponsePattern():

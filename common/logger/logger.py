@@ -59,7 +59,10 @@ class Log:
             verbosity = DEFAULT
         else:
             if verbosity is None:
-                if item.category in context.settings.get("logger.watched_categories"):
+                # TODO: Potentially buggy if a `.` isn't the next char in the
+                # watched category
+                if any(item.category.startswith(c)
+                       for c in context.settings.get("logger.watched_categories")):
                     verbosity = context.settings.get("logger.max_watched_verbosity")
                 else:
                     verbosity = context.settings.get("logger.max_verbosity")

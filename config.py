@@ -14,5 +14,8 @@ from typing import Any
 from common.logger import verbosity
 
 CONFIG: dict[str, Any] = {
-    
+    "logger.watched_categories": [
+        "general",
+        "device.forward"
+    ]
 }
