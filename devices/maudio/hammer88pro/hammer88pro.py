@@ -51,38 +51,31 @@ class Hammer88Pro(Device):
         # Transport buttons
         matcher.addControl(StopButton(
             ForwardedEventPattern(3, BasicEventPattern(0xBF, 102, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
-            "transport"
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(PlayButton(
             ForwardedEventPattern(3, BasicEventPattern(0xBF, 103, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
-            "transport"
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(RecordButton(
             ForwardedEventPattern(3, BasicEventPattern(0xBF, 104, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
-            "transport"
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(RewindButton(
             ForwardedEventPattern(3, BasicEventPattern(0xBF, 105, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
-            "transport"
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(FastForwardButton(
             ForwardedEventPattern(3, BasicEventPattern(0xBF, 106, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
-            "transport"
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(LoopButton(
             ForwardedEventPattern(3, BasicEventPattern(0xBF, 107, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
-            "transport"
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(MetronomeButton(
             ForwardedEventPattern(3, BasicEventPattern(0xB9, 0x74, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
-            "transport"
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(ModWheel())
         matcher.addControl(PitchWheel())

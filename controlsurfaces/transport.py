@@ -6,10 +6,13 @@ Defines transport control surfaces
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
+from common.eventpattern import IEventPattern
+from controlsurfaces.valuestrategies import IValueStrategy
 from .button import Button
 
 class TransportButton(Button):
-    pass
+    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
+        super().__init__(event_pattern, value_strategy, "transport")
 
 class PlayButton(TransportButton):
     pass

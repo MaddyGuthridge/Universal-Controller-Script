@@ -6,13 +6,16 @@ Defines navigation control surfaces
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
+from common.eventpattern import IEventPattern
+from controlsurfaces.valuestrategies import IValueStrategy
 from . import ControlSurface
 from . import Button
 
 # TODO: Implement navigation controls
 
 class NavigationControl(ControlSurface):
-    pass
+    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
+        super().__init__(event_pattern, value_strategy, "navigation")
     
 class JogWheel(NavigationControl):
     @staticmethod

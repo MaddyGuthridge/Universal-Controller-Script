@@ -47,62 +47,38 @@ class LaunchkeyMk2(Device):
             )
         
         # Transport
-        matcher.addControl(
-            StopButton(
-                BasicEventPattern(0xB0, 0x72, ...),
-                Data2Strategy(),
-                "transport"
-            )
-        )
-        matcher.addControl(
-            PlayButton(
-                BasicEventPattern(0xB0, 0x73, ...),
-                Data2Strategy(),
-                "transport"
-            )
-        )
-        matcher.addControl(
-            LoopButton(
-                BasicEventPattern(0xB0, 0x74, ...),
-                Data2Strategy(),
-                "transport"
-            )
-        )
-        matcher.addControl(
-            RecordButton(
-                BasicEventPattern(0xB0, 0x75, ...),
-                Data2Strategy(),
-                "transport"
-            )
-        )
-        matcher.addControl(
-            DirectionNext(
-                BasicEventPattern(0xB0, 0x66, ...),
-                Data2Strategy(),
-                "transport"
-            )
-        )
-        matcher.addControl(
-            DirectionPrevious(
-                BasicEventPattern(0xB0, 0x67, ...),
-                Data2Strategy(),
-                "transport"
-            )
-        )
-        matcher.addControl(
-            RewindButton(
-                BasicEventPattern(0xB0, 0x70, ...),
-                Data2Strategy(),
-                "transport"
-            )
-        )
-        matcher.addControl(
-            FastForwardButton(
-                BasicEventPattern(0xB0, 0x71, ...),
-                Data2Strategy(),
-                "transport"
-            )
-        )
+        matcher.addControl(StopButton(
+            BasicEventPattern(0xB0, 0x72, ...),
+            Data2Strategy()
+        ))
+        matcher.addControl(PlayButton(
+            BasicEventPattern(0xB0, 0x73, ...),
+            Data2Strategy()
+        ))
+        matcher.addControl(LoopButton(
+            BasicEventPattern(0xB0, 0x74, ...),
+            Data2Strategy(),
+        ))
+        matcher.addControl(RecordButton(
+            BasicEventPattern(0xB0, 0x75, ...),
+            Data2Strategy()
+        ))
+        matcher.addControl(DirectionNext(
+            BasicEventPattern(0xB0, 0x66, ...),
+            Data2Strategy()
+        ))
+        matcher.addControl(DirectionPrevious(
+            BasicEventPattern(0xB0, 0x67, ...),
+            Data2Strategy(),
+        ))
+        matcher.addControl(RewindButton(
+            BasicEventPattern(0xB0, 0x70, ...),
+            Data2Strategy(),
+        ))
+        matcher.addControl(FastForwardButton(
+            BasicEventPattern(0xB0, 0x71, ...),
+            Data2Strategy(),
+        ))
         matcher.addControl(PitchWheel())
         matcher.addControl(ModWheel())
         
