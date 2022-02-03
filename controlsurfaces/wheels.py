@@ -4,6 +4,11 @@ from common.types import eventData
 from . import ControlSurface
 from . import Data2Strategy, IValueStrategy
 
+__all__ = [
+    'ModWheel',
+    'PitchWheel'
+]
+
 class ModWheel(ControlSurface):
     """
     Represents a modulation wheel

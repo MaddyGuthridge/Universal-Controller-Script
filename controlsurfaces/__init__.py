@@ -15,6 +15,8 @@ from .valuestrategies import *
 
 from .nullevent import *
 from .note import Note
+from .wheels import *
+from .aftertouch import *
 from .pedal import *
 from .button import *
 from .transport import *
