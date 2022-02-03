@@ -41,18 +41,6 @@ if TYPE_CHECKING:
 # HELP WANTED: Can someone please fix this awfulness in a way that doesn't cause
 # MyPy to have a temper tantrum?
 StandardEventCallback = Union[
-    Callable[[ControlShadow, PluginIndex], bool],
-    Callable[[ControlShadow, PluginIndex, Any], bool],
-    Callable[[ControlShadow, PluginIndex, Any, Any], bool],
-    Callable[[ControlShadow, PluginIndex, Any, Any, Any], bool],
-    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, PluginIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
-]
-SpecialEventCallback = Union[
     Callable[[ControlShadow, UnsafePluginIndex], bool],
     Callable[[ControlShadow, UnsafePluginIndex, Any], bool],
     Callable[[ControlShadow, UnsafePluginIndex, Any, Any], bool],
@@ -65,7 +53,7 @@ SpecialEventCallback = Union[
     Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
 ]
 
-EventCallback = Union[StandardEventCallback, SpecialEventCallback]
+EventCallback = StandardEventCallback
 
 class DeviceShadow:
     """

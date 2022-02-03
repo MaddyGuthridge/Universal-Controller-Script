@@ -9,4 +9,4 @@ from .mappingstrategies import *
 from .plugin import Plugin, SpecialPlugin, StandardPlugin
 
 # Register plugins
-from . import windows
+from . import special

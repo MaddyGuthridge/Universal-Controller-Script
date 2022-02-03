@@ -6,3 +6,5 @@ as pedals
 """
 
 from .mappingstrategy import IMappingStrategy
+
+from .pedalstrategy import PedalStrategy

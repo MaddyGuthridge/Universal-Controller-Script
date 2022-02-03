@@ -12,13 +12,21 @@ from common.util.apifixes import PluginIndex
 from controlsurfaces.pedal import *
 from controlsurfaces import ControlShadow
 from devices import DeviceShadow
+from plugs.eventfilters import filterUnsafeIndex
 from . import IMappingStrategy
 
 CC_START = 4096
 
 class PedalStrategy(IMappingStrategy):
-    def __init__(self) -> None:
-        pass
+    def __init__(self, raise_on_error: bool = True) -> None:
+        """
+        Create a WheelStrategy for binding mod and pitch wheel events
+
+        ### Args:
+        * `raise_on_error` (`bool`, optional): Whether an error should be raised
+          if the plugin doesn't support CC parameters. Defaults to `True`.
+        """
+        self._raise = raise_on_error
     
     def apply(self, shadow: DeviceShadow) -> None:
         """
@@ -45,6 +53,7 @@ class PedalStrategy(IMappingStrategy):
             raise_on_failure=False
         )
     
+    @filterUnsafeIndex
     def pedalCallback(
         self,
         control: ControlShadow,
@@ -67,10 +76,13 @@ class PedalStrategy(IMappingStrategy):
         * `bool`: whether the event was processed
         """
         
-         # Filter out non-VSTs
+        # Filter out non-VSTs
         if 'MIDI CC' not in plugins.getParamName(CC_START, *index):
-            raise TypeError("Expected a plugin of VST type - make sure that "
-                            "this plugin is a VST, and not an FL Studio plugin")
+            if self._raise:
+                raise TypeError("Expected a plugin of VST type - make sure that "
+                                "this plugin is a VST, and not an FL Studio plugin")
+            else:
+                return False
         
         # Assign parameters
         if t_ped is SustainPedal:
