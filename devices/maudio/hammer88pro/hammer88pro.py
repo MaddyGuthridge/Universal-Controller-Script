@@ -18,7 +18,9 @@ from controlsurfaces import (
     FastForwardButton,
     RewindButton,
     LoopButton,
-    MetronomeButton
+    MetronomeButton,
+    ModWheel,
+    PitchWheel
 )
 from controlsurfaces import (
     DirectionNext,
@@ -82,6 +84,8 @@ class Hammer88Pro(Device):
             ForwardedStrategy(ButtonData2Strategy()),
             "transport"
         ))
+        matcher.addControl(ModWheel())
+        matcher.addControl(PitchWheel())
         
         super().__init__(matcher)
     

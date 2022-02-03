@@ -15,7 +15,9 @@ from controlsurfaces import (
     RecordButton,
     FastForwardButton,
     RewindButton,
-    LoopButton
+    LoopButton,
+    PitchWheel,
+    ModWheel
 )
 from controlsurfaces import (
     DirectionNext,
@@ -29,7 +31,7 @@ class LaunchkeyMk2(Device):
     Novation Launchkey Mk2 series controllers
     """
     
-    def __init__(self, matcher) -> None:
+    def __init__(self, matcher: BasicControlMatcher) -> None:
         
         # Faders added by child classes if necessary
         
@@ -101,6 +103,8 @@ class LaunchkeyMk2(Device):
                 "transport"
             )
         )
+        matcher.addControl(PitchWheel())
+        matcher.addControl(ModWheel())
         
         super().__init__(
             matcher
