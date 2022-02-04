@@ -4,8 +4,8 @@ from common.eventpattern import BasicEventPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import Data2Strategy
-from devices import Device
-from devices import BasicControlMatcher
+from devices import Device, BasicControlMatcher
+from devices.controlgenerators import getNotesAllChannels
 
 from controlsurfaces import (
     Fader,
@@ -16,8 +16,8 @@ from controlsurfaces import (
     FastForwardButton,
     RewindButton,
     LoopButton,
-    PitchWheel,
-    ModWheel
+    StandardPitchWheel,
+    StandardModWheel
 )
 from controlsurfaces import (
     DirectionNext,
@@ -33,7 +33,8 @@ class LaunchkeyMk2(Device):
     
     def __init__(self, matcher: BasicControlMatcher) -> None:
         
-        # Faders added by child classes if necessary
+        # Notes
+        matcher.addControls(getNotesAllChannels())
         
         # Create knobs
         for i in range(1, 9):
@@ -79,8 +80,8 @@ class LaunchkeyMk2(Device):
             BasicEventPattern(0xB0, 0x71, ...),
             Data2Strategy(),
         ))
-        matcher.addControl(PitchWheel())
-        matcher.addControl(ModWheel())
+        matcher.addControl(StandardPitchWheel())
+        matcher.addControl(StandardModWheel())
         
         super().__init__(
             matcher

@@ -2,6 +2,9 @@
 plugins > mappingstrategies > wheelstrategy
 
 Strategy for mapping mod and pitch wheels to the plugin
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 import plugins
@@ -109,6 +112,7 @@ class WheelStrategy(IMappingStrategy):
         
         # Set pitch
         if len(index) == 1:
+            # This error is due to https://github.com/python/mypy/issues/9710
             channels.setChannelPitch(*index, control.getCurrentValue()*2 - 1)
         
         return True
