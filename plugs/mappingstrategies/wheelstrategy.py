@@ -44,6 +44,11 @@ class WheelStrategy(IMappingStrategy):
             raise_on_failure=False
         )
         # And pitch events to pitchCallback()
+        shadow.bindMatches(
+            PitchWheel,
+            self.pitchCallback,
+            raise_on_failure=False
+        )
 
     @filterUnsafeIndex
     def modCallback(
@@ -102,16 +107,8 @@ class WheelStrategy(IMappingStrategy):
         * `bool`: whether the event was processed
         """
         
-        # Filter out non-VSTs
-        if 'MIDI CC' not in plugins.getParamName(CC_START, *index):
-            if self._raise:
-                raise TypeError("Expected a plugin of VST type - make sure that "
-                                "this plugin is a VST, and not an FL Studio plugin")
-            else:
-                return False
-        
         # Set pitch
-        if isinstance(index, int):
-            channels.setChannelPitch(index, control.getCurrentValue()*2 - 1)
+        if len(index) == 1:
+            channels.setChannelPitch(*index, control.getCurrentValue()*2 - 1)
         
         return True
