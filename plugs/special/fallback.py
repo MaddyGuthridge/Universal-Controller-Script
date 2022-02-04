@@ -1,5 +1,5 @@
 
-from common import ExtensionManager
+from common.extensionmanager import ExtensionManager
 from common.util.apifixes import UnsafePluginIndex
 from controlsurfaces import ControlMapping
 from devices import DeviceShadow
@@ -12,7 +12,7 @@ class Fallback(SpecialPlugin):
     the active FL plugin.
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        super().__init__(shadow, [PedalStrategy(), WheelStrategy()])
+        super().__init__(shadow, [PedalStrategy(raise_on_error=False), WheelStrategy(raise_on_error=False)])
     
     @staticmethod
     def shouldBeActive() -> bool:
