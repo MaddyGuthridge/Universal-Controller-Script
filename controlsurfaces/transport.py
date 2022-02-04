@@ -11,26 +11,43 @@ from controlsurfaces.valuestrategies import IValueStrategy
 from .button import Button
 
 class TransportButton(Button):
+    """
+    Represents buttons used for transport within FL Studio
+    """
     def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
         super().__init__(event_pattern, value_strategy, "transport")
 
 class PlayButton(TransportButton):
-    pass
+    """
+    Represents a play button
+    """
 
 class StopButton(TransportButton):
-    pass
+    """
+    Represents a stop button
+    """
 
 class LoopButton(TransportButton):
-    pass
+    """
+    Represents a loop button
+    """
 
 class RecordButton(TransportButton):
-    pass
+    """
+    Represents a record button
+    """
 
 class FastForwardButton(TransportButton):
-    pass
+    """
+    Represents a fast-forward button
+    """
 
 class RewindButton(TransportButton):
-    pass
+    """
+    Represents a rewind button
+    """
 
 class MetronomeButton(TransportButton):
-    pass
+    """
+    Represents a metronome button
+    """

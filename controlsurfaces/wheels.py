@@ -1,3 +1,11 @@
+"""
+controlsurfaces > wheel
+
+Contains the definitions for pitch and modulation wheels
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from common.eventpattern import IEventPattern, BasicEventPattern, fromNibbles
 from common.types import eventData
@@ -71,7 +79,8 @@ class StandardPitchWheel(PitchWheel):
 
 class Data2PitchWheel(PitchWheel):
     """
-    Implementation of a pitch wheel using data2 values to determine pitch
+    Implementation of a pitch wheel using data2 values to determine pitch, as
+    some manufacturers don't follow the standard of using 14 bits or precision.
     """
     def __init__(self) -> None:
         super().__init__(

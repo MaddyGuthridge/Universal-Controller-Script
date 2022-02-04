@@ -32,41 +32,67 @@ class JogWheel(NavigationControl):
         return tuple()
 
 class JogForwards(JogWheel):
+    """
+    Represents a jog wheel event where the jog wheel is moved forwards
+    """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         return (DirectionNext,)
 
 class JogBackards(JogWheel):
+    """
+    Represents a jog wheel event where the jog wheel is moved backwards
+    """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         return (DirectionPrevious,)
 
 class NavigationButtons(Button, NavigationControl):
-    pass
+    """
+    Navigation buttons are used to navigate FL Studio
+    """
 
 class DpadButtons(NavigationButtons):
-    pass
+    """
+    D-pad buttons are used to navigate FL Studio with directional inputs
+    """
 
 class DirectionUp(DpadButtons):
-    pass
+    """
+    An upward direction button
+    """
 
 class DirectionDown(DpadButtons):
-    pass
+    """
+    A downward direction button
+    """
 
 class DirectionLeft(DpadButtons):
-    pass
+    """
+    A leftward direction button
+    """
 
 class DirectionRight(DpadButtons):
-    pass
+    """
+    A right direction button
+    """
 
 class DirectionSelect(DpadButtons):
-    pass
+    """
+    A select button (usually in the centre of a d-pad)
+    """
 
 class NextPrevButtons(NavigationButtons):
-    pass
+    """
+    Represents next or previous buttons
+    """
 
 class DirectionNext(NextPrevButtons):
-    pass
+    """
+    A next button
+    """
 
 class DirectionPrevious(NextPrevButtons):
-    pass
+    """
+    A previous button
+    """
