@@ -32,13 +32,13 @@ class ControlShadow:
         ### Args:
         * `control` (`ControlSurface`): control associated with this event
         """
-        self.__control = control
-        self.__value = control.value
-        self.__color = control.color.copy()
-        self.__annotation = control.annotation
+        self._control = control
+        self._value = control.value
+        self._color = control.color.copy()
+        self._annotation = control.annotation
 
     def __repr__(self) -> str:
-        return f"Shadow of {self.__control}"
+        return f"Shadow of {self._control}"
 
     def getControl(self):
         """
@@ -47,10 +47,13 @@ class ControlShadow:
         ### Returns:
         * `ControlSurface`: control surface
         """
-        return self.__control
+        return self._control
     
     def getMapping(self) -> ControlMapping:
-        return self.__control.getMapping()
+        """
+        Returns a ControlMapping to the control
+        """
+        return self._control.getMapping()
     
     def getCurrentValue(self) -> float:
         """
@@ -62,7 +65,7 @@ class ControlShadow:
         ### Returns:
         * `float`: value of the event (0 - 1.0)
         """
-        return self.__control.value
+        return self._control.value
 
     @property
     def value(self) -> float:
@@ -70,12 +73,12 @@ class ControlShadow:
         Represents the value that will be applied to the control after
         the event has been processed, as a float between 0-1
         """
-        return self.__value
+        return self._value
     @value.setter
     def value(self, newVal: float) -> None:
         if not (0 <= newVal <= 1):
             raise ValueError("Value must be within range 0-1")
-        self.__value = newVal
+        self._value = newVal
     
     @property
     def color(self) -> Color:
@@ -83,10 +86,10 @@ class ControlShadow:
         Represents the color that will be applied to the control after the event
         has been processed.
         """
-        return self.__color
+        return self._color
     @color.setter
     def color(self, newColor: Color) -> None:
-        self.__color = newColor
+        self._color = newColor
 
     @property
     def annotation(self) -> str:
@@ -94,22 +97,23 @@ class ControlShadow:
         Represents the annotation that will be applied to the control after the
         event has been processed.
         """
-        return self.__annotation
+        return self._annotation
     @annotation.setter
     def annotation(self, newAnnotation: str) -> None:
-        self.__annotation = newAnnotation
+        self._annotation = newAnnotation
     
     @property
     def group(self) -> str:
         """
         The group that the control is in
         """
-        return self.__control.group
+        return self._control.group
 
     def apply(self) -> None:
         """
-        Apply the configuration of the control shadow to the control it represents
+        Apply the configuration of the control shadow to the control it
+        represents
         """
-        self.__control.color = self.color
-        self.__control.annotation = self.annotation
-        self.__control.value = self.value
+        self._control.color = self.color
+        self._control.annotation = self.annotation
+        self._control.value = self.value

@@ -1,10 +1,22 @@
+"""
+controlsurfaces > valuestrategies > forwardedstrategy
+
+Contains the definition for the ForwardedStrategy strategy for getting values
+from forwarded events
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from common.types import eventData
 from common.util.events import eventFromForwarded
 from . import IValueStrategy
 
 class ForwardedStrategy(IValueStrategy):
-    
+    """
+    Contains the definition for the value strategy used to get data out of
+    forwarded events.
+    """
     def __init__(self, strat: IValueStrategy) -> None:
         self._strat = strat
     

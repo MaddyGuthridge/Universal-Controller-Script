@@ -14,10 +14,19 @@ from . import Button
 # TODO: Implement navigation controls
 
 class NavigationControl(ControlSurface):
+    """
+    Navigation control surfaces are used to navigate through FL Studio, changing
+    or relocating selections, for example
+    """
     def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
         super().__init__(event_pattern, value_strategy, "navigation")
     
 class JogWheel(NavigationControl):
+    """
+    Jog wheels (rotary encoders) are an endless rotating knob that is used for
+    navigation. Compared to endless knobs, they should be mapped to navigation
+    controls, rather than standard parameters.
+    """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         return tuple()

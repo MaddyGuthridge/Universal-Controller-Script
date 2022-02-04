@@ -11,13 +11,15 @@ from . import Button
 
 class FaderButton(Button):
     """
-    Represents buttons that are indexed to map to channels like faders
+    Represents buttons that are indexed to map to channels like faders. Fader
+    buttons are often present beneath faders, so their functionality should
+    be mapped to the same channel that the existing button is using.
     """
 
 class GenericFaderButton(Button):
     """
-    Represents a generic multi-purpose fader button: the script should 
-    intelligently map the behaviour to the other controls
+    Represents a generic multi-purpose fader button: plugins should 
+    intelligently map the behaviour to the controls below.
     """
 
 class MuteButton(Button):
