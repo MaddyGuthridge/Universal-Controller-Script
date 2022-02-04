@@ -6,7 +6,7 @@ from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy
 from devices import Device, BasicControlMatcher
-from devices.controlgenerators import getNotesAllChannels, getPedals
+from devices.controlgenerators import getNotesAllChannels, getPedals, getChannelAftertouchAllChannels
 
 from controlsurfaces import (
     NullEvent,
@@ -19,13 +19,9 @@ from controlsurfaces import (
     RewindButton,
     LoopButton,
     MetronomeButton,
-    ModWheel,
-    PitchWheel
+    StandardModWheel,
 )
-from controlsurfaces import (
-    DirectionNext,
-    DirectionPrevious
-)
+from .hammerpitch import HammerPitchWheel
 
 class Hammer88Pro(Device):
     """
@@ -47,6 +43,7 @@ class Hammer88Pro(Device):
         # Notes and pedals
         matcher.addControls(getNotesAllChannels())
         matcher.addControls(getPedals())
+        matcher.addControls(getChannelAftertouchAllChannels())
         
         # Transport buttons
         matcher.addControl(StopButton(
@@ -77,8 +74,8 @@ class Hammer88Pro(Device):
             ForwardedEventPattern(3, BasicEventPattern(0xB9, 0x74, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         ))
-        matcher.addControl(ModWheel())
-        matcher.addControl(PitchWheel())
+        matcher.addControl(StandardModWheel())
+        matcher.addControl(HammerPitchWheel())
         
         super().__init__(matcher)
     
