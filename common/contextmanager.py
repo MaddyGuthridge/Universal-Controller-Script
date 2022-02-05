@@ -15,9 +15,9 @@ __all__ = [
 ]
 
 from typing import NoReturn, Optional, Callable
-# from pprint import pprint
 
 from .settings import Settings
+from .activitystate import ActivityState
 
 from .util.misc import NoneNoPrintout
 from .types import eventData
@@ -42,8 +42,9 @@ class DeviceContextManager:
         modules
         """
         self.settings = Settings()
+        self.active = ActivityState()
         # Set the state of the script to wait for the device to be recognised
-        self._state: IScriptState = WaitingForDevice()
+        self.state: IScriptState = WaitingForDevice()
     
     @catchStateChangeException
     def initialise(self) -> None:

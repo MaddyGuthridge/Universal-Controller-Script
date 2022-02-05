@@ -22,6 +22,9 @@ from . import IMappingStrategy
 CC_START = 4096
 
 class WheelStrategy(IMappingStrategy):
+    """
+    Maps mod and pitch wheels to the current plugin
+    """
     def __init__(self, raise_on_error: bool = True) -> None:
         """
         Create a WheelStrategy for binding mod and pitch wheel events
@@ -103,9 +106,6 @@ class WheelStrategy(IMappingStrategy):
         * `control` (`ControlShadow`): control surface shadow that was detected
         * `index` (`PluginIndex`): index of plugin to map to
 
-        ### Raises:
-        * `TypeError`: plugin doesn't support MIDI CC events
-
         ### Returns:
         * `bool`: whether the event was processed
         """
@@ -113,6 +113,7 @@ class WheelStrategy(IMappingStrategy):
         # Set pitch
         if len(index) == 1:
             # This error is due to https://github.com/python/mypy/issues/9710
-            channels.setChannelPitch(*index, control.getCurrentValue()*2 - 1)
+            # channels.setChannelPitch(*index, control.getCurrentValue()*2 - 1)
+            channels.setChannelPitch(index[0], control.getCurrentValue()*2 - 1)
         
         return True

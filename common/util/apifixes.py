@@ -10,7 +10,10 @@ import ui
 from typing import Union, Optional
 
 PluginIndex = Union[tuple[int], tuple[int, int]]
-UnsafePluginIndex = Union[tuple[int], tuple[int, int], None]
+UnsafePluginIndex = Optional[PluginIndex]
+WindowIndex = int
+UnsafeWindowIndex = Optional[int]
+UnsafeIndex = Union[UnsafePluginIndex, UnsafeWindowIndex]
 
 def getFocusedPluginIndex() -> UnsafePluginIndex:
     """
@@ -33,3 +36,22 @@ def getFocusedPluginIndex() -> UnsafePluginIndex:
         return track, slot
     else:
         return None
+
+def getFocusedWindowIndex() -> Optional[int]:
+    """
+    Fixes the horrible ui.getFocusedFormIndex() function
+    
+    Values are returned as tuples so that they can be unwrapped when 
+
+    Returns:
+        * `None`: if no window is focused
+        * `int`: index of window
+    """
+    # Check if a channel rack plugin is focused
+    if getFocusedPluginIndex() is not None:
+        return None
+    else:
+        ret = ui.getFocusedFormID()
+        if ret == -1:
+            return None
+        return ret
