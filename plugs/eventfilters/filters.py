@@ -33,7 +33,7 @@ def filterButtonLift(func, method:bool=True):
             return func(control, index, *args, **kwargs)
         return wrapper
 
-def filterUnsafeIndex(func, method:bool=True):
+def filterUnsafePluginIndex(func, method:bool=True):
     """
     Filter out events when the plugin index is None
 

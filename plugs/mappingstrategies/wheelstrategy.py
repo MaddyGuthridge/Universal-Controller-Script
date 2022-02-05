@@ -16,7 +16,7 @@ from common.util.apifixes import PluginIndex
 from controlsurfaces import ModWheel, PitchWheel
 from controlsurfaces import ControlShadow
 from devices import DeviceShadow
-from plugs.eventfilters import filterUnsafeIndex
+from plugs.eventfilters import filterUnsafePluginIndex
 from . import IMappingStrategy
 
 CC_START = 4096
@@ -56,7 +56,7 @@ class WheelStrategy(IMappingStrategy):
             raise_on_failure=False
         )
 
-    @filterUnsafeIndex
+    @filterUnsafePluginIndex
     def modCallback(
         self,
         control: ControlShadow,
@@ -92,7 +92,7 @@ class WheelStrategy(IMappingStrategy):
         
         return True
 
-    @filterUnsafeIndex
+    @filterUnsafePluginIndex
     def pitchCallback(
         self,
         control: ControlShadow,

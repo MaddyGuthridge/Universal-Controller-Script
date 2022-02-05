@@ -10,7 +10,7 @@ Authors:
 # from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol, Union
-from common.util.apifixes import PluginIndex, UnsafePluginIndex
+from common.util.apifixes import UnsafeIndex
 
 from common.util.dicttools import lowestValueGrEqTarget, greatestKey
 from controlsurfaces import ControlSurface
@@ -41,16 +41,16 @@ if TYPE_CHECKING:
 # HELP WANTED: Can someone please fix this awfulness in a way that doesn't cause
 # MyPy to have a temper tantrum?
 StandardEventCallback = Union[
-    Callable[[ControlShadow, UnsafePluginIndex], bool],
-    Callable[[ControlShadow, UnsafePluginIndex, Any], bool],
-    Callable[[ControlShadow, UnsafePluginIndex, Any, Any], bool],
-    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafePluginIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafeIndex], bool],
+    Callable[[ControlShadow, UnsafeIndex, Any], bool],
+    Callable[[ControlShadow, UnsafeIndex, Any, Any], bool],
+    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
 ]
 
 EventCallback = StandardEventCallback
@@ -511,7 +511,7 @@ class DeviceShadow:
         self.bindControls(matches, bind_to, iterable)
         return len(matches)
     
-    def processEvent(self, control: ControlMapping, index: UnsafePluginIndex) -> bool:
+    def processEvent(self, control: ControlMapping, index: UnsafeIndex) -> bool:
         """
         Process an event by calling the bound callback function associated with
         it if applicable.

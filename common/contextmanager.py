@@ -26,7 +26,6 @@ from .states import (
     IScriptState,
     StateChangeException,
     catchStateChangeException,
-    WaitingForDevice
 )
 
 class DeviceContextManager:
@@ -50,7 +49,7 @@ class DeviceContextManager:
     def initialise(self) -> None:
         """Initialise the controller associated with this context manager.
         """
-        self._state.initialise()
+        self.state.initialise()
 
     @catchStateChangeException
     def processEvent(self, event: eventData) -> None:
@@ -59,14 +58,14 @@ class DeviceContextManager:
         ### Args:
         * `event` (`event`): event to process
         """
-        self._state.processEvent(event)
+        self.state.processEvent(event)
     
     @catchStateChangeException
     def tick(self) -> None:
         """
         Called frequently to allow any required updates to the controller
         """
-        self._state.tick()
+        self.state.tick()
     
     def setState(self, new_state: IScriptState) -> NoReturn:
         """
@@ -80,7 +79,7 @@ class DeviceContextManager:
         ### Raises:
         * `StateChangeException`: state changed successfully
         """
-        self._state = new_state
+        self.state = new_state
         new_state.initialise()
         raise StateChangeException("State changed")
 
@@ -175,6 +174,7 @@ def _initContext() -> None:
     global _context
     _context = DeviceContextManager()
 
-_initContext()
-
 from . import logger
+from .states import WaitingForDevice
+
+_initContext()

@@ -6,7 +6,7 @@ import ui
 from typing import Any
 
 from common.extensionmanager import ExtensionManager
-from common.util.apifixes import UnsafePluginIndex
+from common.util.apifixes import UnsafeIndex
 from controlsurfaces import (
     ControlShadow,
     NullEvent,
@@ -56,44 +56,44 @@ class Transport(SpecialPlugin):
         return True
     
     @filterButtonLift
-    def playButton(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any) -> bool:
+    def playButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         transport.start()
         return True
 
     @filterButtonLift
-    def stopButton(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any) -> bool:
+    def stopButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         transport.stop()
         return True
 
     @filterButtonLift
-    def recButton(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any) -> bool:
+    def recButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         transport.record()
         return True
     
     @filterButtonLift
-    def loopButton(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any) -> bool:
+    def loopButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         transport.setLoopMode()
         return True
     
     @filterButtonLift
-    def metroButton(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any) -> bool:
+    def metroButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         transport.globalTransport(110, 1)
         return True
 
-    def jogWheel(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any) -> bool:
+    def jogWheel(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         
         increment = 1 if isinstance(control.getControl(), JogForwards) else -1
         
         ui.jog(increment)
         return True
     
-    def nullEvent(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any) -> bool:
+    def nullEvent(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         """Handle NullEvents for which no action should be taken
         """
         return True
     
     @filterButtonLift
-    def navigationButtons(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any) -> bool:
+    def navigationButtons(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         c_type = type(control.getControl())
         if c_type == DirectionUp:
             ui.up()
@@ -113,7 +113,7 @@ class Transport(SpecialPlugin):
             return False
         return True
     
-    def notes(self, control:ControlShadow, index: UnsafePluginIndex, *args: Any) -> bool:
+    def notes(self, control:ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         # Don't handle note events
         # that way we can have them play
         # this might change in the future, but for now this is fine

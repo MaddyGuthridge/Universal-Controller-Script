@@ -25,7 +25,7 @@ class ActivityState:
         self._plugin = getFocusedPluginIndex()
         self._plug_active = True if self._plugin is not None else False
     
-    def onIdle(self) -> None:
+    def tick(self) -> None:
         """
         Called frequently when we need to update the current window
         """

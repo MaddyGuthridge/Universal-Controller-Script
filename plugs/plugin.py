@@ -6,7 +6,7 @@ StandardPlugin and SpecialPlugin.
 """
 
 from common import log, verbosity
-from common.util.apifixes import UnsafePluginIndex
+from common.util.apifixes import UnsafeIndex
 from controlsurfaces import ControlMapping
 from devices import DeviceShadow
 from plugs.mappingstrategies import IMappingStrategy
@@ -61,7 +61,7 @@ class Plugin:
                                   "classes")
     
     @final
-    def processEvent(self, mapping: ControlMapping, index: UnsafePluginIndex) -> bool:
+    def processEvent(self, mapping: ControlMapping, index: UnsafeIndex) -> bool:
         log("plugins", f"Processing event at {type(self)}", verbosity=verbosity.NOTE)
         return self._shadow.processEvent(mapping, index)
 
@@ -93,9 +93,37 @@ class StandardPlugin(Plugin):
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
+class WindowPlugin(Plugin):
+    """
+    Window plugins, representing FL Studio windows
+    """
+    
+    @abstractmethod
+    @staticmethod
+    def getWindowId() -> int:
+        """
+        Returns the ID of the window this class should be associated with.
+
+        Used to identify and map to the plugin
+
+        ### Returns:
+        * `int`: window ID
+        """
+        raise NotImplementedError("This method must be implemented by child "
+                                  "classes")
+    
+    @abstractmethod
+    @classmethod
+    def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
+        """
+        Create and return an instance of this plugin
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+
 class SpecialPlugin(Plugin):
     """
-    Special plugins, representing FL Studio windows, and the transport controls
+    Special plugins, representing other plugins
     """
     
     @abstractmethod

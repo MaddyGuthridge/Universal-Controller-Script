@@ -15,7 +15,8 @@ from common.util.consolehelpers import printReturn
 
 if TYPE_CHECKING:
     from devices import Device
-    from plugs import StandardPlugin, SpecialPlugin, Plugin
+    from plugs import StandardPlugin, SpecialPlugin, WindowPlugin, Plugin
+    from common.util.apifixes import WindowIndex
 
 class ExtensionManager:
     """
@@ -26,6 +27,10 @@ class ExtensionManager:
     # Standard plugins
     _plugins: 'dict[str, type[StandardPlugin]]' = {}
     _instantiated_plugins: 'dict[str, StandardPlugin]' = {}
+    
+    # Window plugins
+    _windows: 'dict[WindowIndex, type[WindowPlugin]]' = {}
+    _instantiated_windows: 'dict[WindowIndex, WindowPlugin]' = {}
     
     # Special plugins
     _special_plugins: 'list[type[SpecialPlugin]]' = []
@@ -46,7 +51,7 @@ class ExtensionManager:
         that the class can be instantiated if the plugin is in use.
 
         ### Args:
-        * `plugin` (`StandardPlugin`): plugin to register
+        * `plugin` (`type[StandardPlugin]`): plugin to register
         
         ### Example Usage
         ```py
@@ -65,6 +70,33 @@ class ExtensionManager:
         cls._plugins[plugin.getPlugId()] = plugin
     
     @classmethod
+    def registerWindowPlugin(cls, plugin: type['WindowPlugin']) -> None:
+        """
+        Register a window plugin type
+
+        This should be called after defining the class object for a plugin, so
+        that the class can be instantiated if the plugin is in use.
+
+        ### Args:
+        * `plugin` (`type[WindowPlugin]`): plugin to register
+        
+        ### Example Usage
+        ```py
+        # Create a plugin
+        class MyPlugin(WindowPlugin):
+            ...
+        # Register it
+        ExtensionManager.registerWindowPlugin(MyPlugin)
+        ```
+        
+        WARNING: Plugins assume that device definitions don't change over time.
+        If the active device changes, or the available controls change, the
+        function `resetPlugins()` should be called so that plugins are
+        reset to their default state and control bindings are removed.
+        """
+        cls._windows[plugin.getWindowId()] = plugin
+    
+    @classmethod
     def registerSpecialPlugin(cls, plugin: type['SpecialPlugin']) -> None:
         """
         Register a plugin type
@@ -73,7 +105,7 @@ class ExtensionManager:
         that the class can be instantiated if the plugin is in use.
 
         ### Args:
-        * `plugin` (`StandardPlugin`): plugin to register
+        * `plugin` (`type[SpecialPlugin]`): plugin to register
         
         ### Example Usage
         ```py
@@ -81,7 +113,7 @@ class ExtensionManager:
         class MyPlugin(SpecialPlugin):
             ...
         # Register it
-        ExtensionManager.registerPlugin(MyPlugin)
+        ExtensionManager.registerSpecialPlugin(MyPlugin)
         ```
         
         WARNING: Plugins assume that device definitions don't change over time.
@@ -202,6 +234,34 @@ class ExtensionManager:
             cls._instantiated_plugins[id] \
                 = cls._plugins[id].create(DeviceShadow(device))
             return cls._instantiated_plugins[id]
+        # Plugin doesn't exist
+        else:
+            return None
+    
+    @classmethod
+    def getWindowById(cls, id: int, device: 'Device') -> Optional['WindowPlugin']:
+        """
+        Returns an instance of the window plugin matching the ID provided.
+
+        If that plugin hasn't been instantiated, the device object will be used
+        to create one, enabling lazy loading of plugins to save resources and
+        CPU.
+
+        ### Args:
+        * `id` (`int`): window ID
+        * `device` (`Device`): current device
+
+        ### Returns:
+        * `WindowPlugin`: plugin associated with ID
+        """
+        # Plugin already instantiated
+        if id in cls._instantiated_windows.keys():
+            return cls._instantiated_windows[id]
+        # Plugin exists but isn't instantiated
+        elif id in cls._windows.keys():
+            cls._instantiated_windows[id] \
+                = cls._windows[id].create(DeviceShadow(device))
+            return cls._instantiated_windows[id]
         # Plugin doesn't exist
         else:
             return None
