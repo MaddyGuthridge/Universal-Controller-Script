@@ -16,7 +16,7 @@ __all__ = [
     'SOFT'
 ]
 
-from common.eventpattern import BasicEventPattern, IEventPattern
+from common.eventpattern import BasicPattern, IEventPattern
 from . import ControlSurface
 from .valuestrategies import ButtonData2Strategy
 
@@ -47,18 +47,18 @@ class SustainPedal(Pedal):
     Represents a sustain pedal
     """
     def __init__(self) -> None:
-        super().__init__(BasicEventPattern(0xB0, SUSTAIN, ...))
+        super().__init__(BasicPattern(0xB0, SUSTAIN, ...))
 
 class SostenutoPedal(Pedal):
     """
     Represents a sostenuto pedal
     """
     def __init__(self) -> None:
-        super().__init__(BasicEventPattern(0xB0, SOSTENUTO, ...))
+        super().__init__(BasicPattern(0xB0, SOSTENUTO, ...))
 
 class SoftPedal(Pedal):
     """
     Represents a soft pedal
     """
     def __init__(self) -> None:
-        super().__init__(BasicEventPattern(0xB0, SOFT, ...))
+        super().__init__(BasicPattern(0xB0, SOFT, ...))

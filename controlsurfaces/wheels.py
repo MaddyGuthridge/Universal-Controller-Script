@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from common.eventpattern import IEventPattern, BasicEventPattern, fromNibbles
+from common.eventpattern import IEventPattern, BasicPattern, fromNibbles
 from common.types import eventData
 from . import ControlSurface
 from . import Data2Strategy, IValueStrategy
@@ -34,7 +34,7 @@ class StandardModWheel(ModWheel):
     """
     def __init__(self) -> None:
         super().__init__(
-            BasicEventPattern(fromNibbles(0xB, ...), 0x1, ...),
+            BasicPattern(fromNibbles(0xB, ...), 0x1, ...),
             Data2Strategy(),
             "wheels"
         )
@@ -73,7 +73,7 @@ class StandardPitchWheel(PitchWheel):
     """
     def __init__(self) -> None:
         super().__init__(
-            BasicEventPattern(fromNibbles(0xE, ...), ..., ...),
+            BasicPattern(fromNibbles(0xE, ...), ..., ...),
             PitchValueStrategy()
         )
 
@@ -84,6 +84,6 @@ class Data2PitchWheel(PitchWheel):
     """
     def __init__(self) -> None:
         super().__init__(
-            BasicEventPattern(fromNibbles(0xE, ...), 0x0, ...),
+            BasicPattern(fromNibbles(0xE, ...), 0x0, ...),
             Data2Strategy()
         )

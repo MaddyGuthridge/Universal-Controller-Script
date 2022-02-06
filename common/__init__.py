@@ -11,7 +11,7 @@ from . import consts
 
 from .logger import log, verbosity
 
-from .eventpattern import BasicEventPattern, IEventPattern
+from .eventpattern import BasicPattern, IEventPattern
 
 from .contextmanager import getContext, resetContext, catchContextResetException
 

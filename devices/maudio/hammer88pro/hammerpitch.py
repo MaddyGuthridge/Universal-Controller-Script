@@ -1,5 +1,5 @@
 
-from common.eventpattern import BasicEventPattern, fromNibbles
+from common.eventpattern import BasicPattern, fromNibbles
 from controlsurfaces import PitchWheel
 from controlsurfaces.valuestrategies import Data2Strategy
 
@@ -10,6 +10,6 @@ class HammerPitchWheel(PitchWheel):
     """
     def __init__(self) -> None:
         super().__init__(
-            BasicEventPattern(fromNibbles(0xE, ...), (0x0, 0x7F), ...),
+            BasicPattern(fromNibbles(0xE, ...), (0x0, 0x7F), ...),
             Data2Strategy()
         )

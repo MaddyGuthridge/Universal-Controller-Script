@@ -1,7 +1,7 @@
 
 
 from typing import Optional
-from common.eventpattern import BasicEventPattern, ForwardedEventPattern
+from common.eventpattern import BasicPattern, ForwardedPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy
@@ -34,10 +34,10 @@ class Hammer88Pro(Device):
         matcher = BasicControlMatcher()
         # Null events
         matcher.addControl(NullEvent(
-            BasicEventPattern(0xFA, 0x0, 0x0)
+            BasicPattern(0xFA, 0x0, 0x0)
         ))
         matcher.addControl(NullEvent(
-            BasicEventPattern(0xFC, 0x0, 0x0)
+            BasicPattern(0xFC, 0x0, 0x0)
         ))
         
         # Notes and pedals
@@ -47,31 +47,31 @@ class Hammer88Pro(Device):
         
         # Transport buttons
         matcher.addControl(StopButton(
-            ForwardedEventPattern(3, BasicEventPattern(0xBF, 102, ...)),
+            ForwardedPattern(3, BasicPattern(0xBF, 102, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(PlayButton(
-            ForwardedEventPattern(3, BasicEventPattern(0xBF, 103, ...)),
+            ForwardedPattern(3, BasicPattern(0xBF, 103, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(RecordButton(
-            ForwardedEventPattern(3, BasicEventPattern(0xBF, 104, ...)),
+            ForwardedPattern(3, BasicPattern(0xBF, 104, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(RewindButton(
-            ForwardedEventPattern(3, BasicEventPattern(0xBF, 105, ...)),
+            ForwardedPattern(3, BasicPattern(0xBF, 105, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(FastForwardButton(
-            ForwardedEventPattern(3, BasicEventPattern(0xBF, 106, ...)),
+            ForwardedPattern(3, BasicPattern(0xBF, 106, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(LoopButton(
-            ForwardedEventPattern(3, BasicEventPattern(0xBF, 107, ...)),
+            ForwardedPattern(3, BasicPattern(0xBF, 107, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(MetronomeButton(
-            ForwardedEventPattern(3, BasicEventPattern(0xB9, 0x74, ...)),
+            ForwardedPattern(3, BasicPattern(0xB9, 0x74, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(StandardModWheel())
@@ -89,7 +89,7 @@ class Hammer88Pro(Device):
     
     @staticmethod
     def getUniversalEnquiryResponsePattern():
-        return BasicEventPattern(
+        return BasicPattern(
             [
                 0xF0, # Sysex start
                 0x7E, # Device response

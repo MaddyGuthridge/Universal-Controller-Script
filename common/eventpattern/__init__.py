@@ -1,5 +1,6 @@
 
 from .bytematch import ByteMatch, fromNibbles
 from .ieventpattern import IEventPattern
-from .basicpattern import BasicEventPattern
-from .forwardedpattern import ForwardedEventPattern
+from .basicpattern import BasicPattern
+from .forwardedpattern import ForwardedPattern
+from .unionpattern import UnionPattern

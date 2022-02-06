@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 from common.types import eventData
-from common.eventpattern import BasicEventPattern, fromNibbles
+from common.eventpattern import BasicPattern, fromNibbles
 from . import ControlSurface, IValueStrategy
 
 class NoteValueStrategy(IValueStrategy):
@@ -32,7 +32,7 @@ class Note(ControlSurface):
     """
     def __init__(self, note_num: int, channel:int = 0) -> None:
         super().__init__(
-            BasicEventPattern(fromNibbles((8, 9), channel), note_num, ...),
+            BasicPattern(fromNibbles((8, 9), channel), note_num, ...),
             NoteValueStrategy(),
             "notes",
             (channel, note_num)

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Callable, Optional
 from common.types import eventData
 from . import ByteMatch, IEventPattern
 
-class BasicEventPattern(IEventPattern):
+class BasicPattern(IEventPattern):
     """
     Represents a pattern to match with MIDI events.
 
@@ -129,10 +129,10 @@ class BasicEventPattern(IEventPattern):
         """
         # This is type-safe, I promise
         matches: dict[type, Callable[[Any, int], bool]] = {
-            int: BasicEventPattern._matchByteConst,
-            range: BasicEventPattern._matchByteRange,
-            tuple: BasicEventPattern._matchByteTuple,
-            type(...): BasicEventPattern._matchByteEllipsis
+            int: BasicPattern._matchByteConst,
+            range: BasicPattern._matchByteRange,
+            tuple: BasicPattern._matchByteTuple,
+            type(...): BasicPattern._matchByteEllipsis
         }
         return matches[type(expected)](expected, actual)
 

@@ -15,7 +15,7 @@ from . import IEventPattern
 
 from common.types import eventData
 
-class ForwardedEventPattern(IEventPattern):
+class ForwardedPattern(IEventPattern):
     """
     The forwarded pattern is used to parse data from events which were forwarded
     from the Universal Event Forwarded device script.

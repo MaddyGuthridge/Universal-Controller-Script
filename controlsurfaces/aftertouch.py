@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from common.eventpattern import BasicEventPattern, fromNibbles, IEventPattern
+from common.eventpattern import BasicPattern, fromNibbles, IEventPattern
 from . import ControlSurface, IValueStrategy, Data2Strategy, Data1Strategy
 
 class AfterTouch(ControlSurface):
@@ -39,7 +39,7 @@ class ChannelAfterTouch(AfterTouch):
     """
     def __init__(self, channel: 'int|ellipsis' = ...) -> None:
         super().__init__(
-            BasicEventPattern(fromNibbles(0xD,channel), ..., ...),
+            BasicPattern(fromNibbles(0xD,channel), ..., ...),
             Data1Strategy()
         )
 
@@ -50,6 +50,6 @@ class NoteAfterTouch(AfterTouch):
     """
     def __init__(self, note: int, channel: 'int|ellipsis' = ...) -> None:
         super().__init__(
-            BasicEventPattern(fromNibbles(0xA,channel), note, ...),
+            BasicPattern(fromNibbles(0xA,channel), note, ...),
             Data2Strategy()
         )
