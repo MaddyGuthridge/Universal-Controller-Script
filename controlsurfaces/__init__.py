@@ -21,5 +21,6 @@ from .pedal import *
 from .button import *
 from .transport import *
 from .navigation import *
+from .jog import *
 from .fader import Fader
 from .knob import Knob

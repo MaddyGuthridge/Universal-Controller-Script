@@ -20,32 +20,6 @@ class NavigationControl(ControlSurface):
     """
     def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
         super().__init__(event_pattern, value_strategy, "navigation")
-    
-class JogWheel(NavigationControl):
-    """
-    Jog wheels (rotary encoders) are an endless rotating knob that is used for
-    navigation. Compared to endless knobs, they should be mapped to navigation
-    controls, rather than standard parameters.
-    """
-    @staticmethod
-    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
-        return tuple()
-
-class JogForwards(JogWheel):
-    """
-    Represents a jog wheel event where the jog wheel is moved forwards
-    """
-    @staticmethod
-    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
-        return (DirectionNext,)
-
-class JogBackards(JogWheel):
-    """
-    Represents a jog wheel event where the jog wheel is moved backwards
-    """
-    @staticmethod
-    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
-        return (DirectionPrevious,)
 
 class NavigationButtons(Button, NavigationControl):
     """
