@@ -2,6 +2,7 @@
 import ui
 from common import log, verbosity, consts
 from common.types import eventData
+from common.util.events import eventToString
 from . import IScriptState
 
 class DeviceNotRecognised(IScriptState):
@@ -23,4 +24,4 @@ class DeviceNotRecognised(IScriptState):
         ui.setHintMsg("Failed to recognise device")
     
     def processEvent(self, event: eventData) -> None:
-        return
+        log(f"bootstrap.device.type_detect", f"Received event: {eventToString(event)}")

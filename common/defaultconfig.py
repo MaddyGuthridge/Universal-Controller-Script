@@ -32,7 +32,7 @@ CONFIG = {
         # devices... may improve startup time for some devices
         "skip_enquiry": False,
         # How long to wait until the fallback device recognition method is used.
-        "detection_timeout": 5.0,
+        "detection_timeout": 10.0,
         # Associations between device name (as shown in FL Studio) and device id
         # to register (listed in class under getId() function)
         # This can be used to skip using universal device enquiry messages, if

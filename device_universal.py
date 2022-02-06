@@ -22,6 +22,8 @@ from common import getContext, catchContextResetException
 from common.contextmanager import unsafeResetContext as reset
 # Import constants and logger
 from common import consts, log, verbosity, ExtensionManager
+# Import verbosities
+from common.logger.verbosity import *
 
 # Import console helpers
 from common.util.consolehelpers import *

@@ -89,6 +89,7 @@ class WaitingForDevice(IScriptState):
         # If so, a StateChangeException will be raised so this function will
         # return early
         self.nameAssociations()
+        log(LOG_CAT, f"Device is assigned: {bool(device.isAssigned())}", verbosity.NOTE)
         
         # If the user specified to skip sending enquiry event
         if common.getContext().settings.get("bootstrap.skip_enquiry"):
@@ -139,5 +140,3 @@ class WaitingForDevice(IScriptState):
                     eventToString(event)
                 )
                 self.detectFallback()
-
-
