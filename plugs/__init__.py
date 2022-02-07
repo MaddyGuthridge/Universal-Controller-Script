@@ -10,3 +10,5 @@ from .plugin import Plugin, SpecialPlugin, StandardPlugin, WindowPlugin
 
 # Register plugins
 from . import special
+from . import windows
+from . import standard
