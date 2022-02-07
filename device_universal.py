@@ -17,7 +17,7 @@ Refer to module `common.consts` for a list of authors for the project
 import include
 
 # Get context, and context reset wrapper
-from common import getContext, catchContextResetException
+from common import getContext, catchContextResetException, getVersionString
 # Function to allow user to reset context
 from common.contextmanager import unsafeResetContext as reset
 # Import constants and logger
@@ -45,6 +45,7 @@ class OverallDevice:
     def bootstrap(self):
         log("bootstrap.initialize", "Load success", verbosity.INFO)
         print(consts.ASCII_HEADER_ART)
+        print(f"Universal Controller Script: v{getVersionString()}")
         print(ExtensionManager.getInfo())
         print("Type `help` for help using the script\n")
 

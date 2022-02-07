@@ -55,6 +55,7 @@ import include
 import time
 from typing import TYPE_CHECKING
 from common import log, verbosity
+from common.consts import getVersionString, ASCII_HEADER_ART
 from common.util.events import bytesToString, eventToString
 from common.util.misc import formatLongTime
 from common.types import eventData
@@ -132,3 +133,6 @@ log(
     "device.forward.bootstrap",
     "Loaded script successfully"
 )
+
+print(ASCII_HEADER_ART)
+print(f"Universal Event Forwarder: v{getVersionString()}")

@@ -8,6 +8,7 @@ Authors:
 """
 
 from . import consts
+from .consts import getVersionString
 
 from .logger import log, verbosity
 
