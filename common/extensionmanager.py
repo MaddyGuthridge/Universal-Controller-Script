@@ -301,13 +301,27 @@ class ExtensionManager:
         """
         cls._instantiated_plugins = {}
         cls._instantiated_special_plugins = {}
+        cls._instantiated_windows = {}
     
     @classmethod
-    def getAllPlugins(cls) -> list[type]:
+    def getAllStandardPlugins(cls) -> list[type]:
+        """
+        Returns a list of all standard plugins
+        """
         return list(cls._plugins.values())
     
     @classmethod
     def getAllSpecialPlugins(cls) -> list[type]:
+        """
+        Returns a list of all special plugins
+        """
+        return cls._special_plugins
+    
+    @classmethod
+    def getAllWindowPlugins(cls) -> list[type]:
+        """
+        Returns a list of all window plugins
+        """
         return cls._special_plugins
     
     @classmethod
@@ -322,9 +336,11 @@ class ExtensionManager:
         num_devs = f"{len(cls._devices)} device{'s' if len(cls._devices) != 1 else ''}"
         num_plugs = f"{len(cls._plugins)} plugin{'s' if len(cls._plugins) != 1 else ''}"
         num_inst_plugs = f" ({len(cls._instantiated_plugins)} instantiated)" if len(cls._instantiated_plugins) else ""
+        num_window_plugs =f"{len(cls._windows)} window plugin{'s' if len(cls._windows) != 1 else ''}"
+        num_inst_window_plugs = f" ({len(cls._instantiated_windows)} instantiated)" if len(cls._instantiated_windows) else ""
         num_special_plugs =f"{len(cls._special_plugins)} special plugin{'s' if len(cls._special_plugins) != 1 else ''}"
         num_inst_special_plugs = f" ({len(cls._instantiated_special_plugins)} instantiated)" if len(cls._instantiated_special_plugins) else ""
-        return f"{num_devs}, {num_plugs}{num_inst_plugs}, {num_special_plugs}{num_inst_special_plugs}"
+        return f"{num_devs}, {num_plugs}{num_inst_plugs}, {num_window_plugs}{num_inst_window_plugs}, {num_special_plugs}{num_inst_special_plugs}"
 
     @classmethod
     def _formatPlugin(cls, plug: Optional['Plugin']) -> str:
@@ -391,6 +407,36 @@ class ExtensionManager:
             return f"ID {id} not associated with any plugins"
     
     @classmethod
+    def _inspectWindowPlugin(cls, plug: type['StandardPlugin']) -> str:
+        """
+        Returns info about a window plugin
+
+        ### Args:
+        * `plug` (`type[WindowPlugin]`): plugin to inspect
+
+        ### Returns:
+        * `str`: plugin info
+        """
+        matches: list[tuple['WindowIndex', Optional['WindowPlugin']]] = []
+        
+        for id, p in cls._windows.items():
+            if p == plug:
+                if id in cls._instantiated_windows.keys():
+                    matches.append((id, cls._instantiated_windows[id]))
+                else:
+                    matches.append((id, None))
+
+        if len(matches) == 0:
+            return f"Plugin {plug} isn't associated with any plugins"
+        elif len(matches) == 1:
+            id, inst_p = matches[0]
+            return f"{plug} associated with:\n{id}\n{cls._formatPlugin(inst_p)}"
+        else:
+            return f"{plug}:" + f"\n\n".join([
+                f"> {id}:\n{cls._formatPlugin(inst_p)}" for id, inst_p in matches
+            ])
+    
+    @classmethod
     def _inspectSpecialPlugin(cls, plug: type['SpecialPlugin']) -> str:
         """
         Returns info about a special plugin
@@ -424,6 +470,8 @@ class ExtensionManager:
             return cls._inspectPluginId(plug)
         elif issubclass(plug, plugs.StandardPlugin):
             return cls._inspectStandardPlugin(plug)
+        elif issubclass(plug, plugs.WindowPlugin):
+            return cls._inspectWindowPlugin(plug)
         elif issubclass(plug, plugs.SpecialPlugin):
             return cls._inspectSpecialPlugin(plug)
         else:
