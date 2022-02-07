@@ -407,7 +407,7 @@ class ExtensionManager:
             return f"ID {id} not associated with any plugins"
     
     @classmethod
-    def _inspectWindowPlugin(cls, plug: type['StandardPlugin']) -> str:
+    def _inspectWindowPlugin(cls, plug: type['WindowPlugin']) -> str:
         """
         Returns info about a window plugin
 
@@ -455,29 +455,50 @@ class ExtensionManager:
             return f"{plug} isn't registered"
 
     @classmethod
-    @printReturn
-    def inspectPlugin(cls, plug: 'type["Plugin"] | str') -> str:
+    def _inspectDevice(cls, dev: type['Device']) -> str:
         """
-        Returns info about a plugin (standard or special)
+        Returns info about a device
 
         ### Args:
-        * `plug` (`type[Plugin] | str`): plugin or ID of plugin to inspect
+        * `dev` (`type[Device]`): device to inspect
 
         ### Returns:
-        * `str`: plugin info
+        * `str`: device info
         """
-        if isinstance(plug, str):
-            return cls._inspectPluginId(plug)
-        elif issubclass(plug, plugs.StandardPlugin):
-            return cls._inspectStandardPlugin(plug)
-        elif issubclass(plug, plugs.WindowPlugin):
-            return cls._inspectWindowPlugin(plug)
-        elif issubclass(plug, plugs.SpecialPlugin):
-            return cls._inspectSpecialPlugin(plug)
+        if dev in cls._devices:
+            return f"{dev} (registered)"
         else:
-            return f"{plug} isn't a Plugin class or plugin ID"
+            return f"{dev} (not registered)"
+
+    @classmethod
+    @printReturn
+    def inspect(cls, ext: 'type[Device] | type[Plugin] | str') -> str:
+        """
+        Returns info about an extension, which can be a device or a plugin of
+        any kind
+
+        ### Args:
+        * `ext` (`type[Plugin] | type[Plugin] | str`): device, plugin or 
+          plugin ID to inspect
+
+        ### Returns:
+        * `str`: extension info
+        """
+        if isinstance(ext, str):
+            return cls._inspectPluginId(ext)
+        elif issubclass(ext, Device):
+            return cls._inspectDevice(ext)
+        elif issubclass(ext, plugs.StandardPlugin):
+            return cls._inspectStandardPlugin(ext)
+        elif issubclass(ext, plugs.WindowPlugin):
+            return cls._inspectWindowPlugin(ext)
+        elif issubclass(ext, plugs.SpecialPlugin):
+            return cls._inspectSpecialPlugin(ext)
+        else:
+            return f"{ext} isn't a Plugin class or plugin ID"
 
 # Import devices
 from devices.deviceshadow import DeviceShadow
+from devices.device import Device
 # Import plugins
 import plugs
