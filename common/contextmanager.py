@@ -66,6 +66,7 @@ class DeviceContextManager:
         Called frequently to allow any required updates to the controller
         """
         self.state.tick()
+        self.active.tick()
     
     def setState(self, new_state: IScriptState) -> NoReturn:
         """

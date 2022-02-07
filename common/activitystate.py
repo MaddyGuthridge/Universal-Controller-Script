@@ -25,6 +25,12 @@ class ActivityState:
         self._plugin = getFocusedPluginIndex()
         self._plug_active = True if self._plugin is not None else False
     
+    def printUpdate(self):
+        print(f"Window: {self._window}, Plugin: {self._plugin}")
+        print(f"Active: {'plugin' if self._plug_active else 'window'}")
+        print(f"Updating: {self._doUpdate}")
+        print(f"Split: {self._split}")
+    
     def tick(self) -> None:
         """
         Called frequently when we need to update the current window
@@ -33,11 +39,11 @@ class ActivityState:
             if (window := getFocusedWindowIndex()) is not None:
                 self._window = window
                 if not self._split:
-                    self._plug_active = True
+                    self._plug_active = False
             elif (plugin := getFocusedPluginIndex()) is not None:
                 self._plugin = plugin
                 if not self._split:
-                    self._plug_active = False
+                    self._plug_active = True
 
     def getActive(self) -> UnsafeIndex:
         """
