@@ -173,9 +173,11 @@ class Log:
         print(f"----------------------------------------")
         return NoneNoPrintout
     
-    def details(self, itemNumber: int):
+    def inspect(self, itemNumber: int):
         """
-        Print the details of a log entry.
+        Inspect and print the details of a log entry.
+        
+        This is a helper function for debugging.
 
         ### Args:
         * `itemNumber` (`int`): entry number
