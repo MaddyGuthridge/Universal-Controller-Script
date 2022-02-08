@@ -109,6 +109,15 @@ class DeviceShadow:
         
         return f"{header}\n\n{assigned}\n\n{unassigned}"
     
+    def getDevice(self) -> Device:
+        """
+        Returns a reference to the device this shadow represents
+
+        ### Returns:
+        * `Device`: device
+        """
+        return self._device
+    
     def _getMatches(
         self, 
         expr: Callable[[ControlSurface], bool], 

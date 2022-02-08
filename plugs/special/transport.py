@@ -112,11 +112,5 @@ class Transport(SpecialPlugin):
         else:
             return False
         return True
-    
-    def notes(self, control:ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
-        # Don't handle note events
-        # that way we can have them play
-        # this might change in the future, but for now this is fine
-        return False
 
 ExtensionManager.registerSpecialPlugin(Transport)

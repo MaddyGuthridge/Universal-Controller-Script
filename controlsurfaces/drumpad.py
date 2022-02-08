@@ -15,6 +15,8 @@ class DrumPad(ControlSurface):
     Defines a drum pad control surface.
     Drum pads are usually used to trigger pads in drum plugins, or keyswitches
     in orchestral plugins.
+    
+    Coordinates should be: (row, col), where (0, 0) is the top left
     """
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:

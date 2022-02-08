@@ -79,6 +79,10 @@ class Hammer88Pro(Device):
         
         super().__init__(matcher)
     
+    @staticmethod
+    def getDrumPadSize() -> tuple[int, int]:
+        return 2, 8
+    
     @classmethod
     def create(cls, event: Optional[eventData]) -> Device:
         return cls()

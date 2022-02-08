@@ -24,3 +24,4 @@ from .navigation import *
 from .jog import *
 from .fader import Fader
 from .knob import Knob
+from .drumpad import DrumPad

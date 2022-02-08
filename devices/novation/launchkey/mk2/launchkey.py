@@ -86,7 +86,11 @@ class LaunchkeyMk2(Device):
         super().__init__(
             matcher
         )
-        
+    
+    @staticmethod
+    def getDrumPadSize() -> tuple[int, int]:
+        return 2, 8
+
 class LaunchkeyMk2_49_61(LaunchkeyMk2):
     """
     Standard controls with added faders
