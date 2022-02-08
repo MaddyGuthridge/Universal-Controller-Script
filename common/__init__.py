@@ -16,7 +16,6 @@ if general.getVersion() < consts.MIN_API_VERSION:
         f"v{consts.MIN_API_VERSION}, got {general.getVersion()}"
     )
 del general
-del consts
 
 from .consts import getVersionString
 
