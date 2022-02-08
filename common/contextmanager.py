@@ -20,6 +20,7 @@ from .settings import Settings
 from .activitystate import ActivityState
 
 from .util.misc import NoneNoPrintout
+from .util.events import isEventForwarded, isEventForwardedHere
 from .types import eventData
 
 from .states import (
@@ -58,6 +59,10 @@ class DeviceContextManager:
         ### Args:
         * `event` (`event`): event to process
         """
+        # Filter out events that shouldn't be forwarded here
+        if isEventForwarded(event) and not isEventForwardedHere(event):
+            event.handled = True
+            return
         self.state.processEvent(event)
     
     @catchStateChangeException
