@@ -6,6 +6,7 @@ called directly.
 """
 
 import ui
+import channels
 
 from typing import Union, Optional
 
@@ -23,27 +24,38 @@ UnsafeWindowIndex = Optional[int]
 
 UnsafeIndex = Union[UnsafePluginIndex, UnsafeWindowIndex]
 
-def getFocusedPluginIndex() -> UnsafePluginIndex:
+def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
     
     Values are returned as tuples so that they can be unwrapped when 
 
+    Args:
+    * `force` (`bool`, optional): whether to return the selected plugin on the
+      channel rack if none are explicitly active
+
     Returns:
-        * `None`: if no plugin is focused
-        * `int`: index of a channel rack plugin if one is focused
-        * `int, int`: index of a mixer plugin if one is focused
+    * `None`: if no plugin is focused
+    * `int`: index of a channel rack plugin if one is focused
+    * `int, int`: index of a mixer plugin if one is focused
     """
     # Check if a channel rack plugin is focused
-    if ui.getFocused(7):
-        return (ui.getFocusedFormID(), )
-    # Otherwise, check if a mixer plugin is focused
-    elif ui.getFocused(6):
+    # if ui.getFocused(7):
+        
+    # If a mixer plugin is focused
+    if ui.getFocused(6):
         track = ui.getFocusedFormID() // 4194304
         slot = (ui.getFocusedFormID() - 4194304 * track) // 65536
         return track, slot
+    # Otherwise, assume that a channel is selected
+    # Use the channel rack index so that we always have one
+    elif ui.getFocused(7):
+        return (ui.getFocusedFormID(), )
     else:
-        return None
+        if force:
+            return (channels.channelNumber(),)
+        else:
+            return None
 
 def getFocusedWindowIndex() -> Optional[int]:
     """

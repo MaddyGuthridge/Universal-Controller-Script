@@ -34,15 +34,30 @@ class ActivityState:
         print(f"Updating: {self._doUpdate}")
         print(f"Split: {self._split}")
     
+    def _forcePlugUpdate(self) -> None:
+        """
+        Update the active plugin when other things are active (eg windows).
+        Used so that split windows and plugins behaves correctly.
+        """
+        plugin = getFocusedPluginIndex(force=True)
+        assert plugin is not None
+        self._plugin = plugin
+        if len(plugin) == 1:
+            self._generator = plugin # type: ignore
+        else:
+            self._effect = plugin # type: ignore
+    
     def tick(self) -> None:
         """
         Called frequently when we need to update the current window
         """
         if self._doUpdate:
+            # Manually update plugin using selection
             if (window := getFocusedWindowIndex()) is not None:
                 self._window = window
                 if not self._split:
                     self._plug_active = False
+                self._forcePlugUpdate()
             elif (plugin := getFocusedPluginIndex()) is not None:
                 self._plugin = plugin
                 # Ignore typing because len(plugin) doesn't narrow types in mypy
@@ -52,6 +67,8 @@ class ActivityState:
                     self._effect = plugin # type: ignore
                 if not self._split:
                     self._plug_active = True
+            else:
+                self._forcePlugUpdate()
 
     def getActive(self) -> UnsafeIndex:
         """
