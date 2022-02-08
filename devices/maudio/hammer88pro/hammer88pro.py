@@ -4,7 +4,7 @@ from typing import Optional
 from common.eventpattern import BasicPattern, ForwardedPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy
+from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy
 from devices import Device, BasicControlMatcher
 from devices.controlgenerators import getNotesAllChannels, getPedals, getChannelAftertouchAllChannels
 
@@ -12,6 +12,7 @@ from controlsurfaces import (
     NullEvent,
     Fader,
     Knob,
+    DrumPad,
     PlayButton,
     StopButton,
     RecordButton,
@@ -44,6 +45,12 @@ class Hammer88Pro(Device):
         matcher.addControls(getNotesAllChannels())
         matcher.addControls(getPedals())
         matcher.addControls(getChannelAftertouchAllChannels())
+        
+        # Drum pads
+        matcher.addControls([
+            DrumPad(BasicPattern(0xB9, i, ...), Data2Strategy(), (i // 8, i % 8))
+            for i in range(16)
+        ])
         
         # Transport buttons
         matcher.addControl(StopButton(
