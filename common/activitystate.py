@@ -8,7 +8,8 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
 """
 
-from common.util.apifixes import UnsafeIndex
+from common.util.apifixes import PluginIndex, UnsafeIndex, GeneratorIndex, \
+    EffectIndex, WindowIndex
 from common.util.apifixes import getFocusedPluginIndex, getFocusedWindowIndex
 
 class ActivityState:
@@ -21,8 +22,10 @@ class ActivityState:
         """
         self._doUpdate = True
         self._split = False
-        self._window = getFocusedWindowIndex()
-        self._plugin = getFocusedPluginIndex()
+        self._window: WindowIndex = 0
+        self._generator: GeneratorIndex = (0,)
+        self._effect: EffectIndex = (0, 0)
+        self._plugin: PluginIndex = self._generator
         self._plug_active = True if self._plugin is not None else False
     
     def printUpdate(self):
@@ -31,19 +34,41 @@ class ActivityState:
         print(f"Updating: {self._doUpdate}")
         print(f"Split: {self._split}")
     
+    def _forcePlugUpdate(self) -> None:
+        """
+        Update the active plugin when other things are active (eg windows).
+        Used so that split windows and plugins behaves correctly.
+        """
+        plugin = getFocusedPluginIndex(force=True)
+        assert plugin is not None
+        self._plugin = plugin
+        if len(plugin) == 1:
+            self._generator = plugin # type: ignore
+        else:
+            self._effect = plugin # type: ignore
+    
     def tick(self) -> None:
         """
         Called frequently when we need to update the current window
         """
         if self._doUpdate:
+            # Manually update plugin using selection
             if (window := getFocusedWindowIndex()) is not None:
                 self._window = window
                 if not self._split:
                     self._plug_active = False
+                self._forcePlugUpdate()
             elif (plugin := getFocusedPluginIndex()) is not None:
                 self._plugin = plugin
+                # Ignore typing because len(plugin) doesn't narrow types in mypy
+                if len(plugin) == 1:
+                    self._generator = plugin # type: ignore
+                else:
+                    self._effect = plugin # type: ignore
                 if not self._split:
                     self._plug_active = True
+            else:
+                self._forcePlugUpdate()
 
     def getActive(self) -> UnsafeIndex:
         """
@@ -53,7 +78,42 @@ class ActivityState:
             return self._plugin
         else:
             return self._window
-        
+    
+    def getGenerator(self) -> GeneratorIndex:
+        """
+        Returns the currently active generator plugin
+
+        ### Returns:
+        * `GeneratorIndex`: active generator
+        """
+        return self._generator
+    
+    def getEffect(self) -> EffectIndex:
+        """
+        Returns the currently active effect plugin
+
+        ### Returns:
+        * `GeneratorIndex`: active generator
+        """
+        return self._effect
+    
+    def getPlugin(self) -> PluginIndex:
+        """
+        Returns the currently active plugin
+
+        ### Returns:
+        * `UnsafePluginIndex`: active plugin
+        """
+        return self._plugin
+    
+    def getWindow(self) -> WindowIndex:
+        """
+        Returns the currently active window
+
+        ### Returns:
+        * `UnsafeWindowIndex`: active window
+        """
+        return self._window
 
     def playPause(self, value: bool = None) -> bool:
         """
