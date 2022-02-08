@@ -37,6 +37,9 @@ class FPC(StandardPlugin):
     @staticmethod
     def triggerPad(pad_idx: int, control: ControlShadow, ch_idx: int) -> None:
         note = plugins.getPadInfo(ch_idx, -1, 1, pad_idx)
+        # Work-around for horrible bug where wrong note numbers are given
+        if note > 127:
+            note = note >> 16
         channels.midiNoteOn(ch_idx, note, int(control.getCurrentValue()*127))
     
     @filterToGeneratorIndex
