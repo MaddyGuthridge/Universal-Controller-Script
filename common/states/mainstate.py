@@ -6,15 +6,17 @@ behaving as expected.
 """
 
 import plugins
+from typing import TYPE_CHECKING
 
 import common
 from common import log, verbosity
-from common.extensionmanager import ExtensionManager
 from common.types import eventData
 from common.util.apifixes import getFocusedPluginIndex, WindowIndex, PluginIndex
 from common.util.events import eventToString
-from devices import Device
 from .scriptstate import IScriptState
+
+if TYPE_CHECKING:
+    from devices import Device
 
 class MainState(IScriptState):
     """
@@ -22,7 +24,7 @@ class MainState(IScriptState):
     behaving as expected.
     """
     
-    def __init__(self, device: Device) -> None:
+    def __init__(self, device: 'Device') -> None:
         self._device = device
     
     def initialise(self) -> None:
@@ -52,21 +54,25 @@ class MainState(IScriptState):
         plug_idx = common.getContext().active.getActive()
         if plug_idx is not None:
             if isinstance(plug_idx, tuple):
-                plug_id = plugins.getPluginName(*plug_idx)
-                plug = ExtensionManager.getPluginById(plug_id, self._device)
+                try:
+                    plug_id = plugins.getPluginName(*plug_idx)
+                except TypeError:
+                    # Plugin not valid
+                    plug_id = ""
+                plug = common.ExtensionManager.getPluginById(plug_id, self._device)
                 if plug is not None:
                     if plug.processEvent(mapping, plug_idx):
                         event.handled = True
                         return
             else:
-                window = ExtensionManager.getWindowById(plug_idx, self._device)
+                window = common.ExtensionManager.getWindowById(plug_idx, self._device)
                 if window is not None:
                     if window.processEvent(mapping, plug_idx):
                         event.handled = True
                         return
 
         # Get special plugins
-        for p in ExtensionManager.getSpecialPlugins(self._device):
+        for p in common.ExtensionManager.getSpecialPlugins(self._device):
             if p.processEvent(mapping, plug_idx):
                 event.handled = True
                 return

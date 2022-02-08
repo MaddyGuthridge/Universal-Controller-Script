@@ -17,8 +17,6 @@ from common.types import eventData
 from common import log, verbosity
 from common.util.events import eventToString
 
-from common.extensionmanager import ExtensionManager
-
 from . import IScriptState, DeviceNotRecognised, MainState
 
 LOG_CAT = "bootstrap.device.type_detect"
@@ -43,7 +41,7 @@ class WaitingForDevice(IScriptState):
         for name, id in name_associations:
             if name == device_name:
                 try:
-                    dev = ExtensionManager.getDeviceById(id)
+                    dev = common.ExtensionManager.getDeviceById(id)
                     log(
                             LOG_CAT,
                             f"Recognised device via device name associations: {dev.getId()}",
@@ -72,7 +70,7 @@ class WaitingForDevice(IScriptState):
         """
         name = device.getName()
         try:
-            dev = ExtensionManager.getDevice(name)
+            dev = common.ExtensionManager.getDevice(name)
             log(
                     LOG_CAT,
                     f"Recognised device via fallback: {dev.getId()}",
@@ -123,7 +121,7 @@ class WaitingForDevice(IScriptState):
         # Ignore all events unless they are Sysex
         if event.sysex is not None:
             try:
-                dev = ExtensionManager.getDevice(event)
+                dev = common.ExtensionManager.getDevice(event)
                 log(
                     LOG_CAT,
                     f"Recognised device via sysex: {dev.getId()}",

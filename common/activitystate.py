@@ -8,8 +8,8 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
 """
 
-from common.util.apifixes import UnsafeIndex, UnsafeGeneratorIndex, \
-    UnsafeEffectIndex, UnsafePluginIndex, UnsafeWindowIndex
+from common.util.apifixes import PluginIndex, UnsafeIndex, GeneratorIndex, \
+    EffectIndex, WindowIndex
 from common.util.apifixes import getFocusedPluginIndex, getFocusedWindowIndex
 
 class ActivityState:
@@ -22,10 +22,10 @@ class ActivityState:
         """
         self._doUpdate = True
         self._split = False
-        self._window = getFocusedWindowIndex()
-        self._generator: UnsafeGeneratorIndex = None
-        self._effect: UnsafeEffectIndex = None 
-        self._plugin = getFocusedPluginIndex()
+        self._window: WindowIndex = 0
+        self._generator: GeneratorIndex = (0,)
+        self._effect: EffectIndex = (0, 0)
+        self._plugin: PluginIndex = self._generator
         self._plug_active = True if self._plugin is not None else False
     
     def printUpdate(self):
@@ -62,25 +62,25 @@ class ActivityState:
         else:
             return self._window
     
-    def getGenerator(self) -> UnsafeGeneratorIndex:
+    def getGenerator(self) -> GeneratorIndex:
         """
         Returns the currently active generator plugin
 
         ### Returns:
-        * `UnsafeGeneratorIndex`: active generator
+        * `GeneratorIndex`: active generator
         """
         return self._generator
     
-    def getEffect(self) -> UnsafeEffectIndex:
+    def getEffect(self) -> EffectIndex:
         """
         Returns the currently active effect plugin
 
         ### Returns:
-        * `UnsafeGeneratorIndex`: active generator
+        * `GeneratorIndex`: active generator
         """
         return self._effect
     
-    def getPlugin(self) -> UnsafePluginIndex:
+    def getPlugin(self) -> PluginIndex:
         """
         Returns the currently active plugin
 
@@ -89,7 +89,7 @@ class ActivityState:
         """
         return self._plugin
     
-    def getWindow(self) -> UnsafeWindowIndex:
+    def getWindow(self) -> WindowIndex:
         """
         Returns the currently active window
 

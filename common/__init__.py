@@ -12,9 +12,9 @@ from .consts import getVersionString
 
 from .logger import log, verbosity
 
-from .eventpattern import BasicPattern, IEventPattern
-
 from .contextmanager import getContext, resetContext, catchContextResetException
+
+from .eventpattern import BasicPattern, IEventPattern
 
 from . import util
 
