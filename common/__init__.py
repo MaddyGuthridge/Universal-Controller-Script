@@ -7,7 +7,17 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+# Check minimum version
+import general
 from . import consts
+if general.getVersion() < consts.MIN_API_VERSION:
+    raise RuntimeError(
+        f"Your FL Studio version is out of date: expected API "
+        f"v{consts.MIN_API_VERSION}, got {general.getVersion()}"
+    )
+del general
+del consts
+
 from .consts import getVersionString
 
 from .logger import log, verbosity
