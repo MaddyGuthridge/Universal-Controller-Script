@@ -55,7 +55,7 @@ class FPC(StandardPlugin):
         # Handle pads out of bounds
         if row >= 2 or col >= 8:
             return True
-        coordToIndex = lambda r, c : 4 * (1-r) + c + 8 * (c >= 4)
+        coordToIndex = lambda r, c : 4 * (1-r) + c + 4 * (c >= 4)
         self.triggerPad(coordToIndex(row, col), control, *index)
         return True
 
