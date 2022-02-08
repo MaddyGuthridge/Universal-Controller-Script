@@ -8,7 +8,8 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
 """
 
-from common.util.apifixes import UnsafeIndex
+from common.util.apifixes import UnsafeIndex, UnsafeGeneratorIndex, \
+    UnsafeEffectIndex, UnsafePluginIndex, UnsafeWindowIndex
 from common.util.apifixes import getFocusedPluginIndex, getFocusedWindowIndex
 
 class ActivityState:
@@ -22,6 +23,8 @@ class ActivityState:
         self._doUpdate = True
         self._split = False
         self._window = getFocusedWindowIndex()
+        self._generator: UnsafeGeneratorIndex = None
+        self._effect: UnsafeEffectIndex = None 
         self._plugin = getFocusedPluginIndex()
         self._plug_active = True if self._plugin is not None else False
     
@@ -42,6 +45,11 @@ class ActivityState:
                     self._plug_active = False
             elif (plugin := getFocusedPluginIndex()) is not None:
                 self._plugin = plugin
+                # Ignore typing because len(plugin) doesn't narrow types in mypy
+                if len(plugin) == 1:
+                    self._generator = plugin # type: ignore
+                else:
+                    self._effect = plugin # type: ignore
                 if not self._split:
                     self._plug_active = True
 
@@ -53,7 +61,42 @@ class ActivityState:
             return self._plugin
         else:
             return self._window
-        
+    
+    def getGenerator(self) -> UnsafeGeneratorIndex:
+        """
+        Returns the currently active generator plugin
+
+        ### Returns:
+        * `UnsafeGeneratorIndex`: active generator
+        """
+        return self._generator
+    
+    def getEffect(self) -> UnsafeEffectIndex:
+        """
+        Returns the currently active effect plugin
+
+        ### Returns:
+        * `UnsafeGeneratorIndex`: active generator
+        """
+        return self._effect
+    
+    def getPlugin(self) -> UnsafePluginIndex:
+        """
+        Returns the currently active plugin
+
+        ### Returns:
+        * `UnsafePluginIndex`: active plugin
+        """
+        return self._plugin
+    
+    def getWindow(self) -> UnsafeWindowIndex:
+        """
+        Returns the currently active window
+
+        ### Returns:
+        * `UnsafeWindowIndex`: active window
+        """
+        return self._window
 
     def playPause(self, value: bool = None) -> bool:
         """

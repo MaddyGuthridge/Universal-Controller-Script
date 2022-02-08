@@ -9,10 +9,18 @@ import ui
 
 from typing import Union, Optional
 
-PluginIndex = Union[tuple[int], tuple[int, int]]
+GeneratorIndex = tuple[int]
+UnsafeGeneratorIndex = Optional[GeneratorIndex]
+
+EffectIndex = tuple[int, int]
+UnsafeEffectIndex = Optional[EffectIndex]
+
+PluginIndex = Union[GeneratorIndex, EffectIndex]
 UnsafePluginIndex = Optional[PluginIndex]
+
 WindowIndex = int
 UnsafeWindowIndex = Optional[int]
+
 UnsafeIndex = Union[UnsafePluginIndex, UnsafeWindowIndex]
 
 def getFocusedPluginIndex() -> UnsafePluginIndex:
