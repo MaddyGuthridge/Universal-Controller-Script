@@ -12,5 +12,5 @@ from .ivaluestrategy import IValueStrategy
 from .datastrategy import Data2Strategy, Data1Strategy
 from .buttondata2strategy import ButtonData2Strategy
 from .buttonsinglepressstrategy import ButtonSinglePressStrategy
-from .forwardedstrategy import ForwardedStrategy
+from .forwardedstrategy import ForwardedStrategy, ForwardedUnionStrategy
 from .nullstrategy import NullEventStrategy

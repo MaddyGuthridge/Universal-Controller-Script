@@ -7,11 +7,10 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
 """
 
-import device
 from typing import TYPE_CHECKING
 
 from common.util.events import eventFromForwarded, isEventForwardedHereFrom, eventToString
-from . import IEventPattern
+from . import IEventPattern, UnionPattern
 
 from common.types import eventData
 
@@ -45,3 +44,21 @@ class ForwardedPattern(IEventPattern):
         # underlying pattern
         # print(eventToString(eventFromForwarded(event, null+2)))
         return self._pattern.matchEvent(eventFromForwarded(event))
+
+class ForwardedUnionPattern(IEventPattern):
+    """
+    Represents an event that can either be forwarded or direct.
+    """
+    
+    def __init__(self, device_num: int, pattern: IEventPattern) -> None:
+        """
+        Create a ForwardedUnionPattern recogniser
+
+        ### Args:
+        * `device_num` (`int`): device number to recognise
+        * `pattern` (`IEventPattern`): pattern to match
+        """
+        self._pattern = UnionPattern(pattern, ForwardedPattern(device_num, pattern))
+        
+    def matchEvent(self, event: 'eventData') -> bool:
+        return self._pattern.matchEvent(event)
