@@ -211,7 +211,7 @@ class DeviceShadow:
         # Determine what lambda to use depending on if we are allowing control
         # substitution
         if allow_substitution:
-            l = lambda x: isinstance(x, control.getControlAssignmentPriorities())
+            l = lambda x: isinstance(x, control.getControlAssignmentPriorities()) or isinstance(x, control)
         else:
             l = lambda x: isinstance(x, control)
         
