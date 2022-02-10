@@ -1,7 +1,7 @@
 
 
 from typing import Optional
-from common.eventpattern import BasicPattern, ForwardedPattern
+from common.eventpattern import BasicPattern, ForwardedPattern, ForwardedUnionPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy
@@ -50,6 +50,15 @@ class Hammer88Pro(Device):
         matcher.addControls([
             DrumPad(BasicPattern(0xB9, i, ...), Data2Strategy(), (i // 8, i % 8))
             for i in range(16)
+        ])
+        
+        # Knobs
+        matcher.addControls([
+            Knob(
+                ForwardedUnionPattern(3, BasicPattern(0xB0, i+80, ...)),
+                ForwardedStrategy(Data2Strategy()),
+                (0, i))
+            for i in range(8)
         ])
         
         # Transport buttons

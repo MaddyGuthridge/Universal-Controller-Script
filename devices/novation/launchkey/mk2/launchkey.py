@@ -42,7 +42,6 @@ class LaunchkeyMk2(Device):
                 Knob(
                     BasicPattern(0xB0, 0x14 + i, ...),
                     Data2Strategy(),
-                    "knobs",
                     (i, 0)
                 )
             )
