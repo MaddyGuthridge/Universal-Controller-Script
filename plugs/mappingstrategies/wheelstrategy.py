@@ -80,7 +80,11 @@ class WheelStrategy(IMappingStrategy):
             return False
         
         # Filter out non-VSTs
-        if 'MIDI CC' not in plugins.getParamName(CC_START, *index):
+        # TODO: Use some isPlugVST() helper function
+        if (
+            plugins.getParamCount(*index) < CC_START
+        #  or 'MIDI CC' not in plugins.getParamName(CC_START, *index)
+        ):
             if self._raise:
                 raise TypeError("Expected a plugin of VST type - make sure that "
                                 "this plugin is a VST, and not an FL Studio plugin")
