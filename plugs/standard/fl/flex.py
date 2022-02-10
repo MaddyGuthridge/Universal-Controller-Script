@@ -30,7 +30,7 @@ class Flex(StandardPlugin):
     
     @staticmethod
     def getPlugId() -> str:
-        return "Flex"
+        return "FLEX"
     
     @filterToGeneratorIndex
     def faders(self, control: ControlShadow, index: GeneratorIndex, *args: Any) -> bool:

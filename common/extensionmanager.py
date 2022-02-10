@@ -400,7 +400,7 @@ class ExtensionManager:
         * `str`: plugin info
         """
         if id in cls._instantiated_plugins.keys():
-            return f"{id} associated with:\n\n{repr(cls._instantiated_plugins[id])}"
+            return f"{id} associated with:\n\n{cls._instantiated_plugins[id]}"
         elif id in cls._plugins.keys():
             return f"{id} associated with: {cls._plugins[id]} (not instantiated)"
         else:
