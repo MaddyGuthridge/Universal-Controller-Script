@@ -44,7 +44,7 @@ class FPC(StandardPlugin):
     
     @filterToGeneratorIndex
     def drumPad4x4(self, control: ControlShadow, index: GeneratorIndex, *args: Any) -> bool:
-        row, col = control.getControl().coordinate
+        row, col = control.coordinate
         # Handle pads out of bounds as well
         if row >= 4 or col >= 4:
             return True
@@ -54,7 +54,7 @@ class FPC(StandardPlugin):
     
     @filterToGeneratorIndex
     def drumPad2x8(self, control: ControlShadow, index: GeneratorIndex, *args: Any) -> bool:
-        row, col = control.getControl().coordinate
+        row, col = control.coordinate
         # Handle pads out of bounds
         if row >= 2 or col >= 8:
             return True

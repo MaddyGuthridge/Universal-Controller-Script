@@ -1,2 +1,2 @@
 
-from . import fpc
+from . import fpc, flex
