@@ -210,17 +210,28 @@ class DeviceShadow:
         
         # Determine what lambda to use depending on if we are allowing control
         # substitution
+        no_subs = lambda x: isinstance(x, control)
+        subs = lambda x: isinstance(x, control.getControlAssignmentPriorities()) or isinstance(x, control)
         if allow_substitution:
-            l = lambda x: isinstance(x, control.getControlAssignmentPriorities()) or isinstance(x, control)
+            ret = self._getMatches(
+                no_subs,
+                target_num
+            )
+            t = target_num if target_num is not None else 1
+            # If we didn't get enough matches, then we should try substitution
+            # TODO: Improve this
+            if len(ret) < t:
+                ret = self._getMatches(
+                    subs,
+                    target_num
+                )
+        
         else:
-            l = lambda x: isinstance(x, control)
-        
-        # Use algorithm for getting matching controls
-        ret = self._getMatches(
-            l,
-            target_num
-        )
-        
+            ret = self._getMatches(
+                no_subs,
+                target_num
+            )
+            
         # Make sure we have results
         if raise_on_zero and len(ret) == 0:
             raise ValueError("No matching controls found")
