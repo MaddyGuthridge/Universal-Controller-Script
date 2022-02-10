@@ -103,7 +103,6 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
                 Fader(
                     BasicPattern(0xB0, 0x28 + i, ...),
                     Data2Strategy(),
-                    "faders",
                     (i, 0)
                 )
             )
@@ -112,7 +111,6 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
             Fader(
                 BasicPattern(0xB0, 0x07, ...),
                 Data2Strategy(),
-                "knobs",
                 (0, 0)
             )
         )

@@ -61,6 +61,23 @@ class Hammer88Pro(Device):
             for i in range(8)
         ])
         
+        # Faders
+        matcher.addControls([
+            Fader(
+                ForwardedUnionPattern(3, BasicPattern(0xB0, i+48, ...)),
+                ForwardedStrategy(Data2Strategy()),
+                (0, i))
+            for i in range(9)
+        ])
+        # matcher.addControl(
+        #     Fader(
+        #         ForwardedUnionPattern(3, BasicPattern(0xB0, i+48, ...)),
+        #         ForwardedStrategy(Data2Strategy()),
+        #         (0, 9))
+        #     for i in range(8)
+        # )
+        
+        
         # Transport buttons
         matcher.addControl(StopButton(
             ForwardedPattern(3, BasicPattern(0xBF, 102, ...)),

@@ -21,7 +21,7 @@ class Knob(ControlSurface):
         # Knob controls should be assigned to faders if knobs aren't available
         return (Fader, )
     
-    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy, coordinate: tuple[int, int]) -> None:
+    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy, coordinate: tuple[int, int], group: str = "knobs") -> None:
         super().__init__(event_pattern, value_strategy, "knobs", coordinate)
 
 from .fader import Fader
