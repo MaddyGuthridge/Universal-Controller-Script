@@ -5,7 +5,7 @@ from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import Data2Strategy
 from devices import Device, BasicControlMatcher
-from devices.controlgenerators import getNotesAllChannels
+from controlsurfaces.controlgenerators import getNotesAllChannels
 
 from controlsurfaces import (
     Fader,

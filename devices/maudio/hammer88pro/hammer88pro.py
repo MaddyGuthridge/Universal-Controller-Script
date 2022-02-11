@@ -6,7 +6,7 @@ from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy
 from devices import Device, BasicControlMatcher
-from devices.controlgenerators import getNotesAllChannels, getPedals, getChannelAftertouchAllChannels
+from controlsurfaces.controlgenerators import getNotesAllChannels, getPedals, getChannelAftertouchAllChannels
 
 from controlsurfaces import (
     NullEvent,
