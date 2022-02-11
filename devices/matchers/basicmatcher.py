@@ -24,8 +24,9 @@ class BasicControlMatcher(IControlMatcher):
     the IControlMatcher class.
     """
     def __init__(self) -> None:
-        self.__controls: list[ControlSurface] = []
-        self.__groups: set[str] = set()
+        self._controls: list[ControlSurface] = []
+        self._groups: set[str] = set()
+        self._sub_matchers: list[IControlMatcher] = []
     
     def addControls(self, controls: list[ControlSurface]) -> None:
         """
@@ -44,25 +45,46 @@ class BasicControlMatcher(IControlMatcher):
         ### Args:
         * `control` (`ControlSurface`): Control to add
         """
-        self.__controls.append(control)
-        self.__groups.add(control.group)
+        self._controls.append(control)
+        self._groups.add(control.group)
+    
+    def addSubMatcher(self, matcher: IControlMatcher) -> None:
+        """
+        Register a control matcher to work as a component of this control
+        matcher
+
+        This allows for more complex control mappings to be made without the
+        need to implement a full control matcher
+
+        ### Args:
+        * `matcher` (`IControlMatcher`): control matcher to add
+        """
+        self._sub_matchers.append(matcher)
     
     def matchEvent(self, event: eventData) -> Optional[ControlMapping]:
-        for c in self.__controls:
-            m = c.match(event)
-            if m is not None:
+        for s in self._sub_matchers:
+            if (m := s.matchEvent(event)) is not None:
+                return m
+        for c in self._controls:
+            if (m := c.match(event)) is not None:
                 return m
         return None
     
     def getGroups(self) -> set[str]:
-        return self.__groups
+        g = self._groups
+        for s in self._sub_matchers:
+            g |= s.getGroups()
+        return g
     
     def getControls(self, group: str = None) -> list[ControlSurface]:
+        controls = self._controls
+        for s in self._sub_matchers:
+            controls += s.getControls()
         if group is None:
-            return self.__controls
+            return controls
         else:
             ret = []
-            for c in self.__controls:
+            for c in controls:
                 if c.group == group:
                     ret.append(c)
             return ret
