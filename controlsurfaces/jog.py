@@ -1,5 +1,5 @@
 """
-controlsurfaces > navigation
+controlsurfaces > jog
 
 Defines jog wheel control surfaces
 

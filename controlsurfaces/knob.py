@@ -19,9 +19,10 @@ class Knob(ControlSurface):
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
         # Knob controls should be assigned to faders if knobs aren't available
-        return (Fader, )
+        return (Fader, Encoder)
     
     def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy, coordinate: tuple[int, int], group: str = "knobs") -> None:
-        super().__init__(event_pattern, value_strategy, "knobs", coordinate)
+        super().__init__(event_pattern, value_strategy, group, coordinate)
 
 from .fader import Fader
+from .encoder import Encoder
