@@ -48,7 +48,12 @@ class MainState(IScriptState):
             return
             
         else:
-            log("device.event.in", f"Recognised event: {mapping.getControl()}", verbosity.NOTE)
+            log(
+                "device.event.in",
+                f"Recognised event: {mapping.getControl()}",
+                verbosity.NOTE,
+                detailed_msg=eventToString(event)
+            )
         
         # Get active standard plugin
         plug_idx = common.getContext().active.getActive()

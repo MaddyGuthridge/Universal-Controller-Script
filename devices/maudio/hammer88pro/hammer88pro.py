@@ -23,6 +23,7 @@ from controlsurfaces import (
     StandardModWheel,
 )
 from .hammerpitch import HammerPitchWheel
+from .jogmatcher import JogMatcher
 
 class Hammer88Pro(Device):
     """
@@ -40,6 +41,9 @@ class Hammer88Pro(Device):
         matcher.addControl(NullEvent(
             BasicPattern(0xFC, 0x0, 0x0)
         ))
+        
+        # Jog wheel stuff
+        matcher.addSubMatcher(JogMatcher())
         
         # Notes and pedals
         matcher.addControls(getNotesAllChannels())

@@ -44,7 +44,7 @@ class Transport(SpecialPlugin):
         shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)
         shadow.bindMatch(PlayButton, self.playButton, raise_on_failure=False)
         shadow.bindMatch(StopButton, self.stopButton, raise_on_failure=False)
-        shadow.bindMatch(JogWheel, self.jogWheel, raise_on_failure=False)
+        shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
         shadow.bindMatch(RecordButton, self.recButton, raise_on_failure=False)
         shadow.bindMatch(LoopButton, self.loopButton, raise_on_failure=False)
         shadow.bindMatch(MetronomeButton, self.metroButton, raise_on_failure=False)
@@ -84,7 +84,6 @@ class Transport(SpecialPlugin):
         return True
 
     def jogWheel(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
-        
         if control.getCurrentValue() == consts.ENCODER_NEXT:
             increment = 1
         elif control.getCurrentValue() == consts.ENCODER_PREV:

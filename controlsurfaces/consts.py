@@ -8,6 +8,15 @@ Authors:
 """
 
 # Constants for encoder values
-ENCODER_NEXT = 0.25
-ENCODER_PREV = 0.75
+
+# Encoder forwards
+ENCODER_NEXT = 0.75
+
+# Encoder backwards
+ENCODER_PREV = 0.25
+
+# Encoder press
 ENCODER_SELECT = 1.0
+
+# Encoder null (used for excess encoder events)
+ENCODER_NULL = 0.0
