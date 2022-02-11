@@ -57,8 +57,8 @@ class Hammer88Pro(Device):
             Knob(
                 ForwardedUnionPattern(3, BasicPattern(0xB0, i+80, ...)),
                 ForwardedStrategy(Data2Strategy()),
-                (0, i))
-            for i in range(8)
+                (0, i)
+            ) for i in range(8)
         ])
         
         # Faders
@@ -66,8 +66,8 @@ class Hammer88Pro(Device):
             Fader(
                 ForwardedUnionPattern(3, BasicPattern(0xB0, i+48, ...)),
                 ForwardedStrategy(Data2Strategy()),
-                (0, i))
-            for i in range(9)
+                (0, i)
+            ) for i in range(9)
         ])
         # matcher.addControl(
         #     Fader(

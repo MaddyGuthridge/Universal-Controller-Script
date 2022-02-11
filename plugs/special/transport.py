@@ -12,8 +12,10 @@ from controlsurfaces import (
     NullEvent,
     PlayButton,
     StopButton,
-    JogForwards,
     JogWheel,
+    StandardJogWheel,
+    ShiftedJogWheel,
+    MoveJogWheel,
     DirectionNext,
     DirectionPrevious,
     NavigationButtons,
@@ -26,6 +28,7 @@ from controlsurfaces import (
     LoopButton,
     MetronomeButton
 )
+from controlsurfaces import consts
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 
@@ -82,9 +85,23 @@ class Transport(SpecialPlugin):
 
     def jogWheel(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         
-        increment = 1 if isinstance(control.getControl(), JogForwards) else -1
+        if control.getCurrentValue() == consts.ENCODER_NEXT:
+            increment = 1
+        elif control.getCurrentValue() == consts.ENCODER_PREV:
+            increment = -1
+        elif control.getCurrentValue() == consts.ENCODER_SELECT:
+            ui.enter()
+            return True
+        else:
+            return True
         
-        ui.jog(increment)
+        if isinstance(control.getControl(), StandardJogWheel):
+            ui.jog(increment)
+        elif isinstance(control.getControl(), ShiftedJogWheel):
+            # TODO: Find a way to scroll better?
+            ui.jog(increment)
+        elif isinstance(control.getControl(), MoveJogWheel):
+            ui.moveJog(increment)
         return True
     
     def nullEvent(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
@@ -103,12 +120,12 @@ class Transport(SpecialPlugin):
             ui.left()
         elif c_type == DirectionRight:
             ui.right()
-        elif c_type == DirectionSelect:
-            ui.enter()
         elif c_type == DirectionNext:
             ui.next()
         elif c_type == DirectionPrevious:
             ui.previous()
+        elif c_type == DirectionSelect:
+            ui.enter()
         else:
             return False
         return True

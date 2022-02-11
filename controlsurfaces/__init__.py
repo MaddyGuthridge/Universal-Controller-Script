@@ -8,6 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+from . import consts
 from .controlsurface import ControlSurface
 from .controlshadow import ControlShadow
 from .controlmapping import ControlMapping
