@@ -5,10 +5,12 @@ Contains wrapper code for FL Studio API functions which are just too awful to be
 called directly.
 """
 
+import plugins
 import ui
 import channels
 
 from typing import Union, Optional
+from common.consts import PARAM_CC_START
 
 GeneratorIndex = tuple[int]
 UnsafeGeneratorIndex = Optional[GeneratorIndex]
@@ -75,3 +77,12 @@ def getFocusedWindowIndex() -> Optional[int]:
         if ret == -1:
             return None
         return ret
+
+def isPluginVst(index: PluginIndex) -> bool:
+    """
+    Returns whether a plugin is a VST
+
+    ### Args:
+    * `index` (`PluginIndex`): plugin index
+    """
+    return plugins.getParamCount(*index) < PARAM_CC_START

@@ -70,3 +70,6 @@ ASCII_HEADER_ART = """
             '.'   '''                             
               '.''                                
 """
+
+# The starting point for control change parameters in plugins
+PARAM_CC_START = 4096

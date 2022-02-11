@@ -552,8 +552,6 @@ class DeviceShadow:
             # nothing
             return False
         # Call the bound function with any extra required args
-        # TODO: Find some way to distinguish between calls that require safe
-        # args and those that don't
         return fn(control_shadow, index, *args)
 
     def apply(self) -> None:
