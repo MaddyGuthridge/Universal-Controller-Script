@@ -155,13 +155,15 @@ class Log:
         """
         # Figure out what to print
         num_prints = 0
+        num_skips = 0
         prints: list[LogItem] = []
         for item in reversed(self._history):
             # Print if required
-            # TODO: Count number skipped because verbosity
             if self._shouldPrint(item, category, verbosity):
                 num_prints += 1
                 prints.insert(0, item)
+            else:
+                num_skips += 1
             if num_prints == number:
                 break
         
@@ -170,6 +172,8 @@ class Log:
         print("Begin recall:")
         for item in prints:
             print(item)
+        print(f"({num_skips} item{'s' if num_skips != 1 else ''} skipped)")
+        print("End recall")
         print(f"----------------------------------------")
         return NoneNoPrintout
     

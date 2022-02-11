@@ -16,6 +16,10 @@ class Encoder(ControlSurface):
     Encoders are an endless rotating knob that is used for mapping to 
     parameters. Compared to endless jog wheels, they should be mapped to plugin
     parameters, rather than navigation.
+    
+    NOTE: Encoders use the ENCODER values found in controlsurfaces.consts.
+    TODO: Create a function for getting from an encoder value to a constant
+    value.
     """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':

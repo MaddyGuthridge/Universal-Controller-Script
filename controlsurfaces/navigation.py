@@ -11,8 +11,6 @@ from controlsurfaces.valuestrategies import IValueStrategy
 from . import ControlSurface
 from . import Button
 
-# TODO: Implement navigation controls
-
 class NavigationControl(ControlSurface):
     """
     Navigation control surfaces are used to navigate through FL Studio, changing
