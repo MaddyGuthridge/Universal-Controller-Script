@@ -51,7 +51,7 @@ class MainState(IScriptState):
             log(
                 "device.event.in",
                 f"Recognised event: {mapping.getControl()}",
-                verbosity.NOTE,
+                verbosity.EVENT,
                 detailed_msg=eventToString(event)
             )
         
