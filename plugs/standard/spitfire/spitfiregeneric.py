@@ -10,10 +10,41 @@ from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs.eventfilters import filterToGeneratorIndex
 
+# Generate list of supported plugins
+# HELP WANTED: I don't own all of these libraries, so the naming may be
+# incorrect. If something doesn't work, please create a bug report.
+PRIMARY = [
+    'BBC Symphony Orchestra',
+    'LABS',
+    'Abbey Road One',
+    'Eric Whitacre Choir',
+    'Hans Zimmer Strings'
+]
+
+ORIGINALS = [
+    'Media Toolkit',
+    'Cinematic Percussion',
+    'Firewood Piano',
+    'Cinematic Soft Piano',
+    'Cinematic Frozen Strings',
+    'Jangle Box Piano',
+    'Cinematic Pads',
+    'Mrs Mills Piano',
+    'Cimbalom',
+    'Drumline',
+    'Intimate Strings',
+    'Epic Strings',
+    'Epic Brass & Woodwinds',
+    'Felt Piano',
+]
+ORIGINALS = ['Originals - '+ele for ele in ORIGINALS]
+
+SUPPORTED_PLUGINS = tuple(PRIMARY + ORIGINALS)
+
+
 class SpitfireGeneric(StandardPlugin):
     """
-    Used to interact with the FPC plugin, mapping drum pads to the required
-    notes
+    Used to interact with Spitfire Audio plugins, mapping faders to parameters
     """
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.bindMatches(
@@ -26,7 +57,7 @@ class SpitfireGeneric(StandardPlugin):
     
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
-        return ("BBC Symphony Orchestra", "LABS")
+        return SUPPORTED_PLUGINS
 
     @filterToGeneratorIndex
     def faders(self, control: ControlShadow, index: GeneratorIndex, idx: int, *args: Any) -> bool:
