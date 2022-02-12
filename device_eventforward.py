@@ -1,5 +1,5 @@
 # name=Universal Event Forwarder
-# url=https://github.com/MiguelGuthridge/Universal-Controller-Script
+# url=https://forum.image-line.com/viewtopic.php?f=1994&t=274277
 """
 device_eventforward
 
