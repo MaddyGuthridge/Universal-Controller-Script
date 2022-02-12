@@ -23,6 +23,7 @@
         "buttondatastrat",
         "capsys",
         "Cimbalom",
+        "controlsurfaces",
         "deinitialise",
         "deviceconfigs",
         "dicttools",
@@ -40,6 +41,7 @@
         "Sostenuto",
         "strat",
         "sysex",
-        "Tytel"
+        "Tytel",
+        "valuestrategy"
     ]
 }
