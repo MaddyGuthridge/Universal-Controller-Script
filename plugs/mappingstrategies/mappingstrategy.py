@@ -13,8 +13,6 @@ class IMappingStrategy:
     Creates a quick and simple way to map controls to plugin parameters used by
     many plugins, for example pedal events
     """
-    def __init__(self) -> None:
-        pass
     
     @abstractmethod
     def apply(self, shadow: DeviceShadow) -> None:

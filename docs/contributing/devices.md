@@ -34,7 +34,7 @@ When a control is instantiated, it is usually given an
 * `@staticmethod getDrumPadSize() -> int, int`: Return the size of the drum
   pad grid in terms of rows, cols.
 
-# Methods to Implement if Required
+## Methods to Implement if Required
 * `initialise(self)`: Called when the device is initialised.
 * `tick(self)`: Called when the script ticks.
 

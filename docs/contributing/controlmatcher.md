@@ -6,7 +6,7 @@ be matched with incoming events.
 
 ## `IControlMatcher`
 
-The interfaces used by control matchers. If the `BasicControlMatcher` doesn't
+The interface used by control matchers. If the `BasicControlMatcher` doesn't
 suit your needs, you can implement this interface to create your own control
 matcher.
 
