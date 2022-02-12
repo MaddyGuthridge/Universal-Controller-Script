@@ -24,6 +24,6 @@ To install the script, the following steps are recommended:
     in the [devices section](devices/devices.md). Enjoy using your device!
 10. If you get an error, then your device couldn't be detected. Usually this
     means that your device doesn't have a definition (I'd love if you 
-    [contributed one](contributing/contributing.md)), but if you're sure your
+    [contributed one](contributing/README.md)), but if you're sure your
     device does, it may just need some manual configuration. Refer to its manual
     page in the [devices section](devices/devices.md).
