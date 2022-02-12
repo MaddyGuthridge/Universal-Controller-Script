@@ -16,11 +16,13 @@ class Flex(StandardPlugin):
     Used to interact with the Flex plugin
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        # Bind a different callback depending on drum pad size
-        try:
-            shadow.bindMatches(Fader, self.faders, target_num=8, allow_substitution=True)
-        except ValueError:
-            pass
+        shadow.bindMatches(
+            Fader,
+            self.faders,
+            target_num=8,
+            allow_substitution=True,
+            raise_on_failure=False
+        )
         super().__init__(shadow, [])
     
     @classmethod

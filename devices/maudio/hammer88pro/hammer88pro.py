@@ -143,7 +143,7 @@ class Hammer88Pro(Device):
                 0x00, # Family code
                 0x3C, # Family code
                 # Extra details omitted
-                ]
+            ]
         )
 
     @staticmethod

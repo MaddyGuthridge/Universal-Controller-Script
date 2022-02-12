@@ -37,7 +37,8 @@ class IControlMatcher:
     @abstractmethod
     def getGroups(self) -> set[str]:
         """
-        Return a set of groups for all the control surfaces.
+        Return a set of groups for all the control surfaces managed by this
+        matcher.
 
         Refer to the documentation for the group property in the ControlSurface
         type.
