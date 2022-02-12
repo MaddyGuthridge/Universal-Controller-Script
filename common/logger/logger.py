@@ -180,7 +180,7 @@ class Log:
                 print(" most recent entry", end='')
             else:
                 print(f" most recent {number} entries", end='')
-        if category != "":
+        if category is not None:
             print(f" from category '{category}'", end='')
         if verbosity is not None:
             print(f" at verbosity={verbosity}", end='')

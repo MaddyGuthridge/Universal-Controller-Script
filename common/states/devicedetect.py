@@ -27,6 +27,7 @@ class WaitingForDevice(IScriptState):
     """
     def __init__(self) -> None:
         self._init_time: Optional[float] = None
+        self._sent_enquiry = False
     
     def nameAssociations(self) -> None:
         """
@@ -81,14 +82,8 @@ class WaitingForDevice(IScriptState):
             log(LOG_CAT, f"Failed to recognise device via fallback method", verbosity.WARNING)
             common.getContext().setState(DeviceNotRecognised())
     
-    def initialise(self) -> None:
-        self._init_time = time.time()
-        # Check if there's an association between the device name and a device
-        # If so, a StateChangeException will be raised so this function will
-        # return early
-        self.nameAssociations()
-        log(LOG_CAT, f"Device is assigned: {bool(device.isAssigned())}", verbosity.NOTE)
-        
+    def sendEnquiry(self) -> None:
+        self._sent_enquiry = True
         # If the user specified to skip sending enquiry event
         if common.getContext().settings.get("bootstrap.skip_enquiry"):
             log(
@@ -101,9 +96,20 @@ class WaitingForDevice(IScriptState):
             device.midiOutSysex(bytes([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7]))
             log(LOG_CAT, "Sent universal device enquiry", verbosity.INFO)
     
+    def initialise(self) -> None:
+        self._init_time = time.time()
+        # Check if there's an association between the device name and a device
+        # If so, a StateChangeException will be raised so this function will
+        # return early
+        self.nameAssociations()
+        log(LOG_CAT, f"Device is assigned: {bool(device.isAssigned())}", verbosity.INFO)
+        if not common.getContext().settings.get("bootstrap.delay_enquiry"):
+            self.sendEnquiry()
+    
     def tick(self) -> None:
         # If it's been too long since we set the time
-        if self._init_time is not None:
+        if self._sent_enquiry:
+            assert self._init_time is not None
             if (
                 time.time() - self._init_time
               > common.getContext().settings.get("bootstrap.detection_timeout")
@@ -114,6 +120,8 @@ class WaitingForDevice(IScriptState):
                     verbosity.INFO
                 )
                 self.detectFallback()
+        else:
+            self.sendEnquiry()
     
     def processEvent(self, event: eventData) -> None:
         # Always handle all events
