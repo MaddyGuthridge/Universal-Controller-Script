@@ -16,6 +16,12 @@ are guidelines in place for code style.
   provided in `resources/docstring_template.mustache`. Functions that are
   documented by a parent class shouldn't be documented again.
 * Spell checking your code is recommended.
+* You should list yourself as the author of any module you work on, including
+  your name, email (preferably the same as the one associated with your git
+  activity), and Discord username (if you have one). If your code is user-facing
+  (eg a plugin or device) or will be used by contributors (eg a control
+  surface), it is a good idea to add some information on it to these docs, as
+  well as the standard docstrings within the code.
 
 ## Development environment
 
