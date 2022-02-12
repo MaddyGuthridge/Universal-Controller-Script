@@ -3,7 +3,7 @@ from typing import Optional
 from common.eventpattern import BasicPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import Data2Strategy
+from controlsurfaces.valuestrategies import Data2Strategy,ButtonData2Strategy
 from devices import Device, BasicControlMatcher
 from controlsurfaces.controlgenerators import getNotesAllChannels
 
@@ -49,35 +49,35 @@ class LaunchkeyMk2(Device):
         # Transport
         matcher.addControl(StopButton(
             BasicPattern(0xB0, 0x72, ...),
-            Data2Strategy()
+            ButtonData2Strategy()
         ))
         matcher.addControl(PlayButton(
             BasicPattern(0xB0, 0x73, ...),
-            Data2Strategy()
+            ButtonData2Strategy()
         ))
         matcher.addControl(LoopButton(
             BasicPattern(0xB0, 0x74, ...),
-            Data2Strategy(),
+            ButtonData2Strategy(),
         ))
         matcher.addControl(RecordButton(
             BasicPattern(0xB0, 0x75, ...),
-            Data2Strategy()
+            ButtonData2Strategy()
         ))
         matcher.addControl(DirectionNext(
             BasicPattern(0xB0, 0x66, ...),
-            Data2Strategy()
+            ButtonData2Strategy()
         ))
         matcher.addControl(DirectionPrevious(
             BasicPattern(0xB0, 0x67, ...),
-            Data2Strategy(),
+            ButtonData2Strategy(),
         ))
         matcher.addControl(RewindButton(
             BasicPattern(0xB0, 0x70, ...),
-            Data2Strategy(),
+            ButtonData2Strategy(),
         ))
         matcher.addControl(FastForwardButton(
             BasicPattern(0xB0, 0x71, ...),
-            Data2Strategy(),
+            ButtonData2Strategy(),
         ))
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
@@ -101,10 +101,11 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
                 Fader(
                     BasicPattern(0xB0, 0x28 + i, ...),
                     Data2Strategy(),
-                    (i, 0)
+                    (0, i)
                 )
             )
         # Master fader
+        # TODO: Make this separate
         matcher.addControl(
             Fader(
                 BasicPattern(0xB0, 0x07, ...),

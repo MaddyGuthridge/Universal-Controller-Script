@@ -76,10 +76,12 @@ class Device:
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
         """
         Returns the event pattern from which a device can be recognised so that
-        its representation can be loaded
+        its representation can be loaded, or None, if this device can't be
+        matched using this pattern.
 
         ### Returns:
-        * `IEventPattern`: pattern to match universal device enquiry
+        * `IEventPattern`: pattern to match universal device enquiry, or None if
+          can't be matched.
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
@@ -89,7 +91,7 @@ class Device:
     def matchDeviceName(name: str) -> bool:
         """
         Returns whether this device matches the name given, where the name is
-        the return value of `device.getName()`
+        the return value of `device.getName()`.
 
         This is used as a fallback for  matching the device if no universal
         device enquiry response is given.
@@ -103,14 +105,7 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
-    def initialise(self) -> None:
-        """
-        Called when the device is first recognised, and when FL Studio allows
-        communication.
-        
-        Can be overridden by child classes.
-        """
-
+    @abstractmethod
     @staticmethod
     def getDrumPadSize() -> tuple[int, int]:
         """
@@ -123,6 +118,14 @@ class Device:
         * `tuple[int, int]`: rows, cols
         """
         return 0, 0
+
+    def initialise(self) -> None:
+        """
+        Called when the device is first recognised, and when FL Studio allows
+        communication.
+        
+        Can be overridden by child classes.
+        """
 
     # def deinitialise(self) -> None:
     #     """
