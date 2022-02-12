@@ -18,7 +18,7 @@ from controlsurfaces import (
     MoveJogWheel,
     DirectionNext,
     DirectionPrevious,
-    NavigationButtons,
+    NavigationButton,
     DirectionUp,
     DirectionDown,
     DirectionRight,
@@ -47,7 +47,7 @@ class Transport(SpecialPlugin):
         shadow.bindMatch(RecordButton, self.recButton, raise_on_failure=False)
         shadow.bindMatch(LoopButton, self.loopButton, raise_on_failure=False)
         shadow.bindMatch(MetronomeButton, self.metroButton, raise_on_failure=False)
-        shadow.bindMatches(NavigationButtons, self.navigationButtons, raise_on_failure=False)
+        shadow.bindMatches(NavigationButton, self.navigationButtons, raise_on_failure=False)
     
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':

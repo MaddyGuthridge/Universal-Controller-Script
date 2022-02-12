@@ -10,6 +10,7 @@ floating point value for use within the rest of the script.
 
 The interface used by all value strategies. If none of the following strategies
 match your requirements, you can make a custom strategy by implementing this.
+Note that value strategies should be stateless.
 
 ### Functions to Implement
 

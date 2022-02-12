@@ -31,4 +31,7 @@ other methods for managing controls
 * `addSubMatcher(self, matcher: IControlMatcher)`: If a small amount of
   complexity is required with control matching, the basic matcher may not be
   sufficiently powerful. This function can be used to add another
-  IControlMatcher to act as a component of this matcher.
+  IControlMatcher to act as a component of this matcher. An example of this can
+  be seen in the implementation of the jog wheel on the M-Audio Hammer 88 Pro,
+  where the sub-matcher is used to make events map to a different type of jog
+  wheel depending on whether the encoder is pressed down or not.

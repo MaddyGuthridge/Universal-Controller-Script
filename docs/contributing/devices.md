@@ -6,9 +6,10 @@ Device definitions should be contained in the directory
 the Novation Launchkey Mk2 series of devices is found in the
 `devices/novation/launchkey/mk2` directory.
 
-Generally, devices are created by defining control surfaces that the device
-supports, then adding those controls to a control matcher, before calling the
-parent device class to initialise it with that control matcher.
+Generally, devices are created by defining [control surfaces](controlsurface.md)
+that the device supports, then adding those controls to a
+[control matcher](controlmatcher.md), before calling the parent device class to
+initialise it with that control matcher.
 
 ## Defining a Control Surface
 
