@@ -2,4 +2,5 @@
 # Documentation
 
 * [Setup Instructions](setup.md)
-* [Contributing](contributing/README.md)
+* [Information for Contributors](contributing/README.md)
+* [Device Information](devices/README.md)
