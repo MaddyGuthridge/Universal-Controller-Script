@@ -10,6 +10,7 @@ Authors:
 
 from typing import TYPE_CHECKING, Optional, overload
 
+from common.logger import log, verbosity
 from common.types.eventdata import eventData
 from common.util.consolehelpers import printReturn
 
@@ -67,7 +68,7 @@ class ExtensionManager:
         function `resetPlugins()` should be called so that plugins are
         reset to their default state and control bindings are removed.
         """
-        for plug_id in plugin.getPlugId():
+        for plug_id in plugin.getPlugIds():
             cls._plugins[plug_id] = plugin
     
     @classmethod
@@ -237,6 +238,11 @@ class ExtensionManager:
             return cls._instantiated_plugins[id]
         # Plugin doesn't exist
         else:
+            log(
+                "extensions.manager",
+                f"No plugins associated with ID '{id}'",
+                verbosity=verbosity.NOTE
+            )
             return None
     
     @classmethod

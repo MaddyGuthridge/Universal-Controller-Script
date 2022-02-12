@@ -31,7 +31,7 @@ class FPC(StandardPlugin):
         return cls(shadow)
     
     @staticmethod
-    def getPlugIds() -> tuple[str]:
+    def getPlugIds() -> tuple[str, ...]:
         return ("FPC",)
     
     @staticmethod

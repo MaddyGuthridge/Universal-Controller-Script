@@ -50,6 +50,10 @@ class Log:
         Returns:
         * `bool`: whether it was printed
         """
+        # If a category was provided, ignore all events not from it
+        if category is not None and not item.category.startswith(category):
+            return False
+        
         # Make sure we log things, even if the context isn't loaded
         # They will still (hopefully) be recallable later
         import common
@@ -142,7 +146,7 @@ class Log:
         """
         return len(self)
 
-    def recall(self, category: str = "", verbosity: Verbosity = None, number: int = -1):
+    def recall(self, category: str = None, verbosity: Verbosity = None, number: int = -1):
         """
         Recall and print all matching log entries for the provided category at 
         the given verbosity level or higher, with the latest item being logged
