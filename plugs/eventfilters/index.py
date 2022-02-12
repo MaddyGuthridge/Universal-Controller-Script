@@ -34,7 +34,7 @@ def filterToPluginIndex(func, method:bool=True):
 
 def filterToGeneratorIndex(func, method:bool=True):
     """
-    Filter out events when the index is not a plugin
+    Filter out events when the index is not a generator plugin
 
     ### Args:
     * `func` (`EventCallback`): Function to decorate
@@ -53,6 +53,31 @@ def filterToGeneratorIndex(func, method:bool=True):
     else:
         def wrapper(control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if not isinstance(index, tuple) or len(index) != 1:
+                return False
+            return func(control, index, *args, **kwargs)
+        return wrapper
+
+def filterToEffectIndex(func, method:bool=True):
+    """
+    Filter out events when the index is not an effect plugin
+
+    ### Args:
+    * `func` (`EventCallback`): Function to decorate
+    * `method` (`bool`, optional): Whether to include a self parameter. Defaults
+      to `True`.
+
+    ### Returns:
+    * `EventCallback`: decorated function
+    """
+    if method:
+        def wrapper_method(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+            if not isinstance(index, tuple) or len(index) != 2:
+                return False
+            return func(self, control, index, *args, **kwargs)
+        return wrapper_method
+    else:
+        def wrapper(control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+            if not isinstance(index, tuple) or len(index) != 2:
                 return False
             return func(control, index, *args, **kwargs)
         return wrapper

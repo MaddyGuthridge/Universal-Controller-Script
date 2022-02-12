@@ -6,7 +6,7 @@ StandardPlugin and SpecialPlugin.
 """
 
 from common import log, verbosity
-from common.util.apifixes import UnsafeIndex
+from common.util.apifixes import UnsafeIndex, WindowIndex
 from controlsurfaces import ControlMapping
 from devices import DeviceShadow
 from plugs.mappingstrategies import IMappingStrategy
@@ -100,7 +100,7 @@ class WindowPlugin(Plugin):
     
     @abstractmethod
     @staticmethod
-    def getWindowId() -> int:
+    def getWindowId() -> WindowIndex:
         """
         Returns the ID of the window this class should be associated with.
 

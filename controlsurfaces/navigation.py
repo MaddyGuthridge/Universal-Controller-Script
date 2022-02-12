@@ -19,12 +19,12 @@ class NavigationControl(ControlSurface):
     def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
         super().__init__(event_pattern, value_strategy, "navigation")
 
-class NavigationButtons(Button, NavigationControl):
+class NavigationButton(Button, NavigationControl):
     """
     Navigation buttons are used to navigate FL Studio
     """
 
-class DpadButtons(NavigationButtons):
+class DpadButtons(NavigationButton):
     """
     D-pad buttons are used to navigate FL Studio with directional inputs
     """
@@ -54,17 +54,17 @@ class DirectionSelect(DpadButtons):
     A select button (usually in the centre of a d-pad)
     """
 
-class NextPrevButtons(NavigationButtons):
+class NextPrevButton(NavigationButton):
     """
     Represents next or previous buttons
     """
 
-class DirectionNext(NextPrevButtons):
+class DirectionNext(NextPrevButton):
     """
     A next button
     """
 
-class DirectionPrevious(NextPrevButtons):
+class DirectionPrevious(NextPrevButton):
     """
     A previous button
     """
