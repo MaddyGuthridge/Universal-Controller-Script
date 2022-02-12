@@ -35,7 +35,7 @@ CONFIG = {
         # until after initialisation (workaround for a bug in FL 20.9.1)
         "delay_enquiry": True,
         # How long to wait until the fallback device recognition method is used.
-        "detection_timeout": 10.0,
+        "detection_timeout": 3.0,
         # Associations between device name (as shown in FL Studio) and device id
         # to register (listed in class under getId() function)
         # This can be used to skip using universal device enquiry messages, if

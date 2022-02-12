@@ -8,7 +8,7 @@ Authors:
 """
 
 # Version info
-VERSION = (0, 2, 0)
+VERSION = (0, 2, 1)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
@@ -47,29 +47,29 @@ AUTHORS: dict[str, list[str]] = {
 }
 
 ASCII_HEADER_ART = """
-                                '                 
-                             ';;'                 
-                            ;;'                   
-             ',;/\\/;,    ,L,                     
-           ,\FFFFFFFFFF; ;L'                      
-          ;FFFFFFFFFFFFFFF/;;;,,    ',,;;;;;/;;'  
-         .FLL\LFFFFFFFFFFFFFFFFFFLL;;,.''    ',L, 
-             ;//;/FFFFFFFFFFFFFFFFF\           L; 
-                  ;FFFFFFFFFFFFFFFFF/        'L/  
-                 ';LFFFFFFFFFFFFFFFFL      ';L,   
-              .;;;.'/LFFFL\;;,;LL\FF/    ./L,     
-           .;;,'      '.'      ;; ,;   ;L/,       
-        ',;,'                  ;'   ,\\;          
-      .;;.                    ,,';\\;'            
-    .;;'                    ';L\/,                
-   ;;'                  ',/\L;'                   
-  ;/               ',;/\/,'..                     
-  /;        '.,;///;;.    ,'                      
-   ,;;;;;;//;;,.         ,                        
-                       .'                         
-                     ..                           
-            '.'   '''                             
-              '.''                                
+                                '
+                             ';;'
+                            ;;'
+             ',;/\\\\/;,    ,L,
+           ,\FFFFFFFFFF; ;L'
+          ;FFFFFFFFFFFFFFF/;;;,,    ',,;;;;;/;;'
+         .FLL\LFFFFFFFFFFFFFFFFFFLL;;,.''    ',L,
+             ;//;/FFFFFFFFFFFFFFFFF\           L;
+                  ;FFFFFFFFFFFFFFFFF/        'L/
+                 ';LFFFFFFFFFFFFFFFFL      ';L,
+              .;;;.'/LFFFL\;;,;LL\FF/    ./L,
+           .;;,'      '.'      ;; ,;   ;L/,
+        ',;,'                  ;'   ,\\\\;
+      .;;.                    ,,';\\\\;'
+    .;;'                    ';L\/,
+   ;;'                  ',/\L;'
+  ;/               ',;/\/,'..
+  /;        '.,;///;;.    ,'
+   ,;;;;;;//;;,.         ,
+                       .'
+                     ..
+            '.'   '''
+              '.''
 """
 
 # The starting point for control change parameters in plugins
