@@ -10,10 +10,12 @@ are guidelines in place for code style.
 * Indentation: 4 spaces
 * Typing: where it is reasonable, type hints should always be included on
   function definitions. The project should remain compliant with MyPy.
-* Modules and functions should be documented with docstring. If you use VS Code,
-  a configuration for the Python Docstring Generator extension is provided which
-  should be used automatically. For reference, this file is provided in 
-  `resources/docstring_template.mustache`.
+* Modules, classes and functions should be documented with docstring. If you use
+  VS Code, a configuration for the Python Docstring Generator extension is
+  provided which should be used automatically. For reference, this file is
+  provided in `resources/docstring_template.mustache`. Functions that are
+  documented by a parent class shouldn't be documented again.
+* Spell checking your code is recommended.
 
 ## Development environment
 

@@ -19,6 +19,10 @@ need to be sent to the device.
 6. Switch to the DAW tab, then choose "Load Preset" again, selecting the 
    device's configuration again.
 7. Use the "Send Preset" tool again to send the configuration to the device.
+8. Open FL Studio's MIDI Settings, and set a port for the controller listed as
+   `MIDIIN3 (Hammer 88 Pro)` in both the input and output sections. Assign this
+   device to the controller type "Universal Event Forwarded (user)", so that
+   events from this script can be forwarded to the main script to be processed.
 
 ## Usage
 

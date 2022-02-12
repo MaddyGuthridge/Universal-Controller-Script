@@ -82,9 +82,7 @@ class LaunchkeyMk2(Device):
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
         
-        super().__init__(
-            matcher
-        )
+        super().__init__(matcher)
     
     @staticmethod
     def getDrumPadSize() -> tuple[int, int]:

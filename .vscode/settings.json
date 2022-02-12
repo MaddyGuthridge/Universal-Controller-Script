@@ -27,6 +27,7 @@
         "deviceconfigs",
         "dicttools",
         "Dpad",
+        "eventpattern",
         "flmidimsg",
         "ieventpattern",
         "ivaluestrategy",
