@@ -67,7 +67,8 @@ class ExtensionManager:
         function `resetPlugins()` should be called so that plugins are
         reset to their default state and control bindings are removed.
         """
-        cls._plugins[plugin.getPlugId()] = plugin
+        for plug_id in plugin.getPlugId():
+            cls._plugins[plug_id] = plugin
     
     @classmethod
     def registerWindowPlugin(cls, plugin: type['WindowPlugin']) -> None:

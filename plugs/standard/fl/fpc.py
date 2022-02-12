@@ -31,8 +31,8 @@ class FPC(StandardPlugin):
         return cls(shadow)
     
     @staticmethod
-    def getPlugId() -> str:
-        return "FPC"
+    def getPlugIds() -> tuple[str]:
+        return ("FPC",)
     
     @staticmethod
     def triggerPad(pad_idx: int, control: ControlShadow, ch_idx: int) -> None:

@@ -28,8 +28,8 @@ class Flex(StandardPlugin):
         return cls(shadow)
     
     @staticmethod
-    def getPlugId() -> str:
-        return "FLEX"
+    def getPlugIds() -> tuple[str, ...]:
+        return ("FLEX",)
     
     @filterToGeneratorIndex
     def faders(self, control: ControlShadow, index: GeneratorIndex, *args: Any) -> bool:
