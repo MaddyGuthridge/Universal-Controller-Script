@@ -8,6 +8,7 @@ called directly.
 import plugins
 import ui
 import channels
+import playlist
 
 from typing import Union, Optional
 from common.consts import PARAM_CC_START
@@ -86,3 +87,16 @@ def isPluginVst(index: PluginIndex) -> bool:
     * `index` (`PluginIndex`): plugin index
     """
     return plugins.getParamCount(*index) < PARAM_CC_START
+
+def getSelectedPlaylistTrack() -> int:
+    """
+    Returns the index of the first currently selected playlist track, or `1` if
+    no tracks are currently selected
+
+    ### Returns:
+    * `int`: selected track
+    """
+    for i in range(1, playlist.trackCount()):
+        if playlist.isTrackSelected(i):
+            return i
+    return 1

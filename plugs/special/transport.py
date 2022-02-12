@@ -44,7 +44,6 @@ class Transport(SpecialPlugin):
         shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)
         shadow.bindMatch(PlayButton, self.playButton, raise_on_failure=False)
         shadow.bindMatch(StopButton, self.stopButton, raise_on_failure=False)
-        shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
         shadow.bindMatch(RecordButton, self.recButton, raise_on_failure=False)
         shadow.bindMatch(LoopButton, self.loopButton, raise_on_failure=False)
         shadow.bindMatch(MetronomeButton, self.metroButton, raise_on_failure=False)
@@ -81,26 +80,6 @@ class Transport(SpecialPlugin):
     @filterButtonLift
     def metroButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         transport.globalTransport(110, 1)
-        return True
-
-    def jogWheel(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
-        if control.getCurrentValue() == consts.ENCODER_NEXT:
-            increment = 1
-        elif control.getCurrentValue() == consts.ENCODER_PREV:
-            increment = -1
-        elif control.getCurrentValue() == consts.ENCODER_SELECT:
-            ui.enter()
-            return True
-        else:
-            return True
-        
-        if isinstance(control.getControl(), StandardJogWheel):
-            ui.jog(increment)
-        elif isinstance(control.getControl(), ShiftedJogWheel):
-            # TODO: Find a way to scroll better?
-            ui.jog(increment)
-        elif isinstance(control.getControl(), MoveJogWheel):
-            ui.moveJog(increment)
         return True
     
     def nullEvent(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
