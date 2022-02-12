@@ -21,9 +21,9 @@ To install the script, the following steps are recommended:
     device's tab.
 9.  Wait 3 seconds - if no errors appear, your device was detected successfully.
     Feel free to familiarise yourself with your device's specific functionality,
-    in the (TODO) section. Enjoy using your device!
+    in the [devices section](devices/devices.md). Enjoy using your device!
 10. If you get an error, then your device couldn't be detected. Usually this
     means that your device doesn't have a definition (I'd love if you 
-    [contributed one](TODO)), but if you're sure your device does, it may just
-    need some manual configuration. Refer to its manual page in the (TODO)
-    section.
+    [contributed one](contributing/contributing.md)), but if you're sure your
+    device does, it may just need some manual configuration. Refer to its manual
+    page in the [devices section](devices/devices.md).
