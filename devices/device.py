@@ -111,13 +111,26 @@ class Device:
         Can be overridden by child classes.
         """
 
-    def deinitialise(self) -> None:
+    @staticmethod
+    def getDrumPadSize() -> tuple[int, int]:
         """
-        Called when FL Studio is going to start blocking communication, such as
-        when a render is going to begin, or when exiting.
-        
-        Can be overridden by child classes.
+        Returns the size of the grid of drum pads used by the controller
+
+        By default this returns 0x0, but it should be overridden by device
+        objects if the device has drum pads
+
+        ### Returns:
+        * `tuple[int, int]`: rows, cols
         """
+        return 0, 0
+
+    # def deinitialise(self) -> None:
+    #     """
+    #     Called when FL Studio is going to start blocking communication, such as
+    #     when a render is going to begin, or when exiting.
+    #     
+    #     Can be overridden by child classes.
+    #     """
 
     def tick(self) -> None:
         """

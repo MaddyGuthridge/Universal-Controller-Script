@@ -8,6 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+from . import consts
 from .controlsurface import ControlSurface
 from .controlshadow import ControlShadow
 from .controlmapping import ControlMapping
@@ -24,3 +25,7 @@ from .navigation import *
 from .jog import *
 from .fader import Fader
 from .knob import Knob
+from .encoder import Encoder
+from .drumpad import DrumPad
+
+from . import controlgenerators

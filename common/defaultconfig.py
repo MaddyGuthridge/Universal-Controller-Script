@@ -31,6 +31,9 @@ CONFIG = {
         # Whether to skip sending sysex messages when attempting to recognise
         # devices... may improve startup time for some devices
         "skip_enquiry": False,
+        # Whether sending the device enquiry message should be delayed
+        # until after initialisation (workaround for a bug in FL 20.9.1)
+        "delay_enquiry": True,
         # How long to wait until the fallback device recognition method is used.
         "detection_timeout": 10.0,
         # Associations between device name (as shown in FL Studio) and device id

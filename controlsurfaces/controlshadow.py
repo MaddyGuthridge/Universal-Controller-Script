@@ -109,6 +109,13 @@ class ControlShadow:
         """
         return self._control.group
 
+    @property
+    def coordinate(self) -> tuple[int, int]:
+        """
+        The coordinate of the control
+        """
+        return self._control.coordinate
+
     def apply(self) -> None:
         """
         Apply the configuration of the control shadow to the control it

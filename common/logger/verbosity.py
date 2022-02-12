@@ -25,6 +25,7 @@ Verbosity = NewType("Verbosity", int)
 
 MOST_VERBOSE = Verbosity(100)
 
+EVENT = Verbosity(6)
 NOTE = Verbosity(5)
 INFO = Verbosity(4)
 WARNING = Verbosity(3)

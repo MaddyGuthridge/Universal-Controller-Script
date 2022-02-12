@@ -34,6 +34,9 @@ Generic = _AnnotationType('Generic')
 class Protocol:
     pass
 
+def cast(type, val):
+    return val
+
 def overload(func):
     return func
 

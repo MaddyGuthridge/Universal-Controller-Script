@@ -47,8 +47,7 @@ class Data1Strategy(DataStrategy):
     A value strategy using the data1 property of an event as the value
 
     Usable for event types where the value is stored in data1, such as channel
-    aftertouch?
-    TODO: Check that
+    aftertouch
     """
     def __init__(self) -> None:
         super().__init__("data1")

@@ -5,7 +5,7 @@ from common.types import eventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import Data2Strategy
 from devices import Device, BasicControlMatcher
-from devices.controlgenerators import getNotesAllChannels
+from controlsurfaces.controlgenerators import getNotesAllChannels
 
 from controlsurfaces import (
     Fader,
@@ -42,7 +42,6 @@ class LaunchkeyMk2(Device):
                 Knob(
                     BasicPattern(0xB0, 0x14 + i, ...),
                     Data2Strategy(),
-                    "knobs",
                     (i, 0)
                 )
             )
@@ -86,7 +85,11 @@ class LaunchkeyMk2(Device):
         super().__init__(
             matcher
         )
-        
+    
+    @staticmethod
+    def getDrumPadSize() -> tuple[int, int]:
+        return 2, 8
+
 class LaunchkeyMk2_49_61(LaunchkeyMk2):
     """
     Standard controls with added faders
@@ -100,7 +103,6 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
                 Fader(
                     BasicPattern(0xB0, 0x28 + i, ...),
                     Data2Strategy(),
-                    "faders",
                     (i, 0)
                 )
             )
@@ -109,7 +111,6 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
             Fader(
                 BasicPattern(0xB0, 0x07, ...),
                 Data2Strategy(),
-                "knobs",
                 (0, 0)
             )
         )

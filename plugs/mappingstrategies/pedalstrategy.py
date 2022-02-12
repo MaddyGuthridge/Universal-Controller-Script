@@ -7,15 +7,13 @@ Strategy for mapping a pedal to the plugin
 import plugins
 
 from typing import Any
-from common.util.apifixes import PluginIndex
-
+from common.consts import PARAM_CC_START
+from common.util.apifixes import PluginIndex, isPluginVst
 from controlsurfaces.pedal import *
 from controlsurfaces import ControlShadow
 from devices import DeviceShadow
 from plugs.eventfilters import filterToPluginIndex
 from . import IMappingStrategy
-
-CC_START = 4096
 
 class PedalStrategy(IMappingStrategy):
     def __init__(self, raise_on_error: bool = True) -> None:
@@ -77,7 +75,7 @@ class PedalStrategy(IMappingStrategy):
         """
         
         # Filter out non-VSTs
-        if 'MIDI CC' not in plugins.getParamName(CC_START, *index):
+        if not isPluginVst(index):
             if self._raise:
                 raise TypeError("Expected a plugin of VST type - make sure that "
                                 "this plugin is a VST, and not an FL Studio plugin")
@@ -86,11 +84,11 @@ class PedalStrategy(IMappingStrategy):
         
         # Assign parameters
         if t_ped is SustainPedal:
-            plugins.setParamValue(control.getCurrentValue(), CC_START + SUSTAIN, *index)
+            plugins.setParamValue(control.getCurrentValue(), PARAM_CC_START + SUSTAIN, *index)
         elif t_ped is SostenutoPedal:
-            plugins.setParamValue(control.getCurrentValue(), CC_START + SOSTENUTO, *index)
+            plugins.setParamValue(control.getCurrentValue(), PARAM_CC_START + SOSTENUTO, *index)
         elif t_ped is SustainPedal:
-            plugins.setParamValue(control.getCurrentValue(), CC_START + SOFT, *index)
+            plugins.setParamValue(control.getCurrentValue(), PARAM_CC_START + SOFT, *index)
         else:
             raise NotImplementedError("Pedal type not recognised")
         

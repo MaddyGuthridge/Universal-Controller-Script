@@ -10,7 +10,7 @@ Authors:
 import channels
 
 from typing import Any
-from common.util.apifixes import UnsafePluginIndex, PluginIndex
+from common.util.apifixes import UnsafeIndex, PluginIndex
 from common import getContext
 
 from controlsurfaces import Note
@@ -27,7 +27,6 @@ class NoteStrategy(IMappingStrategy):
         # Bind note events to noteCallback()
         shadow.bindMatches(
             Note,
-            # TODO: What on earth is up with this?
             self.noteCallback,
             raise_on_failure=False
         )
@@ -35,7 +34,7 @@ class NoteStrategy(IMappingStrategy):
     def noteCallback(
         self,
         control: ControlShadow,
-        index: UnsafePluginIndex,
+        index: UnsafeIndex,
         *args: Any,
         **kwargs: Any
     ) -> bool:

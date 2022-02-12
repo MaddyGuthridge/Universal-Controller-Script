@@ -7,12 +7,9 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from .controlmatcher import IControlMatcher
+from .matchers import IControlMatcher, BasicControlMatcher
 from .device import Device
 from .deviceshadow import DeviceShadow, EventCallback
-from .controlmatcher import IControlMatcher, BasicControlMatcher
-
-from . import controlgenerators
 
 # Device manufacturers
 from . import novation, maudio

@@ -12,8 +12,10 @@ from controlsurfaces import (
     NullEvent,
     PlayButton,
     StopButton,
-    JogForwards,
     JogWheel,
+    StandardJogWheel,
+    ShiftedJogWheel,
+    MoveJogWheel,
     DirectionNext,
     DirectionPrevious,
     NavigationButtons,
@@ -26,6 +28,7 @@ from controlsurfaces import (
     LoopButton,
     MetronomeButton
 )
+from controlsurfaces import consts
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 
@@ -41,7 +44,6 @@ class Transport(SpecialPlugin):
         shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)
         shadow.bindMatch(PlayButton, self.playButton, raise_on_failure=False)
         shadow.bindMatch(StopButton, self.stopButton, raise_on_failure=False)
-        shadow.bindMatch(JogWheel, self.jogWheel, raise_on_failure=False)
         shadow.bindMatch(RecordButton, self.recButton, raise_on_failure=False)
         shadow.bindMatch(LoopButton, self.loopButton, raise_on_failure=False)
         shadow.bindMatch(MetronomeButton, self.metroButton, raise_on_failure=False)
@@ -79,13 +81,6 @@ class Transport(SpecialPlugin):
     def metroButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         transport.globalTransport(110, 1)
         return True
-
-    def jogWheel(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
-        
-        increment = 1 if isinstance(control.getControl(), JogForwards) else -1
-        
-        ui.jog(increment)
-        return True
     
     def nullEvent(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
         """Handle NullEvents for which no action should be taken
@@ -103,20 +98,14 @@ class Transport(SpecialPlugin):
             ui.left()
         elif c_type == DirectionRight:
             ui.right()
-        elif c_type == DirectionSelect:
-            ui.enter()
         elif c_type == DirectionNext:
             ui.next()
         elif c_type == DirectionPrevious:
             ui.previous()
+        elif c_type == DirectionSelect:
+            ui.enter()
         else:
             return False
         return True
-    
-    def notes(self, control:ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
-        # Don't handle note events
-        # that way we can have them play
-        # this might change in the future, but for now this is fine
-        return False
 
 ExtensionManager.registerSpecialPlugin(Transport)

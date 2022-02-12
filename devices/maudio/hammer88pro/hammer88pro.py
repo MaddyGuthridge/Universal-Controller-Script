@@ -1,17 +1,18 @@
 
 
 from typing import Optional
-from common.eventpattern import BasicPattern, ForwardedPattern
+from common.eventpattern import BasicPattern, ForwardedPattern, ForwardedUnionPattern
 from common.types import eventData
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy
+from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy
 from devices import Device, BasicControlMatcher
-from devices.controlgenerators import getNotesAllChannels, getPedals, getChannelAftertouchAllChannels
+from controlsurfaces.controlgenerators import getNotesAllChannels, getPedals, getChannelAftertouchAllChannels
 
 from controlsurfaces import (
     NullEvent,
     Fader,
     Knob,
+    DrumPad,
     PlayButton,
     StopButton,
     RecordButton,
@@ -22,6 +23,7 @@ from controlsurfaces import (
     StandardModWheel,
 )
 from .hammerpitch import HammerPitchWheel
+from .jogmatcher import JogMatcher
 
 class Hammer88Pro(Device):
     """
@@ -40,10 +42,45 @@ class Hammer88Pro(Device):
             BasicPattern(0xFC, 0x0, 0x0)
         ))
         
+        # Jog wheel stuff
+        matcher.addSubMatcher(JogMatcher())
+        
         # Notes and pedals
         matcher.addControls(getNotesAllChannels())
         matcher.addControls(getPedals())
         matcher.addControls(getChannelAftertouchAllChannels())
+        
+        # Drum pads
+        matcher.addControls([
+            DrumPad(BasicPattern(0xB9, i, ...), Data2Strategy(), (i // 8, i % 8))
+            for i in range(16)
+        ])
+        
+        # Knobs
+        matcher.addControls([
+            Knob(
+                ForwardedUnionPattern(3, BasicPattern(0xB0, i+80, ...)),
+                ForwardedStrategy(Data2Strategy()),
+                (0, i)
+            ) for i in range(8)
+        ])
+        
+        # Faders
+        matcher.addControls([
+            Fader(
+                ForwardedUnionPattern(3, BasicPattern(0xB0, i+48, ...)),
+                ForwardedStrategy(Data2Strategy()),
+                (0, i)
+            ) for i in range(9)
+        ])
+        # matcher.addControl(
+        #     Fader(
+        #         ForwardedUnionPattern(3, BasicPattern(0xB0, i+48, ...)),
+        #         ForwardedStrategy(Data2Strategy()),
+        #         (0, 9))
+        #     for i in range(8)
+        # )
+        
         
         # Transport buttons
         matcher.addControl(StopButton(
@@ -78,6 +115,10 @@ class Hammer88Pro(Device):
         matcher.addControl(HammerPitchWheel())
         
         super().__init__(matcher)
+    
+    @staticmethod
+    def getDrumPadSize() -> tuple[int, int]:
+        return 2, 8
     
     @classmethod
     def create(cls, event: Optional[eventData]) -> Device:

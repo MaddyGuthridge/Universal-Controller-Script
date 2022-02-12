@@ -31,15 +31,13 @@ HIERARCHY = {
             "out": {}
         }
     },
-    "plugins": {
-        "special": {
+    "extensions": {
+        "manager": {},
+        "plugins": {
+            "special": {},
             "window": {},
-            "performance": {}
+            "standard": {}
         },
-        "general": {
-            "instrument": {},
-            "effect": {}
-        }
     },
     "general": {}
 }

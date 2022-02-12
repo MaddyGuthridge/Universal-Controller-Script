@@ -50,6 +50,10 @@ class Log:
         Returns:
         * `bool`: whether it was printed
         """
+        # If a category was provided, ignore all events not from it
+        if category is not None and not item.category.startswith(category):
+            return False
+        
         # Make sure we log things, even if the context isn't loaded
         # They will still (hopefully) be recallable later
         import common
@@ -142,7 +146,7 @@ class Log:
         """
         return len(self)
 
-    def recall(self, category: str = "", verbosity: Verbosity = DEFAULT, number: int = -1):
+    def recall(self, category: str = None, verbosity: Verbosity = None, number: int = -1):
         """
         Recall and print all matching log entries for the provided category at 
         the given verbosity level or higher, with the latest item being logged
@@ -155,21 +159,37 @@ class Log:
         """
         # Figure out what to print
         num_prints = 0
+        num_skips = 0
         prints: list[LogItem] = []
+        v = DEFAULT if verbosity is None else verbosity
         for item in reversed(self._history):
             # Print if required
-            # TODO: Count number skipped because verbosity
-            if self._shouldPrint(item, category, verbosity):
+            if self._shouldPrint(item, category, v):
                 num_prints += 1
                 prints.insert(0, item)
+            else:
+                num_skips += 1
             if num_prints == number:
                 break
         
         # Then print it
         print(f"----------------------------------------")
-        print("Begin recall:")
+        print("Recalling", end='')
+        if number != -1:
+            if number == 1:
+                print(" most recent entry", end='')
+            else:
+                print(f" most recent {number} entries", end='')
+        if category is not None:
+            print(f" from category '{category}'", end='')
+        if verbosity is not None:
+            print(f" at verbosity={verbosity}", end='')
+        print("...")
+        
         for item in prints:
             print(item)
+        print(f"({num_skips} item{'s' if num_skips != 1 else ''} skipped)")
+        print("End recall")
         print(f"----------------------------------------")
         return NoneNoPrintout
     

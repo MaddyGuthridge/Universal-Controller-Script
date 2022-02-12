@@ -11,15 +11,14 @@ import plugins
 import channels
 
 from typing import Any
-from common.util.apifixes import PluginIndex
+from common.consts import PARAM_CC_START
+from common.util.apifixes import PluginIndex, isPluginVst
 
 from controlsurfaces import ModWheel, PitchWheel
 from controlsurfaces import ControlShadow
 from devices import DeviceShadow
 from plugs.eventfilters import filterToPluginIndex
 from . import IMappingStrategy
-
-CC_START = 4096
 
 class WheelStrategy(IMappingStrategy):
     """
@@ -79,8 +78,7 @@ class WheelStrategy(IMappingStrategy):
         if index is None:
             return False
         
-        # Filter out non-VSTs
-        if 'MIDI CC' not in plugins.getParamName(CC_START, *index):
+        if not isPluginVst(index):
             if self._raise:
                 raise TypeError("Expected a plugin of VST type - make sure that "
                                 "this plugin is a VST, and not an FL Studio plugin")
@@ -88,7 +86,7 @@ class WheelStrategy(IMappingStrategy):
                 return False
         
         # Assign parameter
-        plugins.setParamValue(control.getCurrentValue(), CC_START + 1, *index)
+        plugins.setParamValue(control.getCurrentValue(), PARAM_CC_START + 1, *index)
         
         return True
 

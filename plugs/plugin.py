@@ -72,14 +72,14 @@ class StandardPlugin(Plugin):
     
     @abstractmethod
     @staticmethod
-    def getPlugId() -> str:
+    def getPlugIds() -> tuple[str, ...]:
         """
-        Returns the name of the plugin this class should be associated with.
+        Returns the names of the plugins this class should be associated with.
 
         Used to identify and map to the plugin
 
         ### Returns:
-        * `str`: plugin name
+        * `tuple[str, ...]`: plugin names
         """
         raise NotImplementedError("This method must be implemented by child "
                                   "classes")

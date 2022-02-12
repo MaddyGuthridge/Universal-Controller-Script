@@ -7,11 +7,10 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
 """
 
-import device
 from typing import TYPE_CHECKING
 
-from common.util.events import eventFromForwarded, eventToString
-from . import IEventPattern
+from common.util.events import eventFromForwarded, isEventForwardedHereFrom, eventToString
+from . import IEventPattern, UnionPattern
 
 from common.types import eventData
 
@@ -37,22 +36,29 @@ class ForwardedPattern(IEventPattern):
         self._pattern = pattern
     
     def matchEvent(self, event: 'eventData') -> bool:
-        # Check if the event is a forwarded one
-        # Look for 0xF0 and 0x7D
-        if event.sysex is None \
-            or not event.sysex.startswith(bytes([0xF0, 0x7D])):
-                return False
-        # Check if it matches this device's name
-        null = event.sysex.index(b'\0')
-        if event.sysex[2:null].decode() != device.getName():
+        # Check if the event was forwarded here
+        if not isEventForwardedHereFrom(event, self._device_num):
             return False
         
-        # Check if it matches the expected device number
-        if self._device_num != event.sysex[null+1]:
-            return False
-        
-        # If we reach this point, it's a forwarded event that matches this
-        # device. Extract the event and determine if it matches with the
+        # Extract the event and determine if it matches with the
         # underlying pattern
         # print(eventToString(eventFromForwarded(event, null+2)))
-        return self._pattern.matchEvent(eventFromForwarded(event, null+2))
+        return self._pattern.matchEvent(eventFromForwarded(event))
+
+class ForwardedUnionPattern(IEventPattern):
+    """
+    Represents an event that can either be forwarded or direct.
+    """
+    
+    def __init__(self, device_num: int, pattern: IEventPattern) -> None:
+        """
+        Create a ForwardedUnionPattern recogniser
+
+        ### Args:
+        * `device_num` (`int`): device number to recognise
+        * `pattern` (`IEventPattern`): pattern to match
+        """
+        self._pattern = UnionPattern(pattern, ForwardedPattern(device_num, pattern))
+        
+    def matchEvent(self, event: 'eventData') -> bool:
+        return self._pattern.matchEvent(event)

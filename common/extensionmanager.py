@@ -10,6 +10,7 @@ Authors:
 
 from typing import TYPE_CHECKING, Optional, overload
 
+from common.logger import log, verbosity
 from common.types.eventdata import eventData
 from common.util.consolehelpers import printReturn
 
@@ -67,7 +68,8 @@ class ExtensionManager:
         function `resetPlugins()` should be called so that plugins are
         reset to their default state and control bindings are removed.
         """
-        cls._plugins[plugin.getPlugId()] = plugin
+        for plug_id in plugin.getPlugIds():
+            cls._plugins[plug_id] = plugin
     
     @classmethod
     def registerWindowPlugin(cls, plugin: type['WindowPlugin']) -> None:
@@ -236,6 +238,11 @@ class ExtensionManager:
             return cls._instantiated_plugins[id]
         # Plugin doesn't exist
         else:
+            log(
+                "extensions.manager",
+                f"No plugins associated with plugin ID '{id}'",
+                verbosity=verbosity.NOTE
+            )
             return None
     
     @classmethod
@@ -264,6 +271,11 @@ class ExtensionManager:
             return cls._instantiated_windows[id]
         # Plugin doesn't exist
         else:
+            log(
+                "extensions.manager",
+                f"No plugins associated with window ID '{id}'",
+                verbosity=verbosity.NOTE
+            )
             return None
 
     @classmethod
@@ -400,7 +412,7 @@ class ExtensionManager:
         * `str`: plugin info
         """
         if id in cls._instantiated_plugins.keys():
-            return f"{id} associated with:\n\n{repr(cls._instantiated_plugins[id])}"
+            return f"{id} associated with:\n\n{cls._instantiated_plugins[id]}"
         elif id in cls._plugins.keys():
             return f"{id} associated with: {cls._plugins[id]} (not instantiated)"
         else:

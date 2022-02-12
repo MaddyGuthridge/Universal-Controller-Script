@@ -109,6 +109,15 @@ class DeviceShadow:
         
         return f"{header}\n\n{assigned}\n\n{unassigned}"
     
+    def getDevice(self) -> Device:
+        """
+        Returns a reference to the device this shadow represents
+
+        ### Returns:
+        * `Device`: device
+        """
+        return self._device
+    
     def _getMatches(
         self, 
         expr: Callable[[ControlSurface], bool], 
@@ -201,17 +210,28 @@ class DeviceShadow:
         
         # Determine what lambda to use depending on if we are allowing control
         # substitution
+        no_subs = lambda x: isinstance(x, control)
+        subs = lambda x: isinstance(x, control.getControlAssignmentPriorities()) or isinstance(x, control)
         if allow_substitution:
-            l = lambda x: isinstance(x, control.getControlAssignmentPriorities())
+            ret = self._getMatches(
+                no_subs,
+                target_num
+            )
+            t = target_num if target_num is not None else 1
+            # If we didn't get enough matches, then we should try substitution
+            # TODO: Improve this
+            if len(ret) < t:
+                ret = self._getMatches(
+                    subs,
+                    target_num
+                )
+        
         else:
-            l = lambda x: isinstance(x, control)
-        
-        # Use algorithm for getting matching controls
-        ret = self._getMatches(
-            l,
-            target_num
-        )
-        
+            ret = self._getMatches(
+                no_subs,
+                target_num
+            )
+            
         # Make sure we have results
         if raise_on_zero and len(ret) == 0:
             raise ValueError("No matching controls found")
@@ -532,8 +552,6 @@ class DeviceShadow:
             # nothing
             return False
         # Call the bound function with any extra required args
-        # TODO: Find some way to distinguish between calls that require safe
-        # args and those that don't
         return fn(control_shadow, index, *args)
 
     def apply(self) -> None:
