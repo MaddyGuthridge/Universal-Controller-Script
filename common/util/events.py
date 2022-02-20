@@ -5,11 +5,11 @@ Contains useful functions for operating on events.
 """
 
 import device
-from common.types import eventData
+from common.types import EventData
 
 from typing import TYPE_CHECKING
 
-def isEventForwarded(event: eventData) -> bool:
+def isEventForwarded(event: EventData) -> bool:
     """
     Returns whether an event was forwarded from the Universal Event Forwarder
     script
@@ -30,7 +30,7 @@ def isEventForwarded(event: eventData) -> bool:
     else:
         return True
 
-def _getForwardedNameEndIdx(event: eventData) -> int:
+def _getForwardedNameEndIdx(event: EventData) -> int:
     """
     Returns the index of the null zero of a forwarded event's name
 
@@ -43,7 +43,7 @@ def _getForwardedNameEndIdx(event: eventData) -> int:
     assert event.sysex is not None
     return event.sysex.index(b'\0')
 
-def isEventForwardedHere(event: eventData) -> bool:
+def isEventForwardedHere(event: EventData) -> bool:
     """
     Returns whether an event was forwarded from the Universal Event Forwarder
     script from a controller directed to this particular script
@@ -66,7 +66,7 @@ def isEventForwardedHere(event: eventData) -> bool:
         return False
     return True
 
-def isEventForwardedHereFrom(event: eventData, device_num: int) -> bool:
+def isEventForwardedHereFrom(event: EventData, device_num: int) -> bool:
     """
     Returns whether an event was forwarded from the Universal Event Forwarder
     script from a controller directed to this particular script
@@ -87,7 +87,7 @@ def isEventForwardedHereFrom(event: eventData, device_num: int) -> bool:
     
     return True
 
-def eventFromForwarded(event: eventData, type_idx:int=-1) -> eventData:
+def eventFromForwarded(event: EventData, type_idx:int=-1) -> EventData:
     """
     Given a forwarded event, decode it and return the original event
 
@@ -108,16 +108,16 @@ def eventFromForwarded(event: eventData, type_idx:int=-1) -> eventData:
     
     if event.sysex[type_idx]:
         # Remaining bytes are sysex data
-        return eventData(list(event.sysex[type_idx+1:]))
+        return EventData(list(event.sysex[type_idx+1:]))
     else:
         # Extract (data2, data1, status)
-        return eventData(
+        return EventData(
             event.sysex[type_idx+3],
             event.sysex[type_idx+2],
             event.sysex[type_idx+1]
         )
 
-def eventToRawData(event: eventData) -> 'int | bytes':
+def eventToRawData(event: EventData) -> 'int | bytes':
     """
     Convert event to raw data.
 
@@ -148,7 +148,7 @@ def bytesToString(bytes_iter: bytes) -> str:
     """
     return f"[{', '.join(f'0x{b:02X}' for b in bytes_iter)}]"
 
-def eventToString(event: eventData) -> str:
+def eventToString(event: EventData) -> str:
     """
     Convert event to string
 

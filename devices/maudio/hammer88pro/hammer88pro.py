@@ -2,7 +2,7 @@
 
 from typing import Optional
 from common.eventpattern import BasicPattern, ForwardedPattern, ForwardedUnionPattern
-from common.types import eventData
+from common.types import EventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy
 from devices import Device, BasicControlMatcher
@@ -121,7 +121,7 @@ class Hammer88Pro(Device):
         return 2, 8
     
     @classmethod
-    def create(cls, event: Optional[eventData]) -> Device:
+    def create(cls, event: Optional[EventData]) -> Device:
         return cls()
     
     @staticmethod

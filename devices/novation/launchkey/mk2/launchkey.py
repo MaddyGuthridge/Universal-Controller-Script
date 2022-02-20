@@ -1,7 +1,7 @@
 
 from typing import Optional
 from common.eventpattern import BasicPattern
-from common.types import eventData
+from common.types import EventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import Data2Strategy,ButtonData2Strategy
 from devices import Device, BasicControlMatcher
@@ -117,7 +117,7 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         super().__init__(matcher)
 
     @classmethod
-    def create(cls, event: Optional[eventData]) -> Device:
+    def create(cls, event: Optional[EventData]) -> Device:
         return cls()
     
     @staticmethod
@@ -153,7 +153,7 @@ class LaunchkeyMk2_25(LaunchkeyMk2):
         super().__init__(BasicControlMatcher())
 
     @classmethod
-    def create(cls, event: Optional[eventData]) -> Device:
+    def create(cls, event: Optional[EventData]) -> Device:
         return cls()
 
     @staticmethod

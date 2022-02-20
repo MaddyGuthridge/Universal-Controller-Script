@@ -8,7 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from common.types import eventData
+from common.types import EventData
 from .ieventpattern import IEventPattern
 
 class UnionPattern(IEventPattern):
@@ -29,5 +29,5 @@ class UnionPattern(IEventPattern):
             raise ValueError("Expected at least two event patterns to union")
         self._patterns = patterns
     
-    def matchEvent(self, event: 'eventData') -> bool:
+    def matchEvent(self, event: 'EventData') -> bool:
         return any(p.matchEvent(event) for p in self._patterns)

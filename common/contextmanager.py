@@ -21,7 +21,7 @@ from .activitystate import ActivityState
 
 from .util.misc import NoneNoPrintout
 from .util.events import isEventForwarded, isEventForwardedHere
-from .types import eventData
+from .types import EventData
 
 from .states import (
     IScriptState,
@@ -53,7 +53,7 @@ class DeviceContextManager:
         self.state.initialise()
 
     @catchStateChangeException
-    def processEvent(self, event: eventData) -> None:
+    def processEvent(self, event: EventData) -> None:
         """Process a MIDI event
 
         ### Args:

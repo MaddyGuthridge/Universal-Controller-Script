@@ -8,7 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from common.types import eventData
+from common.types import EventData
 from common.util.events import eventFromForwarded, isEventForwarded
 from . import IValueStrategy
 
@@ -20,7 +20,7 @@ class ForwardedStrategy(IValueStrategy):
     def __init__(self, strat: IValueStrategy) -> None:
         self._strat = strat
     
-    def getValueFromEvent(self, event: eventData):
+    def getValueFromEvent(self, event: EventData):
         # The value is already matching, so we can cheat somewhat with getting
         # the data out
         return self._strat.getValueFromEvent(eventFromForwarded(event))
@@ -40,7 +40,7 @@ class ForwardedUnionStrategy(IValueStrategy):
         self._strat = strat
         self._strat_forward = ForwardedStrategy(strat)
     
-    def getValueFromEvent(self, event: eventData):
+    def getValueFromEvent(self, event: EventData):
         if isEventForwarded(event):
             return self._strat_forward.getValueFromEvent(event)
         else:

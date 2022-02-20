@@ -13,7 +13,7 @@ from typing import Optional, final
 from abc import abstractmethod
 
 from common import IEventPattern
-from common.types import eventData, Color
+from common.types import EventData, Color
 
 from .valuestrategies import IValueStrategy
 
@@ -91,7 +91,7 @@ class ControlSurface:
         return ControlMapping(self)
 
     @final
-    def match(self, event: eventData) -> Optional[ControlMapping]:
+    def match(self, event: EventData) -> Optional[ControlMapping]:
         """
         Returns a control mapping of this control if the given event matches this 
         control surface, otherwise returns None

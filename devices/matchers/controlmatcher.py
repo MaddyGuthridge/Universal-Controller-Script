@@ -9,7 +9,7 @@ Authors:
 """
 from typing import Optional
 from abc import abstractmethod
-from common.types import eventData
+from common.types import EventData
 from controlsurfaces import ControlMapping, ControlSurface
 
 class IControlMatcher:
@@ -20,7 +20,7 @@ class IControlMatcher:
     if required or desired. Otherwise, the BasicControlMatcher class will work.
     """
     @abstractmethod
-    def matchEvent(self, event: eventData) -> Optional[ControlMapping]:
+    def matchEvent(self, event: EventData) -> Optional[ControlMapping]:
         """
         Match an event to a control.
 

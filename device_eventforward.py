@@ -58,7 +58,7 @@ from common import log, verbosity
 from common.consts import getVersionString, ASCII_HEADER_ART
 from common.util.events import bytesToString, eventToString
 from common.util.misc import formatLongTime
-from common.types import eventData
+from common.types import EventData
 import device
 
 EVENT_HEADER: bytes = bytes()
@@ -68,7 +68,7 @@ def raiseIncompatibleDevice():
                         "port events to the primary device port. This isn't a "
                         "device port.")
 
-def OnMidiIn(event: eventData):
+def OnMidiIn(event: EventData):
     
     if event.sysex is None:
         if TYPE_CHECKING:

@@ -13,7 +13,7 @@ from typing import Optional
 import device
 
 import common
-from common.types import eventData
+from common.types import EventData
 from common import log, verbosity
 from common.util.events import eventToString
 
@@ -123,7 +123,7 @@ class WaitingForDevice(IScriptState):
         else:
             self.sendEnquiry()
     
-    def processEvent(self, event: eventData) -> None:
+    def processEvent(self, event: EventData) -> None:
         # Always handle all events
         event.handled = True
         # Ignore all events unless they are Sysex

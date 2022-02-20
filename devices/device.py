@@ -11,7 +11,7 @@ Authors:
 
 from typing import Optional, final
 from common import IEventPattern
-from common.types import eventData
+from common.types import EventData
 from controlsurfaces import ControlShadow
 
 from controlsurfaces import ControlMapping
@@ -40,7 +40,7 @@ class Device:
     
     @abstractmethod
     @classmethod
-    def create(cls, event: Optional[eventData]) -> 'Device':
+    def create(cls, event: Optional[EventData]) -> 'Device':
         """
         Create an instance of this device
 
@@ -144,7 +144,7 @@ class Device:
         """
 
     @final
-    def matchEvent(self, event: eventData) -> Optional[ControlMapping]:
+    def matchEvent(self, event: EventData) -> Optional[ControlMapping]:
         """
         Match an event from the device, so that the script can operate on it.
         

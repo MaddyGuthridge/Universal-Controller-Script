@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING
 from common.util.events import eventFromForwarded, isEventForwardedHereFrom, eventToString
 from . import IEventPattern, UnionPattern
 
-from common.types import eventData
+from common.types import EventData
 
 class ForwardedPattern(IEventPattern):
     """
@@ -35,7 +35,7 @@ class ForwardedPattern(IEventPattern):
         self._device_num = device_num
         self._pattern = pattern
     
-    def matchEvent(self, event: 'eventData') -> bool:
+    def matchEvent(self, event: 'EventData') -> bool:
         # Check if the event was forwarded here
         if not isEventForwardedHereFrom(event, self._device_num):
             return False
@@ -60,5 +60,5 @@ class ForwardedUnionPattern(IEventPattern):
         """
         self._pattern = UnionPattern(pattern, ForwardedPattern(device_num, pattern))
         
-    def matchEvent(self, event: 'eventData') -> bool:
+    def matchEvent(self, event: 'EventData') -> bool:
         return self._pattern.matchEvent(event)

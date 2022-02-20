@@ -9,7 +9,7 @@ Authors:
 
 from typing import Any, Generic, TypeVar
 
-from common.types import eventData
+from common.types import EventData
 
 T = TypeVar("T")
 
@@ -20,7 +20,7 @@ class IValueStrategy(Generic[T]):
     This can be used alongside basic control surface definitions to define
     relatively simple event types.
     """
-    def getValueFromEvent(self, event: eventData) -> T:
+    def getValueFromEvent(self, event: EventData) -> T:
         """
         Returns a value for internal use given a MIDI event.
 

@@ -8,7 +8,7 @@ Authors:
 """
 
 from common.eventpattern import IEventPattern, BasicPattern, fromNibbles
-from common.types.eventdata import eventData, isEventStandard
+from common.types.eventdata import EventData, isEventStandard
 from . import ControlSurface
 from . import Data2Strategy, IValueStrategy
 
@@ -43,7 +43,7 @@ class PitchValueStrategy(IValueStrategy):
     """
     Value strategy for standard pitch bends (using 14 bits of information)
     """
-    def getValueFromEvent(self, event: eventData) -> int:
+    def getValueFromEvent(self, event: EventData) -> int:
         """Returns a 14-bit int (0 - 16384)
         Zero value = 8192
         """

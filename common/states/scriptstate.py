@@ -10,7 +10,7 @@ Authors:
 
 from typing import Callable
 from abc import abstractmethod
-from common.types import eventData
+from common.types import EventData
 
 class IScriptState:
     """
@@ -31,7 +31,7 @@ class IScriptState:
         raise NotImplementedError("This method must be overridden by child classes")
 
     @abstractmethod
-    def processEvent(self, event: eventData) -> None:
+    def processEvent(self, event: EventData) -> None:
         """Process a MIDI event
 
         ### Args:

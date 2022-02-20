@@ -27,6 +27,6 @@ from .eventpattern import BasicPattern, IEventPattern
 
 from . import util
 
-from .types import eventData, Color
+from .types import EventData, Color
 
 from .extensionmanager import ExtensionManager

@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 import common
 from common import log, verbosity
-from common.types import eventData
+from common.types import EventData
 from common.util.apifixes import getFocusedPluginIndex, WindowIndex, PluginIndex
 from common.util.events import eventToString
 from .scriptstate import IScriptState
@@ -33,7 +33,7 @@ class MainState(IScriptState):
     def tick(self) -> None:
         self._device.tick()
 
-    def processEvent(self, event: eventData) -> None:
+    def processEvent(self, event: EventData) -> None:
         mapping = self._device.matchEvent(event)
         if mapping is None:
             event.handled = True

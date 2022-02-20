@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING
 from abc import abstractmethod
 
 if TYPE_CHECKING:
-    from .. import eventData
+    from .. import EventData
 
 class IEventPattern:
     """
@@ -27,7 +27,7 @@ class IEventPattern:
     """
     
     @abstractmethod
-    def matchEvent(self, event: 'eventData') -> bool:
+    def matchEvent(self, event: 'EventData') -> bool:
         """
         Return whether the given event matches the pattern
 

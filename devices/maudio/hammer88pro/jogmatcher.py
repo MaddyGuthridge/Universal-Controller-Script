@@ -8,7 +8,7 @@ Authors:
 """
 
 from typing import Optional
-from common.types import eventData
+from common.types import EventData
 from common.eventpattern import (
     BasicPattern,
     UnionPattern,
@@ -32,7 +32,7 @@ class JogValueStrategy(IValueStrategy):
     """
     Value strategy for getting data out of the Hammer 88 Pro jog wheel
     """
-    def getValueFromEvent(self, event: eventData):
+    def getValueFromEvent(self, event: EventData):
         # Prev
         if event.data2 == 63:
             return consts.ENCODER_PREV
@@ -92,7 +92,7 @@ class JogMatcher(IControlMatcher):
         self._pressed = False
         self._used_since_press = False
         
-    def matchEvent(self, event: eventData) -> Optional[ControlMapping]:
+    def matchEvent(self, event: EventData) -> Optional[ControlMapping]:
         # If it's not a jog wheel event, ignore it
         if not self._pattern.matchEvent(event):
             return None

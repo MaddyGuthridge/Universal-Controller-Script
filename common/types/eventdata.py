@@ -11,7 +11,7 @@ Authors:
 # from __future__ import annotations
 
 __all__ = [
-    'eventData'
+    'EventData'
 ]
 
 from typing import Optional, TypeVar, Generic, TYPE_CHECKING
@@ -55,7 +55,7 @@ class WriteIgnored(Generic[PropType]):
 # if TYPE_CHECKING:
 # Nope nevermind, turns out that it's impossible to access that class during
 # runtime unless you have a reference object for it.
-class eventData:
+class EventData:
     """
     A simple reproduction of the eventData object used by FL Studio.
     
@@ -94,7 +94,7 @@ class eventData:
         self.midiChanEx = 0
         self.pmeflags = ReadOnly(0)
 
-class _StandardEventData(eventData):
+class _StandardEventData(EventData):
     """
     A type narrowed event data object
 
@@ -103,7 +103,7 @@ class _StandardEventData(eventData):
     def __init__(self, status: int, data1: int, data2: int) -> None:
         super().__init__(status, data1, data2)
 
-class _SysexEventData(eventData):
+class _SysexEventData(EventData):
     """
     A type narrowed event data object
 
@@ -112,7 +112,7 @@ class _SysexEventData(eventData):
     def __init__(self, sysex: list[int]) -> None:
         super().__init__(sysex)
 
-def isEventSysex(event: eventData) -> 'TypeGuard[_SysexEventData]':
+def isEventSysex(event: EventData) -> 'TypeGuard[_SysexEventData]':
     """
     Returns whether an event is a sysex event
 
@@ -124,7 +124,7 @@ def isEventSysex(event: eventData) -> 'TypeGuard[_SysexEventData]':
     """
     return event.sysex is not None
 
-def isEventStandard(event: eventData) -> 'TypeGuard[_StandardEventData]':
+def isEventStandard(event: EventData) -> 'TypeGuard[_StandardEventData]':
     """
     Returns whether an event is a standard event
 

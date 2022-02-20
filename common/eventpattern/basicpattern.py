@@ -1,7 +1,7 @@
 
 from typing import TYPE_CHECKING, Any, Callable, Optional
 
-from common.types import eventData
+from common.types import EventData
 from . import ByteMatch, IEventPattern
 
 class BasicPattern(IEventPattern):
@@ -91,7 +91,7 @@ class BasicPattern(IEventPattern):
             self.data1 = data1
             self.data2 = data2
 
-    def matchEvent(self, event: 'eventData') -> bool:
+    def matchEvent(self, event: 'EventData') -> bool:
         """
         Returns whether an event matches this pattern.
 
@@ -136,7 +136,7 @@ class BasicPattern(IEventPattern):
         }
         return matches[type(expected)](expected, actual)
 
-    def _matchSysex(self, event: 'eventData') -> bool:
+    def _matchSysex(self, event: 'EventData') -> bool:
         """
         Matcher function for sysex events
         """
@@ -147,7 +147,7 @@ class BasicPattern(IEventPattern):
             return False
         return all(map(self._matchByte, self.sysex, event.sysex))
 
-    def _matchStandard(self, event: 'eventData') -> bool:
+    def _matchStandard(self, event: 'EventData') -> bool:
         """
         Matcher function for standard events
         """

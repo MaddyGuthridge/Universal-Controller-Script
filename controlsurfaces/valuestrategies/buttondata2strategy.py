@@ -6,7 +6,7 @@ Contains the definition for the button data2 value strategy
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from common.types import eventData
+from common.types import EventData
 from . import IValueStrategy
 
 class ButtonData2Strategy(IValueStrategy):
@@ -16,7 +16,7 @@ class ButtonData2Strategy(IValueStrategy):
 
     Usable for most basic button event types
     """
-    def getValueFromEvent(self, event: eventData) -> bool:
+    def getValueFromEvent(self, event: EventData) -> bool:
         return event.data2 != 0
     
     def getValueFromFloat(self, f: float) -> bool:

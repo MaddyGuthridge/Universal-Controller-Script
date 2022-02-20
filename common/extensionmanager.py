@@ -11,7 +11,7 @@ Authors:
 from typing import TYPE_CHECKING, Optional, overload
 
 from common.logger import log, verbosity
-from common.types.eventdata import eventData
+from common.types.eventdata import EventData
 from common.util.consolehelpers import printReturn
 
 if TYPE_CHECKING:
@@ -149,14 +149,14 @@ class ExtensionManager:
 
     @overload
     @classmethod
-    def getDevice(cls, arg: eventData) -> 'Device':
+    def getDevice(cls, arg: EventData) -> 'Device':
         ...
     @overload
     @classmethod
     def getDevice(cls, arg: str) -> 'Device':
         ...
     @classmethod
-    def getDevice(cls, arg: 'eventData | str') -> 'Device':
+    def getDevice(cls, arg: 'EventData | str') -> 'Device':
         """
         Returns a new instance of a device, given a universal device enquiry
         response or a device identifier (as a fallback)

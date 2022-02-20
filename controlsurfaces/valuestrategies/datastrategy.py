@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from common.types import eventData
+from common.types import EventData
 from . import IValueStrategy
 
 class DataStrategy(IValueStrategy):
@@ -24,7 +24,7 @@ class DataStrategy(IValueStrategy):
         * `prop` (`str`): property to use
         """
         self._prop = prop
-    def getValueFromEvent(self, event: eventData) -> int:
+    def getValueFromEvent(self, event: EventData) -> int:
         return getattr(event, self._prop)
     
     def getValueFromFloat(self, f: float) -> int:
