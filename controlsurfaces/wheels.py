@@ -8,7 +8,7 @@ Authors:
 """
 
 from common.eventpattern import IEventPattern, BasicPattern, fromNibbles
-from common.types import eventData
+from common.types.eventdata import eventData, isEventStandard
 from . import ControlSurface
 from . import Data2Strategy, IValueStrategy
 
@@ -47,6 +47,7 @@ class PitchValueStrategy(IValueStrategy):
         """Returns a 14-bit int (0 - 16384)
         Zero value = 8192
         """
+        assert isEventStandard(event)
         return event.data1 + (event.data2 << 7)
     
     def getFloatFromValue(self, value: int) -> float:

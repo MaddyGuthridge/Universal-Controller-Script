@@ -6,7 +6,7 @@ Contains the definition of the Note class, which represents note events.
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from common.types import eventData
+from common.types.eventdata import eventData, isEventStandard
 from common.eventpattern import BasicPattern, fromNibbles
 from . import ControlSurface, IValueStrategy
 
@@ -15,6 +15,7 @@ class NoteValueStrategy(IValueStrategy):
     The strategy to get data values from note events
     """
     def getValueFromEvent(self, event: eventData) -> int:
+        assert isEventStandard(event)
         if 0x80 <= event.status < 0x90:
             return 0
         else:

@@ -16,11 +16,28 @@ __all__ = [
 
 from typing import Optional, TypeVar, Generic, TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from typing_extensions import TypeGuard
+
 PropType = TypeVar("PropType")
 
 class ReadOnly(Generic[PropType]):
     """
     Simple wrapper class to make an object read only
+    """
+    
+    def __init__(self, value: PropType) -> None:
+        self._value = value
+    
+    def __get__(self, instance, owner) -> PropType:
+        return self._value
+    
+    def __set__(self, value) -> None:
+        raise AttributeError("This value is read-only")
+
+class WriteIgnored(Generic[PropType]):
+    """
+    Simple wrapper class to warn that writes to a parameter will be ignored
     """
     
     def __init__(self, value: PropType) -> None:
@@ -42,9 +59,11 @@ class eventData:
     """
     A simple reproduction of the eventData object used by FL Studio.
     
-    Yes, I know the capitalisation is inconsistent, blame FL Studio devs, not me
+    NOTE: The `status`, `data1` and `data2` are set to `None` if the event is a
+    sysex event in the interest of error prevention. In FL Studio, they are set
+    to `0`.
     
-    Read-only types are marked as such
+    Read-only types are marked as such.
     """
     def __init__(
         self,
@@ -54,9 +73,9 @@ class eventData:
     ) -> None:
         self.handled = False
         self.timestamp = ReadOnly(0.0)
-        self.status = 0 if isinstance(status_sysex, list) else status_sysex
-        self.data1 = data1 if data1 is not None else 0
-        self.data2 = data2 if data2 is not None else 0
+        self.status = None if isinstance(status_sysex, list) else status_sysex
+        self.data1 = data1 # if data1 is not None else 0
+        self.data2 = data2 # if data2 is not None else 0
         self.port = ReadOnly(0)
         self.note = 0
         self.velocity = 0
@@ -74,8 +93,45 @@ class eventData:
         self.midiChan = 0
         self.midiChanEx = 0
         self.pmeflags = ReadOnly(0)
-# Otherwise, define it as the build-in type flmidimsg
-# else:
-#     for k in __builtins__:
-#         print(f"{k}")
-#     eventData = globals()["__builtins__"]["flmidimsg"]
+
+class _StandardEventData(eventData):
+    """
+    A type narrowed event data object
+
+    Don't type hint as this, it is only to facilitate type narrowing
+    """
+    def __init__(self, status: int, data1: int, data2: int) -> None:
+        super().__init__(status, data1, data2)
+
+class _SysexEventData(eventData):
+    """
+    A type narrowed event data object
+
+    Don't type hint as this, it is only to facilitate type narrowing
+    """
+    def __init__(self, sysex: list[int]) -> None:
+        super().__init__(sysex)
+
+def isEventSysex(event: eventData) -> 'TypeGuard[_SysexEventData]':
+    """
+    Returns whether an event is a sysex event
+
+    ### Args:
+    * `event` (`eventData`): event to check
+
+    ### Returns:
+    * `TypeGuard[SysexEventData]`: type guarded event
+    """
+    return event.sysex is not None
+
+def isEventStandard(event: eventData) -> 'TypeGuard[_StandardEventData]':
+    """
+    Returns whether an event is a standard event
+
+    ### Args:
+    * `event` (`eventData`): event to check
+
+    ### Returns:
+    * `TypeGuard[SysexEventData]`: type guarded event
+    """
+    return not isEventSysex(event)
