@@ -14,7 +14,7 @@ from common import IEventPattern
 from common.types import EventData
 from controlsurfaces import ControlShadow
 
-from controlsurfaces import ControlMapping
+from controlsurfaces import ControlEvent
 from devices import IControlMatcher
 from abc import abstractmethod
 
@@ -144,7 +144,7 @@ class Device:
         """
 
     @final
-    def matchEvent(self, event: EventData) -> Optional[ControlMapping]:
+    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
         """
         Match an event from the device, so that the script can operate on it.
         

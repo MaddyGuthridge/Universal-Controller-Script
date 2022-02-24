@@ -18,7 +18,7 @@ from common.types import EventData, Color
 from .valuestrategies import IValueStrategy
 
 from .controlshadow import ControlShadow
-from .controlmapping import ControlMapping
+from .controlmapping import ControlEvent, ControlMapping
 
 class ControlSurface:
     """
@@ -81,7 +81,7 @@ class ControlSurface:
     def getMapping(self) -> ControlMapping:
         """
         Returns a mapping to this control, for the purpose of acting as a key
-        to the control in a dictionary. Don't use this for event detection.
+        to the control in a dictionary.
 
         Mappings are used to refer to a control without being able to easily
         modify its value.
@@ -89,23 +89,23 @@ class ControlSurface:
         ### Returns:
         * `ControlMapping`: A mapping to this control
         """
-        return ControlMapping(self, 0.0)
+        return ControlMapping(self)
 
     @final
-    def match(self, event: EventData) -> Optional[ControlMapping]:
+    def match(self, event: EventData) -> Optional[ControlEvent]:
         """
-        Returns a control mapping of this control if the given event matches this 
+        Returns a control event if the given event matches this 
         control surface, otherwise returns None
 
         ### Args:
         * `event` (`eventData`): event to potentially match
 
         ### Returns:
-        * `Optional[ControlMapping]`: control mapping, if the event maps
+        * `Optional[ControlEvent]`: control mapping, if the event maps
         """
         if self._pattern.matchEvent(event):
             self.__value = self.__value_strategy.getValueFromEvent(event)
-            return ControlMapping(self, self.value)
+            return ControlEvent(self, self.value)
         else:
             return None
 

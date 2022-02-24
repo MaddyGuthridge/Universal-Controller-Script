@@ -10,7 +10,7 @@ Authors:
 
 from typing import TYPE_CHECKING
 from common.types import Color
-from .controlmapping import ControlMapping
+from .controlmapping import ControlEvent, ControlMapping
 
 if TYPE_CHECKING:
     from . import ControlSurface

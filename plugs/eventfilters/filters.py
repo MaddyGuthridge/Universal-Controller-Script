@@ -1,7 +1,7 @@
 
 from typing import Any
 from common.util.apifixes import UnsafePluginIndex
-from controlsurfaces import ControlShadowMapping, Button
+from controlsurfaces import ControlShadowEvent, Button
 
 # TODO: Remove repeated code here (maybe use a class decorator with a __call__()
 # function?)
@@ -19,7 +19,7 @@ def filterButtonLift(func, method:bool=True):
     * `EventCallback`: decorated function
     """
     if method:
-        def wrapper_method(self, control: ControlShadowMapping, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper_method(self, control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             # Filter button lifts
             if isinstance(control.getControl(), Button):
                 if control.value == 0.0:
@@ -27,7 +27,7 @@ def filterButtonLift(func, method:bool=True):
             return func(self, control, index, *args, **kwargs)
         return wrapper_method
     else:
-        def wrapper(control: ControlShadowMapping, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper(control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             # Filter button lifts
             if isinstance(control.getControl(), Button):
                 if control.value == 0.0:

@@ -14,7 +14,7 @@ from common.util.apifixes import UnsafeIndex, PluginIndex
 from common import getContext
 
 from controlsurfaces import Note
-from controlsurfaces import ControlShadowMapping
+from controlsurfaces import ControlShadowEvent
 from devices import DeviceShadow
 # from plugs.eventfilters import filterToGeneratorIndex
 from . import IMappingStrategy
@@ -33,7 +33,7 @@ class NoteStrategy(IMappingStrategy):
 
     def noteCallback(
         self,
-        control: ControlShadowMapping,
+        control: ControlShadowEvent,
         index: UnsafeIndex,
         *args: Any,
         **kwargs: Any

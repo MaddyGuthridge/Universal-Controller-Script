@@ -11,7 +11,7 @@ Authors:
 from . import consts
 from .controlsurface import ControlSurface
 from .controlshadow import ControlShadow
-from .controlmapping import ControlMapping, ControlShadowMapping
+from .controlmapping import *
 from .valuestrategies import *
 
 from .nullevent import *

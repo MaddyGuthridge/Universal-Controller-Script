@@ -7,7 +7,7 @@ import general
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import UnsafeIndex, getSelectedPlaylistTrack
 from controlsurfaces import consts
-from controlsurfaces import ControlShadowMapping
+from controlsurfaces import ControlShadowEvent
 from controlsurfaces import MoveJogWheel, StandardJogWheel, JogWheel
 from devices import DeviceShadow
 from plugs import WindowPlugin
@@ -36,7 +36,7 @@ class Playlist(WindowPlugin):
     def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
         return cls(shadow)
 
-    def jogWheel(self, control: ControlShadowMapping, index: UnsafeIndex, *args: Any) -> bool:
+    def jogWheel(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         if control.value == consts.ENCODER_NEXT:
             increment = 1
         elif control.value == consts.ENCODER_PREV:

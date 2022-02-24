@@ -10,7 +10,7 @@ Authors:
 from typing import Optional
 from abc import abstractmethod
 from common.types import EventData
-from controlsurfaces import ControlMapping, ControlSurface
+from controlsurfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
 
 class BasicControlMatcher(IControlMatcher):
@@ -61,7 +61,7 @@ class BasicControlMatcher(IControlMatcher):
         """
         self._sub_matchers.append(matcher)
     
-    def matchEvent(self, event: EventData) -> Optional[ControlMapping]:
+    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
         for s in self._sub_matchers:
             if (m := s.matchEvent(event)) is not None:
                 return m

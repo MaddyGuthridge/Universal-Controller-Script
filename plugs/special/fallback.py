@@ -4,7 +4,7 @@ import ui
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import UnsafeIndex, UnsafePluginIndex
 from controlsurfaces import consts
-from controlsurfaces import ControlShadowMapping
+from controlsurfaces import ControlShadowEvent
 from controlsurfaces import MoveJogWheel, ShiftedJogWheel, StandardJogWheel, JogWheel
 from devices import DeviceShadow
 from plugs import SpecialPlugin
@@ -36,7 +36,7 @@ class Fallback(SpecialPlugin):
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         return cls(shadow)
 
-    def jogWheel(self, control: ControlShadowMapping, index: UnsafeIndex, *args: Any) -> bool:
+    def jogWheel(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         if control.value == consts.ENCODER_NEXT:
             increment = 1
         elif control.value == consts.ENCODER_PREV:

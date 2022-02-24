@@ -16,7 +16,7 @@ from common.util.dicttools import lowestValueGrEqTarget, greatestKey
 from controlsurfaces import ControlSurface
 from . import Device
 
-from controlsurfaces import ControlShadow, ControlMapping, ControlShadowMapping
+from controlsurfaces import ControlShadow, IControlHash, ControlEvent, ControlShadowEvent
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Generator
@@ -41,16 +41,16 @@ if TYPE_CHECKING:
 # HELP WANTED: Can someone please fix this awfulness in a way that doesn't cause
 # MyPy to have a temper tantrum?
 StandardEventCallback = Union[
-    Callable[[ControlShadowMapping, UnsafeIndex], bool],
-    Callable[[ControlShadowMapping, UnsafeIndex, Any], bool],
-    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any], bool],
-    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any], bool],
-    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex, Any], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
 ]
 
 EventCallback = StandardEventCallback
@@ -72,7 +72,7 @@ class DeviceShadow:
         self._all_controls = device.getControlShadows()
         self._free_controls = self._all_controls.copy()
         self._assigned_controls: dict[
-                ControlMapping,
+                IControlHash,
                 tuple[ControlShadow, EventCallback, tuple]
             ] = {}
     
@@ -531,7 +531,7 @@ class DeviceShadow:
         self.bindControls(matches, bind_to, iterable)
         return len(matches)
     
-    def processEvent(self, control: ControlMapping, index: UnsafeIndex) -> bool:
+    def processEvent(self, control: ControlEvent, index: UnsafeIndex) -> bool:
         """
         Process an event by calling the bound callback function associated with
         it if applicable.
@@ -553,7 +553,7 @@ class DeviceShadow:
             return False
         
         # Generate a control shadow mapping to send to the device
-        mapping = ControlShadowMapping(control, control_shadow)
+        mapping = ControlShadowEvent(control, control_shadow)
         # Call the bound function with any extra required args
         return fn(mapping, index, *args)
 
