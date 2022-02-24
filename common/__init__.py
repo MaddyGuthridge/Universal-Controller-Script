@@ -11,10 +11,11 @@ Authors:
 import general
 from . import consts
 if general.getVersion() < consts.MIN_API_VERSION:
-    raise RuntimeError(
-        f"Your FL Studio version is out of date: expected API "
-        f"v{consts.MIN_API_VERSION}, got {general.getVersion()}"
-    )
+    # raise RuntimeError(
+    #     f"Your FL Studio version is out of date: expected API "
+    #     f"v{consts.MIN_API_VERSION}, got {general.getVersion()}"
+    # )
+    pass
 del general
 
 from .consts import getVersionString

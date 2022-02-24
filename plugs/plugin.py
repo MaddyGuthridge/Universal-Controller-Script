@@ -48,8 +48,8 @@ class Plugin:
         """
         return f"Plugin at {type(self)}:\n\n{self._shadow}"
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, shadow: DeviceShadow) -> 'Plugin':
         """
         Create and return an instance of this plugin
@@ -70,8 +70,8 @@ class StandardPlugin(Plugin):
     Standard plugins, representing VST or FL generators and effects
     """
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getPlugIds() -> tuple[str, ...]:
         """
         Returns the names of the plugins this class should be associated with.
@@ -84,8 +84,8 @@ class StandardPlugin(Plugin):
         raise NotImplementedError("This method must be implemented by child "
                                   "classes")
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         """
         Create and return an instance of this plugin
@@ -98,8 +98,8 @@ class WindowPlugin(Plugin):
     Window plugins, representing FL Studio windows
     """
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getWindowId() -> WindowIndex:
         """
         Returns the ID of the window this class should be associated with.
@@ -112,8 +112,8 @@ class WindowPlugin(Plugin):
         raise NotImplementedError("This method must be implemented by child "
                                   "classes")
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
         """
         Create and return an instance of this plugin
@@ -126,8 +126,8 @@ class SpecialPlugin(Plugin):
     Special plugins, representing other plugins
     """
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def shouldBeActive() -> bool:
         """
         Returns whether this plugin should be used to process the event
@@ -140,8 +140,8 @@ class SpecialPlugin(Plugin):
         raise NotImplementedError("This method must be implemented by child "
                                   "classes")
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         """
         Create and return an instance of this plugin

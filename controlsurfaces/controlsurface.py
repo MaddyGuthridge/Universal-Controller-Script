@@ -27,8 +27,8 @@ class ControlSurface:
     This class is extended by all other control surfaces.
     """
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         """
         Returns a list of the control's assignment priorities

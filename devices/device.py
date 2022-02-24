@@ -38,8 +38,8 @@ class Device:
         """
         self._matcher = control_matcher
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, event: Optional[EventData]) -> 'Device':
         """
         Create an instance of this device
@@ -57,8 +57,8 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getId() -> str:
         """
         Returns the id of the device, in the form:
@@ -71,8 +71,8 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
         """
         Returns the event pattern from which a device can be recognised so that
@@ -86,8 +86,8 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def matchDeviceName(name: str) -> bool:
         """
         Returns whether this device matches the name given, where the name is
@@ -105,8 +105,8 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getDrumPadSize() -> tuple[int, int]:
         """
         Returns the size of the grid of drum pads used by the controller
