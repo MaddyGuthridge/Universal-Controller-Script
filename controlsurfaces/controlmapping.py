@@ -79,7 +79,10 @@ class ControlShadowMapping:
         else:
             return NotImplemented
     
-    def getControl(self) -> 'ControlShadow':
+    def getControl(self) -> 'ControlSurface':
+        return self._map_to.getControl()
+    
+    def getShadow(self) -> 'ControlShadow':
         return self._map_to
     
     @property

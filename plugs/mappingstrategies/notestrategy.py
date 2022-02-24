@@ -41,7 +41,7 @@ class NoteStrategy(IMappingStrategy):
         channels.midiNoteOn(
             *getContext().active.getGenerator(),
             control.getControl().coordinate[1],
-            int(control.getCurrentValue()*127),
-            # TODO: Use MIDI channels
+            int(control.value*127),
+            control.channel
         )
         return True
