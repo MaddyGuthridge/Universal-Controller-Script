@@ -84,7 +84,7 @@ class DeviceShadow:
         * `str`: shorter representation
         """
         return f"Device shadow for {type(self._device)}. "\
-                "{len(self._assigned_controls)} assigned controls"
+               f"{len(self._assigned_controls)} assigned controls"
     
     def __str__(self) -> str:
         """
@@ -98,14 +98,17 @@ class DeviceShadow:
         header = f"Shadow of device: {type(self._device)}"
         
         assigned = "Assigned controls:\n" + "\n".join([
-            f" * {repr(control.getControl())} -> {call}{args}"
-            for control, (_, call, args) in self._assigned_controls.items()
+            f" * {repr(control.getControl())} -> {call}{args} | "
+            f"value={shadow.value}, color={shadow.color}, annotaion='{shadow.annotation}'"
+            for control, (shadow, call, args) in self._assigned_controls.items()
         ])
         
-        unassigned = "Unassigned controls:\n" + "\n".join([
-            f" * {control.getControl()}"
-            for control in self._free_controls
-        ])
+        # unassigned = "Unassigned controls:\n" + "\n".join([
+        #     f" * {control.getControl()}"
+        #     for control in self._free_controls
+        # ])
+        
+        unassigned = f"{len(self._free_controls)} free controls"
         
         return f"{header}\n\n{assigned}\n\n{unassigned}"
     
