@@ -4,7 +4,7 @@ from typing import Any
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import GeneratorIndex
 from controlsurfaces import Fader
-from controlsurfaces.controlshadow import ControlShadow
+from controlsurfaces import ControlShadowEvent
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs.eventfilters import filterToGeneratorIndex
@@ -34,8 +34,8 @@ class Flex(StandardPlugin):
         return ("FLEX",)
     
     @filterToGeneratorIndex
-    def faders(self, control: ControlShadow, index: GeneratorIndex, *args: Any) -> bool:
-        plugins.setParamValue(control.getCurrentValue(), FADER_START + control.coordinate[1], *index)
+    def faders(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
+        plugins.setParamValue(control.value, FADER_START + control.getShadow().coordinate[1], *index)
         
         return True
 

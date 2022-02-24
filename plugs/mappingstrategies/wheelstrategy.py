@@ -15,7 +15,7 @@ from common.consts import PARAM_CC_START
 from common.util.apifixes import PluginIndex, isPluginVst
 
 from controlsurfaces import ModWheel, PitchWheel
-from controlsurfaces import ControlShadow
+from controlsurfaces import ControlShadowEvent
 from devices import DeviceShadow
 from plugs.eventfilters import filterToPluginIndex
 from . import IMappingStrategy
@@ -58,7 +58,7 @@ class WheelStrategy(IMappingStrategy):
     @filterToPluginIndex
     def modCallback(
         self,
-        control: ControlShadow,
+        control: ControlShadowEvent,
         index: PluginIndex,
         *args: tuple[Any]
     ) -> bool:
@@ -66,7 +66,7 @@ class WheelStrategy(IMappingStrategy):
         Called when a mod wheel event is detected
 
         ### Args:
-        * `control` (`ControlShadow`): control surface shadow that was detected
+        * `control` (`ControlShadowEvent`): control surface shadow that was detected
         * `index` (`PluginIndex`): index of plugin to map to
 
         ### Raises:
@@ -86,14 +86,14 @@ class WheelStrategy(IMappingStrategy):
                 return False
         
         # Assign parameter
-        plugins.setParamValue(control.getCurrentValue(), PARAM_CC_START + 1, *index)
+        plugins.setParamValue(control.value, PARAM_CC_START + 1, *index)
         
         return True
 
     @filterToPluginIndex
     def pitchCallback(
         self,
-        control: ControlShadow,
+        control: ControlShadowEvent,
         index: PluginIndex,
         *args: tuple[Any]
     ) -> bool:
@@ -101,7 +101,7 @@ class WheelStrategy(IMappingStrategy):
         Called when a mod wheel event is detected
 
         ### Args:
-        * `control` (`ControlShadow`): control surface shadow that was detected
+        * `control` (`ControlShadowEvent`): control surface shadow that was detected
         * `index` (`PluginIndex`): index of plugin to map to
 
         ### Returns:
@@ -111,7 +111,7 @@ class WheelStrategy(IMappingStrategy):
         # Set pitch
         if len(index) == 1:
             # This error is due to https://github.com/python/mypy/issues/9710
-            # channels.setChannelPitch(*index, control.getCurrentValue()*2 - 1)
-            channels.setChannelPitch(index[0], control.getCurrentValue()*2 - 1)
+            # channels.setChannelPitch(*index, control.value*2 - 1)
+            channels.setChannelPitch(index[0], control.value*2 - 1)
         
         return True

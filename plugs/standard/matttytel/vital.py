@@ -4,7 +4,7 @@ from typing import Any
 import plugins
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import GeneratorIndex
-from controlsurfaces.controlshadow import ControlShadow
+from controlsurfaces import ControlShadowEvent
 from controlsurfaces import Fader
 from devices import DeviceShadow
 from plugs import StandardPlugin
@@ -30,8 +30,8 @@ class Vital(StandardPlugin):
         return ("Vital",)
 
     @filterToGeneratorIndex
-    def faders(self, control: ControlShadow, index: GeneratorIndex, idx: int, *args: Any) -> bool:
-        plugins.setParamValue(control.getCurrentValue(), MACRO_START + control.coordinate[1], *index)
+    def faders(self, control: ControlShadowEvent, index: GeneratorIndex, idx: int, *args: Any) -> bool:
+        plugins.setParamValue(control.value, MACRO_START + control.getShadow().coordinate[1], *index)
         return True
 
 ExtensionManager.registerPlugin(Vital)
