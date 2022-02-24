@@ -391,7 +391,7 @@ class DeviceShadow:
         args: tuple = None,
         allow_substitution: bool = False,
         raise_on_failure: bool = True
-    ) -> bool:
+    ) -> Optional[ControlShadow]:
         """
         Finds the first control of a matching type and binds it to the given
         function.
@@ -405,16 +405,17 @@ class DeviceShadow:
           substituted for a similar control. Defaults to `False`.
         * `raise_on_failure` (`bool`, optional): whether failure to assign the
           control should result in a `ValueError` being raised. When this is 
-          `False`, a `False` boolean will be returned instead. Defaults to
-          `True`.
+          `False`, `None` will be returned instead or a control surface.
+          Defaults to `True`.
 
         ### Raises:
         * `ValueError`: No controls were found to bind to (when 
           `raise_on_failure` is `True`)
         
         ### Returns
-        * `bool` whether the control was successfully assigned (note that when
-          `raise_on_failure` is set to `True`, it will)
+        * `ControlSurface`: The control surface that was bound to, so that
+          properties of it can be set.
+        * `None`: if binding failed and `raise_on_failure` is `False`
         """
         try:
             match = self.getControlMatches(
@@ -426,9 +427,9 @@ class DeviceShadow:
             if raise_on_failure:
                 raise ValueError("No controls found to bind to")
             else:
-                return False
+                return None
         self.bindControl(match, bind_to, args)
-        return True
+        return match
     
     def bindMatches(
         self,
@@ -441,7 +442,7 @@ class DeviceShadow:
         trim: bool = True,
         exact: bool = True,
         raise_on_failure: bool = True
-    ) -> int:
+    ) -> list[ControlShadow]:
         """
         Finds all controls of a matching type and binds them to the given
         function.
@@ -482,7 +483,7 @@ class DeviceShadow:
           Defaults to `True`.
         * `raise_on_failure` (`bool`, optional): whether failure to assign the
           control should result in a `ValueError` being raised. When this is 
-          `False`, `0` will be returned instead. Defaults to `True`.
+          `False`, an empty list will be returned instead. Defaults to `True`.
 
         ### Raises:
         * `TypeError`: Potential bad number of callback arguments due to unknown
@@ -491,7 +492,7 @@ class DeviceShadow:
           `raise_on_failure` is `True`)
         
         ### Returns:
-        * `int`: Number of controls bound successfully
+        * `list[ControlSurface]`: List of controls bound successfully
         """
         
         # Ensure we don't risk having too few arguments to bind to
@@ -513,7 +514,7 @@ class DeviceShadow:
             if raise_on_failure:
                 raise ValueError("Error binding controls") from e
             else:
-                return 0
+                return []
         
         # Check for generator functions
         if not isinstance(args_iter_gen, (list, type(...), type(None))):
@@ -529,7 +530,7 @@ class DeviceShadow:
             iterable = args_iter_gen
         # Finally, bind all the controls
         self.bindControls(matches, bind_to, iterable)
-        return len(matches)
+        return matches
     
     def processEvent(self, control: ControlEvent, index: UnsafeIndex) -> bool:
         """
