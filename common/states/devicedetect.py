@@ -127,7 +127,7 @@ class WaitingForDevice(IScriptState):
         # Always handle all events
         event.handled = True
         # Ignore all events unless they are Sysex
-        if not isEventSysex(event):
+        if isEventSysex(event):
             try:
                 dev = common.ExtensionManager.getDevice(event)
                 log(
