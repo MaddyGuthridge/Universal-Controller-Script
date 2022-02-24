@@ -8,7 +8,7 @@ from controlsurfaces import ControlShadowEvent
 from controlsurfaces import Fader
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.eventfilters import filterToGeneratorIndex
+from plugs import eventfilters, tickfilters
 
 # Generate list of supported plugins
 # HELP WANTED: I don't own all of these libraries, so the naming may be
@@ -59,10 +59,11 @@ class SpitfireGeneric(StandardPlugin):
     def getPlugIds() -> tuple[str, ...]:
         return SUPPORTED_PLUGINS
 
-    def tick(self):
+    @tickfilters.filterToGeneratorIndex
+    def tick(self, index: GeneratorIndex):
         pass
 
-    @filterToGeneratorIndex
+    @eventfilters.filterToGeneratorIndex
     def faders(self, control: ControlShadowEvent, index: GeneratorIndex, idx: int, *args: Any) -> bool:
         plugins.setParamValue(control.value, control.getShadow().coordinate[1], *index)
         return True

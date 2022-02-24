@@ -8,7 +8,7 @@ from controlsurfaces import DrumPad
 from controlsurfaces import ControlShadowEvent
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.eventfilters import filterToGeneratorIndex
+from plugs import eventfilters, tickfilters
 
 class FPC(StandardPlugin):
     """
@@ -34,7 +34,8 @@ class FPC(StandardPlugin):
     def getPlugIds() -> tuple[str, ...]:
         return ("FPC",)
 
-    def tick(self):
+    @tickfilters.filterToGeneratorIndex
+    def tick(self, index: GeneratorIndex):
         pass
     
     @staticmethod
@@ -45,7 +46,7 @@ class FPC(StandardPlugin):
             note = note >> 16
         channels.midiNoteOn(ch_idx, note, int(control.value*127))
     
-    @filterToGeneratorIndex
+    @eventfilters.filterToGeneratorIndex
     def drumPad4x4(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         row, col = control.getShadow().coordinate
         # Handle pads out of bounds as well
@@ -55,7 +56,7 @@ class FPC(StandardPlugin):
         self.triggerPad(coordToIndex(row, col), control, *index)
         return True
     
-    @filterToGeneratorIndex
+    @eventfilters.filterToGeneratorIndex
     def drumPad2x8(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         row, col = control.getShadow().coordinate
         # Handle pads out of bounds

@@ -32,6 +32,26 @@ class MainState(IScriptState):
     
     def tick(self) -> None:
         self._device.tick()
+        # Get active standard plugin
+        plug_idx = common.getContext().active.getActive()
+        if plug_idx is not None:
+            if isinstance(plug_idx, tuple):
+                try:
+                    plug_id = plugins.getPluginName(*plug_idx)
+                except TypeError:
+                    # Plugin not valid
+                    plug_id = ""
+                plug = common.ExtensionManager.getPluginById(plug_id, self._device)
+                if plug is not None:
+                    plug.tick(plug_idx)
+            else:
+                window = common.ExtensionManager.getWindowById(plug_idx, self._device)
+                if window is not None:
+                    window.tick()
+
+        # Get special plugins
+        for p in common.ExtensionManager.getSpecialPlugins(self._device):
+            p.tick()
 
     def processEvent(self, event: EventData) -> None:
         mapping = self._device.matchEvent(event)

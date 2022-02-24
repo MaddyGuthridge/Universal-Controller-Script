@@ -6,7 +6,7 @@ StandardPlugin and SpecialPlugin.
 """
 
 from common import log, verbosity
-from common.util.apifixes import UnsafeIndex, WindowIndex
+from common.util.apifixes import UnsafeIndex, WindowIndex, PluginIndex
 from controlsurfaces import ControlEvent
 from devices import DeviceShadow
 from plugs.mappingstrategies import IMappingStrategy
@@ -66,14 +66,6 @@ class Plugin:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
     
-    @abstractmethod
-    def tick(self) -> None:
-        """
-        Tick the plugin, to allow parameters to update if required
-        """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
-    
     @final
     def processEvent(self, mapping: ControlEvent, index: UnsafeIndex) -> bool:
         log("plugins", f"Processing event at {type(self)}", verbosity=verbosity.NOTE)
@@ -106,6 +98,17 @@ class StandardPlugin(Plugin):
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
+    
+    @abstractmethod
+    def tick(self, index: PluginIndex) -> None:
+        """
+        Tick the plugin, to allow parameters to update if required
+        
+        ### Args:
+        * `index` (`PluginIndex`): index of plugin
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
 
 class WindowPlugin(Plugin):
     """
@@ -134,6 +137,14 @@ class WindowPlugin(Plugin):
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
+    
+    @abstractmethod
+    def tick(self) -> None:
+        """
+        Tick the plugin, to allow parameters to update if required
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
 
 class SpecialPlugin(Plugin):
     """
@@ -159,6 +170,14 @@ class SpecialPlugin(Plugin):
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         """
         Create and return an instance of this plugin
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+    
+    @abstractmethod
+    def tick(self) -> None:
+        """
+        Tick the plugin, to allow parameters to update if required
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")

@@ -8,7 +8,7 @@ from controlsurfaces import ControlShadowEvent
 from controlsurfaces import Fader
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.eventfilters import filterToGeneratorIndex
+from plugs import eventfilters, tickfilters
 
 MACRO_START = 211
 
@@ -29,10 +29,11 @@ class Vital(StandardPlugin):
     def getPlugIds() -> tuple[str, ...]:
         return ("Vital",)
 
-    def tick(self):
+    @tickfilters.filterToGeneratorIndex
+    def tick(self, index: GeneratorIndex):
         pass
 
-    @filterToGeneratorIndex
+    @eventfilters.filterToGeneratorIndex
     def faders(self, control: ControlShadowEvent, index: GeneratorIndex, idx: int, *args: Any) -> bool:
         plugins.setParamValue(control.value, MACRO_START + control.getShadow().coordinate[1], *index)
         return True

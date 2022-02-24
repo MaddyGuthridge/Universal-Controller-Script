@@ -8,6 +8,10 @@ from .mappingstrategies import *
 
 from .plugin import Plugin, SpecialPlugin, StandardPlugin, WindowPlugin
 
+# Filters
+from . import eventfilters
+from . import tickfilters
+
 # Register plugins
 from . import special
 from . import windows
