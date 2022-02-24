@@ -16,7 +16,7 @@ from common.util.dicttools import lowestValueGrEqTarget, greatestKey
 from controlsurfaces import ControlSurface
 from . import Device
 
-from controlsurfaces import ControlShadow, ControlMapping
+from controlsurfaces import ControlShadow, ControlMapping, ControlShadowMapping
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Generator
@@ -41,16 +41,16 @@ if TYPE_CHECKING:
 # HELP WANTED: Can someone please fix this awfulness in a way that doesn't cause
 # MyPy to have a temper tantrum?
 StandardEventCallback = Union[
-    Callable[[ControlShadow, UnsafeIndex], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex, Any], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowMapping, UnsafeIndex, Any, Any, Any, Any, Any, Any, Any, Any, Any], bool],
 ]
 
 EventCallback = StandardEventCallback
@@ -551,8 +551,11 @@ class DeviceShadow:
             # If we get a KeyError, the control isn't assigned and we should do
             # nothing
             return False
+        
+        # Generate a control shadow mapping to send to the device
+        mapping = ControlShadowMapping(control, control_shadow)
         # Call the bound function with any extra required args
-        return fn(control_shadow, index, *args)
+        return fn(mapping, index, *args)
 
     def apply(self) -> None:
         """

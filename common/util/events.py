@@ -4,9 +4,6 @@ common > util > events
 Contains useful functions for operating on events.
 """
 
-
-from typing import TYPE_CHECKING
-
 import device
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 

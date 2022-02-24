@@ -80,7 +80,8 @@ class ControlSurface:
     @final
     def getMapping(self) -> ControlMapping:
         """
-        Returns a mapping to this control
+        Returns a mapping to this control, for the purpose of acting as a key
+        to the control in a dictionary. Don't use this for event detection.
 
         Mappings are used to refer to a control without being able to easily
         modify its value.
@@ -88,7 +89,7 @@ class ControlSurface:
         ### Returns:
         * `ControlMapping`: A mapping to this control
         """
-        return ControlMapping(self)
+        return ControlMapping(self, 0.0)
 
     @final
     def match(self, event: EventData) -> Optional[ControlMapping]:
@@ -104,7 +105,7 @@ class ControlSurface:
         """
         if self._pattern.matchEvent(event):
             self.__value = self.__value_strategy.getValueFromEvent(event)
-            return self.getMapping()
+            return ControlMapping(self, self.value)
         else:
             return None
 
