@@ -1,6 +1,7 @@
 
 import plugins
 from typing import Any
+from common.types import Color
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import GeneratorIndex
 from controlsurfaces import Fader
@@ -10,16 +11,17 @@ from plugs import StandardPlugin
 from plugs import eventfilters, tickfilters
 
 FADER_START = 10
+NUM_FADERS = 8
 
 class Flex(StandardPlugin):
     """
     Used to interact with the Flex plugin
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(
+        self._faders = shadow.bindMatches(
             Fader,
             self.faders,
-            target_num=8,
+            target_num=NUM_FADERS,
             allow_substitution=True,
             raise_on_failure=False
         )
@@ -31,7 +33,11 @@ class Flex(StandardPlugin):
 
     @tickfilters.filterToGeneratorIndex
     def tick(self, index: GeneratorIndex):
-        pass
+        if len(self._faders):
+            for f, i in zip(self._faders, range(FADER_START, FADER_START+NUM_FADERS)):
+                annotation = plugins.getParamName(i, *index)
+                f.annotation = annotation if annotation != "Not Used" else ""
+                f.color = Color.fromRgb(255, 120, 20) if annotation != "Not Used" else Color()
     
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
