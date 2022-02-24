@@ -29,6 +29,9 @@ class Vital(StandardPlugin):
     def getPlugIds() -> tuple[str, ...]:
         return ("Vital",)
 
+    def tick(self):
+        pass
+
     @filterToGeneratorIndex
     def faders(self, control: ControlShadowEvent, index: GeneratorIndex, idx: int, *args: Any) -> bool:
         plugins.setParamValue(control.value, MACRO_START + control.getShadow().coordinate[1], *index)

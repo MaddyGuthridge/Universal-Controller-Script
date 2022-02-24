@@ -57,6 +57,9 @@ class Transport(SpecialPlugin):
     def shouldBeActive() -> bool:
         return True
     
+    def tick(self):
+        pass
+    
     @filterButtonLift
     def playButton(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         transport.start()

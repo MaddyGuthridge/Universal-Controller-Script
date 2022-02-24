@@ -33,6 +33,9 @@ class FPC(StandardPlugin):
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
         return ("FPC",)
+
+    def tick(self):
+        pass
     
     @staticmethod
     def triggerPad(pad_idx: int, control: ControlShadowEvent, ch_idx: int) -> None:

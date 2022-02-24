@@ -35,6 +35,9 @@ class Fallback(SpecialPlugin):
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         return cls(shadow)
+    
+    def tick(self):
+        pass
 
     def jogWheel(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         if control.value == consts.ENCODER_NEXT:

@@ -48,6 +48,12 @@ class Plugin:
         """
         return f"Plugin at {type(self)}:\n\n{self._shadow}"
     
+    def apply(self) -> None:
+        """
+        Apply the current state of this plugin to the device
+        """
+        self._shadow.apply()
+    
     @classmethod
     @abstractmethod
     def create(cls, shadow: DeviceShadow) -> 'Plugin':
@@ -56,6 +62,14 @@ class Plugin:
         
         NOTE: On release of Python 3.11, upgrade to `Self` type and remove
         redefinitions in abstract subclasses
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+    
+    @abstractmethod
+    def tick(self) -> None:
+        """
+        Tick the plugin, to allow parameters to update if required
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
