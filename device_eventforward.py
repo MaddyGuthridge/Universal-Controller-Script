@@ -58,7 +58,7 @@ from common import log, verbosity
 from common.consts import getVersionString, ASCII_HEADER_ART
 from common.util.events import bytesToString, eventToString
 from common.util.misc import formatLongTime
-from common.types import EventData
+from common.types.eventdata import EventData, isEventStandard, isEventSysex
 import device
 
 EVENT_HEADER: bytes = bytes()
@@ -70,11 +70,7 @@ def raiseIncompatibleDevice():
 
 def OnMidiIn(event: EventData):
     
-    if event.sysex is None:
-        if TYPE_CHECKING:
-            assert event.data2 is not None
-            assert event.data1 is not None
-            assert event.status is not None
+    if isEventStandard(event):
         output = EVENT_HEADER + bytes([0]) + bytes([
             event.data2,
             event.data1,
@@ -82,10 +78,9 @@ def OnMidiIn(event: EventData):
             0xF7
         ])
     else:
+        if TYPE_CHECKING: # TODO: Find a way to make this unnecessary
+            assert isEventSysex(event)
         output = EVENT_HEADER + bytes([1]) + bytes(event.sysex)
-    
-    # print("Output sysex event:")
-    # print(bytesToString(output))
 
     # Dispatch to all available devices
     for i in range(device.dispatchReceiverCount()):

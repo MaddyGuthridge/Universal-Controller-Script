@@ -13,8 +13,8 @@ from typing import Optional
 import device
 
 import common
-from common.types import EventData
 from common import log, verbosity
+from common.types.eventdata import isEventSysex, EventData
 from common.util.events import eventToString
 
 from . import IScriptState, DeviceNotRecognised, MainState
@@ -127,7 +127,7 @@ class WaitingForDevice(IScriptState):
         # Always handle all events
         event.handled = True
         # Ignore all events unless they are Sysex
-        if event.sysex is not None:
+        if not isEventSysex(event):
             try:
                 dev = common.ExtensionManager.getDevice(event)
                 log(

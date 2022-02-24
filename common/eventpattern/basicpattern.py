@@ -1,7 +1,7 @@
 
 from typing import TYPE_CHECKING, Any, Callable, Optional
 
-from common.types import EventData
+from common.types.eventdata import EventData, isEventStandard, isEventSysex
 from . import ByteMatch, IEventPattern
 
 class BasicPattern(IEventPattern):
@@ -140,7 +140,7 @@ class BasicPattern(IEventPattern):
         """
         Matcher function for sysex events
         """
-        if event.sysex is None:
+        if not isEventSysex(event):
             return False
         # If we have more sysex data than them, it can't possibly be a match
         if len(self.sysex) > len(event.sysex):
@@ -151,13 +151,8 @@ class BasicPattern(IEventPattern):
         """
         Matcher function for standard events
         """
-        if (
-            event.status is None
-        ):
+        if not isEventStandard(event):
             return False
-        if TYPE_CHECKING:
-            assert event.data1 is not None
-            assert event.data2 is not None
         return all(self._matchByte(expected, actual) for expected, actual in
                    zip(
                        [self.status, self.data1, self.data2],

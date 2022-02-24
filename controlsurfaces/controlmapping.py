@@ -29,7 +29,7 @@ class ControlMapping:
         if isinstance(__o, ControlMapping):
             return self.__mapping == __o.__mapping
         else:
-            return False
+            return NotImplemented
     
     def getControl(self) -> 'ControlSurface':
         return self.__mapping

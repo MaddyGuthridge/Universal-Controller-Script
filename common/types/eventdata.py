@@ -100,6 +100,10 @@ class _StandardEventData(EventData):
 
     Don't type hint as this, it is only to facilitate type narrowing
     """
+    status: int
+    data1: int
+    data2: int
+    sysex: None
     def __init__(self, status: int, data1: int, data2: int) -> None:
         super().__init__(status, data1, data2)
 
@@ -109,6 +113,10 @@ class _SysexEventData(EventData):
 
     Don't type hint as this, it is only to facilitate type narrowing
     """
+    status: None
+    data1: None
+    data2: None
+    sysex: bytes
     def __init__(self, sysex: list[int]) -> None:
         super().__init__(sysex)
 
