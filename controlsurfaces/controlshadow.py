@@ -54,18 +54,6 @@ class ControlShadow:
         Returns a ControlMapping to the control
         """
         return self._control.getMapping()
-    
-    def getCurrentValue(self) -> float:
-        """
-        Returns the value currently applied to this control.
-        
-        NOTE: This differs from the value which will be applied to the control,
-        which is stored in the `value` property.
-
-        ### Returns:
-        * `float`: value of the event (0 - 1.0)
-        """
-        return self._control.value
 
     @property
     def value(self) -> float:
