@@ -17,6 +17,9 @@ class NullEventStrategy(IValueStrategy):
     def getValueFromEvent(self, event: EventData) -> bool:
         return False
     
+    def getChannelFromEvent(self, event: EventData) -> int:
+        return -1
+    
     def getValueFromFloat(self, f: float) -> bool:
         return False
 

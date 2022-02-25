@@ -46,6 +46,9 @@ class JogValueStrategy(IValueStrategy):
         else:
             return consts.ENCODER_NULL
     
+    def getChannelFromEvent(self, event: EventData) -> int:
+        return -1
+    
     def getValueFromFloat(self, f: float):
         return f
 
@@ -101,10 +104,10 @@ class JogMatcher(IControlMatcher):
         if self._jog_press_pattern.matchEvent(event):
             if self._value_strat.getValueFromEvent(event) == 0.0:
                 self._pressed = True
-                return ControlEvent(self._null, 0.0)
+                return ControlEvent(self._null, 0.0, -1)
             else:
                 if self._used_since_press:
-                    ret: Optional[ControlEvent] = ControlEvent(self._null, 0.0)
+                    ret: Optional[ControlEvent] = ControlEvent(self._null, 0.0, -1)
                 else:
                     ret = self._jog_standard.match(event)
                 self._pressed = False

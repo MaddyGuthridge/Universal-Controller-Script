@@ -25,6 +25,9 @@ class ForwardedStrategy(IValueStrategy):
         # the data out
         return self._strat.getValueFromEvent(eventFromForwarded(event))
 
+    def getChannelFromEvent(self, event: EventData):
+        return self._strat.getChannelFromEvent(eventFromForwarded(event))
+
     def getValueFromFloat(self, f: float):
         return self._strat.getValueFromFloat(f)
 
@@ -45,6 +48,12 @@ class ForwardedUnionStrategy(IValueStrategy):
             return self._strat_forward.getValueFromEvent(event)
         else:
             return self._strat.getValueFromEvent(event)
+
+    def getChannelFromEvent(self, event: EventData):
+        if isEventForwarded(event):
+            return self._strat_forward.getChannelFromEvent(event)
+        else:
+            return self._strat.getChannelFromEvent(event)
 
     def getValueFromFloat(self, f: float):
         return self._strat.getValueFromFloat(f)

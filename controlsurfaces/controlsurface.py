@@ -64,18 +64,18 @@ class ControlSurface:
           Used if controls form a 2D grid (eg, drum pads). Defaults to (0, 0).
         """
         self._pattern =  event_pattern
-        self.__color = Color()
-        self.__annotation = ""
-        self.__value = 0.0
-        self.__value_strategy = value_strategy
-        self.__group = group
-        self.__coord = coordinate
+        self._color = Color()
+        self._annotation = ""
+        self._value = value_strategy.getValueFromFloat(0.0)
+        self._value_strategy = value_strategy
+        self._group = group
+        self._coord = coordinate
     
     def __repr__(self) -> str:
         """
         String representation of the control surface
         """
-        return f"{self.__class__}, ({self.__group}: {self.__coord}, {self.value})"
+        return f"{self.__class__}, ({self._group}: {self._coord}, {self.value})"
     
     @final
     def getMapping(self) -> ControlMapping:
@@ -104,8 +104,9 @@ class ControlSurface:
         * `Optional[ControlEvent]`: control mapping, if the event maps
         """
         if self._pattern.matchEvent(event):
-            self.__value = self.__value_strategy.getValueFromEvent(event)
-            return ControlEvent(self, self.value)
+            self._value = self._value_strategy.getValueFromEvent(event)
+            channel = self._value_strategy.getChannelFromEvent(event)
+            return ControlEvent(self, self.value, channel)
         else:
             return None
 
@@ -117,14 +118,14 @@ class ControlSurface:
         """
         Coordinate of the control. Read only.
         """
-        return self.__coord
+        return self._coord
     
     @property
     def group(self) -> str:
         """
         The group that this control is a member of.
         """
-        return self.__group
+        return self._group
 
     @property
     def color(self) -> Color:
@@ -134,11 +135,11 @@ class ControlSurface:
         On compatible controllers, this can be displayed on the control using
         LED lighting.
         """
-        return self.__color
+        return self._color
     @color.setter
     def color(self, c: Color):
-        prev = self.__color
-        self.__color = c
+        prev = self._color
+        self._color = c
         if prev != c:
             self.onColorChange()
 
@@ -150,11 +151,11 @@ class ControlSurface:
         On compatible controllers, this can be displayed as text near the
         control.
         """
-        return self.__annotation
+        return self._annotation
     @annotation.setter
     def annotation(self, a: str):
-        prev = self.__annotation
-        self.__annotation = a
+        prev = self._annotation
+        self._annotation = a
         if prev != a:
             self.onAnnotationChange()
     
@@ -168,14 +169,14 @@ class ControlSurface:
         represented in other ways inside the class. The way it is gotten and set
         is determined by the functions _getValue() and _setValue() respectively.
         """
-        return self.__value_strategy.getFloatFromValue(self.__value)
+        return self._value_strategy.getFloatFromValue(self._value)
     @value.setter
     def value(self, newValue: float) -> None:
         # Ensure value is within bounds
         if not (0 <= newValue <= 1):
             raise ValueError(f"Value for control must be between "
                              f"0 and 1")
-        self.__value = self.__value_strategy.getValueFromFloat(newValue)
+        self._value = self._value_strategy.getValueFromFloat(newValue)
 
     ############################################################################
     # Events

@@ -19,6 +19,9 @@ class ButtonData2Strategy(IValueStrategy):
     def getValueFromEvent(self, event: EventData) -> bool:
         return event.data2 != 0
     
+    def getChannelFromEvent(self, event: EventData) -> int:
+        return -1
+
     def getValueFromFloat(self, f: float) -> bool:
         return f != 0.0
 

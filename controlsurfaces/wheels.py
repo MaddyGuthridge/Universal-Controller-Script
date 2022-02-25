@@ -50,6 +50,10 @@ class PitchValueStrategy(IValueStrategy):
         assert isEventStandard(event)
         return event.data1 + (event.data2 << 7)
     
+    def getChannelFromEvent(self, event: EventData) -> int:
+        assert isEventStandard(event)
+        return event.status & 0xF
+    
     def getFloatFromValue(self, value: int) -> float:
         return value / 16384
     

@@ -70,7 +70,7 @@ class ControlEvent(IControlHash):
         self,
         map_to: 'ControlSurface',
         value: float,
-        channel:int=-1
+        channel:int
     ) -> None:
         self._map_to = map_to
         self._value = value

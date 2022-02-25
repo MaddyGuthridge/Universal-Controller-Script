@@ -21,6 +21,10 @@ class NoteValueStrategy(IValueStrategy):
         else:
             return event.data2
     
+    def getChannelFromEvent(self, event: EventData) -> int:
+        assert isEventStandard(event)
+        return event.status & 0xF
+    
     def getFloatFromValue(self, value: int) -> float:
         return value / 127
     
