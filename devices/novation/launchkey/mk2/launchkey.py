@@ -5,7 +5,7 @@ from common.types import EventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import Data2Strategy,ButtonData2Strategy
 from devices import Device, BasicControlMatcher
-from controlsurfaces.controlgenerators import getNotesAllChannels
+from devices.controlgenerators import NoteMatcher
 
 from controlsurfaces import (
     Fader,
@@ -34,7 +34,7 @@ class LaunchkeyMk2(Device):
     def __init__(self, matcher: BasicControlMatcher) -> None:
         
         # Notes
-        matcher.addControls(getNotesAllChannels())
+        matcher.addSubMatcher(NoteMatcher())
         
         # Create knobs
         for i in range(1, 9):

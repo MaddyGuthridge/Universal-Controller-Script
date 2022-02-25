@@ -33,7 +33,7 @@ class Note(ControlSurface):
     """
     def __init__(self, note_num: int, channel:int = 0) -> None:
         super().__init__(
-            BasicPattern(fromNibbles((8, 9), channel), note_num, ...),
+            BasicPattern(fromNibbles((8, 9), ...), note_num, ...),
             NoteValueStrategy(),
             "notes",
             (channel, note_num)

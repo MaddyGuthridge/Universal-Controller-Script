@@ -6,7 +6,7 @@ from common.types import EventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy
 from devices import Device, BasicControlMatcher
-from controlsurfaces.controlgenerators import getNotesAllChannels, getPedals, getChannelAftertouchAllChannels
+from devices.controlgenerators import NoteMatcher, getPedals
 
 from controlsurfaces import (
     NullEvent,
@@ -21,6 +21,7 @@ from controlsurfaces import (
     LoopButton,
     MetronomeButton,
     StandardModWheel,
+    ChannelAfterTouch,
 )
 from .hammerpitch import HammerPitchWheel
 from .jogmatcher import JogMatcher
@@ -46,9 +47,9 @@ class Hammer88Pro(Device):
         matcher.addSubMatcher(JogMatcher())
         
         # Notes and pedals
-        matcher.addControls(getNotesAllChannels())
+        matcher.addSubMatcher(NoteMatcher())
         matcher.addControls(getPedals())
-        matcher.addControls(getChannelAftertouchAllChannels())
+        matcher.addControl(ChannelAfterTouch())
         
         # Drum pads
         matcher.addControls([
