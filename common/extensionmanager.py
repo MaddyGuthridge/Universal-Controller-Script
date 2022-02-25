@@ -238,11 +238,11 @@ class ExtensionManager:
             return cls._instantiated_plugins[id]
         # Plugin doesn't exist
         else:
-            log(
-                "extensions.manager",
-                f"No plugins associated with plugin ID '{id}'",
-                verbosity=verbosity.NOTE
-            )
+            # log(
+            #     "extensions.manager",
+            #     f"No plugins associated with plugin ID '{id}'",
+            #     verbosity=verbosity.NOTE
+            # )
             return None
     
     @classmethod
@@ -271,11 +271,11 @@ class ExtensionManager:
             return cls._instantiated_windows[id]
         # Plugin doesn't exist
         else:
-            log(
-                "extensions.manager",
-                f"No plugins associated with window ID '{id}'",
-                verbosity=verbosity.NOTE
-            )
+            # log(
+            #     "extensions.manager",
+            #     f"No plugins associated with window ID '{id}'",
+            #     verbosity=verbosity.NOTE
+            # )
             return None
 
     @classmethod
