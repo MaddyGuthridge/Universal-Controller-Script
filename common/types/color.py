@@ -135,7 +135,10 @@ class Color:
     def __repr__(self) -> str:
         return f"Color(0x{self.integer:06X} | "\
              + f"r={self.red}, g={self.green}, b={self.blue})"
-        
+
+    def __hash__(self) -> int:
+        return self.integer
+
     def copy(self) -> 'Color':
         """
         Create an identical copy of this color object

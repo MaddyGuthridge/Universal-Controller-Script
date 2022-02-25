@@ -17,7 +17,6 @@ from common.types import EventData, Color
 
 from .valuestrategies import IValueStrategy
 
-from .controlshadow import ControlShadow
 from .controlmapping import ControlEvent, ControlMapping
 
 class ControlSurface:
