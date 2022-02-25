@@ -1,2 +1,2 @@
 
-from . import fpc, flex
+from . import fpc, flex, parametriceq
