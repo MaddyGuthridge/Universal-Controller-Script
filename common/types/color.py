@@ -128,12 +128,13 @@ class Color:
         * `Color.fromRgb()`
         * `Color.fromHsv()`
         """
-        self.__red = 0
-        self.__green = 0
-        self.__blue = 0
+        self._red = 0
+        self._green = 0
+        self._blue = 0
     
     def __repr__(self) -> str:
-        return f"Color({self.__red}, {self.__green}, {self.__blue})"
+        return f"Color(0x{self.integer:6X} | "\
+             + f"r={self.red}, g={self.green}, b={self.blue})"
         
     def copy(self) -> 'Color':
         """
@@ -330,7 +331,7 @@ class Color:
         ### Returns:
         * `int`: red
         """
-        return self.__red
+        return self._red
     @red.setter
     def red(self, r: int) -> None:
         """
@@ -339,7 +340,7 @@ class Color:
         ### Args:
         * `r` (`int`): red
         """
-        self.__red = Color.__valCheckRgb(r)
+        self._red = Color.__valCheckRgb(r)
     
     @property
     def green(self) -> int:
@@ -349,7 +350,7 @@ class Color:
         ### Returns:
         * `int`: green
         """
-        return self.__green
+        return self._green
     @green.setter
     def green(self, g) -> None:
         """
@@ -358,7 +359,7 @@ class Color:
         ### Args:
         * `g` (`int`): green
         """
-        self.__green = Color.__valCheckRgb(g)
+        self._green = Color.__valCheckRgb(g)
     
     @property
     def blue(self) -> int:
@@ -368,7 +369,7 @@ class Color:
         ### Returns:
         * `int`: blue
         """
-        return self.__blue
+        return self._blue
     @blue.setter
     def blue(self, b) -> None:
         """
@@ -377,7 +378,7 @@ class Color:
         ### Args:
         * `b` (`int`): blue
         """
-        self.__blue = Color.__valCheckRgb(b)
+        self._blue = Color.__valCheckRgb(b)
 
     @property
     def hue(self) -> float:
