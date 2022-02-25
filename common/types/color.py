@@ -133,7 +133,7 @@ class Color:
         self._blue = 0
     
     def __repr__(self) -> str:
-        return f"Color(0x{self.integer:6X} | "\
+        return f"Color(0x{self.integer:06X} | "\
              + f"r={self.red}, g={self.green}, b={self.blue})"
         
     def copy(self) -> 'Color':
