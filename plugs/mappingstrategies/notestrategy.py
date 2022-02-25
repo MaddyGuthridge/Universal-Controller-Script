@@ -42,6 +42,8 @@ class NoteStrategy(IMappingStrategy):
             *getContext().active.getGenerator(),
             control.getControl().coordinate[1],
             int(control.value*127),
+            # NOTE: Currently FL Studio won't set the note color correctly
+            # from this channel
             control.channel
         )
         return True

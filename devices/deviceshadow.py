@@ -234,7 +234,11 @@ class DeviceShadow:
                 no_subs,
                 target_num
             )
-            
+        
+        # Sort the matches based on coordinate
+        sort_key = lambda c : c.coordinate
+        ret.sort(key=sort_key)
+        
         # Make sure we have results
         if raise_on_zero and len(ret) == 0:
             raise ValueError("No matching controls found")
