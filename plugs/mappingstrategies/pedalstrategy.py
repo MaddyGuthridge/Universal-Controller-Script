@@ -12,7 +12,7 @@ from common.util.apifixes import PluginIndex, isPluginVst
 from controlsurfaces.pedal import *
 from controlsurfaces import ControlShadowEvent, ControlShadow
 from devices import DeviceShadow
-from plugs.eventfilters import filterToPluginIndex
+from plugs.eventfilters import toPluginIndex
 from . import IMappingStrategy
 
 class PedalStrategy(IMappingStrategy):
@@ -51,7 +51,7 @@ class PedalStrategy(IMappingStrategy):
             raise_on_failure=False
         )
     
-    @filterToPluginIndex
+    @toPluginIndex
     def pedalCallback(
         self,
         control: ControlShadowEvent,

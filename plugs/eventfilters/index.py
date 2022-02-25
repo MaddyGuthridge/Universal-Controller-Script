@@ -7,7 +7,7 @@ from typing import Any
 from common.util.apifixes import UnsafePluginIndex
 from controlsurfaces import ControlShadowEvent
 
-def filterToPluginIndex(func, method:bool=True):
+def toPluginIndex(func, method:bool=True):
     """
     Filter out events when the index is not a plugin
 
@@ -32,7 +32,7 @@ def filterToPluginIndex(func, method:bool=True):
             return func(control, index, *args, **kwargs)
         return wrapper
 
-def filterToGeneratorIndex(func, method:bool=True):
+def toGeneratorIndex(func, method:bool=True):
     """
     Filter out events when the index is not a generator plugin
 
@@ -57,7 +57,7 @@ def filterToGeneratorIndex(func, method:bool=True):
             return func(control, index, *args, **kwargs)
         return wrapper
 
-def filterToEffectIndex(func, method:bool=True):
+def toEffectIndex(func, method:bool=True):
     """
     Filter out events when the index is not an effect plugin
 
@@ -82,7 +82,7 @@ def filterToEffectIndex(func, method:bool=True):
             return func(control, index, *args, **kwargs)
         return wrapper
 
-def filterToWindowIndex(func, method:bool=True):
+def toWindowIndex(func, method:bool=True):
     """
     Filter out events when the index is not a window
 
@@ -107,7 +107,7 @@ def filterToWindowIndex(func, method:bool=True):
             return func(control, index, *args, **kwargs)
         return wrapper
 
-def filterToSafeIndex(func, method:bool=True):
+def toSafeIndex(func, method:bool=True):
     """
     Filter out events when the index is None
 

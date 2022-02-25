@@ -31,7 +31,7 @@ class Flex(StandardPlugin):
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
 
-    @tickfilters.filterToGeneratorIndex
+    @tickfilters.toGeneratorIndex
     def tick(self, index: GeneratorIndex):
         if len(self._faders):
             for f, i in zip(self._faders, range(FADER_START, FADER_START+NUM_FADERS)):
@@ -45,7 +45,7 @@ class Flex(StandardPlugin):
     def getPlugIds() -> tuple[str, ...]:
         return ("FLEX",)
 
-    @eventfilters.filterToGeneratorIndex
+    @eventfilters.toGeneratorIndex
     def faders(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         plugins.setParamValue(control.value, FADER_START + control.getShadow().coordinate[1], *index)
         return True

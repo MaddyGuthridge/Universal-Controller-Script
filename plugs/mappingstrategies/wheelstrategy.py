@@ -17,7 +17,7 @@ from common.util.apifixes import PluginIndex, isPluginVst
 from controlsurfaces import ModWheel, PitchWheel
 from controlsurfaces import ControlShadowEvent
 from devices import DeviceShadow
-from plugs.eventfilters import filterToPluginIndex
+from plugs.eventfilters import toPluginIndex
 from . import IMappingStrategy
 
 class WheelStrategy(IMappingStrategy):
@@ -55,7 +55,7 @@ class WheelStrategy(IMappingStrategy):
             raise_on_failure=False
         )
 
-    @filterToPluginIndex
+    @toPluginIndex
     def modCallback(
         self,
         control: ControlShadowEvent,
@@ -90,7 +90,7 @@ class WheelStrategy(IMappingStrategy):
         
         return True
 
-    @filterToPluginIndex
+    @toPluginIndex
     def pitchCallback(
         self,
         control: ControlShadowEvent,

@@ -59,11 +59,11 @@ class SpitfireGeneric(StandardPlugin):
     def getPlugIds() -> tuple[str, ...]:
         return SUPPORTED_PLUGINS
 
-    @tickfilters.filterToGeneratorIndex
+    @tickfilters.toGeneratorIndex
     def tick(self, index: GeneratorIndex):
         pass
 
-    @eventfilters.filterToGeneratorIndex
+    @eventfilters.toGeneratorIndex
     def faders(self, control: ControlShadowEvent, index: GeneratorIndex, idx: int, *args: Any) -> bool:
         plugins.setParamValue(control.value, control.getShadow().coordinate[1], *index)
         return True
