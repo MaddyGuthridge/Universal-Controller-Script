@@ -5,6 +5,7 @@ Represents the script in its main state, where the device is recognised and
 behaving as expected.
 """
 
+import time
 import plugins
 from typing import TYPE_CHECKING
 
@@ -58,15 +59,18 @@ class MainState(IScriptState):
                     p.apply()
 
     def processEvent(self, event: EventData) -> None:
+        t_start = time.time()
         mapping = self._device.matchEvent(event)
+        match_time = time.time() - t_start
         if mapping is None:
             event.handled = True
             log(
                 "device.event.in",
                 f"Failed to recognise event: {eventToString(event)}",
                 verbosity.CRITICAL,
-                "This usually means that the device hasn't been configured "
-                "correctly. Please contact the device's maintainer."
+                f"This usually means that the device hasn't been configured "
+                f"correctly. Please contact the device's maintainer.\n"
+                f"Search time: {match_time:.3} seconds"
             )
             # raise ValueError(f"Couldn't identify event: {eventToString(event)}")
             return
@@ -74,7 +78,7 @@ class MainState(IScriptState):
         else:
             log(
                 "device.event.in",
-                f"Recognised event: {mapping.getControl()}",
+                f"Recognised event in {match_time:.3} seconds: {mapping.getControl()}",
                 verbosity.EVENT,
                 detailed_msg=eventToString(event)
             )
