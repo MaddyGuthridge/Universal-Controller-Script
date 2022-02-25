@@ -172,7 +172,7 @@ class ControlSurface:
     @value.setter
     def value(self, newValue: float) -> None:
         # Ensure value is within bounds
-        if not (0 < newValue < 1):
+        if not (0 <= newValue <= 1):
             raise ValueError(f"Value for control must be between "
                              f"0 and 1")
         self.__value = self.__value_strategy.getValueFromFloat(newValue)
