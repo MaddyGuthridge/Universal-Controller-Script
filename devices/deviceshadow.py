@@ -75,6 +75,7 @@ class DeviceShadow:
                 IControlHash,
                 tuple[ControlShadow, EventCallback, tuple]
             ] = {}
+        self._transparent = False
     
     def __repr__(self) -> str:
         """
@@ -120,6 +121,20 @@ class DeviceShadow:
         * `Device`: device
         """
         return self._device
+    
+    def setTransparent(self, value: bool) -> None:
+        """
+        Control whether this device shadow is "transparent"
+
+        If it is, then all unassigned controls will be ignored, such that they
+        can be modified and processed from other plugins. This should be used
+        by special plugins to ensure that they don't send unnecessary MIDI
+        signals to the device.
+
+        ### Args:
+        * `value` (`bool`): new transparency value
+        """
+        self._transparent = value
     
     def _getMatches(
         self, 
@@ -569,5 +584,9 @@ class DeviceShadow:
         """
         Apply the configuration of the device shadow to the control it represents
         """
-        for c in self._all_controls:
+        if self._transparent:
+            controls = [c for c, _, _ in self._assigned_controls.values()]
+        else:
+            controls = self._all_controls
+        for c in controls:
             c.apply()
