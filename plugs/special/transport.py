@@ -40,6 +40,7 @@ class Transport(SpecialPlugin):
     commands and navigation commands.
     """
     def __init__(self, shadow: DeviceShadow) -> None:
+        shadow.setTransparent(True)
         super().__init__(shadow, [])
         shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)
         shadow.bindMatch(PlayButton, self.playButton, raise_on_failure=False)

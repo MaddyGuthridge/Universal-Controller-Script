@@ -21,6 +21,7 @@ class Fallback(SpecialPlugin):
     * Notes
     """
     def __init__(self, shadow: DeviceShadow) -> None:
+        shadow.setTransparent(True)
         shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
         super().__init__(shadow, [
             PedalStrategy(raise_on_error=False),
