@@ -62,11 +62,11 @@ class BasicControlMatcher(IControlMatcher):
         self._sub_matchers.append(matcher)
     
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
-        for s in self._sub_matchers:
-            if (m := s.matchEvent(event)) is not None:
-                return m
         for c in self._controls:
             if (m := c.match(event)) is not None:
+                return m
+        for s in self._sub_matchers:
+            if (m := s.matchEvent(event)) is not None:
                 return m
         return None
     

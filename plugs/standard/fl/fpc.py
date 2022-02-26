@@ -43,7 +43,6 @@ class FPC(StandardPlugin):
             p.color = Color.fromInteger(
                 plugins.getPadInfo(index[0], -1, 2, self._coordToIndex(*p.coordinate))
             )
-            # plugins.get
     
     @staticmethod
     def triggerPad(pad_idx: int, control: ControlShadowEvent, ch_idx: int) -> None:

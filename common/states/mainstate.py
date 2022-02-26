@@ -51,12 +51,12 @@ class MainState(IScriptState):
                 plug = common.ExtensionManager.getPluginById(plug_id, self._device)
                 if plug is not None:
                     plug.tick(plug_idx)
-                    p.apply()
+                    plug.apply()
             else:
                 window = common.ExtensionManager.getWindowById(plug_idx, self._device)
                 if window is not None:
                     window.tick()
-                    p.apply()
+                    window.apply()
 
     def processEvent(self, event: EventData) -> None:
         t_start = time.time()
@@ -82,7 +82,6 @@ class MainState(IScriptState):
                 verbosity.EVENT,
                 detailed_msg=eventToString(event)
             )
-        
         # Get active standard plugin
         plug_idx = common.getContext().active.getActive()
         if plug_idx is not None:
