@@ -141,7 +141,12 @@ class Device:
         such as maintaining a heartbeat event.
         
         Can be overridden by child classes.
+        
+        WARNING: Ensure that the super function is still called or control
+        surfaces won't get ticked correctly
         """
+        for c in self._matcher.getControls():
+            c.tick()
 
     @final
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
