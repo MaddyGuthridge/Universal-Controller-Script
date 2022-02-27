@@ -10,6 +10,7 @@ import plugins
 from typing import TYPE_CHECKING
 
 import common
+from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
 from common.types import EventData
 from common.util.apifixes import getFocusedPluginIndex, WindowIndex, PluginIndex
@@ -31,6 +32,7 @@ class MainState(IScriptState):
     def initialise(self) -> None:
         pass
     
+    @profilerDecoration("tick")
     def tick(self) -> None:
         self._device.tick()
 
@@ -58,10 +60,10 @@ class MainState(IScriptState):
                     window.tick()
                     window.apply()
 
+    @profilerDecoration("processEvent")
     def processEvent(self, event: EventData) -> None:
-        t_start = time.time()
-        mapping = self._device.matchEvent(event)
-        match_time = time.time() - t_start
+        with ProfilerContext("Match event"):
+            mapping = self._device.matchEvent(event)
         if mapping is None:
             event.handled = True
             log(
@@ -69,8 +71,7 @@ class MainState(IScriptState):
                 f"Failed to recognise event: {eventToString(event)}",
                 verbosity.CRITICAL,
                 f"This usually means that the device hasn't been configured "
-                f"correctly. Please contact the device's maintainer.\n"
-                f"Search time: {match_time:.3} seconds"
+                f"correctly. Please contact the device's maintainer."
             )
             # raise ValueError(f"Couldn't identify event: {eventToString(event)}")
             return
@@ -78,7 +79,7 @@ class MainState(IScriptState):
         else:
             log(
                 "device.event.in",
-                f"Recognised event in {match_time:.3} seconds: {mapping.getControl()}",
+                f"Recognised event: {mapping.getControl()}",
                 verbosity.EVENT,
                 detailed_msg=eventToString(event)
             )
