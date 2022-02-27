@@ -61,6 +61,7 @@ class ProfilerManager:
         self._current = n
     
     def closeProfile(self):
+        self._current.close()
         if self._current is None:
             raise ValueError("No profile to close")
         parent = self._current.parent
