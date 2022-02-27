@@ -12,7 +12,7 @@ Authors:
 from typing import Optional, final
 from abc import abstractmethod
 
-from common import IEventPattern
+from common import IEventPattern, ProfilerContext
 from common.types import EventData, Color
 
 from .valuestrategies import IValueStrategy
@@ -137,9 +137,8 @@ class ControlSurface:
         return self._color
     @color.setter
     def color(self, c: Color):
-        prev = self._color
-        self._color = c
-        if prev != c:
+        if self._color != c:
+            self._color = c
             self.onColorChange()
 
     @property
@@ -153,9 +152,8 @@ class ControlSurface:
         return self._annotation
     @annotation.setter
     def annotation(self, a: str):
-        prev = self._annotation
-        self._annotation = a
-        if prev != a:
+        if self._annotation != a:
+            self._annotation = a
             self.onAnnotationChange()
     
     @property
@@ -170,12 +168,15 @@ class ControlSurface:
         """
         return self._value_strategy.getFloatFromValue(self._value)
     @value.setter
-    def value(self, newValue: float) -> None:
-        # Ensure value is within bounds
-        if not (0 <= newValue <= 1):
-            raise ValueError(f"Value for control must be between "
-                             f"0 and 1")
-        self._value = self._value_strategy.getValueFromFloat(newValue)
+    def value(self, v: float) -> None:
+        val = self._value_strategy.getValueFromFloat(v)
+        if self._value != val:
+            # Ensure value is within bounds
+            if not (0 <= v <= 1):
+                raise ValueError(f"Value for control must be between "
+                                f"0 and 1")
+            self._value = val
+            self.onValueChange()
 
     ############################################################################
     # Events

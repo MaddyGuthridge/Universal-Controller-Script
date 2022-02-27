@@ -630,7 +630,11 @@ class Color:
     
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Color):
-            return self.integer == other.integer
+            return (
+                self._red == other._red
+            and self._green == other._green
+            and self._blue == other._blue
+            )
         elif isinstance(other, int):
             return self.integer == other
         else:

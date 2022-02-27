@@ -585,8 +585,8 @@ class DeviceShadow:
         Apply the configuration of the device shadow to the control it represents
         """
         if self._transparent:
-            controls = [c for c, _, _ in self._assigned_controls.values()]
+            controls = (c for c, _, _ in self._assigned_controls.values())
         else:
-            controls = self._all_controls
+            controls = (c for c in self._all_controls)
         for c in controls:
             c.apply()
