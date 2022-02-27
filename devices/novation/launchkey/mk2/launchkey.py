@@ -35,7 +35,7 @@ class LaunchkeyMk2(Device):
     def __init__(self, matcher: BasicControlMatcher) -> None:
         
         # Notes
-        # matcher.addSubMatcher(NoteMatcher())
+        matcher.addSubMatcher(NoteMatcher())
         
         # Drum pads
         for r in range(self.getDrumPadSize()[0]):

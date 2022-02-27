@@ -5,6 +5,8 @@ Definition for the Launchkey Mk2 Drumpads
 """
 
 from common.eventpattern import BasicPattern, fromNibbles
+from common.types import EventData
+from common.util.events import forwardEvent
 from controlsurfaces.valuestrategies import NoteStrategy
 from controlsurfaces import DrumPad
 from .colors import COLORS
@@ -19,6 +21,7 @@ class LaunchkeyDrumpad(DrumPad):
     
     def __init__(self, coordinate: tuple[int, int]) -> None:
         self._note_num = DRUM_PADS[coordinate[0]][coordinate[1]]
+        self._ticker_timer = 0
         super().__init__(
             BasicPattern(fromNibbles((8, 9), 9), self._note_num, ...),
             NoteStrategy(),
@@ -27,4 +30,14 @@ class LaunchkeyDrumpad(DrumPad):
     
     def onColorChange(self) -> None:
         c_num = COLORS[self.color.closest(list(COLORS.keys()))]
-        device.midiOutMsg(0x9F + (self._note_num << 8) + (c_num << 16))
+        forwardEvent(EventData(0x9F, self._note_num, c_num), 2)
+    
+    def onValueChange(self) -> None:
+        # Ensure the lights stay on when we press them
+        self.onColorChange()
+
+    def tick(self) -> None:
+        # Occasionally refresh lights since launchkey lights are sorta buggy
+        if self._ticker_timer % 5 == 0:
+            self.onColorChange()
+        self._ticker_timer += 1
