@@ -118,7 +118,7 @@ class ProfilerManager:
         Inspect details about the profiler
         """
         for name, results in self._totals.items():
-            total = sum(results)
+            total = sum(results) / 1000000
             samples = len(results)
             ave = total/samples
-            print(f"{name}: {total:} ns from {samples} samples (ave {ave} ns)")
+            print(f"{name}: {total:.3f} ms from {samples} samples (ave {ave:.6f} ms)")
