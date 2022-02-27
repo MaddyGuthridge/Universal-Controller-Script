@@ -68,7 +68,7 @@ class Plugin:
     
     @final
     def processEvent(self, mapping: ControlEvent, index: UnsafeIndex) -> bool:
-        log("plugins", f"Processing event at {type(self)}", verbosity=verbosity.NOTE)
+        log("plugins", f"Processing event at {type(self)}", verbosity=verbosity.EVENT)
         return self._shadow.processEvent(mapping, index)
 
 class StandardPlugin(Plugin):

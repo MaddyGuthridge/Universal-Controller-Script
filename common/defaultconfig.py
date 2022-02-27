@@ -25,11 +25,14 @@ CONFIG = {
         # Maximum verbosity for which watched categories of logged messages
         # will be printed 
         "max_watched_verbosity": verbosity.INFO,
+        # Verbosity levels at or above this will be discarded entirely be the
+        # logger to improve performance
+        "discard_verbosity": verbosity.NOTE,
     },
     # Settings used for debugging
     "debug": {
         # Whether performance profiling should be enabled
-        
+        "enable_profiling": False
     },
     # Settings used during script initialisation
     "bootstrap": {

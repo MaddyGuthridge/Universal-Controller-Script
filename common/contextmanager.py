@@ -46,7 +46,10 @@ class DeviceContextManager:
         self.active = ActivityState()
         # Set the state of the script to wait for the device to be recognised
         self.state: IScriptState = WaitingForDevice()
-        self.profiler = ProfilerManager()
+        if self.settings.get("debug.enable_profiling"):
+            self.profiler: Optional[ProfilerManager] = ProfilerManager()
+        else:
+            self.profiler = None
     
     @catchStateChangeException
     def initialise(self) -> None:
