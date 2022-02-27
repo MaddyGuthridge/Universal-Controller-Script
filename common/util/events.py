@@ -9,6 +9,28 @@ import device
 from common import log
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 
+def parseDeviceName() -> str:
+    """
+    Determine the name of the device (minus all the MIDIIN2 rubbish)
+
+    WARNING: This may not work on MacOS
+
+    ### Returns:
+    * `str`: device name
+    """
+    name = device.getName()
+    
+    if name.startswith("MIDIIN"):
+        name = name.lstrip("MIDIIN")
+        bracket_start = name.find("(")
+        return name[bracket_start+1:-1]
+    else:
+        return name
+        
+
+FORWARDED_EVENT_HEADER: Optional[bytes] = None
+DEVICE_NAME = parseDeviceName()
+
 def isEventForwarded(event: EventData) -> bool:
     """
     Returns whether an event was forwarded from the Universal Event Forwarder
@@ -30,7 +52,6 @@ def isEventForwarded(event: EventData) -> bool:
     else:
         return True
 
-FORWARDED_EVENT_HEADER: Optional[bytes] = None
 def initForwardedEventHeader():
     global FORWARDED_EVENT_HEADER
     
@@ -94,7 +115,7 @@ def isEventForwardedHere(event: EventData) -> bool:
     assert isEventSysex(event)
     
     if (event.sysex[2:_getForwardedNameEndIdx(event)].decode()
-     != device.getName()
+     != DEVICE_NAME
     ):
         return False
     return True
