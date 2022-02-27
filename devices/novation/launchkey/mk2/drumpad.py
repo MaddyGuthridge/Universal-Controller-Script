@@ -21,7 +21,9 @@ class LaunchkeyDrumpad(DrumPad):
     
     def __init__(self, coordinate: tuple[int, int]) -> None:
         self._note_num = DRUM_PADS[coordinate[0]][coordinate[1]]
+        # Variables to keep the drumpad lights working
         self._ticker_timer = 0
+        self._need_update = False
         super().__init__(
             BasicPattern(fromNibbles((8, 9), 9), self._note_num, ...),
             NoteStrategy(),
@@ -34,10 +36,11 @@ class LaunchkeyDrumpad(DrumPad):
     
     def onValueChange(self) -> None:
         # Ensure the lights stay on when we press them
-        self.onColorChange()
+        self._need_update = True
 
     def tick(self) -> None:
         # Occasionally refresh lights since launchkey lights are sorta buggy
-        if self._ticker_timer % 5 == 0:
+        if self._ticker_timer % 5 == 0 or self._need_update:
             self.onColorChange()
+            self._need_update = False
         self._ticker_timer += 1
