@@ -26,6 +26,11 @@ CONFIG = {
         # will be printed 
         "max_watched_verbosity": verbosity.INFO,
     },
+    # Settings used for debugging
+    "debug": {
+        # Whether performance profiling should be enabled
+        
+    },
     # Settings used during script initialisation
     "bootstrap": {
         # Whether to skip sending sysex messages when attempting to recognise

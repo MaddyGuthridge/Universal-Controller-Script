@@ -22,6 +22,7 @@ from .activitystate import ActivityState
 from .util.misc import NoneNoPrintout
 from .util.events import isEventForwarded, isEventForwardedHere
 from .types import EventData
+from .profiler import ProfilerManager
 
 from .states import (
     IScriptState,
@@ -45,6 +46,7 @@ class DeviceContextManager:
         self.active = ActivityState()
         # Set the state of the script to wait for the device to be recognised
         self.state: IScriptState = WaitingForDevice()
+        self.profiler = ProfilerManager()
     
     @catchStateChangeException
     def initialise(self) -> None:

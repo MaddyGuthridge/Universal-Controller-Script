@@ -21,6 +21,7 @@ del general
 from .consts import getVersionString
 
 from .logger import log, verbosity
+from .profiler import ProfilerContext
 
 from .contextmanager import getContext, resetContext, catchContextResetException
 
