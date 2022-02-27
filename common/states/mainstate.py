@@ -38,7 +38,8 @@ class MainState(IScriptState):
 
         # Tick special plugins
         for p in common.ExtensionManager.getSpecialPlugins(self._device):
-            p.tick()
+            with ProfilerContext(f"Tick {type(p)}"):
+                p.tick()
             p.apply()
 
         # Tick active standard plugin or window
@@ -52,12 +53,15 @@ class MainState(IScriptState):
                     plug_id = ""
                 plug = common.ExtensionManager.getPluginById(plug_id, self._device)
                 if plug is not None:
-                    plug.tick(plug_idx)
-                    plug.apply()
+                    with ProfilerContext(f"Tick {type(plug)}"):
+                        plug.tick(plug_idx)
+                    with ProfilerContext(f"Apply {type(plug)}"):
+                        plug.apply()
             else:
                 window = common.ExtensionManager.getWindowById(plug_idx, self._device)
                 if window is not None:
-                    window.tick()
+                    with ProfilerContext(f"Tick {type(window)}"):
+                        window.tick()
                     window.apply()
 
     @profilerDecoration("processEvent")

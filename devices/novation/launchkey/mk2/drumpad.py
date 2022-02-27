@@ -3,14 +3,13 @@ devices > novation > launchkey > mk2 > drumpad
 
 Definition for the Launchkey Mk2 Drumpads
 """
-
+from common import profilerDecoration
 from common.eventpattern import BasicPattern, fromNibbles
 from common.types import EventData
 from common.util.events import forwardEvent
 from controlsurfaces.valuestrategies import NoteStrategy
 from controlsurfaces import DrumPad
 from .colors import COLORS
-import device
 
 DRUM_PADS = [
     [0x28, 0x29, 0x2A, 0x2B, 0x30, 0x31, 0x32, 0x33], # Also 0x68
@@ -30,6 +29,7 @@ class LaunchkeyDrumpad(DrumPad):
             coordinate
         )
     
+    @profilerDecoration("LaunchKey onColorChange")
     def onColorChange(self) -> None:
         c_num = COLORS[self.color.closest(list(COLORS.keys()))]
         forwardEvent(EventData(0x9F, self._note_num, c_num), 2)
