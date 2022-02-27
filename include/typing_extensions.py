@@ -7,3 +7,7 @@ class _AnnotationType:
         return object
 
 TypeGuard = _AnnotationType('TypeGuard')
+
+class ParamSpec:
+    def __init__(self, *args, **kwargs) -> None:
+        pass

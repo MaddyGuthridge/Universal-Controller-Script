@@ -5,6 +5,8 @@ Context manager definition for profiler
 """
 
 import common
+from typing import TypeVar, Callable
+from typing_extensions import ParamSpec
 
 class ProfilerContext:
     """
@@ -23,7 +25,22 @@ class ProfilerContext:
         self._name = name
     
     def __enter__(self):
-        common.getContext().profiler.openProfile(self._name)
+        c = common.getContext()
+        if c.profiler is not None:
+            c.profiler.openProfile(self._name)
 
-    def __exit__(self):
-        common.getContext().profiler.openProfile(self._name)
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        c = common.getContext()
+        if c.profiler is not None:
+            c.profiler.closeProfile()
+
+Params = ParamSpec("Params")
+RT = TypeVar("RT")
+
+def profilerDecoration(name):
+    def decorator(func: Callable[Params, RT]) -> Callable[Params, RT]:
+        def wrapper(*args, **kwargs):
+            with ProfilerContext(name):
+                return func(*args, **kwargs)
+        return wrapper
+    return decorator
