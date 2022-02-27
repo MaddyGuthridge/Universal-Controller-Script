@@ -9,7 +9,7 @@ Authors:
 
 from typing import TYPE_CHECKING
 
-from common.util.events import eventFromForwarded, isEventForwardedHereFrom, eventToString
+from common.util.events import decodeForwardedEvent, isEventForwardedHereFrom, eventToString
 from . import IEventPattern, UnionPattern
 
 from common.types import EventData
@@ -43,7 +43,7 @@ class ForwardedPattern(IEventPattern):
         # Extract the event and determine if it matches with the
         # underlying pattern
         # print(eventToString(eventFromForwarded(event, null+2)))
-        return self._pattern.matchEvent(eventFromForwarded(event))
+        return self._pattern.matchEvent(decodeForwardedEvent(event))
 
 class ForwardedUnionPattern(IEventPattern):
     """

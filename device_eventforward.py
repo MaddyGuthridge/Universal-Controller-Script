@@ -1,5 +1,6 @@
 # name=Universal Event Forwarder
 # url=https://forum.image-line.com/viewtopic.php?f=1994&t=274277
+# receiveFrom=Universal Controller
 """
 device_eventforward
 
@@ -52,77 +53,63 @@ as required
 """
 
 import include
-import time
 from typing import TYPE_CHECKING
 from common import log, verbosity
 from common.consts import getVersionString, ASCII_HEADER_ART
-from common.util.events import bytesToString, eventToString
+from common.util.events import eventToString, isEventForwarded, isEventForwardedHereFrom, forwardEvent, decodeForwardedEvent
 from common.util.misc import formatLongTime
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 import device
 
-EVENT_HEADER: bytes = bytes()
+DEVICE_NUM = -1
 
 def raiseIncompatibleDevice():
     raise TypeError("This script should be used to forward extra device "
-                        "port events to the primary device port. This isn't a "
-                        "device port.")
+                    "port events to the primary device port. This isn't a "
+                    "device port.")
+
+def outputForwarded(event: EventData):
+    event = decodeForwardedEvent(event)
+    if isEventSysex(event):
+        device.midiOutSysex(event.sysex)
+    else:
+        if TYPE_CHECKING:
+            assert isEventStandard(event)
+        device.midiOutMsg(
+            event.status + (event.data1 << 8) + (event.data2 << 16)
+        )
+    log(
+        "device.forward.in",
+        "Output event to device: " + eventToString(event)
+    )
 
 def OnMidiIn(event: EventData):
-    
-    if isEventStandard(event):
-        output = EVENT_HEADER + bytes([0]) + bytes([
-            event.data2,
-            event.data1,
-            event.status,
-            0xF7
-        ])
+    if isEventForwarded(event):
+        if isEventForwardedHereFrom(event, DEVICE_NUM):
+            outputForwarded(event)
     else:
-        if TYPE_CHECKING: # TODO: Find a way to make this unnecessary
-            assert isEventSysex(event)
-        output = EVENT_HEADER + bytes([1]) + bytes(event.sysex)
-
-    # Dispatch to all available devices
-    for i in range(device.dispatchReceiverCount()):
-        device.dispatch(i, 0xF0, output)
-    
-    log(
-        "device.forward.out",
-        "Dispatched event to main script: " + eventToString(event)
-    )
+        forwardEvent(event, DEVICE_NUM)
+        log(
+            "device.forward.out",
+            "Dispatched event to main script: " + eventToString(event)
+        )
     event.handled = True
 
 def OnInit():
-    global EVENT_HEADER
-    # Determine device name and number
+    global DEVICE_NUM
+    # Determine device number and ensure compatible device
     name = device.getName()
     
     if not name.startswith("MIDIIN"):
         raiseIncompatibleDevice()
     name = name.lstrip("MIDIIN")
     bracket_start = name.find("(")
-    if bracket_start == 0:
+    if bracket_start == -1:
         raiseIncompatibleDevice()
     try:
-        dev_num = int(name[0:bracket_start])
+        DEVICE_NUM = int(name[0:bracket_start])
     except ValueError:
         raiseIncompatibleDevice()
-    
-    name = name[bracket_start+1:-1]
-    
-    EVENT_HEADER = bytes([
-        0xF0, # Start sysex
-        0x7D  # Non-commercial sysex ID
-    ]) + name.encode() \
-       + bytes([0]) \
-       + bytes([dev_num])
-    
-    log(
-        "device.forward.bootstrap",
-        "Generated event header",
-        detailed_msg=f"{bytesToString(EVENT_HEADER)}\n"
-                     f"{dev_num=}"
-    )
 
 log(
     "device.forward.bootstrap",
