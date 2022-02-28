@@ -32,7 +32,7 @@ CONFIG = {
     # Settings used for debugging
     "debug": {
         # Whether performance profiling should be enabled
-        "enable_profiling": False
+        "profiling": False
     },
     # Settings used during script initialisation
     "bootstrap": {
