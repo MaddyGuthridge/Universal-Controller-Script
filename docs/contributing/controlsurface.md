@@ -2,7 +2,8 @@
 # Control Surfaces
 
 Control surfaces represent a control on a device. The are instantiated during
-the construction of `Device` objects, and are mapped to by plugins.
+the construction of `Device` objects, and are indirectly mapped to by plugins,
+via the [`ControlShadow`](controlshadow.md) type.
 
 ## List of Control Surfaces
 

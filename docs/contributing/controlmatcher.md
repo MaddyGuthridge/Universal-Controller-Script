@@ -11,9 +11,9 @@ suit your needs, you can implement this interface to create your own control
 matcher.
 
 ### Methods to Implement
-* `matchEvent(self, event: eventData) -> Optional[ControlMapping]`: Given an
-  event, return a mapping to a matched control, or `None` if there were no
-  matches.
+* `matchEvent(self, event: eventData) -> Optional[ControlEvent]`: Given an
+  event, return a [`ControlEvent`](controlevent.md) mapped to the matched
+  control, or `None` if there were no matches.
 * `getGroups(self) -> set[str]`: Return the set of control groups this control
   matcher uses.
 * `getControls(self, group:str=None) -> list[ControlSurface]`: Return a list of
