@@ -580,11 +580,11 @@ class DeviceShadow:
         # Call the bound function with any extra required args
         return fn(mapping, index, *args)
 
-    def apply(self) -> None:
+    def apply(self, thorough: bool) -> None:
         """
         Apply the configuration of the device shadow to the control it represents
         """
-        if self._transparent:
+        if self._transparent or not thorough:
             controls = (c for c, _, _ in self._assigned_controls.values())
         else:
             controls = (c for c in self._all_controls)

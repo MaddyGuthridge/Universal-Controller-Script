@@ -27,6 +27,7 @@ class ActivityState:
         self._effect: EffectIndex = (0, 0)
         self._plugin: PluginIndex = self._generator
         self._plug_active = True if self._plugin is not None else False
+        self._changed = False
     
     def printUpdate(self):
         print(f"Window: {self._window}, Plugin: {self._plugin}")
@@ -51,14 +52,19 @@ class ActivityState:
         """
         Called frequently when we need to update the current window
         """
+        self._changed = False
         if self._doUpdate:
             # Manually update plugin using selection
             if (window := getFocusedWindowIndex()) is not None:
+                if window != self._window:
+                    self._changed = True
                 self._window = window
                 if not self._split:
                     self._plug_active = False
                 self._forcePlugUpdate()
             elif (plugin := getFocusedPluginIndex()) is not None:
+                if plugin != self._plugin:
+                    self._changed = True
                 self._plugin = plugin
                 # Ignore typing because len(plugin) doesn't narrow types in mypy
                 if len(plugin) == 1:
@@ -69,6 +75,15 @@ class ActivityState:
                     self._plug_active = True
             else:
                 self._forcePlugUpdate()
+
+    def hasChanged(self) -> bool:
+        """
+        Returns whether the active plugin has changed in the last tick
+
+        ### Returns:
+        * `bool`: whether the active plugin changed
+        """
+        return self._changed
 
     def getActive(self) -> UnsafeIndex:
         """
@@ -166,5 +181,6 @@ class ActivityState:
             raise ValueError("Can't toggle between windows and plugins unless "
                              "they are being addressed independently")
         else:
+            self._changed = True
             self._plug_active = not self._plug_active if value is None else value
             return self._plug_active

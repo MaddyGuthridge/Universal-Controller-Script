@@ -48,11 +48,11 @@ class Plugin:
         """
         return f"Plugin at {type(self)}:\n\n{self._shadow}"
     
-    def apply(self) -> None:
+    def apply(self, thorough: bool) -> None:
         """
         Apply the current state of this plugin to the device
         """
-        self._shadow.apply()
+        self._shadow.apply(thorough)
     
     @classmethod
     @abstractmethod
