@@ -1,8 +1,13 @@
 
 # Novation LaunchKey Mk2
 
-This device should work out of the box with no additional configuration
-required.
+## Setup
+
+1. Open FL Studio's MIDI Settings, and set a port for the controller listed as
+   `MIDIIN2 (Novation Launchkey Mk2)` in both the input and output sections.
+   Assign this device to the controller type "Universal Event Forwarded (user)",
+   so that events from this script can be forwarded to the main script to be
+   processed.
 
 ## Who to contact
 This device is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
