@@ -6,7 +6,7 @@ from common.types import EventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy
 from devices import Device, BasicControlMatcher
-from devices.controlgenerators import NoteMatcher, getPedals
+from devices.controlgenerators import NoteMatcher, PedalMatcher
 
 from controlsurfaces import (
     NullEvent,
@@ -48,7 +48,7 @@ class Hammer88Pro(Device):
         
         # Notes and pedals
         matcher.addSubMatcher(NoteMatcher())
-        matcher.addControls(getPedals())
+        matcher.addSubMatcher(PedalMatcher())
         matcher.addControl(ChannelAfterTouch())
         
         # Drum pads
