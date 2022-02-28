@@ -78,6 +78,7 @@ class ProfilerManager:
     
     def __init__(self) -> None:
         self._current: Optional[ProfileNode] = None
+        self._max_name = 0
         self._totals: dict[str, float] = {}
         self._number: dict[str, float] = {}
         self._maxes: dict[str, float] = {}
@@ -114,6 +115,8 @@ class ProfilerManager:
         parent = self._current.parent
         name = self._getProfileName(self._current)
         t = self._current.getTime() / 1_000_000
+        if len(name) > self._max_name:
+            self._max_name = len(name)
         if name in self._totals:
             self._totals[name] += t
             self._number[name] += 1
@@ -129,12 +132,12 @@ class ProfilerManager:
         """
         Inspect details about the profiler
         """
-        header = f" {'Name'.ljust(MAX_NAME)}| Total (ms)     | Samples | Ave (ms)   | Max (ms)"
+        header = f" {'Name'.ljust(self._max_name)} | Total (ms)     | Samples | Ave (ms)   | Max (ms)"
         print()
         print(header)
         print('='*len(header))
         for (name, total), number, max in zip(self._totals.items(), self._number.values(), self._maxes.values()):
             ave = total/number
-            print(f" {name[-MAX_NAME:].ljust(MAX_NAME)}| {total: 14.5f} | {number:7} | {ave: 10.5f} | {max: 10.5f}")
+            print(f" {name.ljust(self._max_name)} | {total: 14.5f} | {number:7} | {ave: 10.5f} | {max: 10.5f}")
         print()
         return NoneNoPrintout

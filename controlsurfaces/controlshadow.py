@@ -65,10 +65,11 @@ class ControlShadow:
         return self._value
     @value.setter
     def value(self, newVal: float) -> None:
-        if not (0 <= newVal <= 1):
-            raise ValueError("Value must be within range 0-1")
-        self._value = newVal
-        self._changed = True
+        if self._value != newVal:
+            if not (0 <= newVal <= 1):
+                raise ValueError("Value must be within range 0-1")
+            self._value = newVal
+            self._changed = True
     
     @property
     def color(self) -> Color:
@@ -79,8 +80,9 @@ class ControlShadow:
         return self._color
     @color.setter
     def color(self, newColor: Color) -> None:
-        self._color = newColor
-        self._changed = True
+        if self._color != newColor:
+            self._color = newColor
+            self._changed = True
 
     @property
     def annotation(self) -> str:
@@ -91,8 +93,9 @@ class ControlShadow:
         return self._annotation
     @annotation.setter
     def annotation(self, newAnnotation: str) -> None:
-        self._annotation = newAnnotation
-        self._changed = True
+        if self._annotation != newAnnotation:
+            self._annotation = newAnnotation
+            self._changed = True
     
     @property
     def group(self) -> str:
