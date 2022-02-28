@@ -12,13 +12,12 @@ Authors:
 from typing import Optional, final
 from abc import abstractmethod
 
-from common import IEventPattern
+from common import IEventPattern, ProfilerContext
 from common.types import EventData, Color
 
 from .valuestrategies import IValueStrategy
 
-from .controlshadow import ControlShadow
-from .controlmapping import ControlMapping
+from .controlmapping import ControlEvent, ControlMapping
 
 class ControlSurface:
     """
@@ -27,8 +26,8 @@ class ControlSurface:
     This class is extended by all other control surfaces.
     """
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         """
         Returns a list of the control's assignment priorities
@@ -64,23 +63,24 @@ class ControlSurface:
           Used if controls form a 2D grid (eg, drum pads). Defaults to (0, 0).
         """
         self._pattern =  event_pattern
-        self.__color = Color()
-        self.__annotation = ""
-        self.__value = 0.0
-        self.__value_strategy = value_strategy
-        self.__group = group
-        self.__coord = coordinate
+        self._color = Color()
+        self._annotation = ""
+        self._value = value_strategy.getValueFromFloat(0.0)
+        self._value_strategy = value_strategy
+        self._group = group
+        self._coord = coordinate
     
     def __repr__(self) -> str:
         """
         String representation of the control surface
         """
-        return f"{self.__class__}, ({self.__group}: {self.__coord}, {self.value})"
+        return f"{self.__class__}, ({self._group}: {self._coord}, {self.value})"
     
     @final
     def getMapping(self) -> ControlMapping:
         """
-        Returns a mapping to this control
+        Returns a mapping to this control, for the purpose of acting as a key
+        to the control in a dictionary.
 
         Mappings are used to refer to a control without being able to easily
         modify its value.
@@ -91,20 +91,21 @@ class ControlSurface:
         return ControlMapping(self)
 
     @final
-    def match(self, event: EventData) -> Optional[ControlMapping]:
+    def match(self, event: EventData) -> Optional[ControlEvent]:
         """
-        Returns a control mapping of this control if the given event matches this 
+        Returns a control event if the given event matches this 
         control surface, otherwise returns None
 
         ### Args:
         * `event` (`eventData`): event to potentially match
 
         ### Returns:
-        * `Optional[ControlMapping]`: control mapping, if the event maps
+        * `Optional[ControlEvent]`: control mapping, if the event maps
         """
         if self._pattern.matchEvent(event):
-            self.__value = self.__value_strategy.getValueFromEvent(event)
-            return self.getMapping()
+            self._value = self._value_strategy.getValueFromEvent(event)
+            channel = self._value_strategy.getChannelFromEvent(event)
+            return ControlEvent(self, self.value, channel)
         else:
             return None
 
@@ -116,14 +117,14 @@ class ControlSurface:
         """
         Coordinate of the control. Read only.
         """
-        return self.__coord
+        return self._coord
     
     @property
     def group(self) -> str:
         """
         The group that this control is a member of.
         """
-        return self.__group
+        return self._group
 
     @property
     def color(self) -> Color:
@@ -133,12 +134,11 @@ class ControlSurface:
         On compatible controllers, this can be displayed on the control using
         LED lighting.
         """
-        return self.__color
+        return self._color
     @color.setter
     def color(self, c: Color):
-        prev = self.__color
-        self.__color = c
-        if prev != c:
+        if self._color != c:
+            self._color = c
             self.onColorChange()
 
     @property
@@ -149,12 +149,11 @@ class ControlSurface:
         On compatible controllers, this can be displayed as text near the
         control.
         """
-        return self.__annotation
+        return self._annotation
     @annotation.setter
     def annotation(self, a: str):
-        prev = self.__annotation
-        self.__annotation = a
-        if prev != a:
+        if self._annotation != a:
+            self._annotation = a
             self.onAnnotationChange()
     
     @property
@@ -167,14 +166,17 @@ class ControlSurface:
         represented in other ways inside the class. The way it is gotten and set
         is determined by the functions _getValue() and _setValue() respectively.
         """
-        return self.__value_strategy.getFloatFromValue(self.__value)
+        return self._value_strategy.getFloatFromValue(self._value)
     @value.setter
-    def value(self, newValue: float) -> None:
-        # Ensure value is within bounds
-        if not (0 < newValue < 1):
-            raise ValueError(f"Value for control must be between "
-                             f"0 and 1")
-        self.__value = self.__value_strategy.getValueFromFloat(newValue)
+    def value(self, v: float) -> None:
+        val = self._value_strategy.getValueFromFloat(v)
+        if self._value != val:
+            # Ensure value is within bounds
+            if not (0 <= v <= 1):
+                raise ValueError(f"Value for control must be between "
+                                f"0 and 1")
+            self._value = val
+            self.onValueChange()
 
     ############################################################################
     # Events

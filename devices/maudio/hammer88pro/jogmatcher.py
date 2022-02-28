@@ -20,7 +20,7 @@ from controlsurfaces.valuestrategies import IValueStrategy, ForwardedUnionStrate
 from controlsurfaces import consts
 from controlsurfaces import (
     ControlSurface,
-    ControlMapping,
+    ControlEvent,
     NullEvent,
     StandardJogWheel,
     MoveJogWheel
@@ -45,6 +45,9 @@ class JogValueStrategy(IValueStrategy):
         # Press
         else:
             return consts.ENCODER_NULL
+    
+    def getChannelFromEvent(self, event: EventData) -> int:
+        return -1
     
     def getValueFromFloat(self, f: float):
         return f
@@ -92,7 +95,7 @@ class JogMatcher(IControlMatcher):
         self._pressed = False
         self._used_since_press = False
         
-    def matchEvent(self, event: EventData) -> Optional[ControlMapping]:
+    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
         # If it's not a jog wheel event, ignore it
         if not self._pattern.matchEvent(event):
             return None
@@ -101,10 +104,10 @@ class JogMatcher(IControlMatcher):
         if self._jog_press_pattern.matchEvent(event):
             if self._value_strat.getValueFromEvent(event) == 0.0:
                 self._pressed = True
-                return self._null.getMapping()
+                return ControlEvent(self._null, 0.0, -1)
             else:
                 if self._used_since_press:
-                    ret: Optional[ControlMapping] = self._null.getMapping()
+                    ret: Optional[ControlEvent] = ControlEvent(self._null, 0.0, -1)
                 else:
                     ret = self._jog_standard.match(event)
                 self._pressed = False

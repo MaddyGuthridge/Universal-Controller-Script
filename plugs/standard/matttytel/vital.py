@@ -4,11 +4,11 @@ from typing import Any
 import plugins
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import GeneratorIndex
-from controlsurfaces.controlshadow import ControlShadow
+from controlsurfaces import ControlShadowEvent
 from controlsurfaces import Fader
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.eventfilters import filterToGeneratorIndex
+from plugs import eventfilters, tickfilters
 
 MACRO_START = 211
 
@@ -29,9 +29,13 @@ class Vital(StandardPlugin):
     def getPlugIds() -> tuple[str, ...]:
         return ("Vital",)
 
-    @filterToGeneratorIndex
-    def faders(self, control: ControlShadow, index: GeneratorIndex, idx: int, *args: Any) -> bool:
-        plugins.setParamValue(control.getCurrentValue(), MACRO_START + control.coordinate[1], *index)
+    @tickfilters.toGeneratorIndex
+    def tick(self, index: GeneratorIndex):
+        pass
+
+    @eventfilters.toGeneratorIndex
+    def faders(self, control: ControlShadowEvent, index: GeneratorIndex, idx: int, *args: Any) -> bool:
+        plugins.setParamValue(control.value, MACRO_START + control.getShadow().coordinate[1], *index)
         return True
 
 ExtensionManager.registerPlugin(Vital)

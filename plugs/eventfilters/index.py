@@ -5,9 +5,9 @@ Contains filters for filtering by plugin and window indexes
 """
 from typing import Any
 from common.util.apifixes import UnsafePluginIndex
-from controlsurfaces import ControlShadow
+from controlsurfaces import ControlShadowEvent
 
-def filterToPluginIndex(func, method:bool=True):
+def toPluginIndex(func, method:bool=True):
     """
     Filter out events when the index is not a plugin
 
@@ -20,19 +20,19 @@ def filterToPluginIndex(func, method:bool=True):
     * `EventCallback`: decorated function
     """
     if method:
-        def wrapper_method(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper_method(self, control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if not isinstance(index, tuple):
                 return False
             return func(self, control, index, *args, **kwargs)
         return wrapper_method
     else:
-        def wrapper(control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper(control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if not isinstance(index, tuple):
                 return False
             return func(control, index, *args, **kwargs)
         return wrapper
 
-def filterToGeneratorIndex(func, method:bool=True):
+def toGeneratorIndex(func, method:bool=True):
     """
     Filter out events when the index is not a generator plugin
 
@@ -45,19 +45,19 @@ def filterToGeneratorIndex(func, method:bool=True):
     * `EventCallback`: decorated function
     """
     if method:
-        def wrapper_method(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper_method(self, control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if not isinstance(index, tuple) or len(index) != 1:
                 return False
             return func(self, control, index, *args, **kwargs)
         return wrapper_method
     else:
-        def wrapper(control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper(control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if not isinstance(index, tuple) or len(index) != 1:
                 return False
             return func(control, index, *args, **kwargs)
         return wrapper
 
-def filterToEffectIndex(func, method:bool=True):
+def toEffectIndex(func, method:bool=True):
     """
     Filter out events when the index is not an effect plugin
 
@@ -70,19 +70,19 @@ def filterToEffectIndex(func, method:bool=True):
     * `EventCallback`: decorated function
     """
     if method:
-        def wrapper_method(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper_method(self, control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if not isinstance(index, tuple) or len(index) != 2:
                 return False
             return func(self, control, index, *args, **kwargs)
         return wrapper_method
     else:
-        def wrapper(control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper(control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if not isinstance(index, tuple) or len(index) != 2:
                 return False
             return func(control, index, *args, **kwargs)
         return wrapper
 
-def filterToWindowIndex(func, method:bool=True):
+def toWindowIndex(func, method:bool=True):
     """
     Filter out events when the index is not a window
 
@@ -95,19 +95,19 @@ def filterToWindowIndex(func, method:bool=True):
     * `EventCallback`: decorated function
     """
     if method:
-        def wrapper_method(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper_method(self, control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if not isinstance(index, int):
                 return False
             return func(self, control, index, *args, **kwargs)
         return wrapper_method
     else:
-        def wrapper(control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper(control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if not isinstance(index, int):
                 return False
             return func(control, index, *args, **kwargs)
         return wrapper
 
-def filterToSafeIndex(func, method:bool=True):
+def toSafeIndex(func, method:bool=True):
     """
     Filter out events when the index is None
 
@@ -120,13 +120,13 @@ def filterToSafeIndex(func, method:bool=True):
     * `EventCallback`: decorated function
     """
     if method:
-        def wrapper_method(self, control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper_method(self, control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if index is None:
                 return False
             return func(self, control, index, *args, **kwargs)
         return wrapper_method
     else:
-        def wrapper(control: ControlShadow, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
+        def wrapper(control: ControlShadowEvent, index: UnsafePluginIndex, *args: Any, **kwargs: Any) -> bool:
             if index is None:
                 return False
             return func(control, index, *args, **kwargs)

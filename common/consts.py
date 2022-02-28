@@ -8,7 +8,7 @@ Authors:
 """
 
 # Version info
-VERSION = (0, 2, 1)
+VERSION = (0, 3, 0)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
@@ -71,6 +71,10 @@ ASCII_HEADER_ART = """
             '.'   '''
               '.''
 """
+
+# Device type constants
+DEVICE_TYPE_CONTROLLER = 1
+DEVICE_TYPE_FORWARDER = 2
 
 # The starting point for control change parameters in plugins
 PARAM_CC_START = 4096

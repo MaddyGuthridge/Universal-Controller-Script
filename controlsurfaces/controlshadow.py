@@ -10,7 +10,7 @@ Authors:
 
 from typing import TYPE_CHECKING
 from common.types import Color
-from .controlmapping import ControlMapping
+from .controlmapping import ControlEvent, ControlMapping
 
 if TYPE_CHECKING:
     from . import ControlSurface
@@ -36,6 +36,7 @@ class ControlShadow:
         self._value = control.value
         self._color = control.color.copy()
         self._annotation = control.annotation
+        self._changed = False
 
     def __repr__(self) -> str:
         return f"Shadow of {self._control}"
@@ -54,18 +55,6 @@ class ControlShadow:
         Returns a ControlMapping to the control
         """
         return self._control.getMapping()
-    
-    def getCurrentValue(self) -> float:
-        """
-        Returns the value currently applied to this control.
-        
-        NOTE: This differs from the value which will be applied to the control,
-        which is stored in the `value` property.
-
-        ### Returns:
-        * `float`: value of the event (0 - 1.0)
-        """
-        return self._control.value
 
     @property
     def value(self) -> float:
@@ -76,9 +65,11 @@ class ControlShadow:
         return self._value
     @value.setter
     def value(self, newVal: float) -> None:
-        if not (0 <= newVal <= 1):
-            raise ValueError("Value must be within range 0-1")
-        self._value = newVal
+        if self._value != newVal:
+            if not (0 <= newVal <= 1):
+                raise ValueError("Value must be within range 0-1")
+            self._value = newVal
+            self._changed = True
     
     @property
     def color(self) -> Color:
@@ -89,7 +80,9 @@ class ControlShadow:
         return self._color
     @color.setter
     def color(self, newColor: Color) -> None:
-        self._color = newColor
+        if self._color != newColor:
+            self._color = newColor
+            self._changed = True
 
     @property
     def annotation(self) -> str:
@@ -100,7 +93,9 @@ class ControlShadow:
         return self._annotation
     @annotation.setter
     def annotation(self, newAnnotation: str) -> None:
-        self._annotation = newAnnotation
+        if self._annotation != newAnnotation:
+            self._annotation = newAnnotation
+            self._changed = True
     
     @property
     def group(self) -> str:
@@ -116,11 +111,13 @@ class ControlShadow:
         """
         return self._control.coordinate
 
-    def apply(self) -> None:
+    def apply(self, thorough: bool) -> None:
         """
         Apply the configuration of the control shadow to the control it
         represents
         """
-        self._control.color = self.color
-        self._control.annotation = self.annotation
-        self._control.value = self.value
+        if thorough or self._changed:
+            self._control.color = self.color
+            self._control.annotation = self.annotation
+            self._control.value = self.value
+            self._changed = False

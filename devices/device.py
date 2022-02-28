@@ -11,10 +11,11 @@ Authors:
 
 from typing import Optional, final
 from common import IEventPattern
+from common import ProfilerContext
 from common.types import EventData
 from controlsurfaces import ControlShadow
 
-from controlsurfaces import ControlMapping
+from controlsurfaces import ControlEvent
 from devices import IControlMatcher
 from abc import abstractmethod
 
@@ -38,8 +39,8 @@ class Device:
         """
         self._matcher = control_matcher
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, event: Optional[EventData]) -> 'Device':
         """
         Create an instance of this device
@@ -57,8 +58,8 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getId() -> str:
         """
         Returns the id of the device, in the form:
@@ -71,8 +72,8 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
         """
         Returns the event pattern from which a device can be recognised so that
@@ -86,8 +87,8 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def matchDeviceName(name: str) -> bool:
         """
         Returns whether this device matches the name given, where the name is
@@ -105,8 +106,8 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getDrumPadSize() -> tuple[int, int]:
         """
         Returns the size of the grid of drum pads used by the controller
@@ -141,10 +142,16 @@ class Device:
         such as maintaining a heartbeat event.
         
         Can be overridden by child classes.
+        
+        WARNING: Ensure that the super function is still called or control
+        surfaces won't get ticked correctly
         """
+        for c in self._matcher.getControls():
+            # with ProfilerContext("Tick control"):
+                c.tick()
 
     @final
-    def matchEvent(self, event: EventData) -> Optional[ControlMapping]:
+    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
         """
         Match an event from the device, so that the script can operate on it.
         

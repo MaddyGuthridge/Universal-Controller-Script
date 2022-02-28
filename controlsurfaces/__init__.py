@@ -11,7 +11,7 @@ Authors:
 from . import consts
 from .controlsurface import ControlSurface
 from .controlshadow import ControlShadow
-from .controlmapping import ControlMapping
+from .controlmapping import *
 from .valuestrategies import *
 
 from .nullevent import *
@@ -27,5 +27,3 @@ from .fader import Fader
 from .knob import Knob
 from .encoder import Encoder
 from .drumpad import DrumPad
-
-from . import controlgenerators

@@ -9,6 +9,7 @@ Authors:
 """
 from .ivaluestrategy import IValueStrategy
 
+from .notestrategy import NoteStrategy
 from .datastrategy import Data2Strategy, Data1Strategy
 from .buttondata2strategy import ButtonData2Strategy
 from .buttonsinglepressstrategy import ButtonSinglePressStrategy

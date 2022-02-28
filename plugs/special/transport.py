@@ -8,7 +8,7 @@ from typing import Any
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import UnsafeIndex
 from controlsurfaces import (
-    ControlShadow,
+    ControlShadowEvent,
     NullEvent,
     PlayButton,
     StopButton,
@@ -40,6 +40,7 @@ class Transport(SpecialPlugin):
     commands and navigation commands.
     """
     def __init__(self, shadow: DeviceShadow) -> None:
+        shadow.setTransparent(True)
         super().__init__(shadow, [])
         shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)
         shadow.bindMatch(PlayButton, self.playButton, raise_on_failure=False)
@@ -57,38 +58,41 @@ class Transport(SpecialPlugin):
     def shouldBeActive() -> bool:
         return True
     
+    def tick(self):
+        pass
+    
     @filterButtonLift
-    def playButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
+    def playButton(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         transport.start()
         return True
 
     @filterButtonLift
-    def stopButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
+    def stopButton(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         transport.stop()
         return True
 
     @filterButtonLift
-    def recButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
+    def recButton(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         transport.record()
         return True
     
     @filterButtonLift
-    def loopButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
+    def loopButton(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         transport.setLoopMode()
         return True
     
     @filterButtonLift
-    def metroButton(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
+    def metroButton(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         transport.globalTransport(110, 1)
         return True
     
-    def nullEvent(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
+    def nullEvent(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         """Handle NullEvents for which no action should be taken
         """
         return True
     
     @filterButtonLift
-    def navigationButtons(self, control: ControlShadow, index: UnsafeIndex, *args: Any) -> bool:
+    def navigationButtons(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         c_type = type(control.getControl())
         if c_type == DirectionUp:
             ui.up()

@@ -5,6 +5,9 @@ A device shadow is an object representing a plugin's own private copy of a
 device's state. It allows the plugin to manipulate the device without impacting
 the state of other plugins.
 
+See also:
+* [Control shadow](controlshadow.md)
+
 ## Methods
 
 Refer to inline documentation for full descriptions. Note that only methods

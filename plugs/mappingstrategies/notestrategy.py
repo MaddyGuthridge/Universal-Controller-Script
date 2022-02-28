@@ -14,7 +14,7 @@ from common.util.apifixes import UnsafeIndex, PluginIndex
 from common import getContext
 
 from controlsurfaces import Note
-from controlsurfaces import ControlShadow
+from controlsurfaces import ControlShadowEvent
 from devices import DeviceShadow
 # from plugs.eventfilters import filterToGeneratorIndex
 from . import IMappingStrategy
@@ -33,7 +33,7 @@ class NoteStrategy(IMappingStrategy):
 
     def noteCallback(
         self,
-        control: ControlShadow,
+        control: ControlShadowEvent,
         index: UnsafeIndex,
         *args: Any,
         **kwargs: Any
@@ -41,7 +41,9 @@ class NoteStrategy(IMappingStrategy):
         channels.midiNoteOn(
             *getContext().active.getGenerator(),
             control.getControl().coordinate[1],
-            int(control.getCurrentValue()*127),
-            # TODO: Use MIDI channels
+            int(control.value*127),
+            # NOTE: Currently FL Studio won't set the note color correctly
+            # from this channel
+            control.channel
         )
         return True

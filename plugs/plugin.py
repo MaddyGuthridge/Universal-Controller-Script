@@ -6,8 +6,8 @@ StandardPlugin and SpecialPlugin.
 """
 
 from common import log, verbosity
-from common.util.apifixes import UnsafeIndex, WindowIndex
-from controlsurfaces import ControlMapping
+from common.util.apifixes import UnsafeIndex, WindowIndex, PluginIndex
+from controlsurfaces import ControlEvent
 from devices import DeviceShadow
 from plugs.mappingstrategies import IMappingStrategy
 from abc import abstractmethod
@@ -48,8 +48,14 @@ class Plugin:
         """
         return f"Plugin at {type(self)}:\n\n{self._shadow}"
     
-    @abstractmethod
+    def apply(self, thorough: bool) -> None:
+        """
+        Apply the current state of this plugin to the device
+        """
+        self._shadow.apply(thorough)
+    
     @classmethod
+    @abstractmethod
     def create(cls, shadow: DeviceShadow) -> 'Plugin':
         """
         Create and return an instance of this plugin
@@ -61,8 +67,8 @@ class Plugin:
                                   "classes")
     
     @final
-    def processEvent(self, mapping: ControlMapping, index: UnsafeIndex) -> bool:
-        log("plugins", f"Processing event at {type(self)}", verbosity=verbosity.NOTE)
+    def processEvent(self, mapping: ControlEvent, index: UnsafeIndex) -> bool:
+        log("plugins", f"Processing event at {type(self)}", verbosity=verbosity.EVENT)
         return self._shadow.processEvent(mapping, index)
 
 class StandardPlugin(Plugin):
@@ -70,8 +76,8 @@ class StandardPlugin(Plugin):
     Standard plugins, representing VST or FL generators and effects
     """
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getPlugIds() -> tuple[str, ...]:
         """
         Returns the names of the plugins this class should be associated with.
@@ -84,11 +90,22 @@ class StandardPlugin(Plugin):
         raise NotImplementedError("This method must be implemented by child "
                                   "classes")
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         """
         Create and return an instance of this plugin
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+    
+    @abstractmethod
+    def tick(self, index: PluginIndex) -> None:
+        """
+        Tick the plugin, to allow parameters to update if required
+        
+        ### Args:
+        * `index` (`PluginIndex`): index of plugin
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
@@ -98,8 +115,8 @@ class WindowPlugin(Plugin):
     Window plugins, representing FL Studio windows
     """
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def getWindowId() -> WindowIndex:
         """
         Returns the ID of the window this class should be associated with.
@@ -112,11 +129,19 @@ class WindowPlugin(Plugin):
         raise NotImplementedError("This method must be implemented by child "
                                   "classes")
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
         """
         Create and return an instance of this plugin
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+    
+    @abstractmethod
+    def tick(self) -> None:
+        """
+        Tick the plugin, to allow parameters to update if required
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
@@ -126,8 +151,8 @@ class SpecialPlugin(Plugin):
     Special plugins, representing other plugins
     """
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def shouldBeActive() -> bool:
         """
         Returns whether this plugin should be used to process the event
@@ -140,11 +165,19 @@ class SpecialPlugin(Plugin):
         raise NotImplementedError("This method must be implemented by child "
                                   "classes")
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         """
         Create and return an instance of this plugin
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+    
+    @abstractmethod
+    def tick(self) -> None:
+        """
+        Tick the plugin, to allow parameters to update if required
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")

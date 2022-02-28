@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from common.types import EventData
+from common.types.eventdata import EventData, isEventStandard
 from . import IValueStrategy
 
 class DataStrategy(IValueStrategy):
@@ -26,6 +26,10 @@ class DataStrategy(IValueStrategy):
         self._prop = prop
     def getValueFromEvent(self, event: EventData) -> int:
         return getattr(event, self._prop)
+    
+    def getChannelFromEvent(self, event: EventData) -> int:
+        assert isEventStandard(event)
+        return event.status & 0xF
     
     def getValueFromFloat(self, f: float) -> int:
         return int(f * 127)

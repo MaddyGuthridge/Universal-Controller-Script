@@ -16,6 +16,8 @@ Note that value strategies should be stateless.
 
 * `getValueFromEvent(self, event: eventData) -> T`: Returns a value for internal
   use with this strategy, given a MIDI event.
+* `getChannelFromEvent(self, event: EventData) -> int`: Returns the channel
+  that the event is associated with, or -1 for no channel.
 * `getValueFromFloat(self, f: float) -> T`: Returns a value for internal use
   with this strategy, given a float between 0 and 1.
 * `getFloatFromValue(self, value: T) -> float`: Returns a float between 0 and 1

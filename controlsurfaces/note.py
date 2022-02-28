@@ -8,24 +8,8 @@ Authors:
 """
 from common.types.eventdata import EventData, isEventStandard
 from common.eventpattern import BasicPattern, fromNibbles
-from . import ControlSurface, IValueStrategy
+from . import ControlSurface, NoteStrategy
 
-class NoteValueStrategy(IValueStrategy):
-    """
-    The strategy to get data values from note events
-    """
-    def getValueFromEvent(self, event: EventData) -> int:
-        assert isEventStandard(event)
-        if 0x80 <= event.status < 0x90:
-            return 0
-        else:
-            return event.data2
-    
-    def getFloatFromValue(self, value: int) -> float:
-        return value / 127
-    
-    def getValueFromFloat(self, f: float) -> int:
-        return int(f * 127)
 
 class Note(ControlSurface):
     """
@@ -33,8 +17,8 @@ class Note(ControlSurface):
     """
     def __init__(self, note_num: int, channel:int = 0) -> None:
         super().__init__(
-            BasicPattern(fromNibbles((8, 9), channel), note_num, ...),
-            NoteValueStrategy(),
+            BasicPattern(fromNibbles((8, 9), ...), note_num, ...),
+            NoteStrategy(),
             "notes",
             (channel, note_num)
         )

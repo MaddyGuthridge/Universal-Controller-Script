@@ -2,13 +2,14 @@
 from typing import Any
 
 import plugins
+from common.types import Color
 from common.extensionmanager import ExtensionManager
-from common.util.apifixes import GeneratorIndex
-from controlsurfaces.controlshadow import ControlShadow
+from common.util.apifixes import GeneratorIndex, UnsafeIndex
+from controlsurfaces import ControlShadowEvent
 from controlsurfaces import Fader
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.eventfilters import filterToGeneratorIndex
+from plugs import eventfilters,tickfilters
 
 # Generate list of supported plugins
 # HELP WANTED: I don't own all of these libraries, so the naming may be
@@ -47,8 +48,14 @@ class SpitfireGeneric(StandardPlugin):
     Used to interact with Spitfire Audio plugins, mapping faders to parameters
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(
+        self._faders = shadow.bindMatches(
             Fader, self.faders, ..., target_num=2, raise_on_failure=False)
+        
+        # Set annotation and colors once (since they won't change)
+        self._faders[0].annotation = "Expression"
+        self._faders[0].color = Color.fromRgb(127, 127, 127)
+        self._faders[1].annotation = "Dynamics"
+        self._faders[1].color = Color.fromRgb(127, 127, 127)
         super().__init__(shadow, [])
     
     @classmethod
@@ -59,9 +66,15 @@ class SpitfireGeneric(StandardPlugin):
     def getPlugIds() -> tuple[str, ...]:
         return SUPPORTED_PLUGINS
 
-    @filterToGeneratorIndex
-    def faders(self, control: ControlShadow, index: GeneratorIndex, idx: int, *args: Any) -> bool:
-        plugins.setParamValue(control.getCurrentValue(), control.coordinate[1], *index)
+    @tickfilters.toGeneratorIndex
+    def tick(self, index: GeneratorIndex):
+        # self._faders[0].value = plugins.getParamValue(0, *index)
+        # self._faders[1].value = plugins.getParamValue(1, *index)
+        pass
+
+    @eventfilters.toGeneratorIndex
+    def faders(self, control: ControlShadowEvent, index: GeneratorIndex, idx: int, *args: Any) -> bool:
+        plugins.setParamValue(control.value, control.getShadow().coordinate[1], *index)
         return True
 
 ExtensionManager.registerPlugin(SpitfireGeneric)

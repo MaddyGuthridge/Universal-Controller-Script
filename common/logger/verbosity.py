@@ -11,6 +11,7 @@ Authors:
 __all__ = [
     'Verbosity',
     'MOST_VERBOSE',
+    'EVENT',
     'NOTE',
     'INFO',
     "WARNING",

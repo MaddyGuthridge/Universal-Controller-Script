@@ -10,9 +10,9 @@ from typing import Any
 from common.consts import PARAM_CC_START
 from common.util.apifixes import PluginIndex, isPluginVst
 from controlsurfaces.pedal import *
-from controlsurfaces import ControlShadow
+from controlsurfaces import ControlShadowEvent, ControlShadow
 from devices import DeviceShadow
-from plugs.eventfilters import filterToPluginIndex
+from plugs.eventfilters import toPluginIndex
 from . import IMappingStrategy
 
 class PedalStrategy(IMappingStrategy):
@@ -51,10 +51,10 @@ class PedalStrategy(IMappingStrategy):
             raise_on_failure=False
         )
     
-    @filterToPluginIndex
+    @toPluginIndex
     def pedalCallback(
         self,
-        control: ControlShadow,
+        control: ControlShadowEvent,
         index: PluginIndex,
         t_ped: type[Pedal],
         *args: tuple[Any]
@@ -63,7 +63,7 @@ class PedalStrategy(IMappingStrategy):
         Called when a pedal event is detected
 
         ### Args:
-        * `control` (`ControlShadow`): control surface shadow that was detected
+        * `control` (`ControlShadowEvent`): control surface shadow that was detected
         * `index` (`PluginIndex`): index of plugin to map to
         * `t_ped` (`type[Pedal]`): type of pedal that was called
 
@@ -84,11 +84,11 @@ class PedalStrategy(IMappingStrategy):
         
         # Assign parameters
         if t_ped is SustainPedal:
-            plugins.setParamValue(control.getCurrentValue(), PARAM_CC_START + SUSTAIN, *index)
+            plugins.setParamValue(control.value, PARAM_CC_START + SUSTAIN, *index)
         elif t_ped is SostenutoPedal:
-            plugins.setParamValue(control.getCurrentValue(), PARAM_CC_START + SOSTENUTO, *index)
+            plugins.setParamValue(control.value, PARAM_CC_START + SOSTENUTO, *index)
         elif t_ped is SustainPedal:
-            plugins.setParamValue(control.getCurrentValue(), PARAM_CC_START + SOFT, *index)
+            plugins.setParamValue(control.value, PARAM_CC_START + SOFT, *index)
         else:
             raise NotImplementedError("Pedal type not recognised")
         

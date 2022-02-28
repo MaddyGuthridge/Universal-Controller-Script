@@ -4,10 +4,32 @@ common > util > events
 Contains useful functions for operating on events.
 """
 
+from typing import Optional, TYPE_CHECKING
 import device
-from common.types import EventData
+from common import log
+from common.types.eventdata import EventData, isEventStandard, isEventSysex
 
-from typing import TYPE_CHECKING
+def parseDeviceName() -> str:
+    """
+    Determine the name of the device (minus all the MIDIIN2 rubbish)
+
+    WARNING: This may not work on MacOS
+
+    ### Returns:
+    * `str`: device name
+    """
+    name = device.getName()
+    
+    if name.startswith("MIDIIN"):
+        name = name.lstrip("MIDIIN")
+        bracket_start = name.find("(")
+        return name[bracket_start+1:-1]
+    else:
+        return name
+        
+
+FORWARDED_EVENT_HEADER: Optional[bytes] = None
+DEVICE_NAME = parseDeviceName()
 
 def isEventForwarded(event: EventData) -> bool:
     """
@@ -24,11 +46,45 @@ def isEventForwarded(event: EventData) -> bool:
     """
     # Check if the event is a forwarded one
     # Look for 0xF0 and 0x7D
-    if event.sysex is None \
+    if not isEventSysex(event) \
         or not event.sysex.startswith(bytes([0xF0, 0x7D])):
             return False
     else:
         return True
+
+def initForwardedEventHeader():
+    global FORWARDED_EVENT_HEADER
+    
+    name = device.getName()
+    
+    if name.startswith("MIDIIN"):
+        name = name.lstrip("MIDIIN")
+        bracket_start = name.find("(")
+        name = name[bracket_start+1:-1]
+    
+    FORWARDED_EVENT_HEADER = bytes([
+        0xF0, # Start sysex
+        0x7D  # Non-commercial sysex ID
+    ]) + name.encode() \
+       + bytes([0])
+
+def encodeForwardedEvent(event: EventData, device_num: int) -> bytes:
+    if FORWARDED_EVENT_HEADER is None:
+        initForwardedEventHeader()
+    assert FORWARDED_EVENT_HEADER is not None
+    sysex = FORWARDED_EVENT_HEADER + bytes([device_num])
+    
+    if isEventStandard(event):
+        return sysex + bytes([0]) + bytes([
+            event.data2,
+            event.data1,
+            event.status,
+            0xF7
+        ])
+    else:
+        if TYPE_CHECKING: # TODO: Find a way to make this unnecessary
+            assert isEventSysex(event)
+        return sysex + bytes([1]) + bytes(event.sysex)
 
 def _getForwardedNameEndIdx(event: EventData) -> int:
     """
@@ -40,7 +96,7 @@ def _getForwardedNameEndIdx(event: EventData) -> int:
     ### Returns:
     * `int`: index of null zero
     """
-    assert event.sysex is not None
+    assert isEventSysex(event)
     return event.sysex.index(b'\0')
 
 def isEventForwardedHere(event: EventData) -> bool:
@@ -56,12 +112,10 @@ def isEventForwardedHere(event: EventData) -> bool:
     """
     if not isEventForwarded(event):
         return False
-    # TODO: find a way to make things like this unnecessary
-    # they are yucky to read
-    assert event.sysex is not None
+    assert isEventSysex(event)
     
     if (event.sysex[2:_getForwardedNameEndIdx(event)].decode()
-     != device.getName()
+     != DEVICE_NAME
     ):
         return False
     return True
@@ -81,13 +135,13 @@ def isEventForwardedHereFrom(event: EventData, device_num: int) -> bool:
     if not isEventForwardedHere(event):
         return False
     
-    assert event.sysex is not None
+    assert isEventSysex(event)
     if device_num != event.sysex[_getForwardedNameEndIdx(event)+1]:
         return False
     
     return True
 
-def eventFromForwarded(event: EventData, type_idx:int=-1) -> EventData:
+def decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData:
     """
     Given a forwarded event, decode it and return the original event
 
@@ -102,7 +156,7 @@ def eventFromForwarded(event: EventData, type_idx:int=-1) -> EventData:
     ### Returns:
     * `eventData`: decoded data
     """
-    assert event.sysex is not None
+    assert isEventSysex(event)
     if type_idx == -1:
         type_idx = _getForwardedNameEndIdx(event) + 2
     
@@ -117,6 +171,23 @@ def eventFromForwarded(event: EventData, type_idx:int=-1) -> EventData:
             event.sysex[type_idx+1]
         )
 
+def forwardEvent(event: EventData, device_num: int):
+    """
+    Encode a forwarded event and send it to all available devices
+
+    ### Args:
+    * `event` (`EventData`): event to encode and forward
+    * `device_num` (`int`): device number this was sent from or device number to
+      send to (if on main script)
+    """
+    output = encodeForwardedEvent(event, device_num)
+    # Dispatch to all available devices
+    if device.dispatchReceiverCount() == 0:
+        raise TypeError(f"Unable to forward event to device {device_num}. "
+                        f"Is the controller configured correctly?")
+    for i in range(device.dispatchReceiverCount()):
+        device.dispatch(i, 0xF0, output)
+
 def eventToRawData(event: EventData) -> 'int | bytes':
     """
     Convert event to raw data.
@@ -127,13 +198,10 @@ def eventToRawData(event: EventData) -> 'int | bytes':
     ### Returns:
     * `int | bytes`: data
     """
-    if event.sysex is None:
-        if TYPE_CHECKING:
-            assert event.status is not None
-            assert event.data1 is not None
-            assert event.data2 is not None
+    if isEventStandard(event):
         return (event.status) + (event.data1 << 8) + (event.data2 << 16)
     else:
+        assert isEventSysex(event)
         return event.sysex
 
 def bytesToString(bytes_iter: bytes) -> str:
@@ -158,11 +226,8 @@ def eventToString(event: EventData) -> str:
     ### Returns:
     * `str`: stringified
     """
-    if event.sysex is None:
-        if TYPE_CHECKING:
-            assert event.status is not None
-            assert event.data1 is not None
-            assert event.data2 is not None
+    if isEventStandard(event):
         return f"(0x{event.status:02X}, 0x{event.data1:02X}, 0x{event.data2:02X})"
     else:
+        assert isEventSysex(event)
         return bytesToString(event.sysex)

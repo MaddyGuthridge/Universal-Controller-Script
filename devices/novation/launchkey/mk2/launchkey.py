@@ -5,7 +5,7 @@ from common.types import EventData
 from common.extensionmanager import ExtensionManager
 from controlsurfaces.valuestrategies import Data2Strategy,ButtonData2Strategy
 from devices import Device, BasicControlMatcher
-from controlsurfaces.controlgenerators import getNotesAllChannels
+from devices.controlgenerators import NoteMatcher
 
 from controlsurfaces import (
     Fader,
@@ -23,6 +23,7 @@ from controlsurfaces import (
     DirectionNext,
     DirectionPrevious
 )
+from .drumpad import LaunchkeyDrumpad
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
 
@@ -34,7 +35,12 @@ class LaunchkeyMk2(Device):
     def __init__(self, matcher: BasicControlMatcher) -> None:
         
         # Notes
-        matcher.addControls(getNotesAllChannels())
+        matcher.addSubMatcher(NoteMatcher())
+        
+        # Drum pads
+        for r in range(self.getDrumPadSize()[0]):
+            for c in range(self.getDrumPadSize()[1]):
+                matcher.addControl(LaunchkeyDrumpad((r, c)))
         
         # Create knobs
         for i in range(1, 9):

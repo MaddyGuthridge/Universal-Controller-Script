@@ -61,9 +61,9 @@ class MyPlugin(StandardPlugin):
         return ("MyPlugin",)
     
     @filterToGeneratorIndex # Filter out plugins when the active plugin isn't a generator
-    def myCallback(self, control: ControlShadow, index: GeneratorIndex, *args: Any) -> bool:
+    def myCallback(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         # Set the parameter
-        plugins.setParamValue(control.getCurrentValue(), control.coordinate[1], *index)
+        plugins.setParamValue(control.value control.coordinate[1], *index)
         # Handle the event
         return True
 

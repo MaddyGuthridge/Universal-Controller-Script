@@ -17,6 +17,9 @@ class ButtonSinglePressStrategy(IValueStrategy):
     def getValueFromEvent(self, event: EventData) -> bool:
         return True
     
+    def getChannelFromEvent(self, event: EventData) -> int:
+        return -1
+    
     def getValueFromFloat(self, f: float) -> bool:
         return True
 

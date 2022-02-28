@@ -13,7 +13,7 @@ __all__ = [
 ]
 
 from .logitem import LogItem
-from .verbosity import Verbosity, DEFAULT, ERROR
+from .verbosity import Verbosity, DEFAULT, ERROR, NOTE
 
 from ..util.misc import NoneNoPrintout
 
@@ -219,6 +219,13 @@ class Log:
         * `msg` (`str`): message to log
         * `verbosity` (`Verbosity`, optional): verbosity to log under. Defaults to `DEFAULT`.
         """
+        import common
+        try:
+            discarded = common.getContext().settings.get("logger.critical_verbosity")
+        except common.contextmanager.MissingContextException:
+            discarded = NOTE
+        if verbosity > discarded:
+            return
         # TODO: Maybe get traceback
         item = LogItem(category, msg, detailed_msg, verbosity, len(self._history))
         self._history.append(item)

@@ -21,6 +21,18 @@ When a control is instantiated, it is usually given an
 [event pattern](eventpattern.md) used to recognise matching events, and a 
 [value strategy](valuestrategy.md) used to extract a value from the event.
 
+### Control Generators
+
+Some control surfaces, such as notes, need to be generated in bulk for most
+controllers. For cases like these, control generators are available to simplify
+the creation process. They can be found under `devices.controlgenerators`. These
+are all types of control matcher and can be added to a standard control matcher
+using `matcher.addSubMatcher()`.
+
+* `NoteMatcher`: sub matcher for note events
+* `NoteAfterTouchMatcher`: sub matcher for per-note aftertouch
+* `PedalMatcher`: sub matcher for pedals
+
 ## Methods to Implement
 * `@classmethod create(cls, event: Optional[eventData]) -> Device`: Create an 
   instance of this device.

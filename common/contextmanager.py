@@ -15,6 +15,7 @@ __all__ = [
 ]
 
 from typing import NoReturn, Optional, Callable
+from time import time_ns
 
 from .settings import Settings
 from .activitystate import ActivityState
@@ -22,6 +23,7 @@ from .activitystate import ActivityState
 from .util.misc import NoneNoPrintout
 from .util.events import isEventForwarded, isEventForwardedHere
 from .types import EventData
+from .profiler import ProfilerManager
 
 from .states import (
     IScriptState,
@@ -45,6 +47,14 @@ class DeviceContextManager:
         self.active = ActivityState()
         # Set the state of the script to wait for the device to be recognised
         self.state: IScriptState = WaitingForDevice()
+        if self.settings.get("debug.profiling"):
+            self.profiler: Optional[ProfilerManager] = ProfilerManager()
+        else:
+            self.profiler = None
+        # Time the device last ticked at
+        self._last_tick = time_ns()
+        self._ticks = 0
+        self._dropped_ticks = 0
     
     @catchStateChangeException
     def initialise(self) -> None:
@@ -70,8 +80,42 @@ class DeviceContextManager:
         """
         Called frequently to allow any required updates to the controller
         """
-        self.state.tick()
+        # Update number of ticks
+        self._ticks += 1
+        # If the last tick was over 60 ms ago, then our script is getting laggy
+        # Skip this tick to compensate
+        last_tick = self._last_tick
+        self._last_tick = time_ns()
+        if (self._last_tick - last_tick) / 1_000_000 > 60:
+            self._dropped_ticks += 1
+            return
+        # Tick active plugin
         self.active.tick()
+        # The tick the current script state
+        self.state.tick()
+    
+    def getTickNumber(self) -> int:
+        """
+        Returns the tick number of the script
+
+        This is the number of times the script has been ticked
+
+        ### Returns:
+        * `int`: tick number
+        """
+        return self._ticks
+    
+    def getDroppedTicks(self) -> str:
+        """
+        Returns the number of ticks dropped by the controller
+
+        This is a good indicator of script performance
+
+        ### Returns:
+        * `str`: info on dropped ticks
+        """
+        percent = int(self._dropped_ticks / self._ticks * 100)
+        return f"{self._dropped_ticks} dropped ticks ({percent}%)"
     
     def setState(self, new_state: IScriptState) -> NoReturn:
         """

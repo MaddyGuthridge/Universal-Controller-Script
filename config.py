@@ -19,4 +19,5 @@ CONFIG: dict[str, Any] = {
         # "device.event.in"
     ],
     # "logger.max_watched_verbosity": verbosity.NOTE,
+    "debug.profiling": True
 }
