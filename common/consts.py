@@ -8,7 +8,7 @@ Authors:
 """
 
 # Version info
-VERSION = (0, 2, 1)
+VERSION = (0, 3, 0)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
