@@ -39,10 +39,11 @@ class MainState(IScriptState):
 
         # Tick special plugins
         for p in common.ExtensionManager.getSpecialPlugins(self._device):
-            with ProfilerContext(f"Tick {type(p)}"):
-                p.tick()
-            with ProfilerContext(f"Apply {type(p)}"):
-                p.apply(thorough=True)
+            if p.shouldBeActive():
+                with ProfilerContext(f"Tick {type(p)}"):
+                    p.tick()
+                with ProfilerContext(f"Apply {type(p)}"):
+                    p.apply(thorough=True)
 
         # Tick active standard plugin or window
         with ProfilerContext(f"getActive"):
@@ -103,18 +104,22 @@ class MainState(IScriptState):
                     plug_id = ""
                 plug = common.ExtensionManager.getPluginById(plug_id, self._device)
                 if plug is not None:
-                    if plug.processEvent(mapping, plug_idx):
-                        event.handled = True
-                        return
+                    with ProfilerContext(f"Process {type(plug)}"):
+                        if plug.processEvent(mapping, plug_idx):
+                            event.handled = True
+                            return
             else:
                 window = common.ExtensionManager.getWindowById(plug_idx, self._device)
                 if window is not None:
-                    if window.processEvent(mapping, plug_idx):
-                        event.handled = True
-                        return
+                    with ProfilerContext(f"Process {type(window)}"):
+                        if window.processEvent(mapping, plug_idx):
+                            event.handled = True
+                            return
 
         # Get special plugins
         for p in common.ExtensionManager.getSpecialPlugins(self._device):
-            if p.processEvent(mapping, plug_idx):
-                event.handled = True
-                return
+            if p.shouldBeActive():
+                with ProfilerContext(f"Process {type(p)}"):
+                    if p.processEvent(mapping, plug_idx):
+                        event.handled = True
+                        return
