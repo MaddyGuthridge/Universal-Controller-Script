@@ -7,6 +7,10 @@ Contains the profiler manager
 from typing import Optional
 import time
 
+from common.util.consolehelpers import NoneNoPrintout
+
+MAX_NAME = 48
+
 class ProfileNode:
     """
     A node in the profiler
@@ -74,8 +78,9 @@ class ProfilerManager:
     
     def __init__(self) -> None:
         self._current: Optional[ProfileNode] = None
-        self._totals: dict[str, int] = {}
-        self._number: dict[str, int] = {}
+        self._totals: dict[str, float] = {}
+        self._number: dict[str, float] = {}
+        self._maxes: dict[str, float] = {}
     
     def __repr__(self) -> str:
         if not len(self._totals):
@@ -108,18 +113,28 @@ class ProfilerManager:
             raise ValueError("No profile to close")
         parent = self._current.parent
         name = self._getProfileName(self._current)
+        t = self._current.getTime() / 1_000_000
         if name in self._totals:
-            self._totals[name] += self._current.getTime() / 1_000_000
+            self._totals[name] += t
             self._number[name] += 1
+            if self._maxes[name] < t:
+                self._maxes[name] = t
         else:
-            self._totals[name] = self._current.getTime() / 1_000_000
+            self._totals[name] = t
             self._number[name] = 1
+            self._maxes[name] = t
         self._current = parent
 
     def inspect(self):
         """
         Inspect details about the profiler
         """
-        for (name, total), number in zip(self._totals.items(), self._number.values()):
+        header = f" {'Name'.ljust(MAX_NAME)}| Total (ms)     | Samples | Ave (ms)   | Max (ms)"
+        print()
+        print(header)
+        print('='*len(header))
+        for (name, total), number, max in zip(self._totals.items(), self._number.values(), self._maxes.values()):
             ave = total/number
-            print(f"{name}: {total:.3f} ms from {number} samples (ave {ave:.6f} ms)")
+            print(f" {name[-MAX_NAME:].ljust(MAX_NAME)}| {total: 14.5f} | {number:7} | {ave: 10.5f} | {max: 10.5f}")
+        print()
+        return NoneNoPrintout
