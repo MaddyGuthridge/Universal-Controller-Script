@@ -77,7 +77,7 @@ class BasicControlMatcher(IControlMatcher):
         return g
     
     def getControls(self, group: str = None) -> list[ControlSurface]:
-        controls = self._controls
+        controls = self._controls.copy()
         for s in self._sub_matchers:
             controls += s.getControls()
         if group is None:

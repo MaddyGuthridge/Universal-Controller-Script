@@ -11,6 +11,7 @@ Authors:
 
 from typing import Optional, final
 from common import IEventPattern
+from common import ProfilerContext
 from common.types import EventData
 from controlsurfaces import ControlShadow
 
@@ -146,7 +147,8 @@ class Device:
         surfaces won't get ticked correctly
         """
         for c in self._matcher.getControls():
-            c.tick()
+            # with ProfilerContext("Tick control"):
+                c.tick()
 
     @final
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:

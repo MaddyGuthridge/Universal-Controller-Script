@@ -34,7 +34,8 @@ class MainState(IScriptState):
     
     @profilerDecoration("tick")
     def tick(self) -> None:
-        self._device.tick()
+        with ProfilerContext("Device tick"):
+            self._device.tick()
 
         # Tick special plugins
         for p in common.ExtensionManager.getSpecialPlugins(self._device):
