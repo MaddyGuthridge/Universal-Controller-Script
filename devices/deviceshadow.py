@@ -589,4 +589,4 @@ class DeviceShadow:
         else:
             controls = (c for c in self._all_controls)
         for c in controls:
-            c.apply()
+            c.apply(thorough)

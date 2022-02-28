@@ -36,6 +36,7 @@ class ControlShadow:
         self._value = control.value
         self._color = control.color.copy()
         self._annotation = control.annotation
+        self._changed = False
 
     def __repr__(self) -> str:
         return f"Shadow of {self._control}"
@@ -67,6 +68,7 @@ class ControlShadow:
         if not (0 <= newVal <= 1):
             raise ValueError("Value must be within range 0-1")
         self._value = newVal
+        self._changed = True
     
     @property
     def color(self) -> Color:
@@ -78,6 +80,7 @@ class ControlShadow:
     @color.setter
     def color(self, newColor: Color) -> None:
         self._color = newColor
+        self._changed = True
 
     @property
     def annotation(self) -> str:
@@ -89,6 +92,7 @@ class ControlShadow:
     @annotation.setter
     def annotation(self, newAnnotation: str) -> None:
         self._annotation = newAnnotation
+        self._changed = True
     
     @property
     def group(self) -> str:
@@ -104,11 +108,13 @@ class ControlShadow:
         """
         return self._control.coordinate
 
-    def apply(self) -> None:
+    def apply(self, thorough: bool) -> None:
         """
         Apply the configuration of the control shadow to the control it
         represents
         """
-        self._control.color = self.color
-        self._control.annotation = self.annotation
-        self._control.value = self.value
+        if thorough or self._changed:
+            self._control.color = self.color
+            self._control.annotation = self.annotation
+            self._control.value = self.value
+            self._changed = False
