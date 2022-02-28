@@ -74,13 +74,14 @@ class ProfilerManager:
     
     def __init__(self) -> None:
         self._current: Optional[ProfileNode] = None
-        self._totals: dict[str, list[int]] = {}
+        self._totals: dict[str, int] = {}
+        self._number: dict[str, int] = {}
     
     def __repr__(self) -> str:
         if not len(self._totals):
             return "Profiler (inactive)"
         else:
-            total = sum(map(len, self._totals.values()))
+            total = sum(self._number.values())
             return f"Profiler ({total} profiles taken)"
     
     def openProfile(self, name: str):
@@ -108,17 +109,17 @@ class ProfilerManager:
         parent = self._current.parent
         name = self._getProfileName(self._current)
         if name in self._totals:
-            self._totals[name].append(self._current.getTime())
+            self._totals[name] += self._current.getTime() / 1_000_000
+            self._number[name] += 1
         else:
-            self._totals[name] = [self._current.getTime()]
+            self._totals[name] = self._current.getTime() / 1_000_000
+            self._number[name] = 1
         self._current = parent
 
     def inspect(self):
         """
         Inspect details about the profiler
         """
-        for name, results in self._totals.items():
-            total = sum(results) / 1000000
-            samples = len(results)
-            ave = total/samples
-            print(f"{name}: {total:.3f} ms from {samples} samples (ave {ave:.6f} ms)")
+        for (name, total), number in zip(self._totals.items(), self._number.values()):
+            ave = total/number
+            print(f"{name}: {total:.3f} ms from {number} samples (ave {ave:.6f} ms)")

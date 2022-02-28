@@ -44,8 +44,9 @@ class MainState(IScriptState):
                 p.apply(thorough=True)
 
         # Tick active standard plugin or window
-        plug_idx = common.getContext().active.getActive()
-        changed = common.getContext().active.hasChanged()
+        with ProfilerContext(f"getActive"):
+            plug_idx = common.getContext().active.getActive()
+            changed = common.getContext().active.hasChanged()
         if plug_idx is not None:
             if isinstance(plug_idx, tuple):
                 try:
