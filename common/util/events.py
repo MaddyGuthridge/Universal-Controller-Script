@@ -27,6 +27,24 @@ def parseDeviceName() -> str:
     else:
         return name
 
+def parseDeviceNumber() -> int:
+    """
+    Determine the number of auxiliary devices that are connected using the
+    Universal Event Forwarder
+
+    WARNING: This may not work on MacOS
+
+    ### Returns:
+    * `int`: device number of an auxiliary device, or -1 if this is the main
+      device or of an incompatible format
+    """
+    name = device.getName()
+    
+    if name.startswith("MIDIIN"):
+        name = name.lstrip("MIDIIN")
+        return int(name[0])
+    else:
+        return -1
 
 def isEventForwarded(event: EventData) -> bool:
     """
@@ -62,7 +80,29 @@ def getForwardedEventHeader() -> bytes:
     ]) + parseDeviceName().encode() \
        + bytes([0])
 
-def encodeForwardedEvent(event: EventData, device_num: int) -> bytes:
+def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
+    """
+    Encode an event such that it can be forwarded to the main script from
+    auxiliary scripts or to an auxiliary script from the main script
+
+    ### Args:
+    * `event` (`EventData`): event to encode
+    * `device_num` (`int`, optional): device number to target. Defaults to `-1`.
+
+    ### Raises:
+    * `ValueError`: no target specified on main script (or forwarding from
+    invalid device)
+
+    ### Returns:
+    * `bytes`: encoded event data
+    """
+    if device_num == -1:
+        device_num = parseDeviceNumber()
+        if device_num == -1:
+            # TODO: Use a custom exception type to improve error checking
+            raise ValueError("Either forwarding from an invalid device or "
+                             "target device number is unspecified")
+    
     sysex = getForwardedEventHeader() + bytes([device_num])
     
     if isEventStandard(event):
@@ -111,18 +151,25 @@ def isEventForwardedHere(event: EventData) -> bool:
         return False
     return True
 
-def isEventForwardedHereFrom(event: EventData, device_num: int) -> bool:
+def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
     """
-    Returns whether an event was forwarded from the Universal Event Forwarder
-    script from a controller directed to this particular script
+    Returns whether an event was forwarded from a particular instance of the
+    Universal Event Forwarder script, or is directed to a controller with this
+    device number
 
     ### Args:
     * `event` (`eventData`): event to check
-    * `device_num` (`int`): device number to match
+    * `device_num` (`int`, optional): device number to match (defaults to the
+      device number of this script, must be provided on main script)
 
     ### Returns:
     * `bool`: whether it was forwarded
     """
+    if device_num == -1:
+        device_num = parseDeviceNumber()
+        if device_num == -1:
+            raise ValueError("No target device specified from main script")
+
     if not isEventForwardedHere(event):
         return False
     
@@ -162,19 +209,22 @@ def decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData:
             event.sysex[type_idx+1]
         )
 
-def forwardEvent(event: EventData, device_num: int):
+def forwardEvent(event: EventData, device_num: int = -1):
     """
     Encode a forwarded event and send it to all available devices
 
     ### Args:
     * `event` (`EventData`): event to encode and forward
-    * `device_num` (`int`): device number this was sent from or device number to
-      send to (if on main script)
+    * `device_num` (`int`, optional): target device number if on main script
     """
+    if device_num == -1:
+        device_num = parseDeviceNumber()
+        if device_num == -1:
+            raise ValueError("No target device specified from main script")
     output = encodeForwardedEvent(event, device_num)
     # Dispatch to all available devices
     if device.dispatchReceiverCount() == 0:
-        raise TypeError(f"Unable to forward event to device {device_num}. "
+        raise TypeError(f"Unable to forward event to/from device {device_num}. "
                         f"Is the controller configured correctly?")
     for i in range(device.dispatchReceiverCount()):
         device.dispatch(i, 0xF0, output)
