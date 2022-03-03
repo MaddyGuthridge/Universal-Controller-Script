@@ -26,10 +26,7 @@ def parseDeviceName() -> str:
         return name[bracket_start+1:-1]
     else:
         return name
-        
 
-FORWARDED_EVENT_HEADER: Optional[bytes] = None
-DEVICE_NAME = parseDeviceName()
 
 def isEventForwarded(event: EventData) -> bool:
     """
@@ -52,27 +49,21 @@ def isEventForwarded(event: EventData) -> bool:
     else:
         return True
 
-def initForwardedEventHeader():
-    global FORWARDED_EVENT_HEADER
-    
-    name = device.getName()
-    
-    if name.startswith("MIDIIN"):
-        name = name.lstrip("MIDIIN")
-        bracket_start = name.find("(")
-        name = name[bracket_start+1:-1]
-    
-    FORWARDED_EVENT_HEADER = bytes([
+def getForwardedEventHeader() -> bytes:
+    """
+    Returns a header for a forwarded event
+
+    ### Returns:
+    * `bytes`: event header
+    """
+    return bytes([
         0xF0, # Start sysex
         0x7D  # Non-commercial sysex ID
-    ]) + name.encode() \
+    ]) + parseDeviceName().encode() \
        + bytes([0])
 
 def encodeForwardedEvent(event: EventData, device_num: int) -> bytes:
-    if FORWARDED_EVENT_HEADER is None:
-        initForwardedEventHeader()
-    assert FORWARDED_EVENT_HEADER is not None
-    sysex = FORWARDED_EVENT_HEADER + bytes([device_num])
+    sysex = getForwardedEventHeader() + bytes([device_num])
     
     if isEventStandard(event):
         return sysex + bytes([0]) + bytes([
@@ -115,7 +106,7 @@ def isEventForwardedHere(event: EventData) -> bool:
     assert isEventSysex(event)
     
     if (event.sysex[2:_getForwardedNameEndIdx(event)].decode()
-     != DEVICE_NAME
+     != parseDeviceName()
     ):
         return False
     return True
