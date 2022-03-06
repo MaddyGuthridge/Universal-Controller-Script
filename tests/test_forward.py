@@ -57,6 +57,9 @@ def test_isEventForwardedHere():
     
     with FlContext({"device_name": "My Device"}):
         assert isEventForwardedHere(e)
+    
+    with FlContext({"device_name": "My Other Device"}):
+        assert not isEventForwardedHere(e)
 
 def test_isEventForwardedHereFrom():
     with FlContext({"device_name": "MIDIIN2 (My Device)"}):
@@ -64,6 +67,9 @@ def test_isEventForwardedHereFrom():
     
     with FlContext({"device_name": "My Device"}):
         assert isEventForwardedHereFrom(e, 2)
+    
+    with FlContext({"device_name": "My Device"}):
+        assert not isEventForwardedHereFrom(e, 3)
 
 def test_isEventForwardedHereFrom_target():
     with FlContext({"device_name": "My Device"}):
