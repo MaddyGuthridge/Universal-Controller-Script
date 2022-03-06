@@ -6,8 +6,7 @@ Contains the definition of the Note class, which represents note events.
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from common.types.eventdata import EventData, isEventStandard
-from common.eventpattern import BasicPattern, fromNibbles
+from common.eventpattern import NotePattern
 from . import ControlSurface, NoteStrategy
 
 
@@ -17,7 +16,7 @@ class Note(ControlSurface):
     """
     def __init__(self, note_num: int, channel:int = 0) -> None:
         super().__init__(
-            BasicPattern(fromNibbles((8, 9), ...), note_num, ...),
+            NotePattern(note_num),
             NoteStrategy(),
             "notes",
             (channel, note_num)
