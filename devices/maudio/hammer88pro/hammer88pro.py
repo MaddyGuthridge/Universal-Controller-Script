@@ -1,10 +1,10 @@
 
 
 from typing import Optional
-from common.eventpattern import BasicPattern, ForwardedPattern, ForwardedUnionPattern
+from common.eventpattern import BasicPattern, ForwardedPattern, ForwardedUnionPattern, NotePattern
 from common.types import EventData
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy
+from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy, NoteStrategy
 from devices import Device, BasicControlMatcher
 from devices.controlgenerators import NoteMatcher, PedalMatcher
 
@@ -53,7 +53,7 @@ class Hammer88Pro(Device):
         
         # Drum pads
         matcher.addControls([
-            DrumPad(BasicPattern(0xB9, i, ...), Data2Strategy(), (i // 8, i % 8))
+            DrumPad(NotePattern(i, 9), NoteStrategy(), (i // 8, i % 8))
             for i in range(16)
         ])
         

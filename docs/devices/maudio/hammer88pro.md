@@ -29,9 +29,14 @@ need to be sent to the device.
 
 ## Usage
 
+#### Channel Selection
+Note that channel 10 is used by the drum pads, and as such notes that use the 
+same event as the drum pads won't be detected correctly.
+
 #### Bank Selection
 Currently, the script doesn't support bank switching. Please keep your device on
-bank 1.
+bank 1. If this is an important feature to you, please feel free to contact me
+on the Discord.
 
 #### Jog Wheel Usage
 The controller can behave differently depending on the state of the jog wheel.
