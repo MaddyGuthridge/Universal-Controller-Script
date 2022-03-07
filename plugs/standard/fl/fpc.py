@@ -51,6 +51,7 @@ class FPC(StandardPlugin):
             )
         # Also update notes
         # Hardcoded due to bug with plugins.getPadInfo() returning wrong values
+        notes = set()
         for idx in range(32):
             # Get the note number
             note = plugins.getPadInfo(*index, -1, 1, idx)
@@ -62,6 +63,13 @@ class FPC(StandardPlugin):
             # Set values
             self._notes[note].color = Color.fromInteger(color)
             self._notes[note].annotation = annotation
+            notes.add(note)
+        
+        # Set colors and annotations for the others
+        for i in range(128):
+            if i not in notes:
+                self._notes[i].color = Color()
+                self._notes[i].annotation = ""
     
     @staticmethod
     def triggerPad(pad_idx: int, control: ControlShadowEvent, ch_idx: int) -> None:
