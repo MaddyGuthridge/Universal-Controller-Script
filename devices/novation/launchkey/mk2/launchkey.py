@@ -37,10 +37,10 @@ class LaunchkeyMk2(Device):
         # Notes
         matcher.addSubMatcher(NoteMatcher())
         
-        # Drum pads
+        # Drum pads (high priority because they just use note on events)
         for r in range(self.getDrumPadSize()[0]):
             for c in range(self.getDrumPadSize()[1]):
-                matcher.addControl(LaunchkeyDrumpad((r, c)))
+                matcher.addControl(LaunchkeyDrumpad((r, c)), 10)
         
         # Create knobs
         for i in range(1, 9):

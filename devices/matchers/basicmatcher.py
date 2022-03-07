@@ -24,31 +24,40 @@ class BasicControlMatcher(IControlMatcher):
     the IControlMatcher class.
     """
     def __init__(self) -> None:
-        self._controls: list[ControlSurface] = []
+        self._priorities: set[int] = set()
+        self._controls: dict[int, list[ControlSurface]] = {}
         self._groups: set[str] = set()
-        self._sub_matchers: list[IControlMatcher] = []
+        self._sub_matchers: dict[int, list[IControlMatcher]] = {}
     
-    def addControls(self, controls: list[ControlSurface]) -> None:
+    def addControls(self, controls: list[ControlSurface], priority: int = 0) -> None:
         """
         Register and add a list of controls to the control matcher.
 
         ### Args:
         * `controls` (`list[ControlSurface]`): Controls to add
+        * `priority` (`int`): Matcher priority of control (higher priority
+          controls will be matched first)
         """
         for c in controls:
-            self.addControl(c)
+            self.addControl(c, priority)
     
-    def addControl(self, control: ControlSurface) -> None:
+    def addControl(self, control: ControlSurface, priority: int = 0) -> None:
         """
         Register and add a control to the control matcher.
 
         ### Args:
         * `control` (`ControlSurface`): Control to add
+        * `priority` (`int`): Matcher priority of control (higher priority
+          controls will be matched first)
         """
-        self._controls.append(control)
+        if priority in self._controls:
+            self._controls[priority].append(control)
+        else:
+            self._priorities.add(priority)
+            self._controls[priority] = [control]
         self._groups.add(control.group)
     
-    def addSubMatcher(self, matcher: IControlMatcher) -> None:
+    def addSubMatcher(self, matcher: IControlMatcher, priority: int = 0) -> None:
         """
         Register a control matcher to work as a component of this control
         matcher
@@ -58,28 +67,42 @@ class BasicControlMatcher(IControlMatcher):
 
         ### Args:
         * `matcher` (`IControlMatcher`): control matcher to add
+        * `priority` (`int`): Matcher priority of control (higher priority
+          controls will be matched first)
         """
-        self._sub_matchers.append(matcher)
+        if priority in self._sub_matchers:
+            self._sub_matchers[priority].append(matcher)
+        else:
+            self._priorities.add(priority)
+            self._sub_matchers[priority] = [matcher]
     
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
-        for c in self._controls:
-            if (m := c.match(event)) is not None:
-                return m
-        for s in self._sub_matchers:
-            if (m := s.matchEvent(event)) is not None:
-                return m
+        # Work through in order of priority
+        for priority in sorted(self._priorities):
+            if priority in self._controls:
+                for c in self._controls[priority]:
+                    if (m := c.match(event)) is not None:
+                        return m
+            if priority in self._sub_matchers:
+                for s in self._sub_matchers[priority]:
+                    if (m := s.matchEvent(event)) is not None:
+                        return m
         return None
     
     def getGroups(self) -> set[str]:
         g = self._groups
-        for s in self._sub_matchers:
-            g |= s.getGroups()
+        for p in self._sub_matchers:
+            for s in self._sub_matchers[p]:
+                g |= s.getGroups()
         return g
     
     def getControls(self, group: str = None) -> list[ControlSurface]:
-        controls = self._controls.copy()
-        for s in self._sub_matchers:
-            controls += s.getControls()
+        controls = []
+        for p in self._controls:
+            controls += self._controls[p]
+        for p  in self._sub_matchers:
+            for s in self._sub_matchers[p]:
+                controls += s.getControls()
         if group is None:
             return controls
         else:

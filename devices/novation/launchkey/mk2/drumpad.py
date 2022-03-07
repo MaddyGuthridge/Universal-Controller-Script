@@ -4,7 +4,7 @@ devices > novation > launchkey > mk2 > drumpad
 Definition for the Launchkey Mk2 Drumpads
 """
 from common import profilerDecoration
-from common.eventpattern import BasicPattern, fromNibbles
+from common.eventpattern.notepattern import NotePattern
 from common.types import EventData
 from common.util.events import forwardEvent
 from controlsurfaces.valuestrategies import NoteStrategy
@@ -24,7 +24,7 @@ class LaunchkeyDrumpad(DrumPad):
         self._ticker_timer = 0
         self._need_update = False
         super().__init__(
-            BasicPattern(fromNibbles((8, 9), 9), self._note_num, ...),
+            NotePattern(self._note_num, 9),
             NoteStrategy(),
             coordinate
         )
