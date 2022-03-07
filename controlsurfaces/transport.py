@@ -29,7 +29,9 @@ class StopButton(TransportButton):
 
 class LoopButton(TransportButton):
     """
-    Represents a loop button
+    Represents a loop button.
+    
+    This maps to change the loop mode in FL Studio between pattern and song.
     """
 
 class RecordButton(TransportButton):
@@ -50,4 +52,6 @@ class RewindButton(TransportButton):
 class MetronomeButton(TransportButton):
     """
     Represents a metronome button
+    
+    This toggles the metronome in FL Studio
     """
