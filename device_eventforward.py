@@ -61,8 +61,6 @@ from common.util.misc import formatLongTime
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 import device
 
-DEVICE_NUM = -1
-
 def raiseIncompatibleDevice():
     raise TypeError("This script should be used to forward extra device "
                     "port events to the primary device port. This isn't a "
@@ -85,10 +83,10 @@ def outputForwarded(event: EventData):
 
 def OnMidiIn(event: EventData):
     if isEventForwarded(event):
-        if isEventForwardedHereFrom(event, DEVICE_NUM):
+        if isEventForwardedHereFrom(event):
             outputForwarded(event)
     else:
-        forwardEvent(event, DEVICE_NUM)
+        forwardEvent(event)
         log(
             "device.forward.out",
             "Dispatched event to main script: " + eventToString(event)
@@ -96,20 +94,7 @@ def OnMidiIn(event: EventData):
     event.handled = True
 
 def OnInit():
-    global DEVICE_NUM
-    # Determine device number and ensure compatible device
-    name = device.getName()
-    
-    if not name.startswith("MIDIIN"):
-        raiseIncompatibleDevice()
-    name = name.lstrip("MIDIIN")
-    bracket_start = name.find("(")
-    if bracket_start == -1:
-        raiseIncompatibleDevice()
-    try:
-        DEVICE_NUM = int(name[0:bracket_start])
-    except ValueError:
-        raiseIncompatibleDevice()
+    pass
 
 log(
     "device.forward.bootstrap",

@@ -2,6 +2,17 @@
 A script aimed at adding compatibility for any MIDI controller and any plugin in
 FL Studio.
 
+# Supported Devices
+If your device isn't on the list and you know Python, feel free to
+[contribute](docs/contributing/README.md). If your device has solid documentation,
+another contributor might be able to help you out too - 
+[join the Discord Server](https://discord.gg/6vpfJUF) and ask!
+
+* Novation
+  * Launchkey Mk2
+* M-Audio
+  * Hammer 88 Pro
+
 # Setup
 
 Refer to the [documentation](docs/setup.md).

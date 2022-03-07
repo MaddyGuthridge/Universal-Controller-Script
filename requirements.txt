@@ -2,7 +2,8 @@ astroid==2.9.2
 atomicwrites==1.4.0
 attrs==21.2.0
 colorama==0.4.4
-FL-Studio-API-Stubs==19.8
+coverage==6.3.2
+FL-Studio-API-Stubs==19.10
 iniconfig==1.1.1
 isort==5.10.1
 lazy-object-proxy==1.7.1

@@ -30,34 +30,34 @@ def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
     * Adapted from [Wikipedia](https://en.wikipedia.org/wiki/HSL_and_HSV)
     """
     # First, we find chroma:
-    c = v * s
+    c = int(v * s * 255)
     
     # Find a point on the bottom three faces of the RGB cube with the same hue
     # and chroma as our color
     h_ = h / 60
     # intermediate value x for  second largest component of the color
-    x = c * (1 - abs(h_ % 2 - 1))
+    x = int(c * (1 - abs(h_ % 2 - 1)))
     
     if h_ < 1:
-        r, g, b = int(c), int(x), 0
+        r, g, b = c, x, 0
     elif h_ < 2:
-        r, g, b = int(x), int(c), 0
+        r, g, b = x, c, 0
     elif h_ < 3:
-        r, g, b = 0, int(c), int(x)
+        r, g, b = 0, c, x
     elif h_ < 4:
-        r, g, b = 0, int(x), int(c)
+        r, g, b = 0, x, c
     elif h_ < 5:
-        r, g, b = int(x), 0, int(c)
+        r, g, b = x, 0, c
     else: #h_ < 6
-        r, g, b = int(c), 0, int(x)
+        r, g, b = c, 0, x
     
     # Finally, get a median value to add to each component
-    m = int(v - c)
+    m = int(v*255) - c
     r, g, b = r+m, g+m, b+m
     
     # And return them in a reasonable format
     # 0-255
-    return int(r*255), int(g*255), int(b*255)
+    return r, g, b
 
 def rgbToHsv(r: int, g: int, b: int) -> tuple[float, float, float]:
     """
@@ -194,14 +194,12 @@ class Color:
     @staticmethod
     def fromHsv(hue: float, saturation: float, value: float) -> 'Color':
         """
-        Crewate a color object from hue, saturation and value values
-
-        Each value should be a float between 0.0-1.0
+        Crewate a color object from hue, saturation and value valuesr, g, b
 
         ### Args:
-        * `hue` (`float`): hue
-        * `saturation` (`float`): saturation
-        * `value` (`float`): value (luminosity)
+        * `hue` (`float`): hue (degrees, 0-360)
+        * `saturation` (`float`): saturation (0-1)
+        * `value` (`float`): value (0-1)
 
         ### Returns:
         * `Color`: colour

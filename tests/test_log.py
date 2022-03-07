@@ -27,10 +27,10 @@ def test_log_verbosity(capsys: pytest.CaptureFixture):
     out: str = captured.out
     assert out.find("test\n") != -1
 
-def test_log_category(capsys: pytest.CaptureFixture):
-    log("general", "test")
-    
-    captured = capsys.readouterr()
-
-    out: str = captured.out
-    assert out.find("test\n") != -1
+# def test_log_category(capsys: pytest.CaptureFixture):
+#     log("general", "test")
+#     
+#     captured = capsys.readouterr()
+# 
+#     out: str = captured.out
+#     assert out.find("test\n") != -1

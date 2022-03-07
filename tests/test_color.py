@@ -30,8 +30,8 @@ def test_hsv():
     assert floatApproxEq(1.0, c.value)
     
     assert c.red == 255
-    assert c.green == 127
-    assert c.blue == 127
+    assert c.green == 128
+    assert c.blue == 128
 
 def test_integer():
     c = Color.fromInteger(0xAABBCC)
@@ -105,4 +105,4 @@ def test_closest():
         Color.fromHsv(354, 1, 1)
     ]
     
-    assert c.closest(options) == options[-2]
+    assert c.closest(options) == options[-1]
