@@ -194,6 +194,8 @@ def decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData:
     ### Returns:
     * `eventData`: decoded data
     """
+    if not isEventForwarded(event):
+        raise TypeError(f"Event not forwarded: {eventToString(event)}")
     assert isEventSysex(event)
     if type_idx == -1:
         type_idx = _getForwardedNameEndIdx(event) + 2

@@ -19,7 +19,7 @@ class ForwardedStrategy(IValueStrategy):
     """
     def __init__(self, strat: IValueStrategy) -> None:
         self._strat = strat
-    
+
     def getValueFromEvent(self, event: EventData):
         # The value is already matching, so we can cheat somewhat with getting
         # the data out
@@ -42,7 +42,7 @@ class ForwardedUnionStrategy(IValueStrategy):
     def __init__(self, strat: IValueStrategy) -> None:
         self._strat = strat
         self._strat_forward = ForwardedStrategy(strat)
-    
+
     def getValueFromEvent(self, event: EventData):
         if isEventForwarded(event):
             return self._strat_forward.getValueFromEvent(event)

@@ -5,7 +5,7 @@ from common import getContext
 from common.eventpattern import BasicPattern, ForwardedPattern, ForwardedUnionPattern, NotePattern
 from common.types import EventData
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import ForwardedStrategy, ButtonData2Strategy, Data2Strategy, NoteStrategy
+from controlsurfaces.valuestrategies import ForwardedStrategy, ForwardedUnionStrategy, ButtonData2Strategy, Data2Strategy, NoteStrategy
 from devices import Device, BasicControlMatcher
 from devices.controlgenerators import NoteMatcher, PedalMatcher
 
@@ -75,7 +75,7 @@ class Hammer88Pro(Device):
         matcher.addControls([
             Knob(
                 ForwardedUnionPattern(3, BasicPattern(0xB0, i+80, ...)),
-                ForwardedStrategy(Data2Strategy()),
+                ForwardedUnionStrategy(Data2Strategy()),
                 (0, i)
             ) for i in range(8)
         ])
@@ -84,7 +84,7 @@ class Hammer88Pro(Device):
         matcher.addControls([
             Fader(
                 ForwardedUnionPattern(3, BasicPattern(0xB0, i+48, ...)),
-                ForwardedStrategy(Data2Strategy()),
+                ForwardedUnionStrategy(Data2Strategy()),
                 (0, i)
             ) for i in range(9)
         ])
