@@ -20,7 +20,7 @@ class SaveButton(Button):
     Defines a save button, which will be mapped to the save command in FL Studio
     """
 
-class UndoRdoButton(Button):
+class UndoRedoButton(Button):
     """
     Defines an undo-redo button, which will be mapped to FL Studio's undo-redo
     command.
@@ -47,9 +47,6 @@ class QuantizeButton(Button):
     """
     Defines a quantize button, which should be mapped to FL Studio's snapping
     control.
-
-    TODO: Does FL have an easily addressible quantize feature? If so map to that
-    instead
     """
 
 class SwitchActiveButton(Button):

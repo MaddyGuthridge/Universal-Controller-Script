@@ -26,7 +26,7 @@ class Flex(StandardPlugin):
             raise_on_failure=False
         )
         super().__init__(shadow, [])
-    
+
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)

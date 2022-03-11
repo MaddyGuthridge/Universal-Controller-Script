@@ -25,13 +25,13 @@ class MainState(IScriptState):
     Represents the main state of the script, where the device is recognised and
     behaving as expected.
     """
-    
+
     def __init__(self, device: 'Device') -> None:
         self._device = device
-    
+
     def initialise(self) -> None:
         pass
-    
+
     @profilerDecoration("tick")
     def tick(self) -> None:
         with ProfilerContext("Device tick"):
@@ -85,7 +85,7 @@ class MainState(IScriptState):
             )
             # raise ValueError(f"Couldn't identify event: {eventToString(event)}")
             return
-            
+
         else:
             log(
                 "device.event.in",

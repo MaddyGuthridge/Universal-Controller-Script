@@ -30,8 +30,8 @@ UnsafeIndex = Union[UnsafePluginIndex, UnsafeWindowIndex]
 def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
-    
-    Values are returned as tuples so that they can be unwrapped when 
+
+    Values are returned as tuples so that they can be unwrapped when
 
     Args:
     * `force` (`bool`, optional): whether to return the selected plugin on the
@@ -44,7 +44,7 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     """
     # Check if a channel rack plugin is focused
     # if ui.getFocused(7):
-        
+
     # If a mixer plugin is focused
     if ui.getFocused(6):
         track = ui.getFocusedFormID() // 4194304
@@ -63,8 +63,8 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
 def getFocusedWindowIndex() -> Optional[int]:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
-    
-    Values are returned as tuples so that they can be unwrapped when 
+
+    Values are returned as tuples so that they can be unwrapped when
 
     Returns:
         * `None`: if no window is focused
@@ -86,7 +86,7 @@ def isPluginVst(index: PluginIndex) -> bool:
     ### Args:
     * `index` (`PluginIndex`): plugin index
     """
-    return plugins.getParamCount(*index) < PARAM_CC_START
+    return plugins.getParamCount(*index) > PARAM_CC_START
 
 def getSelectedPlaylistTrack() -> int:
     """

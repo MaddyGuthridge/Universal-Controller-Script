@@ -27,3 +27,5 @@ from .fader import Fader
 from .knob import Knob
 from .encoder import Encoder
 from .drumpad import DrumPad
+
+from .macrobutton import *

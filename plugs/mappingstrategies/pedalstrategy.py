@@ -25,7 +25,7 @@ class PedalStrategy(IMappingStrategy):
           if the plugin doesn't support CC parameters. Defaults to `True`.
         """
         self._raise = raise_on_error
-    
+
     def apply(self, shadow: DeviceShadow) -> None:
         """
         Bind pedal events to the pedalCallback function
@@ -34,13 +34,13 @@ class PedalStrategy(IMappingStrategy):
         * `shadow` (`DeviceShadow`): device to bind to
         """
         # Generator function for mapping out pedal events
-        
+
         # TODO: Use argument generators as strategies to the strategies?
         # Could save even more repeated code
         def argument_generator(shadows: list[ControlShadow]):
             for s in shadows:
                 yield (type(s.getControl()), )
-        
+
         # Bind every pedal event to the pedalCallback() method, using the
         # generator to make the type of pedal be used as an argument to the
         # callback
@@ -50,7 +50,7 @@ class PedalStrategy(IMappingStrategy):
             argument_generator,
             raise_on_failure=False
         )
-    
+
     @toPluginIndex
     def pedalCallback(
         self,
@@ -73,7 +73,7 @@ class PedalStrategy(IMappingStrategy):
         ### Returns:
         * `bool`: whether the event was processed
         """
-        
+
         # Filter out non-VSTs
         if not isPluginVst(index):
             if self._raise:
@@ -81,7 +81,7 @@ class PedalStrategy(IMappingStrategy):
                                 "this plugin is a VST, and not an FL Studio plugin")
             else:
                 return False
-        
+
         # Assign parameters
         if t_ped is SustainPedal:
             plugins.setParamValue(control.value, PARAM_CC_START + SUSTAIN, *index)
@@ -91,5 +91,5 @@ class PedalStrategy(IMappingStrategy):
             plugins.setParamValue(control.value, PARAM_CC_START + SOFT, *index)
         else:
             raise NotImplementedError("Pedal type not recognised")
-        
+
         return True
