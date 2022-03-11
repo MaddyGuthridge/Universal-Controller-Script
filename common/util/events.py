@@ -19,7 +19,7 @@ def parseDeviceName() -> str:
     * `str`: device name
     """
     name = device.getName()
-    
+
     if name.startswith("MIDIIN"):
         name = name.lstrip("MIDIIN")
         bracket_start = name.find("(")
@@ -39,7 +39,7 @@ def parseDeviceNumber() -> int:
       device or of an incompatible format
     """
     name = device.getName()
-    
+
     if name.startswith("MIDIIN"):
         name = name.lstrip("MIDIIN")
         return int(name[0])
@@ -102,9 +102,9 @@ def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
             # TODO: Use a custom exception type to improve error checking
             raise ValueError("Either forwarding from an invalid device or "
                              "target device number is unspecified")
-    
+
     sysex = getForwardedEventHeader() + bytes([device_num])
-    
+
     if isEventStandard(event):
         return sysex + bytes([0]) + bytes([
             event.data2,
@@ -144,7 +144,7 @@ def isEventForwardedHere(event: EventData) -> bool:
     if not isEventForwarded(event):
         return False
     assert isEventSysex(event)
-    
+
     if (event.sysex[2:_getForwardedNameEndIdx(event)].decode()
      != parseDeviceName()
     ):
@@ -172,11 +172,11 @@ def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
 
     if not isEventForwardedHere(event):
         return False
-    
+
     assert isEventSysex(event)
     if device_num != event.sysex[_getForwardedNameEndIdx(event)+1]:
         return False
-    
+
     return True
 
 def decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData:
@@ -188,7 +188,7 @@ def decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData:
 
     ### Args:
     * `event` (`eventData`): event to decode
-    * `type_idx` (`int`, optional): index of event type flag, if known. 
+    * `type_idx` (`int`, optional): index of event type flag, if known.
       Defaults to `-1`.
 
     ### Returns:
@@ -197,7 +197,7 @@ def decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData:
     assert isEventSysex(event)
     if type_idx == -1:
         type_idx = _getForwardedNameEndIdx(event) + 2
-    
+
     if event.sysex[type_idx]:
         # Remaining bytes are sysex data
         return EventData(list(event.sysex[type_idx+1:]))
@@ -271,4 +271,9 @@ def eventToString(event: EventData) -> str:
         return f"(0x{event.status:02X}, 0x{event.data1:02X}, 0x{event.data2:02X})"
     else:
         assert isEventSysex(event)
-        return bytesToString(event.sysex)
+        if isEventForwarded(event):
+            decoded = eventToString(decodeForwardedEvent(event))
+            suffix = f" (Likely from forwarded event: {decoded})"
+        else:
+            suffix = ""
+        return bytesToString(event.sysex) + suffix
