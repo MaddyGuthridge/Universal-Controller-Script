@@ -1,6 +1,7 @@
 
 
 from typing import Optional
+from common import getContext
 from common.eventpattern import BasicPattern, ForwardedPattern, ForwardedUnionPattern, NotePattern
 from common.types import EventData
 from common.extensionmanager import ExtensionManager
@@ -22,6 +23,8 @@ from controlsurfaces import (
     MetronomeButton,
     StandardModWheel,
     ChannelAfterTouch,
+    SwitchActivePluginButton,
+    SwitchActiveWindowButton,
 )
 from .hammerpitch import HammerPitchWheel
 from .jogmatcher import JogMatcher
@@ -42,21 +45,32 @@ class Hammer88Pro(Device):
         matcher.addControl(NullEvent(
             BasicPattern(0xFC, 0x0, 0x0)
         ))
-        
+
+        # Active switches
+        getContext().active.setSplitWindowsPlugins(True)
+        matcher.addControl(SwitchActiveWindowButton(
+            ForwardedPattern(3, BasicPattern(0xBF, 0x6E, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
+        ))
+        matcher.addControl(SwitchActivePluginButton(
+            ForwardedPattern(3, BasicPattern(0xBF, 0x6F, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
+        ))
+
         # Jog wheel stuff
         matcher.addSubMatcher(JogMatcher())
-        
+
         # Notes and pedals
         matcher.addSubMatcher(NoteMatcher())
         matcher.addSubMatcher(PedalMatcher())
         matcher.addControl(ChannelAfterTouch())
-        
+
         # Drum pads (high priority because they just use note on events)
         matcher.addControls([
             DrumPad(NotePattern(i, 9), NoteStrategy(), (i // 8, i % 8))
             for i in range(16)
         ], 10)
-        
+
         # Knobs
         matcher.addControls([
             Knob(
@@ -65,7 +79,7 @@ class Hammer88Pro(Device):
                 (0, i)
             ) for i in range(8)
         ])
-        
+
         # Faders
         matcher.addControls([
             Fader(
@@ -81,8 +95,8 @@ class Hammer88Pro(Device):
         #         (0, 9))
         #     for i in range(8)
         # )
-        
-        
+
+
         # Transport buttons
         matcher.addControl(StopButton(
             ForwardedPattern(3, BasicPattern(0xBF, 102, ...)),
@@ -114,21 +128,21 @@ class Hammer88Pro(Device):
         ))
         matcher.addControl(StandardModWheel())
         matcher.addControl(HammerPitchWheel())
-        
+
         super().__init__(matcher)
-    
+
     @staticmethod
     def getDrumPadSize() -> tuple[int, int]:
         return 2, 8
-    
+
     @classmethod
     def create(cls, event: Optional[EventData]) -> Device:
         return cls()
-    
+
     @staticmethod
     def getId() -> str:
         return "Maudio.Hammer88Pro"
-    
+
     @staticmethod
     def getUniversalEnquiryResponsePattern():
         return BasicPattern(

@@ -64,7 +64,7 @@ class Transport(SpecialPlugin):
         shadow.bindMatch(UndoRedoButton, self.undoRedo, raise_on_failure=False)
         shadow.bindMatch(SaveButton, self.save, raise_on_failure=False)
         shadow.bindMatch(QuantizeButton, self.metroButton, raise_on_failure=False)
-        shadow.bindMatch(SwitchActiveButton, self.metroButton, raise_on_failure=False)
+        shadow.bindMatches(SwitchActiveButton, self.switchActive, raise_on_failure=False)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':

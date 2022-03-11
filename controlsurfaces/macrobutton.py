@@ -6,6 +6,8 @@ Defines control surfaces used for macros, such as save, undo, etc
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
+from common.eventpattern.ieventpattern import IEventPattern
+from controlsurfaces.valuestrategies.ivaluestrategy import IValueStrategy
 from .controlsurface import ControlSurface
 from controlsurfaces import Button
 
@@ -65,6 +67,8 @@ class SwitchActiveButton(Button):
     * `SwitchActiveToggleButton` for a button to toggle between windows and
       plugins
     """
+    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
+        super().__init__(event_pattern, value_strategy, "active")
 
 class SwitchActivePluginButton(SwitchActiveButton):
     """
