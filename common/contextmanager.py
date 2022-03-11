@@ -20,6 +20,7 @@ from time import time_ns
 from .settings import Settings
 from .activitystate import ActivityState
 
+from .util.apifixes import catchUnsafeOperation
 from .util.misc import NoneNoPrintout
 from .util.events import isEventForwarded, isEventForwardedHere
 from .types import EventData
@@ -35,10 +36,10 @@ class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
     components of script to be dynamically refreshed and reloaded, as well as
     be reset to the default start-up state if required.
-    
+
     It is gettable from any location by using the getContext() method
     """
-    
+
     def __init__(self) -> None:
         """Initialise the context manager, including reloading any required
         modules
@@ -55,13 +56,14 @@ class DeviceContextManager:
         self._last_tick = time_ns()
         self._ticks = 0
         self._dropped_ticks = 0
-    
+
     @catchStateChangeException
     def initialise(self) -> None:
         """Initialise the controller associated with this context manager.
         """
         self.state.initialise()
 
+    @catchUnsafeOperation
     @catchStateChangeException
     def processEvent(self, event: EventData) -> None:
         """Process a MIDI event
@@ -74,7 +76,8 @@ class DeviceContextManager:
             event.handled = True
             return
         self.state.processEvent(event)
-    
+
+    @catchUnsafeOperation
     @catchStateChangeException
     def tick(self) -> None:
         """
@@ -93,7 +96,7 @@ class DeviceContextManager:
         self.active.tick()
         # The tick the current script state
         self.state.tick()
-    
+
     def getTickNumber(self) -> int:
         """
         Returns the tick number of the script
@@ -104,7 +107,7 @@ class DeviceContextManager:
         * `int`: tick number
         """
         return self._ticks
-    
+
     def getDroppedTicks(self) -> str:
         """
         Returns the number of ticks dropped by the controller
@@ -116,7 +119,7 @@ class DeviceContextManager:
         """
         percent = int(self._dropped_ticks / self._ticks * 100)
         return f"{self._dropped_ticks} dropped ticks ({percent}%)"
-    
+
     def setState(self, new_state: IScriptState) -> NoReturn:
         """
         Set the state of the script to a new state
@@ -125,7 +128,7 @@ class DeviceContextManager:
 
         ### Args:
         * `new_state` (`IScriptState`): state to switch to
-        
+
         ### Raises:
         * `StateChangeException`: state changed successfully
         """
@@ -180,7 +183,7 @@ def getContext() -> DeviceContextManager:
     """
     if _context is None:
         raise Exception("Context isn't initialised")
-    
+
     return _context
 
 def resetContext(reason:str="none") -> NoReturn:

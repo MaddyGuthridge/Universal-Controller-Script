@@ -100,3 +100,18 @@ def getSelectedPlaylistTrack() -> int:
         if playlist.isTrackSelected(i):
             return i
     return 1
+
+def catchUnsafeOperation(func):
+    """
+    Decorator to prevent exceptions due to unsafe operations
+
+    ### Args:
+    * `func` (`Callable`): function to decorate
+    """
+    def wrapper(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except TypeError as e:
+            if e.args != ("Operation unsafe at current time",):
+                raise e
+    return wrapper
