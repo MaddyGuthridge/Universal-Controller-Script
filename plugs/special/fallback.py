@@ -14,7 +14,7 @@ class Fallback(SpecialPlugin):
     """
     Used to process events as a fallback if there isn't a plugin registered for
     the active FL plugin.
-    
+
     Handles:
     * Pedals
     * Mod and pitch wheels
@@ -28,15 +28,15 @@ class Fallback(SpecialPlugin):
             WheelStrategy(raise_on_error=False),
             NoteStrategy()
         ])
-    
+
     @staticmethod
     def shouldBeActive() -> bool:
         return True
-    
+
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         return cls(shadow)
-    
+
     def tick(self):
         pass
 
@@ -50,7 +50,7 @@ class Fallback(SpecialPlugin):
             return True
         else:
             return True
-        
+
         if isinstance(control.getControl(), StandardJogWheel):
             ui.jog(increment)
         elif isinstance(control.getControl(), ShiftedJogWheel):

@@ -54,8 +54,32 @@ class SwitchActiveButton(Button):
     Defines a switch active button, which is handled internally to switch
     event handling between the active plugin and the active window.
 
-    Using this control will cause an error unless the device calls
+    Using this type of control will cause an error unless the device calls
     `getContext().activity.setSplitWindowsPlugins(self, value: bool)`
     in order to inform the script context that windows and plugins should be
     addressed independently.
+
+    This is the abstract base class: to implement this, use
+    * `SwitchActivePluginButton` for a button to switch to plugins
+    * `SwitchActiveWindowButton` for a button to switch to windows
+    * `SwitchActiveToggleButton` for a button to toggle between windows and
+      plugins
+    """
+
+class SwitchActivePluginButton(SwitchActiveButton):
+    """
+    A switch active button that make generator and effects plugins be actively
+    processed by the script
+    """
+
+class SwitchActiveWindowButton(SwitchActiveButton):
+    """
+    A switch active button that make FL Studio windows be actively
+    processed by the script
+    """
+
+class SwitchActiveToggleButton(SwitchActiveButton):
+    """
+    A switch active button that toggles between plugins and FL Studio windows
+    being actively processed by the script
     """

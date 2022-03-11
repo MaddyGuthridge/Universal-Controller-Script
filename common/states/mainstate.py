@@ -5,15 +5,13 @@ Represents the script in its main state, where the device is recognised and
 behaving as expected.
 """
 
-import time
 import plugins
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import common
 from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
 from common.types import EventData
-from common.util.apifixes import getFocusedPluginIndex, WindowIndex, PluginIndex
 from common.util.events import eventToString
 from .scriptstate import IScriptState
 
