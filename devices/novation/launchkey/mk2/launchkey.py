@@ -9,6 +9,7 @@ from devices.controlgenerators import NoteMatcher
 
 from controlsurfaces import (
     Fader,
+    MasterFader,
     Knob,
     PlayButton,
     StopButton,
@@ -17,7 +18,8 @@ from controlsurfaces import (
     RewindButton,
     LoopButton,
     StandardPitchWheel,
-    StandardModWheel
+    StandardModWheel,
+    GenericFaderButton,
 )
 from controlsurfaces import (
     DirectionNext,
@@ -31,17 +33,17 @@ class LaunchkeyMk2(Device):
     """
     Novation Launchkey Mk2 series controllers
     """
-    
+
     def __init__(self, matcher: BasicControlMatcher) -> None:
-        
+
         # Notes
         matcher.addSubMatcher(NoteMatcher())
-        
-        # Drum pads
+
+        # Drum pads (high priority because they just use note on events)
         for r in range(self.getDrumPadSize()[0]):
             for c in range(self.getDrumPadSize()[1]):
-                matcher.addControl(LaunchkeyDrumpad((r, c)))
-        
+                matcher.addControl(LaunchkeyDrumpad((r, c)), 10)
+
         # Create knobs
         for i in range(1, 9):
             matcher.addControl(
@@ -51,7 +53,7 @@ class LaunchkeyMk2(Device):
                     (i, 0)
                 )
             )
-        
+
         # Transport
         matcher.addControl(StopButton(
             BasicPattern(0xB0, 0x72, ...),
@@ -87,9 +89,9 @@ class LaunchkeyMk2(Device):
         ))
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
-        
+
         super().__init__(matcher)
-    
+
     @staticmethod
     def getDrumPadSize() -> tuple[int, int]:
         return 2, 8
@@ -100,36 +102,45 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
     """
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
-        
+
         # Create faders
-        for i in range(1, 9):
+        for i in range(8):
             matcher.addControl(
                 Fader(
-                    BasicPattern(0xB0, 0x28 + i, ...),
+                    BasicPattern(0xB0, 0x29 + i, ...),
                     Data2Strategy(),
                     (0, i)
                 )
             )
         # Master fader
-        # TODO: Make this separate
         matcher.addControl(
-            Fader(
+            MasterFader(
                 BasicPattern(0xB0, 0x07, ...),
-                Data2Strategy(),
-                (0, 0)
+                Data2Strategy()
             )
         )
-        
+
+        # Fader buttons
+        for i in range(8):
+            matcher.addControl(
+                GenericFaderButton(
+                    BasicPattern(0xB0, 0x33 + i, ...),
+                    Data2Strategy(),
+                    (0, i)
+                )
+            )
+
+
         super().__init__(matcher)
 
     @classmethod
     def create(cls, event: Optional[EventData]) -> Device:
         return cls()
-    
+
     @staticmethod
     def getId() -> str:
         return f"{ID_PREFIX}.49-61"
-    
+
     @staticmethod
     def getUniversalEnquiryResponsePattern():
         return BasicPattern(
@@ -145,7 +156,7 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
                 (0x7C, 0x7D) # Family code (documented as 0x7A???)
             ]
         )
-    
+
     @staticmethod
     def matchDeviceName(name: str) -> bool:
         """Controller can't be matched to FL device name"""
@@ -171,7 +182,7 @@ class LaunchkeyMk2_25(LaunchkeyMk2):
         return BasicPattern(
             [0xF0, 0x7E, 0x00, 0x06, 0x02, 0x00, 0x20, 0x29, 0x7B]
         )
-    
+
     @staticmethod
     def matchDeviceName(name: str) -> bool:
         """Controller can't be matched to FL device name"""

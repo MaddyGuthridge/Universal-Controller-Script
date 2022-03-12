@@ -25,11 +25,11 @@ if TYPE_CHECKING:
 #     """
 #     Type definition for a callback function, which accepts a control mapping, as
 #     well as any other unspecified arguments
-#     
+#
 #     ### Args:
 #     * `control` (`ControlSurface`): control associated with the event
 #     * `*args` (`Any`): any other arguments, as defined when binding the function
-#     
+#
 #     ### Returns:
 #     * `bool`: Whether the event has been handled or not
 #     """
@@ -76,7 +76,7 @@ class DeviceShadow:
                 tuple[ControlShadow, EventCallback, tuple]
             ] = {}
         self._transparent = False
-    
+
     def __repr__(self) -> str:
         """
         Returns simplified representation of shadow, excluding mappings
@@ -86,7 +86,7 @@ class DeviceShadow:
         """
         return f"Device shadow for {type(self._device)}. "\
                f"{len(self._assigned_controls)} assigned controls"
-    
+
     def __str__(self) -> str:
         """
         Return representation of shadow, including mappings to functions
@@ -97,22 +97,22 @@ class DeviceShadow:
         * `str`: info on mappings
         """
         header = f"Shadow of device: {type(self._device)}"
-        
+
         assigned = "Assigned controls:\n" + "\n".join([
             f" * {repr(control.getControl())} -> {call}{args} | "
             f"value={shadow.value}, color={shadow.color}, annotaion='{shadow.annotation}'"
             for control, (shadow, call, args) in self._assigned_controls.items()
         ])
-        
+
         # unassigned = "Unassigned controls:\n" + "\n".join([
         #     f" * {control.getControl()}"
         #     for control in self._free_controls
         # ])
-        
+
         unassigned = f"{len(self._free_controls)} free controls"
-        
+
         return f"{header}\n\n{assigned}\n\n{unassigned}"
-    
+
     def getDevice(self) -> Device:
         """
         Returns a reference to the device this shadow represents
@@ -121,7 +121,7 @@ class DeviceShadow:
         * `Device`: device
         """
         return self._device
-    
+
     def setTransparent(self, value: bool) -> None:
         """
         Control whether this device shadow is "transparent"
@@ -135,10 +135,10 @@ class DeviceShadow:
         * `value` (`bool`): new transparency value
         """
         self._transparent = value
-    
+
     def _getMatches(
-        self, 
-        expr: Callable[[ControlSurface], bool], 
+        self,
+        expr: Callable[[ControlSurface], bool],
         target_num: int = None
     ) -> list[ControlShadow]:
         """
@@ -165,7 +165,7 @@ class DeviceShadow:
                     group_matches[c.group].append(c)
                 else:
                     group_matches[c.group] = [c]
-        
+
         if target_num is None:
             highest = greatestKey(num_group_matches)
         else:
@@ -175,9 +175,9 @@ class DeviceShadow:
             except ValueError:
                 # If that fails, just use the highest value available
                 highest = greatestKey(num_group_matches)
-        
+
         return group_matches[highest]
-    
+
     def getControlMatches(
         self,
         control: type[ControlSurface],
@@ -213,19 +213,19 @@ class DeviceShadow:
         * `raise_on_zero`  (`bool`, optional): Whether to raise an error if no
           matching controls are found. This is to prevent errors when attempting
           to bind to a control when there aren't any matches at all.
-        
+
         ### Raises:
-        * `ValueError`: Not enough matching controls found, when `exact` is 
+        * `ValueError`: Not enough matching controls found, when `exact` is
           `True`.
         * `ValueError`: Too many matching controls, when `exact` is `True` and
           `trim` is `False`.
-        * `ValueError`: No matching controls found (when `raise_on_zero` is 
+        * `ValueError`: No matching controls found (when `raise_on_zero` is
           True)
 
         ### Returns:
         * `list[ControlShadow]`: List of matches
         """
-        
+
         # Determine what lambda to use depending on if we are allowing control
         # substitution
         no_subs = lambda x: isinstance(x, control)
@@ -243,25 +243,25 @@ class DeviceShadow:
                     subs,
                     target_num
                 )
-        
+
         else:
             ret = self._getMatches(
                 no_subs,
                 target_num
             )
-        
+
         # Sort the matches based on coordinate
         sort_key = lambda c : c.coordinate
         ret.sort(key=sort_key)
-        
+
         # Make sure we have results
         if raise_on_zero and len(ret) == 0:
             raise ValueError("No matching controls found")
-        
+
         # If we have no target, ignore exact and trim parameters
         if target_num is None:
             return ret
-        
+
         if exact:
             if len(ret) < target_num:
                 raise ValueError("Not enough matching controls found")
@@ -274,7 +274,7 @@ class DeviceShadow:
                 return ret
         else:
             return ret
-    
+
     def getNumControlMatches(
         self,
         control: type[ControlSurface],
@@ -284,7 +284,7 @@ class DeviceShadow:
         Returns the number of controls matching the required type.
 
         A matching control is defined as inheriting from the given type, being a
-        member of the same group as other matches, and which isn't already 
+        member of the same group as other matches, and which isn't already
         assigned.
 
         ### Args:
@@ -316,7 +316,7 @@ class DeviceShadow:
         * `control` (`ControlShadow`): control to bind
         * `bind_to` (`EventCallback`): callback function to bind. Refer to
           EventCallback documentation for how this should be structured.
-        * `args` (`tuple`, optional): arguments to give to the callback 
+        * `args` (`tuple`, optional): arguments to give to the callback
           function. Defaults to `None` (no arguments).
 
         ### Raises:
@@ -325,15 +325,15 @@ class DeviceShadow:
         """
         if control not in self._free_controls:
             raise ValueError("Control must be free to bind to")
-        
+
         if args is None:
             args_: tuple = tuple()
         else:
             args_ = args
-        
+
         # Remove from free controls
         self._free_controls.remove(control)
-        
+
         # Bind to callable
         self._assigned_controls[control.getMapping()] = (control, bind_to, args_)
 
@@ -356,15 +356,15 @@ class DeviceShadow:
           arguments to pass to the function:
                 * `None` (default): no arguments will be given.
                 * `...`: indices of the controls (ie the first control in
-                  the list will cause the callback to be given the argument 
+                  the list will cause the callback to be given the argument
                   `0`).
                 * `list[tuple]`: each control will be associated with the tuple
-                  of arguments with the same index. Note that the list of 
+                  of arguments with the same index. Note that the list of
                   argument tuples will need to be at least of the same length as
-                  the list of controls to bind. Any excess arguments will be 
+                  the list of controls to bind. Any excess arguments will be
                   ignored.
                 * `Generator[tuple, None, None]`: the generator will be iterated
-                  over in order to generate tuples of arguments for each 
+                  over in order to generate tuples of arguments for each
                   control. Note that this refers to a generator object, not a
                   generator function.
 
@@ -386,26 +386,26 @@ class DeviceShadow:
                 if len(args_iterable) < len(controls): # type: ignore
                     raise ValueError("Args list must be of the same length as "
                                     "controls list")
-                
+
                 # Get rid of incorrect flag for ellipsis
                 if TYPE_CHECKING:
                     assert not isinstance(args_iterable, ellipsis)
                 args_iter = (a for a in args_iterable)
             except TypeError:
-                # Iterable doesn't support len, assume it's infinite (ie a 
+                # Iterable doesn't support len, assume it's infinite (ie a
                 # generator)
                 if TYPE_CHECKING:
                     assert isinstance(args_iterable, Generator)
                 args_iter = args_iterable
-        
+
         # Ensure all controls are assignable
         if not all(c in self._free_controls for c in controls):
             raise ValueError("All controls must be free to bind to")
-        
+
         # Bind each control, using the index of it as the argument
         for c, a in zip(controls, args_iter):
             self.bindControl(c, bind_to, a)
-    
+
     def bindMatch(
         self,
         control: type[ControlSurface],
@@ -421,19 +421,19 @@ class DeviceShadow:
         ### Args:
         * `control` (`ControlSurface`): control type to bind
         * `bind_to` (`EventCallback`): function to bind to
-        * `args` (`tuple`, optional): arguments to give to the callback 
+        * `args` (`tuple`, optional): arguments to give to the callback
           function. Defaults to `None` (no arguments).
         * `allow_substitution` (`bool`, optional): whether the control can be
           substituted for a similar control. Defaults to `False`.
         * `raise_on_failure` (`bool`, optional): whether failure to assign the
-          control should result in a `ValueError` being raised. When this is 
+          control should result in a `ValueError` being raised. When this is
           `False`, `None` will be returned instead or a control surface.
           Defaults to `True`.
 
         ### Raises:
-        * `ValueError`: No controls were found to bind to (when 
+        * `ValueError`: No controls were found to bind to (when
           `raise_on_failure` is `True`)
-        
+
         ### Returns
         * `ControlSurface`: The control surface that was bound to, so that
           properties of it can be set.
@@ -452,7 +452,7 @@ class DeviceShadow:
                 return None
         self.bindControl(match, bind_to, args)
         return match
-    
+
     def bindMatches(
         self,
         control: type[ControlSurface],
@@ -475,16 +475,16 @@ class DeviceShadow:
         * `args_iterable`: Iterable of arguments to pass to the function:
                 * `None` (default): no arguments will be given.
                 * `...`: indices of the controls (ie the first control in
-                  the list will cause the callback to be given the argument 
+                  the list will cause the callback to be given the argument
                   `0`).
                 * `list[tuple]`: each control will be associated with the tuple
-                  of arguments with the same index. Note that the list of 
+                  of arguments with the same index. Note that the list of
                   argument tuples will need to be at least of the same length as
-                  the list of controls to bind. Any excess arguments will be 
+                  the list of controls to bind. Any excess arguments will be
                   ignored.
-                * `GeneratorFunction (list[ControlShadow]) -> Generator -> 
+                * `GeneratorFunction (list[ControlShadow]) -> Generator ->
                   tuple`: the generator will be iterated
-                  over in order to generate tuples of arguments for each 
+                  over in order to generate tuples of arguments for each
                   control. Note that if the number of matches isn't guaranteed,
                   a generator should be used to get callback arguments.
         * `target_num` (`int`, optional): Number of matches to look for, to
@@ -504,25 +504,25 @@ class DeviceShadow:
           more results than the requested amount will raise an error as well.
           Defaults to `True`.
         * `raise_on_failure` (`bool`, optional): whether failure to assign the
-          control should result in a `ValueError` being raised. When this is 
+          control should result in a `ValueError` being raised. When this is
           `False`, an empty list will be returned instead. Defaults to `True`.
 
         ### Raises:
         * `TypeError`: Potential bad number of callback arguments due to unknown
           number of controls being bound (ie. `exact` is `False`).
-        * `ValueError`: No controls were found to bind to (when 
+        * `ValueError`: No controls were found to bind to (when
           `raise_on_failure` is `True`)
-        
+
         ### Returns:
         * `list[ControlSurface]`: List of controls bound successfully
         """
-        
+
         # Ensure we don't risk having too few arguments to bind to
         if isinstance(args_iter_gen, list) and not exact:
             raise TypeError(f"A generator function should be used to create "
                             f"callback arguments if the number of controls to "
                             f"be bound is unknown (ie. when {exact=})")
-        
+
         # Try to get a list of matching controls
         try:
             matches = self.getControlMatches(
@@ -537,7 +537,7 @@ class DeviceShadow:
                 raise ValueError("Error binding controls") from e
             else:
                 return []
-        
+
         # Check for generator functions
         if not isinstance(args_iter_gen, (list, type(...), type(None))):
             if TYPE_CHECKING:
@@ -547,13 +547,13 @@ class DeviceShadow:
             iterable: 'Iterable[tuple[Any, ...]] | ellipsis | None'\
                 = args_iter_gen(matches)
         else:
-            # Otherwise it's already iterable (or will be made so by the 
+            # Otherwise it's already iterable (or will be made so by the
             # bindControls() method)
             iterable = args_iter_gen
         # Finally, bind all the controls
         self.bindControls(matches, bind_to, iterable)
         return matches
-    
+
     def processEvent(self, control: ControlEvent, index: UnsafeIndex) -> bool:
         """
         Process an event by calling the bound callback function associated with
@@ -563,7 +563,7 @@ class DeviceShadow:
         * `control` (`ControlMapping`): Control associated with the event
         * `index` (`PluginIndex`): Index of channel or track/slot of the
           selected plugin
-        
+
         ### Returns:
         * `bool`: Whether the event has been handled
         """
@@ -574,7 +574,7 @@ class DeviceShadow:
             # If we get a KeyError, the control isn't assigned and we should do
             # nothing
             return False
-        
+
         # Generate a control shadow mapping to send to the device
         mapping = ControlShadowEvent(control, control_shadow)
         # Call the bound function with any extra required args

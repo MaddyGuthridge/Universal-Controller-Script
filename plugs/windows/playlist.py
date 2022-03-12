@@ -16,26 +16,20 @@ INDEX = 2
 
 class Playlist(WindowPlugin):
     """
-    Used to process events as a fallback if there isn't a plugin registered for
-    the active FL plugin.
-    
-    Handles:
-    * Pedals
-    * Mod and pitch wheels
-    * Notes
+    Used to process events directed at the playlist
     """
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
         super().__init__(shadow, [])
-    
+
     @staticmethod
     def getWindowId() -> int:
         return INDEX
-    
+
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
         return cls(shadow)
-    
+
     def tick(self):
         pass
 
@@ -49,8 +43,8 @@ class Playlist(WindowPlugin):
             return True
         else:
             return True
-        
-        if isinstance(control.getControl(), StandardJogWheel):
+
+        if isinstance(control.getControl(), MoveJogWheel):
             # Scroll through tracks
             track = getSelectedPlaylistTrack() + increment
             if track <= 0:
@@ -60,7 +54,7 @@ class Playlist(WindowPlugin):
             playlist.deselectAll()
             playlist.selectTrack(track)
             ui.scrollWindow(INDEX, track)
-        elif isinstance(control.getControl(), MoveJogWheel):
+        elif isinstance(control.getControl(), StandardJogWheel):
             # Need to account for ticks being zero-indexed and bars being
             # 1-indexed
             bar = int(transport.getSongPos(3)) + increment - 1

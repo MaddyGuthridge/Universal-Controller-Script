@@ -28,13 +28,13 @@ class ActivityState:
         self._plugin: PluginIndex = self._generator
         self._plug_active = True if self._plugin is not None else False
         self._changed = False
-    
+
     def printUpdate(self):
         print(f"Window: {self._window}, Plugin: {self._plugin}")
         print(f"Active: {'plugin' if self._plug_active else 'window'}")
         print(f"Updating: {self._doUpdate}")
         print(f"Split: {self._split}")
-    
+
     def _forcePlugUpdate(self) -> None:
         """
         Update the active plugin when other things are active (eg windows).
@@ -47,7 +47,7 @@ class ActivityState:
             self._generator = plugin # type: ignore
         else:
             self._effect = plugin # type: ignore
-    
+
     def tick(self) -> None:
         """
         Called frequently when we need to update the current window
@@ -93,7 +93,7 @@ class ActivityState:
             return self._plugin
         else:
             return self._window
-    
+
     def getGenerator(self) -> GeneratorIndex:
         """
         Returns the currently active generator plugin
@@ -102,7 +102,7 @@ class ActivityState:
         * `GeneratorIndex`: active generator
         """
         return self._generator
-    
+
     def getEffect(self) -> EffectIndex:
         """
         Returns the currently active effect plugin
@@ -111,7 +111,7 @@ class ActivityState:
         * `GeneratorIndex`: active generator
         """
         return self._effect
-    
+
     def getPlugin(self) -> PluginIndex:
         """
         Returns the currently active plugin
@@ -120,7 +120,7 @@ class ActivityState:
         * `UnsafePluginIndex`: active plugin
         """
         return self._plugin
-    
+
     def getWindow(self) -> WindowIndex:
         """
         Returns the currently active window
@@ -153,16 +153,16 @@ class ActivityState:
     def setSplitWindowsPlugins(self, value: bool) -> None:
         """
         Sets whether windows and plugins should be addressed independently.
-        
+
         This should be set by the device object during initialisation if that
         device has a way to toggle between plugin and DAW controls.
         """
         self._split = value
-    
+
     def toggleWindowsPlugins(self, value: bool = None) -> bool:
         """
         Toggles whether we are currently addressing windows or plugins.
-        
+
         This should be triggered by the script when a [type] event is detected
         from the plugin.
         TODO: type

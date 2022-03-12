@@ -5,15 +5,13 @@ Represents the script in its main state, where the device is recognised and
 behaving as expected.
 """
 
-import time
 import plugins
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import common
 from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
 from common.types import EventData
-from common.util.apifixes import getFocusedPluginIndex, WindowIndex, PluginIndex
 from common.util.events import eventToString
 from .scriptstate import IScriptState
 
@@ -25,13 +23,13 @@ class MainState(IScriptState):
     Represents the main state of the script, where the device is recognised and
     behaving as expected.
     """
-    
+
     def __init__(self, device: 'Device') -> None:
         self._device = device
-    
+
     def initialise(self) -> None:
         pass
-    
+
     @profilerDecoration("tick")
     def tick(self) -> None:
         with ProfilerContext("Device tick"):
@@ -85,7 +83,7 @@ class MainState(IScriptState):
             )
             # raise ValueError(f"Couldn't identify event: {eventToString(event)}")
             return
-            
+
         else:
             log(
                 "device.event.in",

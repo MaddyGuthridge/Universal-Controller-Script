@@ -50,18 +50,18 @@ class SpitfireGeneric(StandardPlugin):
     def __init__(self, shadow: DeviceShadow) -> None:
         self._faders = shadow.bindMatches(
             Fader, self.faders, ..., target_num=2, raise_on_failure=False)
-        
+
         # Set annotation and colors once (since they won't change)
         self._faders[0].annotation = "Expression"
         self._faders[0].color = Color.fromRgb(127, 127, 127)
         self._faders[1].annotation = "Dynamics"
         self._faders[1].color = Color.fromRgb(127, 127, 127)
         super().__init__(shadow, [])
-    
+
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
-    
+
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
         return SUPPORTED_PLUGINS

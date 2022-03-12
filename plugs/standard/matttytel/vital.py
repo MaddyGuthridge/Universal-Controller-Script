@@ -20,11 +20,11 @@ class Vital(StandardPlugin):
         shadow.bindMatches(
             Fader, self.faders, ..., target_num=4, raise_on_failure=False)
         super().__init__(shadow, [])
-    
+
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
-    
+
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
         return ("Vital",)

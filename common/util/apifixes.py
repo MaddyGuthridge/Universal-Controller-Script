@@ -8,6 +8,7 @@ called directly.
 import plugins
 import ui
 import channels
+import mixer
 import playlist
 
 from typing import Union, Optional
@@ -30,8 +31,8 @@ UnsafeIndex = Union[UnsafePluginIndex, UnsafeWindowIndex]
 def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
-    
-    Values are returned as tuples so that they can be unwrapped when 
+
+    Values are returned as tuples so that they can be unwrapped when
 
     Args:
     * `force` (`bool`, optional): whether to return the selected plugin on the
@@ -44,7 +45,7 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     """
     # Check if a channel rack plugin is focused
     # if ui.getFocused(7):
-        
+
     # If a mixer plugin is focused
     if ui.getFocused(6):
         track = ui.getFocusedFormID() // 4194304
@@ -63,8 +64,8 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
 def getFocusedWindowIndex() -> Optional[int]:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
-    
-    Values are returned as tuples so that they can be unwrapped when 
+
+    Values are returned as tuples so that they can be unwrapped when
 
     Returns:
         * `None`: if no window is focused
@@ -86,7 +87,7 @@ def isPluginVst(index: PluginIndex) -> bool:
     ### Args:
     * `index` (`PluginIndex`): plugin index
     """
-    return plugins.getParamCount(*index) < PARAM_CC_START
+    return plugins.getParamCount(*index) > PARAM_CC_START
 
 def getSelectedPlaylistTrack() -> int:
     """
@@ -100,3 +101,76 @@ def getSelectedPlaylistTrack() -> int:
         if playlist.isTrackSelected(i):
             return i
     return 1
+
+def catchUnsafeOperation(func):
+    """
+    Decorator to prevent exceptions due to unsafe operations
+
+    ### Args:
+    * `func` (`Callable`): function to decorate
+    """
+    def wrapper(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except TypeError as e:
+            if e.args != ("Operation unsafe at current time",):
+                raise e
+    return wrapper
+
+def getSelectedDockMixerTracks() -> dict[int, list[int]]:
+    """
+    Returns a list of the selected mixer tracks for each dock side, not
+    including master or current
+
+    * 0: tracks docked to left
+    * 1: tracks in centre
+    * 2: tracks docked to right
+
+    ### Returns:
+    * `dict[int, list[int]]`: track selections
+    """
+    tracks: dict[int, list[int]] = {
+        0: [],
+        1: [],
+        2: [],
+    }
+    for i in range(1, mixer.trackCount()-1):
+        if mixer.isTrackSelected(i):
+            tracks[mixer.getTrackDockSide(i)].append(i)
+
+    return tracks
+
+def getSelectedMixerTracks() -> list[int]:
+    """
+    Returns a list of the selected mixer tracks, not including master or current
+
+    ### Returns:
+    * `list[int]`: track selections
+    """
+    tracks: list[int] = []
+    for i in range(1, mixer.trackCount()-1):
+        if mixer.isTrackSelected(i):
+            tracks.append(i)
+
+    return tracks
+
+def getMixerDockSides() -> dict[int, list[int]]:
+    """
+    Returns a list of the dock sides for tracks on the mixer
+
+    * 0: tracks docked to left
+    * 1: tracks in centre
+    * 2: tracks docked to right
+
+    ### Returns:
+    * `dict[int, list[int]]`: track selections
+    """
+    tracks: dict[int, list[int]] = {
+        0: [],
+        1: [],
+        2: [],
+    }
+    for i in range(mixer.trackCount()-1):
+        tracks[mixer.getTrackDockSide(i)].append(i)
+
+    return tracks

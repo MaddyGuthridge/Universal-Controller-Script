@@ -67,13 +67,13 @@ class EventData:
     """
     def __init__(
         self,
-        status_sysex: 'int | list[int]',
+        status_sysex: 'int | list[int] | bytes',
         data1: Optional[int]=None,
         data2:Optional[int]=None
     ) -> None:
         self.handled = False
         self.timestamp = ReadOnly(0.0)
-        self.status = None if isinstance(status_sysex, list) else status_sysex
+        self.status = status_sysex if isinstance(status_sysex, int) else None
         self.data1 = data1 # if data1 is not None else 0
         self.data2 = data2 # if data2 is not None else 0
         self.port = ReadOnly(0)
@@ -84,7 +84,7 @@ class EventData:
         self.controlNum = ReadOnly(0)
         self.controlVal = ReadOnly(0)
         self.pitchBend = ReadOnly(0)
-        self.sysex = bytes(status_sysex) if isinstance(status_sysex, list) else None
+        self.sysex = bytes(status_sysex) if not isinstance(status_sysex, int) else None
         self.isIncrement = False
         self.res = 0.0
         self.inEv = 0
@@ -93,6 +93,22 @@ class EventData:
         self.midiChan = 0
         self.midiChanEx = 0
         self.pmeflags = ReadOnly(0)
+    
+    def __eq__(self, o: object) -> bool:
+        
+        if isinstance(o, EventData):
+            if isEventStandard(self) and isEventStandard(o):
+                return (
+                    self.status == o.status
+                and self.data1  == o.data1
+                and self.data2  == o.data2
+                )
+            elif isEventSysex(self) and isEventSysex(o):
+                return self.sysex == o.sysex
+            else:
+                return False
+        else:
+            return NotImplemented
 
 class _StandardEventData(EventData):
     """

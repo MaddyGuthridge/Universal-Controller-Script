@@ -9,10 +9,11 @@ Authors:
 """
 # from __future__ import annotations
 
+from time import time
 from typing import Optional, final
 from abc import abstractmethod
 
-from common import IEventPattern, ProfilerContext
+from common import IEventPattern, getContext
 from common.types import EventData, Color
 
 from .valuestrategies import IValueStrategy
@@ -25,7 +26,7 @@ class ControlSurface:
 
     This class is extended by all other control surfaces.
     """
-    
+
     @staticmethod
     @abstractmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
@@ -41,7 +42,26 @@ class ControlSurface:
         """
         raise NotImplementedError("This function should be overridden in "
                                   "child classes")
-    
+
+    @staticmethod
+    def isPress(value: float) -> bool:
+        """
+        Returns whether a value (0-1.0) for this control should count as a
+        press.
+
+        You must override this method in order to provide double press
+        functionality.
+
+        This is used to create the doublePress property for ControlEvent objects
+
+        ### Args:
+        * `value` (`float`): value to check
+
+        ### Returns:
+        * `bool`: whether this value should be counted as a press
+        """
+        return False
+
     def __init__(
         self,
         event_pattern: IEventPattern,
@@ -69,13 +89,16 @@ class ControlSurface:
         self._value_strategy = value_strategy
         self._group = group
         self._coord = coordinate
-    
+
+        # The time that this control was pressed last
+        self._press = 0.0
+
     def __repr__(self) -> str:
         """
         String representation of the control surface
         """
         return f"{self.__class__}, ({self._group}: {self._coord}, {self.value})"
-    
+
     @final
     def getMapping(self) -> ControlMapping:
         """
@@ -93,7 +116,7 @@ class ControlSurface:
     @final
     def match(self, event: EventData) -> Optional[ControlEvent]:
         """
-        Returns a control event if the given event matches this 
+        Returns a control event if the given event matches this
         control surface, otherwise returns None
 
         ### Args:
@@ -105,20 +128,26 @@ class ControlSurface:
         if self._pattern.matchEvent(event):
             self._value = self._value_strategy.getValueFromEvent(event)
             channel = self._value_strategy.getChannelFromEvent(event)
-            return ControlEvent(self, self.value, channel)
+            if self.isPress(self.value):
+                t = time()
+                double_press = t - self._press <= getContext().settings.get("controls.double_press_time")
+                self._press = t
+            else:
+                double_press = False
+            return ControlEvent(self, self.value, channel, double_press)
         else:
             return None
 
     ############################################################################
     # Properties
-    
+
     @property
     def coordinate(self) -> tuple[int, int]:
         """
         Coordinate of the control. Read only.
         """
         return self._coord
-    
+
     @property
     def group(self) -> str:
         """
@@ -130,7 +159,7 @@ class ControlSurface:
     def color(self) -> Color:
         """
         Represents the color of the control
-        
+
         On compatible controllers, this can be displayed on the control using
         LED lighting.
         """
@@ -155,13 +184,13 @@ class ControlSurface:
         if self._annotation != a:
             self._annotation = a
             self.onAnnotationChange()
-    
+
     @property
     def value(self) -> float:
         """
         The value property represents the value of a control (eg the rotation
-        of a knob, or the position of a fader). 
-        
+        of a knob, or the position of a fader).
+
         It is gotten and set using a float between 0-1.0, but could be
         represented in other ways inside the class. The way it is gotten and set
         is determined by the functions _getValue() and _setValue() respectively.
@@ -180,7 +209,7 @@ class ControlSurface:
 
     ############################################################################
     # Events
-    
+
     def onColorChange(self) -> None:
         """
         Called when the color of the control changes
@@ -188,7 +217,7 @@ class ControlSurface:
         This can be overridden to send a MIDI message to the controller if
         required, so that the color can be shown on compatible controls.
         """
-    
+
     def onAnnotationChange(self) -> None:
         """
         Called when the annotation of the control changes
@@ -196,7 +225,7 @@ class ControlSurface:
         This can be overridden to send a MIDI message to the controller if
         required, so that the annotation can be shown on compatible controls.
         """
-    
+
     def onValueChange(self) -> None:
         """
         Called when the value of the control changes

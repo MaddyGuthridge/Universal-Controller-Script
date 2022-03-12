@@ -221,7 +221,7 @@ class Log:
         """
         import common
         try:
-            discarded = common.getContext().settings.get("logger.critical_verbosity")
+            discarded = common.getContext().settings.get("logger.discard_verbosity")
         except common.contextmanager.MissingContextException:
             discarded = NOTE
         if verbosity > discarded:

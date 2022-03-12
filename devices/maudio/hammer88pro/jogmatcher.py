@@ -45,10 +45,10 @@ class JogValueStrategy(IValueStrategy):
         # Press
         else:
             return consts.ENCODER_NULL
-    
+
     def getChannelFromEvent(self, event: EventData) -> int:
         return -1
-    
+
     def getValueFromFloat(self, f: float):
         return f
 
@@ -62,52 +62,52 @@ class JogMatcher(IControlMatcher):
     """
     def __init__(self) -> None:
         self._null = NullEvent(NullPattern())
-        
+
         self._value_strat = ForwardedUnionStrategy(JogValueStrategy())
-        
+
         self._jog_press_pattern = ForwardedUnionPattern(3, BasicPattern(
             0xBF,
             0x71,
             (0x00, 0x7F)
         ))
-        
+
         self._jog_turn_pattern = ForwardedUnionPattern(3, BasicPattern(
             0xBF,
             0x71,
             (63, 65)
         ))
-        
+
         self._pattern = UnionPattern(
-            self._jog_turn_pattern, 
+            self._jog_turn_pattern,
             self._jog_press_pattern
         )
-        
+
         self._jog_standard = StandardJogWheel(
             self._pattern,
             self._value_strat
         )
-        
+
         self._jog_move = MoveJogWheel(
             self._pattern,
             self._value_strat
         )
-        
+
         self._pressed = False
         self._used_since_press = False
-        
+
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
         # If it's not a jog wheel event, ignore it
         if not self._pattern.matchEvent(event):
             return None
-        
+
         # If it's a press or release
         if self._jog_press_pattern.matchEvent(event):
             if self._value_strat.getValueFromEvent(event) == 0.0:
                 self._pressed = True
-                return ControlEvent(self._null, 0.0, -1)
+                return ControlEvent(self._null, 0.0, -1, False)
             else:
                 if self._used_since_press:
-                    ret: Optional[ControlEvent] = ControlEvent(self._null, 0.0, -1)
+                    ret: Optional[ControlEvent] = ControlEvent(self._null, 0.0, -1, False)
                 else:
                     ret = self._jog_standard.match(event)
                 self._pressed = False

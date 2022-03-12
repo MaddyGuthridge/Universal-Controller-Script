@@ -8,7 +8,7 @@ Authors:
 """
 
 # Version info
-VERSION = (0, 3, 0)
+VERSION = (0, 4, 0)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
@@ -21,7 +21,7 @@ MIN_API_VERSION = 19
 def getVersionString() -> str:
     """
     Returns the version string of the script
-    
+
     Eg: "1.2.3"
     """
     return ".".join(map(str, VERSION))

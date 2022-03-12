@@ -4,7 +4,7 @@ devices > novation > launchkey > mk2 > drumpad
 Definition for the Launchkey Mk2 Drumpads
 """
 from common import profilerDecoration
-from common.eventpattern import BasicPattern, fromNibbles
+from common.eventpattern.notepattern import NotePattern
 from common.types import EventData
 from common.util.events import forwardEvent
 from controlsurfaces.valuestrategies import NoteStrategy
@@ -17,24 +17,24 @@ DRUM_PADS = [
 ]
 
 class LaunchkeyDrumpad(DrumPad):
-    
+
     def __init__(self, coordinate: tuple[int, int]) -> None:
         self._note_num = DRUM_PADS[coordinate[0]][coordinate[1]]
         # Variables to keep the drumpad lights working
         self._ticker_timer = 0
         self._need_update = False
         super().__init__(
-            BasicPattern(fromNibbles((8, 9), 9), self._note_num, ...),
+            NotePattern(self._note_num, 9),
             NoteStrategy(),
             coordinate
         )
-    
+
     @profilerDecoration("LaunchKey onColorChange")
     def onColorChange(self) -> None:
         c_num = COLORS[self.color.closest(list(COLORS.keys()))]
         forwardEvent(EventData(0x9F, self._note_num, c_num), 2)
         # print(f"{self.coordinate} : #{self.color.integer:06X} -> {c_num}")
-    
+
     def onValueChange(self) -> None:
         # Ensure the lights stay on when we press them
         self._need_update = True

@@ -19,17 +19,32 @@ def parseDeviceName() -> str:
     * `str`: device name
     """
     name = device.getName()
-    
+
     if name.startswith("MIDIIN"):
         name = name.lstrip("MIDIIN")
         bracket_start = name.find("(")
         return name[bracket_start+1:-1]
     else:
         return name
-        
 
-FORWARDED_EVENT_HEADER: Optional[bytes] = None
-DEVICE_NAME = parseDeviceName()
+def parseDeviceNumber() -> int:
+    """
+    Determine the number of auxiliary devices that are connected using the
+    Universal Event Forwarder
+
+    WARNING: This may not work on MacOS
+
+    ### Returns:
+    * `int`: device number of an auxiliary device, or -1 if this is the main
+      device or of an incompatible format
+    """
+    name = device.getName()
+
+    if name.startswith("MIDIIN"):
+        name = name.lstrip("MIDIIN")
+        return int(name[0])
+    else:
+        return -1
 
 def isEventForwarded(event: EventData) -> bool:
     """
@@ -52,28 +67,44 @@ def isEventForwarded(event: EventData) -> bool:
     else:
         return True
 
-def initForwardedEventHeader():
-    global FORWARDED_EVENT_HEADER
-    
-    name = device.getName()
-    
-    if name.startswith("MIDIIN"):
-        name = name.lstrip("MIDIIN")
-        bracket_start = name.find("(")
-        name = name[bracket_start+1:-1]
-    
-    FORWARDED_EVENT_HEADER = bytes([
+def getForwardedEventHeader() -> bytes:
+    """
+    Returns a header for a forwarded event
+
+    ### Returns:
+    * `bytes`: event header
+    """
+    return bytes([
         0xF0, # Start sysex
         0x7D  # Non-commercial sysex ID
-    ]) + name.encode() \
+    ]) + parseDeviceName().encode() \
        + bytes([0])
 
-def encodeForwardedEvent(event: EventData, device_num: int) -> bytes:
-    if FORWARDED_EVENT_HEADER is None:
-        initForwardedEventHeader()
-    assert FORWARDED_EVENT_HEADER is not None
-    sysex = FORWARDED_EVENT_HEADER + bytes([device_num])
-    
+def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
+    """
+    Encode an event such that it can be forwarded to the main script from
+    auxiliary scripts or to an auxiliary script from the main script
+
+    ### Args:
+    * `event` (`EventData`): event to encode
+    * `device_num` (`int`, optional): device number to target. Defaults to `-1`.
+
+    ### Raises:
+    * `ValueError`: no target specified on main script (or forwarding from
+    invalid device)
+
+    ### Returns:
+    * `bytes`: encoded event data
+    """
+    if device_num == -1:
+        device_num = parseDeviceNumber()
+        if device_num == -1:
+            # TODO: Use a custom exception type to improve error checking
+            raise ValueError("Either forwarding from an invalid device or "
+                             "target device number is unspecified")
+
+    sysex = getForwardedEventHeader() + bytes([device_num])
+
     if isEventStandard(event):
         return sysex + bytes([0]) + bytes([
             event.data2,
@@ -113,32 +144,39 @@ def isEventForwardedHere(event: EventData) -> bool:
     if not isEventForwarded(event):
         return False
     assert isEventSysex(event)
-    
+
     if (event.sysex[2:_getForwardedNameEndIdx(event)].decode()
-     != DEVICE_NAME
+     != parseDeviceName()
     ):
         return False
     return True
 
-def isEventForwardedHereFrom(event: EventData, device_num: int) -> bool:
+def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
     """
-    Returns whether an event was forwarded from the Universal Event Forwarder
-    script from a controller directed to this particular script
+    Returns whether an event was forwarded from a particular instance of the
+    Universal Event Forwarder script, or is directed to a controller with this
+    device number
 
     ### Args:
     * `event` (`eventData`): event to check
-    * `device_num` (`int`): device number to match
+    * `device_num` (`int`, optional): device number to match (defaults to the
+      device number of this script, must be provided on main script)
 
     ### Returns:
     * `bool`: whether it was forwarded
     """
+    if device_num == -1:
+        device_num = parseDeviceNumber()
+        if device_num == -1:
+            raise ValueError("No target device specified from main script")
+
     if not isEventForwardedHere(event):
         return False
-    
+
     assert isEventSysex(event)
     if device_num != event.sysex[_getForwardedNameEndIdx(event)+1]:
         return False
-    
+
     return True
 
 def decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData:
@@ -150,16 +188,18 @@ def decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData:
 
     ### Args:
     * `event` (`eventData`): event to decode
-    * `type_idx` (`int`, optional): index of event type flag, if known. 
+    * `type_idx` (`int`, optional): index of event type flag, if known.
       Defaults to `-1`.
 
     ### Returns:
     * `eventData`: decoded data
     """
+    if not isEventForwarded(event):
+        raise TypeError(f"Event not forwarded: {eventToString(event)}")
     assert isEventSysex(event)
     if type_idx == -1:
         type_idx = _getForwardedNameEndIdx(event) + 2
-    
+
     if event.sysex[type_idx]:
         # Remaining bytes are sysex data
         return EventData(list(event.sysex[type_idx+1:]))
@@ -171,19 +211,22 @@ def decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData:
             event.sysex[type_idx+1]
         )
 
-def forwardEvent(event: EventData, device_num: int):
+def forwardEvent(event: EventData, device_num: int = -1):
     """
     Encode a forwarded event and send it to all available devices
 
     ### Args:
     * `event` (`EventData`): event to encode and forward
-    * `device_num` (`int`): device number this was sent from or device number to
-      send to (if on main script)
+    * `device_num` (`int`, optional): target device number if on main script
     """
+    if device_num == -1:
+        device_num = parseDeviceNumber()
+        if device_num == -1:
+            raise ValueError("No target device specified from main script")
     output = encodeForwardedEvent(event, device_num)
     # Dispatch to all available devices
     if device.dispatchReceiverCount() == 0:
-        raise TypeError(f"Unable to forward event to device {device_num}. "
+        raise TypeError(f"Unable to forward event to/from device {device_num}. "
                         f"Is the controller configured correctly?")
     for i in range(device.dispatchReceiverCount()):
         device.dispatch(i, 0xF0, output)
@@ -230,4 +273,9 @@ def eventToString(event: EventData) -> str:
         return f"(0x{event.status:02X}, 0x{event.data1:02X}, 0x{event.data2:02X})"
     else:
         assert isEventSysex(event)
-        return bytesToString(event.sysex)
+        if isEventForwarded(event):
+            decoded = eventToString(decodeForwardedEvent(event))
+            suffix = f" (Likely from forwarded event: {decoded})"
+        else:
+            suffix = ""
+        return bytesToString(event.sysex) + suffix
