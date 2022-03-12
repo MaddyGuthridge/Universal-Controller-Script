@@ -53,6 +53,11 @@ CONFIG = {
             # ("my device name", "Manufacturer.Model.Mark.Variant")
         ],
     },
+    # Settings to configure for controllers
+    "controls": {
+        # The time for which a double press is valid
+        "double_press_time": 0.3,
+    },
     # Settings to configure plugins
     "plugins": {
         # General configuration

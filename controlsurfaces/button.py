@@ -16,3 +16,7 @@ class Button(ControlSurface):
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
         # Buttons shouldn't be reassigned to anything else
         return tuple()
+
+    @staticmethod
+    def isPress(value: float):
+        return value == 1.0

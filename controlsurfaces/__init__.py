@@ -24,6 +24,7 @@ from .transport import *
 from .navigation import *
 from .jog import *
 from .fader import Fader
+from .faderbutton import *
 from .knob import Knob
 from .encoder import Encoder
 from .drumpad import DrumPad

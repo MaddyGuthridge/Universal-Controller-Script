@@ -23,5 +23,9 @@ class Note(ControlSurface):
         )
 
     @staticmethod
+    def isPress(value: float):
+        return value != 0
+
+    @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         return tuple()

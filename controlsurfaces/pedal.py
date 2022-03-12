@@ -30,7 +30,12 @@ class Pedal(ControlSurface):
             ButtonData2Strategy(),
             "pedals"
         )
-    
+
+
+    @staticmethod
+    def isPress(value: float):
+        return value != 0
+
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
         # Pedals shouldn't be remapped

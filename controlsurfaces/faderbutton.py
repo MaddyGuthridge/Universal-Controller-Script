@@ -18,8 +18,8 @@ class FaderButton(Button):
 
 class GenericFaderButton(Button):
     """
-    Represents a generic multi-purpose fader button: plugins should 
-    intelligently map the behaviour to the controls below.
+    Represents a generic multi-purpose fader button: plugins should
+    intelligently map the behaviour to required controls.
     """
 
 class MuteButton(Button):
