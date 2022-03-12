@@ -128,7 +128,7 @@ class ControlSurface:
         if self._pattern.matchEvent(event):
             self._value = self._value_strategy.getValueFromEvent(event)
             channel = self._value_strategy.getChannelFromEvent(event)
-            if self.isPress(self._value):
+            if self.isPress(self.value):
                 t = time()
                 double_press = t - self._press <= getContext().settings.get("controls.double_press_time")
                 self._press = t
