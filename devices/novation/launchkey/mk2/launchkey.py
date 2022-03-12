@@ -9,6 +9,7 @@ from devices.controlgenerators import NoteMatcher
 
 from controlsurfaces import (
     Fader,
+    MasterFader,
     Knob,
     PlayButton,
     StopButton,
@@ -112,12 +113,10 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
                 )
             )
         # Master fader
-        # TODO: Make this separate
         matcher.addControl(
-            Fader(
+            MasterFader(
                 BasicPattern(0xB0, 0x07, ...),
-                Data2Strategy(),
-                (0, 0)
+                Data2Strategy()
             )
         )
 

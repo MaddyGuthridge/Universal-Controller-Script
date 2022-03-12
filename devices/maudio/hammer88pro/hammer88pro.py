@@ -12,6 +12,7 @@ from devices.controlgenerators import NoteMatcher, PedalMatcher
 from controlsurfaces import (
     NullEvent,
     Fader,
+    MasterFader,
     Knob,
     DrumPad,
     PlayButton,
@@ -98,13 +99,12 @@ class Hammer88Pro(Device):
                 (0, i)
             ) for i in range(9)
         ])
-        # matcher.addControl(
-        #     Fader(
-        #         ForwardedUnionPattern(3, BasicPattern(0xB0, i+48, ...)),
-        #         ForwardedStrategy(Data2Strategy()),
-        #         (0, 9))
-        #     for i in range(8)
-        # )
+        matcher.addControl(
+            MasterFader(
+                ForwardedUnionPattern(3, BasicPattern(0xB0, 56, ...)),
+                ForwardedStrategy(Data2Strategy())
+            )
+        )
 
         matcher.addControls([
             GenericFaderButton(

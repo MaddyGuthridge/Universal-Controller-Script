@@ -53,7 +53,7 @@ class ParametricEq(StandardPlugin):
             raise_on_failure=False
         )
         super().__init__(shadow, [])
-    
+
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
@@ -84,7 +84,7 @@ class ParametricEq(StandardPlugin):
     def levels(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         plugins.setParamValue(control.value, LEVEL + control.getShadow().coordinate[1], *index)
         return True
-    
+
     @eventfilters.toEffectIndex
     def frequencies(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         plugins.setParamValue(control.value, FREQUENCY + control.getShadow().coordinate[1], *index)

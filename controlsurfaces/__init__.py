@@ -23,9 +23,9 @@ from .button import *
 from .transport import *
 from .navigation import *
 from .jog import *
-from .fader import Fader
+from .fader import Fader, MasterFader
 from .faderbutton import *
-from .knob import Knob
+from .knob import Knob, MasterKnob
 from .encoder import Encoder
 from .drumpad import DrumPad
 
