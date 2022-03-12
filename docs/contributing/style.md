@@ -20,12 +20,12 @@ are guidelines in place for code style.
   your name, email (preferably the same as the one associated with your git
   activity), and Discord username (if you have one). If your code is user-facing
   (eg a plugin or device) or will be used by contributors (eg a control
-  surface), it is a good idea to add some information on it to these docs, as
+  surface), you should add some information on it to these docs, as
   well as the standard docstrings within the code.
 
 ## Development environment
 
-* I'd recommend working on the project using 
+* I'd recommend working on the project using
   [VS Code](https://code.visualstudio.com), with the recommended extensions
   installed. This should help ensure that the code is safe and clean.
   You can use any editor you see fit, but it may be more difficult to maintain

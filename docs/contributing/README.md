@@ -4,7 +4,7 @@
 ## Getting Started
 
 1.  Set up the project as per the [main instructions](../setup.md), but instead
-    of cloning the project directly, 
+    of cloning the project directly,
     [create a fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
     where your work can be done without the risk of breaking the project. When
     your work is done, you can create a pull request to merge your improvements
@@ -18,7 +18,7 @@
 4.  Open the repository in your editor of choice. I've ensured it works well with
     [VS Code](https://code.visualstudio.com), but others should be fine too.
 5.  Install any recommended extensions if you are in VS Code
-6.  Open a terminal in the repository folder and create a Python 
+6.  Open a terminal in the repository folder and create a Python
     [virtual environment](https://docs.python.org/3/library/venv.html). This will
     keep the project's dependencies separate from any other ones you have
     installed, ensuring nothing can get broken. Run `python -m venv .venv`.
@@ -33,7 +33,7 @@
     will start up, print the welcome message then exit.
 
 ## Contributing Docs
-
+* [Style guide](style.md)
 * [Plugins](plugins.md)
 * [Devices](devices.md)
 * [Control surfaces](controlsurface.md)
