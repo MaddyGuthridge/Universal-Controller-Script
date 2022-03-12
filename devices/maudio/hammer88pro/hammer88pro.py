@@ -110,7 +110,6 @@ class Hammer88Pro(Device):
             GenericFaderButton(
                 BasicPattern(0xB5, 0x30 + i, ...),
                 ButtonData2Strategy(),
-                "fader_buttons",
                 (0, i)
             ) for i in range(8)
         ])
@@ -127,7 +126,6 @@ class Hammer88Pro(Device):
                 t(
                     ForwardedPattern(3, BasicPattern(0xB0 + i, 0x30 + j, ...)),
                     ForwardedStrategy(ButtonData2Strategy()),
-                    "fader_buttons",
                     (0, j)
                 ) for j in range(8)
             ])

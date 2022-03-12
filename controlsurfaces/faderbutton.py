@@ -7,6 +7,8 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+from common.eventpattern.ieventpattern import IEventPattern
+from controlsurfaces.valuestrategies.ivaluestrategy import IValueStrategy
 from . import Button
 
 class FaderButton(Button):
@@ -15,29 +17,31 @@ class FaderButton(Button):
     buttons are often present beneath faders, so their functionality should
     be mapped to the same channel that the existing button is using.
     """
+    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy, coordinate: tuple[int, int]) -> None:
+        super().__init__(event_pattern, value_strategy, "fader buttons", coordinate)
 
-class GenericFaderButton(Button):
+class GenericFaderButton(FaderButton):
     """
     Represents a generic multi-purpose fader button: plugins should
     intelligently map the behaviour to required controls.
     """
 
-class MuteButton(Button):
+class MuteButton(FaderButton):
     """
     Represents a mute track button
     """
 
-class SoloButton(Button):
+class SoloButton(FaderButton):
     """
     Represents a solo track button
     """
 
-class ArmButton(Button):
+class ArmButton(FaderButton):
     """
     Represents an arm track button
     """
 
-class SelectButton(Button):
+class SelectButton(FaderButton):
     """
     Represents a select track button
     """
