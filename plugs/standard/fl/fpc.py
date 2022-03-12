@@ -17,7 +17,7 @@ class FPC(StandardPlugin):
     notes
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        
+
         # Bind a different callback depending on drum pad size
         size = shadow.getDevice().getDrumPadSize()
         if size[0] >= 4 and size[1] >= 8:
@@ -30,15 +30,15 @@ class FPC(StandardPlugin):
         elif size[0] >= 2 and size[1] >= 8:
             self._pads = shadow.bindMatches(DrumPad, self.drumPad2x8)
             self._coordToIndex = lambda r, c : 4 * (1-r) + c + 4 * (c >= 4)
-        
+
         self._notes = shadow.bindMatches(Note, self.noteEvent)
-        
+
         super().__init__(shadow, [])
-    
+
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
-    
+
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
         return ("FPC",)
@@ -58,19 +58,19 @@ class FPC(StandardPlugin):
             # Get the colour
             color = plugins.getPadInfo(*index, -1, 2, idx)
             # get the annotation
-            annotation = plugins.getName(0, -1, 2, note)
-            
+            annotation = plugins.getName(*index, -1, 2, note)
+
             # Set values
             self._notes[note].color = Color.fromInteger(color)
             self._notes[note].annotation = annotation
             notes.add(note)
-        
+
         # Set colors and annotations for the others
         for i in range(128):
             if i not in notes:
                 self._notes[i].color = Color()
                 self._notes[i].annotation = ""
-    
+
     @staticmethod
     def triggerPad(pad_idx: int, control: ControlShadowEvent, ch_idx: int) -> None:
         note = plugins.getPadInfo(ch_idx, -1, 1, pad_idx)
@@ -78,7 +78,7 @@ class FPC(StandardPlugin):
         if note > 127:
             note = note >> 16
         channels.midiNoteOn(ch_idx, note, int(control.value*127))
-    
+
     @eventfilters.toGeneratorIndex
     def drumPad4x8(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         row, col = control.getShadow().coordinate
@@ -87,7 +87,7 @@ class FPC(StandardPlugin):
             return True
         self.triggerPad(self._coordToIndex(row, col), control, *index)
         return True
-    
+
     @eventfilters.toGeneratorIndex
     def drumPad4x4(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         row, col = control.getShadow().coordinate
@@ -96,7 +96,7 @@ class FPC(StandardPlugin):
             return True
         self.triggerPad(self._coordToIndex(row, col), control, *index)
         return True
-    
+
     @eventfilters.toGeneratorIndex
     def drumPad2x8(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         row, col = control.getShadow().coordinate
