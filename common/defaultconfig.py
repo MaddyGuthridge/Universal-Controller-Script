@@ -16,14 +16,14 @@ CONFIG = {
         # Verbosity for which full details will be printed to the console when
         # it is logged.
         "critical_verbosity": verbosity.ERROR,
-        # Maximum verbosity for which all logged messages will be printed 
+        # Maximum verbosity for which all logged messages will be printed
         "max_verbosity": verbosity.WARNING,
         # Categories to watch
         "watched_categories": [
             "general"
         ],
         # Maximum verbosity for which watched categories of logged messages
-        # will be printed 
+        # will be printed
         "max_watched_verbosity": verbosity.INFO,
         # Verbosity levels at or above this will be discarded entirely be the
         # logger to improve performance
@@ -51,6 +51,22 @@ CONFIG = {
         "name_associations": [
             # For example:
             # ("my device name", "Manufacturer.Model.Mark.Variant")
-        ]
-    }
+        ],
+    },
+    # Settings to configure plugins
+    "plugins": {
+        # General configuration
+        "general": {
+            # Whether values that have a centred default should snap close
+            # values to the default
+            "do_snap": True
+        },
+        # FL Studio mixer
+        "mixer": {
+            # Whether volumes over 100% should be allowed
+            # * True: faders will map from 0-125%
+            # * False: faders will map from 0-100%
+            "allow_extended_volume": False
+        },
+    },
 }

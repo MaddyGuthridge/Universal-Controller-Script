@@ -16,9 +16,5 @@ from common.logger import verbosity
 CONFIG: dict[str, Any] = {
     "logger.watched_categories": [
         "general",
-        "device.event.in"
     ],
-    "logger.max_watched_verbosity": verbosity.NOTE,
-    "debug.profiling": True,
-        "logger.discard_verbosity": verbosity.MOST_VERBOSE,
 }
