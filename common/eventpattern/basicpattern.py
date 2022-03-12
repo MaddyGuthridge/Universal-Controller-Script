@@ -12,7 +12,7 @@ class BasicPattern(IEventPattern):
     so that MIDI events from a controller can be recognised and paired with the
     matching ControlSurface
     """
-    
+
     def __init__(
         self,
         # Status byte or sysex data
@@ -25,14 +25,14 @@ class BasicPattern(IEventPattern):
 
         It can be used to identify sysex events and standard events, but it
         should be noted that the two are exclusive for a single event.
-        
+
         Each parameter can be one of multiple types:
         * `int`: A strict value: any value other than this will not match.
         * `range`: A range of values (eg 2:10): values within the range
           (excluding the upper bound, like in standard ranges) will match.
         * `tuple[int]`: Any value included in the tuple will match.
         * `...`: A wildcard: any value will match.
-        
+
         For sysex-type events, a list of objects of that type must be provided.
         If given sysex messages are longer than the pattern, then any extra data
         will be ignored, and assumed to match with any data.
@@ -41,30 +41,30 @@ class BasicPattern(IEventPattern):
         * `status_sysex` (`ByteMatch | list[ByteMatch]`): Status byte or sysex data.
         * `data1` (`ByteMatch`, optional): data1 byte. Defaults to `None`.
         * `data2` (`ByteMatch`, optional): data2 byte. Defaults to `None`.
-        
+
         ### Example Usage
-        
+
         * `EventPattern(0x7F, 0x03, ...)`: Recognise an event, where the status
           is 127, data1 is 3, and data2 is any value
-        
+
         * `EventPattern((0x90, 0x80), 0x04, range(10, 20))`: Recognise an event,
           where the status is either 128 or 144, data1 is 4, and data2 is any
           value between 10 and 20
-          
-        * `EventPattern([0x30, 0x40, range(0, 20, 2), ...])`: Recognise a 
+
+        * `EventPattern([0x30, 0x40, range(0, 20, 2), ...])`: Recognise a
           sysex event, where the first byte is 48, the second is 64, the third
           is an even number less than 20, and the 4th is any value.
         """
-        
+
         # Ensure that we are given valid data
-        
+
         # Lambda to check if values are none
         # isNone = lambda x: x is None
-        
+
         # Lambda to check if values are of the required type
         typeCheck = lambda x: isinstance(x, (int, range, type(...)))\
             or (isinstance(x, tuple) and all(isinstance(y, (int, range)) for y in x))
-        
+
         # Check for sysex event
         if isinstance(status_sysex, list):
             if not all(typeCheck(x) for x in status_sysex):
@@ -72,7 +72,7 @@ class BasicPattern(IEventPattern):
                                 "object documentation.")
             self.sysex_event = True
             self.sysex = status_sysex
-            
+
         # Otherwise check for standard event
         else:
             if any(x is None for x in [data1, data2]):
@@ -81,7 +81,7 @@ class BasicPattern(IEventPattern):
             if not all(map(typeCheck, [status_sysex, data1, data2])):
                 raise TypeError("Incorrect types for event data. Refer to "
                                 "object docmentation.")
-        
+
             # Store the data
             if TYPE_CHECKING:
                 assert data1 is not None
@@ -105,19 +105,19 @@ class BasicPattern(IEventPattern):
             return self._matchSysex(event)
         else:
             return self._matchStandard(event)
-    
+
     @staticmethod
     def _matchByteConst(expected: int, actual: int) -> bool:
         return expected == actual
-    
+
     @staticmethod
     def _matchByteRange(expected: range, actual: int) -> bool:
         return actual in expected
-    
+
     @staticmethod
     def _matchByteTuple(expected: tuple[int], actual: int) -> bool:
         return actual in expected
-    
+
     @staticmethod
     def _matchByteEllipsis(expected: 'ellipsis', actual: int) -> bool:
         return 0 <= actual <= 127

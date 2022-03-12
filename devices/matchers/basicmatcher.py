@@ -10,6 +10,7 @@ Authors:
 from typing import Optional
 from abc import abstractmethod
 from common.types import EventData
+from common.util.events import eventToString
 from controlsurfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
 
@@ -28,7 +29,7 @@ class BasicControlMatcher(IControlMatcher):
         self._controls: dict[int, list[ControlSurface]] = {}
         self._groups: set[str] = set()
         self._sub_matchers: dict[int, list[IControlMatcher]] = {}
-    
+
     def addControls(self, controls: list[ControlSurface], priority: int = 0) -> None:
         """
         Register and add a list of controls to the control matcher.
@@ -40,7 +41,7 @@ class BasicControlMatcher(IControlMatcher):
         """
         for c in controls:
             self.addControl(c, priority)
-    
+
     def addControl(self, control: ControlSurface, priority: int = 0) -> None:
         """
         Register and add a control to the control matcher.
@@ -56,7 +57,7 @@ class BasicControlMatcher(IControlMatcher):
             self._priorities.add(priority)
             self._controls[priority] = [control]
         self._groups.add(control.group)
-    
+
     def addSubMatcher(self, matcher: IControlMatcher, priority: int = 0) -> None:
         """
         Register a control matcher to work as a component of this control
@@ -75,10 +76,10 @@ class BasicControlMatcher(IControlMatcher):
         else:
             self._priorities.add(priority)
             self._sub_matchers[priority] = [matcher]
-    
+
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
         # Work through in order of priority
-        for priority in sorted(self._priorities):
+        for priority in reversed(sorted(self._priorities)):
             if priority in self._controls:
                 for c in self._controls[priority]:
                     if (m := c.match(event)) is not None:
@@ -88,14 +89,14 @@ class BasicControlMatcher(IControlMatcher):
                     if (m := s.matchEvent(event)) is not None:
                         return m
         return None
-    
+
     def getGroups(self) -> set[str]:
         g = self._groups
         for p in self._sub_matchers:
             for s in self._sub_matchers[p]:
                 g |= s.getGroups()
         return g
-    
+
     def getControls(self, group: str = None) -> list[ControlSurface]:
         controls = []
         for p in self._controls:

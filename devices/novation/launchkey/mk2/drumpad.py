@@ -17,7 +17,7 @@ DRUM_PADS = [
 ]
 
 class LaunchkeyDrumpad(DrumPad):
-    
+
     def __init__(self, coordinate: tuple[int, int]) -> None:
         self._note_num = DRUM_PADS[coordinate[0]][coordinate[1]]
         # Variables to keep the drumpad lights working
@@ -28,13 +28,13 @@ class LaunchkeyDrumpad(DrumPad):
             NoteStrategy(),
             coordinate
         )
-    
+
     @profilerDecoration("LaunchKey onColorChange")
     def onColorChange(self) -> None:
         c_num = COLORS[self.color.closest(list(COLORS.keys()))]
         forwardEvent(EventData(0x9F, self._note_num, c_num), 2)
         # print(f"{self.coordinate} : #{self.color.integer:06X} -> {c_num}")
-    
+
     def onValueChange(self) -> None:
         # Ensure the lights stay on when we press them
         self._need_update = True
