@@ -44,7 +44,7 @@ class Playlist(WindowPlugin):
         else:
             return True
 
-        if isinstance(control.getControl(), StandardJogWheel):
+        if isinstance(control.getControl(), MoveJogWheel):
             # Scroll through tracks
             track = getSelectedPlaylistTrack() + increment
             if track <= 0:
@@ -54,7 +54,7 @@ class Playlist(WindowPlugin):
             playlist.deselectAll()
             playlist.selectTrack(track)
             ui.scrollWindow(INDEX, track)
-        elif isinstance(control.getControl(), MoveJogWheel):
+        elif isinstance(control.getControl(), StandardJogWheel):
             # Need to account for ticks being zero-indexed and bars being
             # 1-indexed
             bar = int(transport.getSongPos(3)) + increment - 1
