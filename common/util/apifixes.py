@@ -120,7 +120,7 @@ def catchUnsafeOperation(func):
 def getSelectedDockMixerTracks() -> dict[int, list[int]]:
     """
     Returns a list of the selected mixer tracks for each dock side, not
-    including current
+    including master or current
 
     * 0: tracks docked to left
     * 1: tracks in centre
@@ -134,7 +134,7 @@ def getSelectedDockMixerTracks() -> dict[int, list[int]]:
         1: [],
         2: [],
     }
-    for i in range(mixer.trackCount()-1):
+    for i in range(1, mixer.trackCount()-1):
         if mixer.isTrackSelected(i):
             tracks[mixer.getTrackDockSide(i)].append(i)
 
@@ -142,13 +142,13 @@ def getSelectedDockMixerTracks() -> dict[int, list[int]]:
 
 def getSelectedMixerTracks() -> list[int]:
     """
-    Returns a list of the selected mixer tracks, not including current
+    Returns a list of the selected mixer tracks, not including master or current
 
     ### Returns:
-    * `dict[int, list[int]]`: track selections
+    * `list[int]`: track selections
     """
     tracks: list[int] = []
-    for i in range(mixer.trackCount()-1):
+    for i in range(1, mixer.trackCount()-1):
         if mixer.isTrackSelected(i):
             tracks.append(i)
 
