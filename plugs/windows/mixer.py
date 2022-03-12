@@ -200,7 +200,7 @@ class Mixer(WindowPlugin):
     def button(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         index = self._selection[control.getControl().coordinate[1]]
 
-        if control.double:
+        if control.double or mixer.isTrackSolo(index):
             mixer.soloTrack(index)
         else:
             mixer.muteTrack(index)
