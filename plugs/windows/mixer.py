@@ -21,8 +21,14 @@ from controlsurfaces import (
     StandardJogWheel,
     Fader,
     Knob,
+    GenericFaderButton,
+    MuteButton,
+    SoloButton,
+    ArmButton,
+    SelectButton,
 )
 from devices import DeviceShadow
+from plugs.eventfilters import filterButtonLift
 from plugs import WindowPlugin
 
 INDEX = 0
@@ -57,8 +63,17 @@ class Mixer(WindowPlugin):
         self._faders = shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
 
         # Bind main controls
-        self._faders = shadow.bindMatches(Fader, self.fader, raise_on_failure=False)
-        self._knobs = shadow.bindMatches(Knob, self.knob, raise_on_failure=False)
+        self._faders  = shadow.bindMatches(Fader,              self.fader, raise_on_failure=False)
+        self._knobs   = shadow.bindMatches(Knob,               self.knob,  raise_on_failure=False)
+        self._knobs   = shadow.bindMatches(Knob,               self.knob,  raise_on_failure=False)
+        self._buttons = shadow.bindMatches(GenericFaderButton, self.knob,  raise_on_failure=False)
+        self._mutes   = shadow.bindMatches(MuteButton,         self.knob,  raise_on_failure=False)
+        self._solos   = shadow.bindMatches(SoloButton,         self.knob,  raise_on_failure=False)
+        self._arms    = shadow.bindMatches(ArmButton,          self.knob,  raise_on_failure=False)
+        self._selects = shadow.bindMatches(SelectButton,       self.knob,  raise_on_failure=False)
+
+        # List of last presses for fader buttons
+        self._button_press_times = [0.0 for _ in self._buttons]
 
         # TODO: Bind master controls
 
@@ -139,7 +154,7 @@ class Mixer(WindowPlugin):
         return True
 
     def fader(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
-
+        """Faders -> volume"""
         index = self._selection[control.getControl().coordinate[1]]
 
         mixer.setTrackVolume(index, snapFaders(control.value))
@@ -147,10 +162,49 @@ class Mixer(WindowPlugin):
         return True
 
     def knob(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
-
+        """Knobs -> panning"""
         index = self._selection[control.getControl().coordinate[1]]
 
         mixer.setTrackPan(index, snapKnobs(control.value))
+
+        return True
+
+    @filterButtonLift
+    def mute(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+        """Mute track"""
+        index = self._selection[control.getControl().coordinate[1]]
+        mixer.muteTrack(index)
+        return True
+
+    @filterButtonLift
+    def solo(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+        """Solo track"""
+        index = self._selection[control.getControl().coordinate[1]]
+        mixer.soloTrack(index)
+        return True
+
+    @filterButtonLift
+    def arm(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+        """Arm track"""
+        index = self._selection[control.getControl().coordinate[1]]
+        mixer.armTrack(index)
+        return True
+
+    @filterButtonLift
+    def select(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+        """Select track"""
+        index = self._selection[control.getControl().coordinate[1]]
+        mixer.selectTrack(index)
+        return True
+
+    @filterButtonLift
+    def button(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+        index = self._selection[control.getControl().coordinate[1]]
+
+        if control.double:
+            mixer.soloTrack(index)
+        else:
+            mixer.muteTrack(index)
 
         return True
 
