@@ -63,14 +63,14 @@ class Mixer(WindowPlugin):
         self._faders = shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
 
         # Bind main controls
-        self._faders  = shadow.bindMatches(Fader,              self.fader, raise_on_failure=False)
-        self._knobs   = shadow.bindMatches(Knob,               self.knob,  raise_on_failure=False)
-        self._knobs   = shadow.bindMatches(Knob,               self.knob,  raise_on_failure=False)
-        self._buttons = shadow.bindMatches(GenericFaderButton, self.knob,  raise_on_failure=False)
-        self._mutes   = shadow.bindMatches(MuteButton,         self.knob,  raise_on_failure=False)
-        self._solos   = shadow.bindMatches(SoloButton,         self.knob,  raise_on_failure=False)
-        self._arms    = shadow.bindMatches(ArmButton,          self.knob,  raise_on_failure=False)
-        self._selects = shadow.bindMatches(SelectButton,       self.knob,  raise_on_failure=False)
+        self._faders  = shadow.bindMatches(Fader,              self.fader,  raise_on_failure=False)
+        self._knobs   = shadow.bindMatches(Knob,               self.knob,   raise_on_failure=False)
+        self._knobs   = shadow.bindMatches(Knob,               self.knob,   raise_on_failure=False)
+        self._buttons = shadow.bindMatches(GenericFaderButton, self.button, raise_on_failure=False)
+        self._mutes   = shadow.bindMatches(MuteButton,         self.mute,   raise_on_failure=False)
+        self._solos   = shadow.bindMatches(SoloButton,         self.solo,   raise_on_failure=False)
+        self._arms    = shadow.bindMatches(ArmButton,          self.arm,    raise_on_failure=False)
+        self._selects = shadow.bindMatches(SelectButton,       self.select, raise_on_failure=False)
 
         # List of last presses for fader buttons
         self._button_press_times = [0.0 for _ in self._buttons]
@@ -164,7 +164,6 @@ class Mixer(WindowPlugin):
     def knob(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
         """Knobs -> panning"""
         index = self._selection[control.getControl().coordinate[1]]
-
         mixer.setTrackPan(index, snapKnobs(control.value))
 
         return True

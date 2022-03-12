@@ -25,6 +25,11 @@ from controlsurfaces import (
     ChannelAfterTouch,
     SwitchActivePluginButton,
     SwitchActiveWindowButton,
+    GenericFaderButton,
+    MuteButton,
+    SoloButton,
+    ArmButton,
+    SelectButton,
 )
 from .hammerpitch import HammerPitchWheel
 from .jogmatcher import JogMatcher
@@ -44,6 +49,11 @@ class Hammer88Pro(Device):
         ))
         matcher.addControl(NullEvent(
             BasicPattern(0xFC, 0x0, 0x0)
+        ))
+        # Switch fader button types
+        # TODO: When adding lighting, map this to a refresh command?
+        matcher.addControl(NullEvent(
+            BasicPattern(0xBF, range(0x39, 0x3D+1), ...)
         ))
 
         # Active switches
@@ -96,6 +106,31 @@ class Hammer88Pro(Device):
         #     for i in range(8)
         # )
 
+        matcher.addControls([
+            GenericFaderButton(
+                BasicPattern(0xB5, 0x30 + i, ...),
+                ButtonData2Strategy(),
+                "fader_buttons",
+                (0, i)
+            ) for i in range(8)
+        ])
+
+        fader_button_types = [
+            ArmButton,
+            SelectButton,
+            MuteButton,
+            SoloButton
+        ]
+
+        for i, t in zip(range(1, 5), fader_button_types):
+            matcher.addControls([
+                t(
+                    ForwardedPattern(3, BasicPattern(0xB0 + i, 0x30 + j, ...)),
+                    ForwardedStrategy(ButtonData2Strategy()),
+                    "fader_buttons",
+                    (0, j)
+                ) for j in range(8)
+            ])
 
         # Transport buttons
         matcher.addControl(StopButton(
