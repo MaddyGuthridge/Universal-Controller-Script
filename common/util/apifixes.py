@@ -8,6 +8,7 @@ called directly.
 import plugins
 import ui
 import channels
+import mixer
 import playlist
 
 from typing import Union, Optional
@@ -115,3 +116,61 @@ def catchUnsafeOperation(func):
             if e.args != ("Operation unsafe at current time",):
                 raise e
     return wrapper
+
+def getSelectedDockMixerTracks() -> dict[int, list[int]]:
+    """
+    Returns a list of the selected mixer tracks for each dock side, not
+    including current
+
+    * 0: tracks docked to left
+    * 1: tracks in centre
+    * 2: tracks docked to right
+
+    ### Returns:
+    * `dict[int, list[int]]`: track selections
+    """
+    tracks: dict[int, list[int]] = {
+        0: [],
+        1: [],
+        2: [],
+    }
+    for i in range(mixer.trackCount()-1):
+        if mixer.isTrackSelected(i):
+            tracks[mixer.getTrackDockSide(i)].append(i)
+
+    return tracks
+
+def getSelectedMixerTracks() -> list[int]:
+    """
+    Returns a list of the selected mixer tracks, not including current
+
+    ### Returns:
+    * `dict[int, list[int]]`: track selections
+    """
+    tracks: list[int] = []
+    for i in range(mixer.trackCount()-1):
+        if mixer.isTrackSelected(i):
+            tracks.append(i)
+
+    return tracks
+
+def getMixerDockSides() -> dict[int, list[int]]:
+    """
+    Returns a list of the dock sides for tracks on the mixer
+
+    * 0: tracks docked to left
+    * 1: tracks in centre
+    * 2: tracks docked to right
+
+    ### Returns:
+    * `dict[int, list[int]]`: track selections
+    """
+    tracks: dict[int, list[int]] = {
+        0: [],
+        1: [],
+        2: [],
+    }
+    for i in range(mixer.trackCount()-1):
+        tracks[mixer.getTrackDockSide(i)].append(i)
+
+    return tracks
