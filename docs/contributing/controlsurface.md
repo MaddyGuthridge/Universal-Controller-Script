@@ -66,3 +66,5 @@ implement any required functions.
   changed.
 * `onValueChange(self)`: Called when the value of the control has changed.
 * `tick(self)`: Called when a tick happens.
+* `isPress(self) -> bool`: Should return whether a particular value is a press,
+  used to detect double presses

@@ -14,10 +14,24 @@ interact with FL Studio Windows, as well as generator and effect plugins.
 
 When a plugin is created, it should bind callback functions to a
 [`DeviceShadow`](deviceshadow.md) object, that represents the plugin's own
-private copy of the device that is being mapped to. This can either be done 
+private copy of the device that is being mapped to. This can either be done
 manually, or with [mapping strategies](mappingstrategy.md), given as arguments
-to the `super` constructor. Callbacks can be decorated using 
+to the `super` constructor. Callbacks can be decorated using
 [event filters](eventfilter.md) to filter out unwanted events.
+
+### Design Ideals for Plugin Interfaces
+
+When designing a plugin interface, you should strive to make your interface
+match the following criteria:
+* Simple: although documentation should be available, the control mappings
+  should be simple enough that users don't need to think about what controls
+  control what.
+* Static: where reasonable, controls should always map to the same places.
+  Having things change around can be confusing for users, even if the users are
+  the ones controlling it.
+* Concise: you shouldn't try to create a mapping for every parameter that the
+  plugin supports. Only add support for the ones that are most used for live
+  performance, or for general control (eg macros).
 
 ## Methods to Implement
 
@@ -28,7 +42,7 @@ to the `super` constructor. Callbacks can be decorated using
   `StandardPlugin`.
 * `@staticmethod getWindowId() -> int`: Returns the ID of the window to
   associate this plugin with. Only for plugins of type `WindowPlugin`
-* `@staticmethod shouldBeActive() -> bool`: Returns whether this plugin should 
+* `@staticmethod shouldBeActive() -> bool`: Returns whether this plugin should
   be active. Only for plugins of type `SpecialPlugin`.
 
 ## Example Plugin
@@ -49,17 +63,17 @@ class MyPlugin(StandardPlugin):
         )
         # Call the super function
         super().__init__(shadow, [])
-    
+
     @classmethod
     def create(cls, shadow: DeviceShadow) -> StandardPlugin:
         # Create an instance of the plugin
         return cls(shadow)
-    
+
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
         # This plugin should map to plugins named MyPlugin
         return ("MyPlugin",)
-    
+
     @filterToGeneratorIndex # Filter out plugins when the active plugin isn't a generator
     def myCallback(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         # Set the parameter
