@@ -8,6 +8,7 @@ Authors:
 """
 
 from common.util.dicttools import recursiveMergeDictionaries, expandDictShorthand
+from common.util.snap import snap
 
 def test_expand_dict_shorthand():
     t = {
@@ -73,4 +74,8 @@ def test_recursive_merge_simple():
         "d": 4
     }
     assert recursiveMergeDictionaries(ref, over) == exp
-    
+
+def test_snap():
+    # TODO: Use contexts to set settings
+    assert snap(0.1, 0.2) == 0.1
+    assert snap(0.17, 0.2) == 0.2
