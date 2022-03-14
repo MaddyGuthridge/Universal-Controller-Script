@@ -16,7 +16,7 @@ class NotePattern(BasicPattern):
     """
     def __init__(self, note_num: int, channel_match: ByteMatch = ...) -> None:
         """
-        Create a NotePattern
+        Create a NotePattern, in order to recognise note events.
 
         ### Args:
         * `note_num` (`int`): note number to recognise

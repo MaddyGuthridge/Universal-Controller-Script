@@ -1,9 +1,8 @@
 """
-common > eventpattern
+common > eventpattern > ieventpattern
 
-Contains code for pattern matching with MIDI events, including EventPattern,
-a standard way to match events, and IEventPattern, from which custom pattern
-matchers can be derived.
+Contains the definition for IEventPattern, the interface that all event patterns
+must inherit from.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -23,9 +22,9 @@ class IEventPattern:
     ControlSurfaces.
 
     This class can be extended if a developer wishes to create their own event
-    pattern for a case where the standard EventPattern class doesn't suffice.
+    pattern for a case where the standard BasicPattern class doesn't suffice.
     """
-    
+
     @abstractmethod
     def matchEvent(self, event: 'EventData') -> bool:
         """

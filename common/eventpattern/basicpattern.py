@@ -1,3 +1,11 @@
+"""
+common > eventpattern > basicpattern
+
+Contains a basic pattern for recognising MIDI events.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from typing import TYPE_CHECKING, Any, Callable, Optional
 
@@ -10,7 +18,7 @@ class BasicPattern(IEventPattern):
 
     This allows developers to define a complex pattern to match with events,
     so that MIDI events from a controller can be recognised and paired with the
-    matching ControlSurface
+    matching ControlSurface.
     """
 
     def __init__(
@@ -21,10 +29,11 @@ class BasicPattern(IEventPattern):
         data2: Optional[ByteMatch]=None
     ) -> None:
         """
-        Create an event pattern
+        Create a basic event pattern.
 
         It can be used to identify sysex events and standard events, but it
-        should be noted that the two are exclusive for a single event.
+        should be noted that the two are exclusive for a single event. If you
+        need to match both, use a UnionPattern
 
         Each parameter can be one of multiple types:
         * `int`: A strict value: any value other than this will not match.

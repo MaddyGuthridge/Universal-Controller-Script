@@ -1,4 +1,12 @@
+"""
+common > eventpattern > bytematch
 
+Contains the definition for the byte-match type expression, as well as helper
+functions for creating event patterns.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from typing import TYPE_CHECKING, Type, Union
 if TYPE_CHECKING:
@@ -8,8 +16,6 @@ EllipsisType: Type = type(Ellipsis)
 
 # Variable type for byte match expression
 ByteMatch = Union[int, range, tuple[int, ...], 'ellipsis']
-
-
 
 def fromNibbles(upper: ByteMatch, lower: ByteMatch) -> tuple:
     """
