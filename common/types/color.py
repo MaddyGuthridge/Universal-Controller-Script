@@ -25,19 +25,19 @@ def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
 
     ### Returns:
     * `tuple[int, int, int]`: Red, Green, Blue (all 0-255)
-    
+
     ### Credits
     * Adapted from [Wikipedia](https://en.wikipedia.org/wiki/HSL_and_HSV)
     """
     # First, we find chroma:
     c = int(v * s * 255)
-    
+
     # Find a point on the bottom three faces of the RGB cube with the same hue
     # and chroma as our color
     h_ = h / 60
     # intermediate value x for  second largest component of the color
     x = int(c * (1 - abs(h_ % 2 - 1)))
-    
+
     if h_ < 1:
         r, g, b = c, x, 0
     elif h_ < 2:
@@ -50,11 +50,11 @@ def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
         r, g, b = x, 0, c
     else: #h_ < 6
         r, g, b = c, 0, x
-    
+
     # Finally, get a median value to add to each component
     m = int(v*255) - c
     r, g, b = r+m, g+m, b+m
-    
+
     # And return them in a reasonable format
     # 0-255
     return r, g, b
@@ -73,25 +73,25 @@ def rgbToHsv(r: int, g: int, b: int) -> tuple[float, float, float]:
         * Hue: degrees (0-360)
         * Saturation: 0-1.0
         * Value: 0-1.0
-    
+
     ### Credits
     * Adapted from [Wikipedia](https://en.wikipedia.org/wiki/HSL_and_HSV)
     """
     # Put RGB values into 0-1.0 range
     r_, g_, b_ = r/255, g/255, b/255
-    
+
     x_max = max(r_, g_, b_)
     x_min = min(r_, g_, b_)
-    
+
     # Find chroma
     c = x_max - x_min
-    
+
     # Value is x_max
     v = x_max
-    
+
     # Lightness (middle value) for HSL
     # l = (x_max + x_min) / 2
-    
+
     # Calculate hue
     if c == 0:
         h = 0.0
@@ -102,10 +102,14 @@ def rgbToHsv(r: int, g: int, b: int) -> tuple[float, float, float]:
     else: #  v == b
         h = (4 + (r_ - g_)/c)
     h *= 60
-    
+
     # Calculate saturation
     s = c/v if v != 0 else 0
-    
+
+    # Adjust hue to 0 - 360
+    if h < 0:
+        h += 360
+
     return h, s, v
 
 class Color:
@@ -114,15 +118,15 @@ class Color:
 
     Defines an RGB color, as well as useful functions for converting between
     various color types.
-    
+
     NOTE: colors are stored as separate red, green and blue components
     internally. Calculations for HSV representations are made when required
     """
-    
+
     def __init__(self) -> None:
         """
         Create an empty color object: Color(0, 0, 0)
-        
+
         To start from another value, use one of the creation functions:
         * `Color.fromInt()`
         * `Color.fromRgb()`
@@ -131,7 +135,7 @@ class Color:
         self._red = 0
         self._green = 0
         self._blue = 0
-    
+
     def __repr__(self) -> str:
         return f"Color(0x{self.integer:06X} | "\
              + f"r={self.red}, g={self.green}, b={self.blue})"
@@ -149,10 +153,10 @@ class Color:
         c = Color()
         c.integer = self.integer
         return c
-    
+
     ############################################################################
     # Creation functions
-        
+
     @staticmethod
     def fromInteger(rgb: int) -> 'Color':
         """
@@ -165,11 +169,11 @@ class Color:
         * `Color`: new color object
         """
         c = Color()
-        
+
         c.integer = rgb
-        
+
         return c
-    
+
     @staticmethod
     def fromRgb(r: int, g: int, b: int) -> 'Color':
         """
@@ -184,13 +188,13 @@ class Color:
         * `Color`: colour
         """
         c = Color()
-        
+
         c.red = r
         c.green = g
         c.blue = b
-        
+
         return c
-    
+
     @staticmethod
     def fromHsv(hue: float, saturation: float, value: float) -> 'Color':
         """
@@ -205,18 +209,18 @@ class Color:
         * `Color`: colour
         """
         c = Color()
-        
+
         c.hsv = hue, saturation, value
-        
+
         return c
-    
+
     ############################################################################
     # Helper functions
-    
+
     @staticmethod
     def __valCheckRgb(val: int) -> int:
         """
-        Ensure values used in setters are valid.
+        Ensure values used in RGB setters are valid.
         For values outside the range 0-255, adjust them as required
 
         ### Args:
@@ -224,7 +228,7 @@ class Color:
 
         ### Raises:
         * `TypeError`: bad value type
-        
+
         ### Returns
         * `int`: adjusted and checked value
         """
@@ -233,10 +237,48 @@ class Color:
         if val < 0: return 0
         if val > 255: return 255
         else: return val
-    
+
+    @staticmethod
+    def __valCheckSatVal(val: float) -> float:
+        """
+        Ensure values used in saturation and value setters are valid.
+        For values outside the range 0-1, adjust them as required
+
+        ### Args:
+        * `val` (`float`): value to check
+
+        ### Returns
+        * `float`: adjusted and checked value
+        """
+        if val < 0: return 0.0
+        if val > 1.0: return 1.0
+        else: return val
+
+    @staticmethod
+    def __valCheckHue(h: float) -> float:
+        """
+        Ensure values used in saturation and value setters are valid.
+        For values outside the range 0-360, adjust them as required
+
+        ### Args:
+        * `h` (`float`): value to check
+
+        ### Raises:
+        * `TypeError`: bad value type
+
+        ### Returns
+        * `int`: adjusted and checked value
+        """
+        if h < 0:
+            # Note that when h < 0, h // 360 < 0, hence subtraction
+            h -= floor(h // 360) * 360
+        if h >= 360.0:
+            h -= floor(h // 360) * 360
+        return h
+
     ############################################################################
     # Properties
-    
+
     @property
     def integer(self) -> int:
         """
@@ -269,7 +311,7 @@ class Color:
         self.red = (i & 0xFF0000) >> 16
         self.green = (i & 0x00FF00) >> 8
         self.blue = (i & 0x0000FF)
-    
+
     @property
     def hsv(self) -> tuple[float, float, float]:
         """
@@ -301,29 +343,17 @@ class Color:
             * value (0-1.0)
         """
         h, s, v = hsv
-        
+
         # Get within range
-        # h
-        if h < 0:
-            h += floor(h // 360) * 360
-        if h >= 360.0:
-            h -= floor(h // 360) * 360
-        # s
-        if s < 0:
-            s = 0.0
-        if s > 1.0:
-            s = 1.0
-        # v
-        if v < 0:
-            v = 0.0
-        if v > 1.0:
-            v = 1.0
-        
+        h = self.__valCheckHue(h)
+        s = self.__valCheckSatVal(s)
+        v = self.__valCheckSatVal(v)
+
         r, g, b = hsvToRgb(h, s, v)
         self.red = r
         self.green = g
         self.blue = b
-    
+
     @property
     def red(self) -> int:
         """
@@ -342,7 +372,7 @@ class Color:
         * `r` (`int`): red
         """
         self._red = Color.__valCheckRgb(r)
-    
+
     @property
     def green(self) -> int:
         """
@@ -361,7 +391,7 @@ class Color:
         * `g` (`int`): green
         """
         self._green = Color.__valCheckRgb(g)
-    
+
     @property
     def blue(self) -> int:
         """
@@ -385,7 +415,7 @@ class Color:
     def hue(self) -> float:
         """
         Represents the hue of the color
-        
+
         NOTE: Under the hood, values are still stored as RGB - conversions are
         made as required.
 
@@ -397,7 +427,7 @@ class Color:
     def hue(self, h: float):
         """
         Set the hue of the color
-        
+
         NOTE: Under the hood, values are still stored as RGB - conversions are
         made as required.
 
@@ -406,12 +436,12 @@ class Color:
         """
         _, s, v = self.hsv
         self.hsv = h, s, v
-    
+
     @property
     def saturation(self) -> float:
         """
         Represents the saturation of the color
-        
+
         NOTE: Under the hood, values are still stored as RGB - conversions are
         made as required.
 
@@ -423,7 +453,7 @@ class Color:
     def saturation(self, s: float):
         """
         Set the saturation of the color
-        
+
         NOTE: Under the hood, values are still stored as RGB - conversions are
         made as required.
 
@@ -437,7 +467,7 @@ class Color:
     def value(self) -> float:
         """
         Represents the value of the color
-        
+
         NOTE: Under the hood, values are still stored as RGB - conversions are
         made as required.
 
@@ -449,7 +479,7 @@ class Color:
     def value(self, v: float):
         """
         Set the value of the color
-        
+
         NOTE: Under the hood, values are still stored as RGB - conversions are
         made as required.
 
@@ -461,7 +491,7 @@ class Color:
 
     ############################################################################
     # Operators
-    
+
     @staticmethod
     def fade(start: 'Color', end: 'Color', position:float=0.5) -> 'Color':
         """
@@ -484,16 +514,16 @@ class Color:
             hue_start -= 360
         elif hue_end - hue_start > 180:
             hue_end -= 360
-        
+
         # Reverse Position
         rev_pos = 1 - position
-        
+
         return Color.fromHsv(
             hue_end * position + hue_start * rev_pos,
             end.saturation * position + start.saturation * rev_pos,
             end.value * position + start.value * rev_pos
         )
-    
+
     def fadeBlack(self: 'Color', position:float=0.5) -> 'Color':
         """
         Fade between this color and black
@@ -507,7 +537,7 @@ class Color:
         """
         black = Color()
         return Color.fade(self, black, position)
-    
+
     def fadeGray(self: 'Color', position:float=0.5) -> 'Color':
         """
         Fade between this color and gray
@@ -541,21 +571,21 @@ class Color:
         """
         h1, s1, v1 = start.hsv
         h2, s2, v2 = end.hsv
-        
+
         # Ensure hues are within 180 deg
         if h1 - h1 > 180:
             h1 -= 360
         elif h2 - h1 > 180:
             h2 -= 360
-        
+
         # Get deltas
         delta_h = abs(h2 - h1) / 360
         delta_s = abs(s2 - s1)
         delta_v = abs(v2 - v1)
-        
+
         # Don't bother doing square root since it's arbitrary anyway
         return delta_h**2 + delta_s**2 + delta_v**2
-    
+
     def closest(self, others: list['Color']) -> 'Color':
         """
         Given a set of colors, find the closest one and return it
@@ -568,18 +598,18 @@ class Color:
         """
         if len(others) == 0:
             raise ValueError("Set cannot be empty")
-        
+
         closest = others[0]
         closest_dist = Color.distance(self, closest)
-        
+
         for c in others[1:]:
             dist = Color.distance(self, c)
             if dist < closest_dist:
                 closest = c
                 closest_dist = dist
-        
+
         return closest
-    
+
     def __add__(self, other) -> 'Color':
         if isinstance(other, Color):
             return Color.fromRgb(
@@ -595,11 +625,11 @@ class Color:
             )
         else:
             return NotImplemented
-    
+
     def __radd__(self, other) -> 'Color':
         # Addition is commutative
         return self + other
-    
+
     def __sub__(self, other) -> 'Color':
         if isinstance(other, Color):
             return Color.fromRgb(
@@ -625,7 +655,7 @@ class Color:
             )
         else:
             return NotImplemented
-    
+
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Color):
             return (
