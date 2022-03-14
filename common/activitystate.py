@@ -8,8 +8,13 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
 """
 
-from common.util.apifixes import PluginIndex, UnsafeIndex, GeneratorIndex, \
-    EffectIndex, WindowIndex
+from common.util.apifixes import (
+    PluginIndex,
+    UnsafeIndex,
+    GeneratorIndex,
+    EffectIndex,
+    WindowIndex,
+)
 from common.util.apifixes import getFocusedPluginIndex, getFocusedWindowIndex
 
 class ActivityState:
@@ -29,11 +34,15 @@ class ActivityState:
         self._plug_active = True if self._plugin is not None else False
         self._changed = False
 
-    def printUpdate(self):
+    def inspect(self):
+        """
+        Inspect details about the activity state.
+        """
         print(f"Window: {self._window}, Plugin: {self._plugin}")
         print(f"Active: {'plugin' if self._plug_active else 'window'}")
         print(f"Updating: {self._doUpdate}")
         print(f"Split: {self._split}")
+        return ''
 
     def _forcePlugUpdate(self) -> None:
         """

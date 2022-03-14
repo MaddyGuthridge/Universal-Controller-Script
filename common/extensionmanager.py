@@ -24,22 +24,22 @@ class ExtensionManager:
     Manages all extensions registered with the script, allowing for extensions
     to be used for plugins or devices as required.
     """
-    
+
     # Standard plugins
     _plugins: 'dict[str, type[StandardPlugin]]' = {}
     _instantiated_plugins: 'dict[str, StandardPlugin]' = {}
-    
+
     # Window plugins
     _windows: 'dict[WindowIndex, type[WindowPlugin]]' = {}
     _instantiated_windows: 'dict[WindowIndex, WindowPlugin]' = {}
-    
+
     # Special plugins
     _special_plugins: 'list[type[SpecialPlugin]]' = []
     # Map types to their instance
     _instantiated_special_plugins: 'dict[type[SpecialPlugin], SpecialPlugin]' = {}
-    
+
     _devices: list[type['Device']] = []
-    
+
     def __init__(self) -> None:
         raise TypeError("ExtensionManager is a static class and cannot be instantiated.")
 
@@ -53,7 +53,7 @@ class ExtensionManager:
 
         ### Args:
         * `plugin` (`type[StandardPlugin]`): plugin to register
-        
+
         ### Example Usage
         ```py
         # Create a plugin
@@ -62,7 +62,7 @@ class ExtensionManager:
         # Register it
         ExtensionManager.registerPlugin(MyPlugin)
         ```
-        
+
         WARNING: Plugins assume that device definitions don't change over time.
         If the active device changes, or the available controls change, the
         function `resetPlugins()` should be called so that plugins are
@@ -70,7 +70,7 @@ class ExtensionManager:
         """
         for plug_id in plugin.getPlugIds():
             cls._plugins[plug_id] = plugin
-    
+
     @classmethod
     def registerWindowPlugin(cls, plugin: type['WindowPlugin']) -> None:
         """
@@ -81,7 +81,7 @@ class ExtensionManager:
 
         ### Args:
         * `plugin` (`type[WindowPlugin]`): plugin to register
-        
+
         ### Example Usage
         ```py
         # Create a plugin
@@ -90,14 +90,14 @@ class ExtensionManager:
         # Register it
         ExtensionManager.registerWindowPlugin(MyPlugin)
         ```
-        
+
         WARNING: Plugins assume that device definitions don't change over time.
         If the active device changes, or the available controls change, the
         function `resetPlugins()` should be called so that plugins are
         reset to their default state and control bindings are removed.
         """
         cls._windows[plugin.getWindowId()] = plugin
-    
+
     @classmethod
     def registerSpecialPlugin(cls, plugin: type['SpecialPlugin']) -> None:
         """
@@ -108,7 +108,7 @@ class ExtensionManager:
 
         ### Args:
         * `plugin` (`type[SpecialPlugin]`): plugin to register
-        
+
         ### Example Usage
         ```py
         # Create a plugin
@@ -117,7 +117,7 @@ class ExtensionManager:
         # Register it
         ExtensionManager.registerSpecialPlugin(MyPlugin)
         ```
-        
+
         WARNING: Plugins assume that device definitions don't change over time.
         If the active device changes, or the available controls change, the
         function `resetPlugins()` should be called so that plugins are
@@ -135,7 +135,7 @@ class ExtensionManager:
 
         ### Args:
         * `device` (`type`, extends `device`): class to register
-        
+
         ### Example Usage
         ```py
         # Create a device
@@ -190,7 +190,7 @@ class ExtensionManager:
                     # create an instance and return it
                     return device.create(arg)
         raise ValueError("Device not recognised")
-    
+
     @classmethod
     def getDeviceById(cls, id: str) -> 'Device':
         """
@@ -210,8 +210,11 @@ class ExtensionManager:
 
     @classmethod
     def getAllDevices(cls) -> list[type['Device']]:
+        """
+        Returns a list of all devices that have been registered
+        """
         return cls._devices
-    
+
     @classmethod
     def getPluginById(cls, id: str, device: 'Device') -> Optional['StandardPlugin']:
         """
@@ -244,7 +247,7 @@ class ExtensionManager:
             #     verbosity=verbosity.NOTE
             # )
             return None
-    
+
     @classmethod
     def getWindowById(cls, id: int, device: 'Device') -> Optional['WindowPlugin']:
         """
@@ -302,9 +305,9 @@ class ExtensionManager:
                     cls._instantiated_special_plugins[p] \
                         = p.create(DeviceShadow(device))
                 ret.append(cls._instantiated_special_plugins[p])
-        
+
         return ret
-    
+
     @classmethod
     def resetPlugins(cls) -> None:
         """
@@ -314,32 +317,32 @@ class ExtensionManager:
         cls._instantiated_plugins = {}
         cls._instantiated_special_plugins = {}
         cls._instantiated_windows = {}
-    
+
     @classmethod
     def getAllStandardPlugins(cls) -> list[type]:
         """
         Returns a list of all standard plugins
         """
         return list(cls._plugins.values())
-    
+
     @classmethod
     def getAllSpecialPlugins(cls) -> list[type]:
         """
         Returns a list of all special plugins
         """
         return cls._special_plugins
-    
+
     @classmethod
     def getAllWindowPlugins(cls) -> list[type]:
         """
         Returns a list of all window plugins
         """
         return cls._special_plugins
-    
+
     @classmethod
     def getInfo(cls) -> str:
         """
-        Returns basic info about the devices and plugins registered with the 
+        Returns basic info about the devices and plugins registered with the
         extension manager
 
         ### Returns:
@@ -382,7 +385,7 @@ class ExtensionManager:
         * `str`: plugin info
         """
         matches: list[tuple[str, Optional['StandardPlugin']]] = []
-        
+
         for id, p in cls._plugins.items():
             if p == plug:
                 if id in cls._instantiated_plugins.keys():
@@ -417,7 +420,7 @@ class ExtensionManager:
             return f"{id} associated with: {cls._plugins[id]} (not instantiated)"
         else:
             return f"ID {id} not associated with any plugins"
-    
+
     @classmethod
     def _inspectWindowPlugin(cls, plug: type['WindowPlugin']) -> str:
         """
@@ -430,7 +433,7 @@ class ExtensionManager:
         * `str`: plugin info
         """
         matches: list[tuple['WindowIndex', Optional['WindowPlugin']]] = []
-        
+
         for id, p in cls._windows.items():
             if p == plug:
                 if id in cls._instantiated_windows.keys():
@@ -447,7 +450,7 @@ class ExtensionManager:
             return f"{plug}:" + f"\n\n".join([
                 f"> {id}:\n{cls._formatPlugin(inst_p)}" for id, inst_p in matches
             ])
-    
+
     @classmethod
     def _inspectSpecialPlugin(cls, plug: type['SpecialPlugin']) -> str:
         """
@@ -490,7 +493,7 @@ class ExtensionManager:
         any kind
 
         ### Args:
-        * `ext` (`type[Plugin] | type[Plugin] | str`): device, plugin or 
+        * `ext` (`type[Plugin] | type[Plugin] | str`): device, plugin or
           plugin ID to inspect
 
         ### Returns:
