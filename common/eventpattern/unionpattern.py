@@ -24,7 +24,7 @@ class UnionPattern(IEventPattern):
 
         Args:
         * `*patterns` (`IEventPattern`): event patterns to match, each as
-        separate arguments
+        separate arguments. At least two patterns are expected
         """
         if len(patterns) < 2:
             raise ValueError("Expected at least two event patterns to union")
