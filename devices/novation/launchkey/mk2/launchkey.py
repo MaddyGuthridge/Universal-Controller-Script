@@ -45,12 +45,12 @@ class LaunchkeyMk2(Device):
                 matcher.addControl(LaunchkeyDrumpad((r, c)), 10)
 
         # Create knobs
-        for i in range(1, 9):
+        for i in range(8):
             matcher.addControl(
                 Knob(
-                    BasicPattern(0xB0, 0x14 + i, ...),
+                    BasicPattern(0xB0, 0x15 + i, ...),
                     Data2Strategy(),
-                    (i, 0)
+                    (0, i)
                 )
             )
 
