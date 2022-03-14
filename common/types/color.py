@@ -573,7 +573,7 @@ class Color:
         h2, s2, v2 = end.hsv
 
         # Ensure hues are within 180 deg
-        if h1 - h1 > 180:
+        if h1 - h2 > 180:
             h1 -= 360
         elif h2 - h1 > 180:
             h2 -= 360

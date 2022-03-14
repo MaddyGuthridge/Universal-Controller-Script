@@ -126,6 +126,19 @@ def test_distance():
     assert dist(c1, c2) < dist(c1, c3)
     assert dist(c1, c4) < dist(c1, c5)
 
+def test_distance_wrap():
+    """Test that colour distances allow the wrapping of hue values,
+    such that h=10deg is closer to 350deg than 180deg
+    """
+    c1 = Color.fromHsv(10, 1, 1)
+    c2 = Color.fromHsv(350, 1, 1)
+    c3 = Color.fromHsv(180, 1, 1)
+
+    dist = Color.distance
+
+    assert dist(c1, c2) < dist(c1, c3)
+    assert dist(c1, c2) < dist(c3, c2)
+
 def test_closest():
     c = Color.fromInteger(0xFF0000)
 
