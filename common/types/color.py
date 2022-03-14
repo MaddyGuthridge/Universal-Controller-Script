@@ -510,7 +510,7 @@ class Color:
         hue_start = start.hue
         hue_end = end.hue
         # Ensure hues are within 180 deg
-        if hue_start - hue_start > 180:
+        if hue_start - hue_end > 180:
             hue_start -= 360
         elif hue_end - hue_start > 180:
             hue_end -= 360

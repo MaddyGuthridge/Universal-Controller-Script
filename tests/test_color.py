@@ -7,7 +7,7 @@ Tests for color object
 import pytest
 from common.types import Color
 
-from .helpers import floatApproxEq
+from .helpers import floatApproxEq, combinations
 
 def test_basic():
     c = Color()
@@ -85,6 +85,9 @@ def test_assign_out_of_bounds():
     c.saturation = 1.2
     assert floatApproxEq(1.0, c.saturation)
 
+    c.value = 1.2
+    assert floatApproxEq(1.0, c.value)
+
     c.hue = 370.0
     assert floatApproxEq(10.0, c.hue)
     c.hue = -10.0
@@ -114,6 +117,28 @@ def test_fade():
     assert Color.fade(c1, c2) == 0xFFFF00
     assert Color.fade(c1, c3) == 0xFF7F00
 
+@pytest.mark.parametrize(
+    ["c1", "c2"],
+    combinations([
+        Color.fromHsv(10, 1, 1),
+        Color.fromHsv(230, 0.5, 0.6),
+        Color.fromHsv(345, 0.7, 0.8),
+    ], 2)
+)
+def test_fade_distance(c1, c2):
+    fade = Color.fade(c1, c2)
+    assert floatApproxEq(Color.distance(c1, fade), Color.distance(c2, fade))
+
+def test_fade_black():
+    """Fading to black should halve the value"""
+    c = Color.fromHsv(250, 1.0, 0.6)
+    assert floatApproxEq(c.value / 2, Color.fadeBlack(c).value)
+
+def test_fade_gray():
+    """Fading to black should halve the saturation"""
+    c = Color.fromHsv(250, 1.0, 0.6)
+    assert floatApproxEq(c.saturation / 2, Color.fadeGray(c).saturation)
+
 def test_distance():
     c1 = Color.fromHsv(180, 1, 1)
     c2 = Color.fromHsv(160, 1, 1)
@@ -136,6 +161,7 @@ def test_distance_wrap():
 
     dist = Color.distance
 
+    assert dist(c1, c2) == dist(c2, c1)
     assert dist(c1, c2) < dist(c1, c3)
     assert dist(c1, c2) < dist(c3, c2)
 
