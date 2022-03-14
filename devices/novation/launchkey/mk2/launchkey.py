@@ -1,30 +1,37 @@
+"""
+devices > novation > launchkey > mk2 > launchkey
+
+Device definitions for Launchkey Mk2 controllers
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from typing import Optional
-from common.eventpattern import BasicPattern
-from common.types import EventData
-from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import Data2Strategy,ButtonData2Strategy
-from devices import Device, BasicControlMatcher
-from devices.controlgenerators import NoteMatcher
 
-from controlsurfaces import (
-    Fader,
-    MasterFader,
-    Knob,
-    PlayButton,
-    StopButton,
-    RecordButton,
-    FastForwardButton,
-    RewindButton,
-    LoopButton,
-    StandardPitchWheel,
-    StandardModWheel,
-    GenericFaderButton,
-)
+from common.eventpattern import BasicPattern
+from common.extensionmanager import ExtensionManager
+from common.types import EventData
 from controlsurfaces import (
     DirectionNext,
-    DirectionPrevious
+    DirectionPrevious,
+    Fader,
+    FastForwardButton,
+    GenericFaderButton,
+    Knob,
+    LoopButton,
+    MasterFader,
+    PlayButton,
+    RecordButton,
+    RewindButton,
+    StandardModWheel,
+    StandardPitchWheel,
+    StopButton,
 )
+from controlsurfaces.valuestrategies import ButtonData2Strategy, Data2Strategy
+from devices import BasicControlMatcher, Device
+from devices.controlgenerators import NoteMatcher
+
 from .drumpad import LaunchkeyDrumpad
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
