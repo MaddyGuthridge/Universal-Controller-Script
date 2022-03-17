@@ -38,8 +38,15 @@ class NoteStrategy(IMappingStrategy):
         *args: Any,
         **kwargs: Any
     ) -> bool:
+        try:
+            i = channels.getChannelIndex(*getContext().active.getGenerator())
+            print("A")
+        except TypeError:
+            # Index out of range - we're using a plugin from a different group
+            i = channels.channelNumber()
+        print(i)
         channels.midiNoteOn(
-            *getContext().active.getGenerator(),
+            i,
             control.getControl().coordinate[1],
             int(control.value*127),
             # NOTE: Currently FL Studio won't set the note color correctly

@@ -40,24 +40,30 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
 
     Returns:
     * `None`: if no plugin is focused
-    * `int`: index of a channel rack plugin if one is focused
+    * `int`: grouped index of a channel rack plugin if one is focused
     * `int, int`: index of a mixer plugin if one is focused
     """
     # Check if a channel rack plugin is focused
     # if ui.getFocused(7):
+    form_id =  ui.getFocusedFormID()
 
     # If a mixer plugin is focused
     if ui.getFocused(6):
-        track = ui.getFocusedFormID() // 4194304
-        slot = (ui.getFocusedFormID() - 4194304 * track) // 65536
+        track = form_id // 4194304
+        slot = (form_id - 4194304 * track) // 65536
         return track, slot
     # Otherwise, assume that a channel is selected
     # Use the channel rack index so that we always have one
     elif ui.getFocused(7):
-        return (ui.getFocusedFormID(), )
+        # NOTE: When using groups, ui.getFocusedFormID() returns the index
+        # respecting groups, instead of the global index, yuck
+        if form_id == -1:
+            # Plugin outside current group or invalid
+            return None
+        return (form_id,)
     else:
         if force:
-            return (channels.channelNumber(),)
+            return (channels.selectedChannel(),)
         else:
             return None
 
@@ -79,6 +85,35 @@ def getFocusedWindowIndex() -> Optional[int]:
         if ret == -1:
             return None
         return ret
+
+# def getPluginName(index: UnsafeIndex) -> str:
+#     """
+#     Returns the name of a plugin
+#
+#     ### Args:
+#     * `index` (`PluginIndex`): index of plugin
+#
+#     ### Returns:
+#     * `str`: plugin name
+#     """
+#     # Nothing selected
+#     if index is None:
+#         return ""
+#
+#     # FL Window
+#     if isinstance(index, int):
+#         return {
+#             0: "Mixer",
+#             1: "Channel Rack",
+#             2: "Playlist",
+#             3: "Piano Roll",
+#             4: "Browser"
+#         }[index]
+#
+#     # Generator
+#     elif len(index) == 1:
+#         return plugins.get
+
 
 def isPluginVst(index: PluginIndex) -> bool:
     """

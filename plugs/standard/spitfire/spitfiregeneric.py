@@ -92,6 +92,7 @@ class SpitfireGeneric(StandardPlugin):
 
     @eventfilters.toGeneratorIndex
     def faders(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
+        print(index)
         plugins.setParamValue(control.value, control.getShadow().coordinate[1], *index)
         return True
 

@@ -39,5 +39,8 @@ HIERARCHY = {
             "standard": {}
         },
     },
+    "state": {
+        "active": {}
+    },
     "general": {}
 }
