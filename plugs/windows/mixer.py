@@ -99,7 +99,11 @@ class Mixer(WindowPlugin):
         selected = getSelectedMixerTracks()
 
         if len(selected) == 0:
-            return
+            # No selection, we need to generate one
+            if not len(self._selection):
+                selected = [1]
+            else:
+                return
 
         first = selected[0]
         last = first
