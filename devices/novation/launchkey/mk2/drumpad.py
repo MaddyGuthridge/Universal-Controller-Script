@@ -2,7 +2,11 @@
 devices > novation > launchkey > mk2 > drumpad
 
 Definition for the Launchkey Mk2 Drumpads
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
+
 from common import profilerDecoration
 from common.eventpattern.notepattern import NotePattern
 from common.types import EventData

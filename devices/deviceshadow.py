@@ -7,7 +7,6 @@ be manipulated without modifying the original device.
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-# from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol, Union
 from common.util.apifixes import UnsafeIndex

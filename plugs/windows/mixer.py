@@ -52,7 +52,7 @@ def snapFaders(value: float) -> float:
         return value * 0.8
 
 def snapKnobs(value: float) -> float:
-    return snap(value * 2 - 1, 0)
+    return snap(value, 0.5) * 2 - 1
 
 class Mixer(WindowPlugin):
     """
@@ -99,7 +99,11 @@ class Mixer(WindowPlugin):
         selected = getSelectedMixerTracks()
 
         if len(selected) == 0:
-            return
+            # No selection, we need to generate one
+            if not len(self._selection):
+                selected = [1]
+            else:
+                return
 
         first = selected[0]
         last = first

@@ -1,3 +1,12 @@
+"""
+devices > maudio > hammer88pro > hammerpitch
+
+Contains the definition for the Hammer 88 Pro's pitch wheel, since its behaviour
+is weird
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from common.eventpattern import BasicPattern, fromNibbles
 from controlsurfaces import PitchWheel

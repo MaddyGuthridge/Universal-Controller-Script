@@ -19,6 +19,6 @@ class NullPattern(IEventPattern):
     """
     Null patterns won't match with any events
     """
-    
+
     def matchEvent(self, event: 'EventData') -> bool:
         return False

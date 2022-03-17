@@ -8,8 +8,14 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
 """
 
-from common.util.apifixes import PluginIndex, UnsafeIndex, GeneratorIndex, \
-    EffectIndex, WindowIndex
+from common.logger import log, verbosity
+from common.util.apifixes import (
+    PluginIndex,
+    UnsafeIndex,
+    GeneratorIndex,
+    EffectIndex,
+    WindowIndex,
+)
 from common.util.apifixes import getFocusedPluginIndex, getFocusedWindowIndex
 
 class ActivityState:
@@ -28,12 +34,17 @@ class ActivityState:
         self._plugin: PluginIndex = self._generator
         self._plug_active = True if self._plugin is not None else False
         self._changed = False
+        self._plug_unsafe = False
 
-    def printUpdate(self):
+    def inspect(self):
+        """
+        Inspect details about the activity state.
+        """
         print(f"Window: {self._window}, Plugin: {self._plugin}")
         print(f"Active: {'plugin' if self._plug_active else 'window'}")
         print(f"Updating: {self._doUpdate}")
         print(f"Split: {self._split}")
+        return ''
 
     def _forcePlugUpdate(self) -> None:
         """
@@ -41,7 +52,13 @@ class ActivityState:
         Used so that split windows and plugins behaves correctly.
         """
         plugin = getFocusedPluginIndex(force=True)
-        assert plugin is not None
+        if plugin is None:
+            if not self._plug_unsafe:
+                log("state.active", "Using plugin not from selected channel rack group", verbosity.WARNING)
+                self._plug_unsafe = True
+                self._plugin = (-1,)
+                self._generator = (-1,)
+            return
         self._plugin = plugin
         if len(plugin) == 1:
             self._generator = plugin # type: ignore
@@ -63,6 +80,7 @@ class ActivityState:
                     self._plug_active = False
                 self._forcePlugUpdate()
             elif (plugin := getFocusedPluginIndex()) is not None:
+                self._plug_unsafe = False
                 if plugin != self._plugin:
                     self._changed = True
                 self._plugin = plugin

@@ -1,12 +1,13 @@
 
 from typing import Any
+import channels
 
 import plugins
 from common.types import Color
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import GeneratorIndex, UnsafeIndex
 from controlsurfaces import ControlShadowEvent
-from controlsurfaces import Fader
+from controlsurfaces import Fader, DrumPad
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs import eventfilters,tickfilters
@@ -56,6 +57,23 @@ class SpitfireGeneric(StandardPlugin):
         self._faders[0].color = Color.fromRgb(127, 127, 127)
         self._faders[1].annotation = "Dynamics"
         self._faders[1].color = Color.fromRgb(127, 127, 127)
+
+        # Drum pads
+        # Bind a different callback depending on drum pad size
+        # TODO: Find a way to improve this, and reduce repeated code between
+        # this and FPC
+        size = shadow.getDevice().getDrumPadSize()
+        if size[0] >= 4 and size[1] >= 8:
+            self._pads = shadow.bindMatches(DrumPad, self.drumPad4x8)
+            # TODO: Figure out the logic of this at some point
+            self._coordToIndex = lambda r, c : 16 - (c + 1) * 4 + r
+        if size[0] >= 4 and size[1] >= 4:
+            self._pads = shadow.bindMatches(DrumPad, self.drumPad4x4)
+            self._coordToIndex = lambda r, c :c + 4 * r
+        elif size[0] >= 2 and size[1] >= 8:
+            self._pads = shadow.bindMatches(DrumPad, self.drumPad2x8)
+            self._coordToIndex = lambda r, c : c + 4 * r + 4 * (c >= 4)
+
         super().__init__(shadow, [])
 
     @classmethod
@@ -73,8 +91,35 @@ class SpitfireGeneric(StandardPlugin):
         pass
 
     @eventfilters.toGeneratorIndex
-    def faders(self, control: ControlShadowEvent, index: GeneratorIndex, idx: int, *args: Any) -> bool:
+    def faders(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         plugins.setParamValue(control.value, control.getShadow().coordinate[1], *index)
+        return True
+
+    @eventfilters.toGeneratorIndex
+    def drumPad4x8(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
+        row, col = control.getShadow().coordinate
+        # Handle pads out of bounds as well
+        if row >= 4 or col >= 8:
+            return True
+        channels.midiNoteOn(index[0], self._coordToIndex(row, col), int(control.value * 127))
+        return True
+
+    @eventfilters.toGeneratorIndex
+    def drumPad4x4(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
+        row, col = control.getShadow().coordinate
+        # Handle pads out of bounds as well
+        if row >= 4 or col >= 4:
+            return True
+        channels.midiNoteOn(index[0], self._coordToIndex(row, col), int(control.value * 127))
+        return True
+
+    @eventfilters.toGeneratorIndex
+    def drumPad2x8(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
+        row, col = control.getShadow().coordinate
+        # Handle pads out of bounds
+        if row >= 2 or col >= 8:
+            return True
+        channels.midiNoteOn(index[0], self._coordToIndex(row, col), int(control.value * 127))
         return True
 
 ExtensionManager.registerPlugin(SpitfireGeneric)

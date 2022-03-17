@@ -23,7 +23,7 @@ def snap(value: float, to: float) -> float:
 
     if not common.getContext().settings.get("plugins.general.do_snap"):
         return value
-    
-    if abs(value - to) < SNAP_AMOUNT:
+
+    if abs(value - to) <= SNAP_AMOUNT:
         return to
     return value

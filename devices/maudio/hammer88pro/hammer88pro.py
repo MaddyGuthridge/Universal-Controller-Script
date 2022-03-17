@@ -1,14 +1,25 @@
+"""
+devices > maudio > hammer88pro > hammer88pro
 
+Device definitions for M-Audio Hammer 88 Pro
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from typing import Optional
+
 from common import getContext
-from common.eventpattern import BasicPattern, ForwardedPattern, ForwardedUnionPattern, NotePattern
-from common.types import EventData
+from common.eventpattern import (
+    BasicPattern,
+    ForwardedPattern,
+    ForwardedUnionPattern,
+    NotePattern,
+)
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.valuestrategies import ForwardedStrategy, ForwardedUnionStrategy, ButtonData2Strategy, Data2Strategy, NoteStrategy
+from common.types import EventData
 from devices import Device, BasicControlMatcher
 from devices.controlgenerators import NoteMatcher, PedalMatcher
-
 from controlsurfaces import (
     NullEvent,
     Fader,
@@ -32,6 +43,14 @@ from controlsurfaces import (
     ArmButton,
     SelectButton,
 )
+from controlsurfaces.valuestrategies import (
+    ForwardedStrategy,
+    ForwardedUnionStrategy,
+    ButtonData2Strategy,
+    Data2Strategy,
+    NoteStrategy,
+)
+
 from .hammerpitch import HammerPitchWheel
 from .jogmatcher import JogMatcher
 
