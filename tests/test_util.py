@@ -78,4 +78,4 @@ def test_recursive_merge_simple():
 def test_snap():
     # TODO: Use contexts to set settings
     assert snap(0.1, 0.2) == 0.1
-    assert snap(0.17, 0.2) == 0.2
+    assert snap(0.181, 0.2) == 0.2
