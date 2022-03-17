@@ -52,7 +52,7 @@ def snapFaders(value: float) -> float:
         return value * 0.8
 
 def snapKnobs(value: float) -> float:
-    return snap(value * 2 - 1, 0)
+    return snap(value, 0.5) * 2 - 1
 
 class Mixer(WindowPlugin):
     """

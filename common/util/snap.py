@@ -6,7 +6,7 @@ Contains functions to help with snapping to a default value
 
 import common
 
-SNAP_AMOUNT = 0.03
+SNAP_AMOUNT = 0.02
 
 def snap(value: float, to: float) -> float:
     """
