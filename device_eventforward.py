@@ -35,7 +35,7 @@ as required
   properly.
 
 * [event category] type of event:
-    * standard (0), or 
+    * standard (0), or
     * sysex (1)
 
 * [event data] data from the event:
@@ -52,7 +52,9 @@ as required
 * Doesn't support devices with parentheses in device name
 """
 
-import include
+# Add our additional includes to the Python environment
+import fl_context
+
 from typing import TYPE_CHECKING
 from common import log, verbosity
 from common.consts import getVersionString, ASCII_HEADER_ART
