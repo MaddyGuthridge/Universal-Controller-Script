@@ -82,7 +82,7 @@ def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
     """
     if device_num == -1:
         device_num = getDeviceNum()
-        if device_num == -1:
+        if device_num == 1:
             # TODO: Use a custom exception type to improve error checking
             raise ValueError("Either forwarding from an invalid device or "
                              "target device number is unspecified")
@@ -151,7 +151,7 @@ def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
     """
     if device_num == -1:
         device_num = getDeviceNum()
-        if device_num == -1:
+        if device_num == 1:
             raise ValueError("No target device specified from main script")
 
     if not isEventForwardedHere(event):
@@ -205,7 +205,7 @@ def forwardEvent(event: EventData, device_num: int = -1):
     """
     if device_num == -1:
         device_num = getDeviceNum()
-        if device_num == -1:
+        if device_num == 1:
             raise ValueError("No target device specified from main script")
     output = encodeForwardedEvent(event, device_num)
     # Dispatch to all available devices
