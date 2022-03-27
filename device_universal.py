@@ -59,7 +59,6 @@ def OnInit():
     device.onInit()
 
 def OnMidiIn(event):
-    print(eventToString(event))
     device.onMidiIn(event)
 
 def OnIdle():

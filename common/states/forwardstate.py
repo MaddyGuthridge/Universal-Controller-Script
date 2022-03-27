@@ -69,7 +69,6 @@ class ForwardState(DeviceState):
         pass
 
     def processEvent(self, event: EventData) -> None:
-        print(eventToString(event))
         if isEventForwarded(event):
             if isEventForwardedHereFrom(event):
                 outputForwarded(event)

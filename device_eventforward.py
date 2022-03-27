@@ -97,7 +97,6 @@ def OnInit():
     dev.onInit()
 
 def OnMidiIn(event):
-    print(eventToString(event))
     dev.onMidiIn(event)
 
 def OnIdle():
