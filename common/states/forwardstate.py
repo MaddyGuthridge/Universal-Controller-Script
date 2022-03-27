@@ -56,7 +56,7 @@ class ForwardState(DeviceState):
                 "Event Forwarder' script"
             )
         self._device = device
-        common.getContext().setDeviceNum(device.getDeviceNumber())
+        common.getContext().registerDevice(device)
 
     @classmethod
     def create(cls, device: Device) -> 'DeviceState':

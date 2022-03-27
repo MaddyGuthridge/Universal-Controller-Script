@@ -6,45 +6,29 @@ Contains useful functions for operating on events.
 
 from typing import Optional, TYPE_CHECKING
 import device
+
+import common
 from common import log
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 
-def parseDeviceName() -> str:
+def getDeviceId() -> str:
     """
-    Determine the name of the device (minus all the MIDIIN2 rubbish)
-
-    WARNING: This may not work on MacOS
+    Get the identifier of a device
 
     ### Returns:
-    * `str`: device name
+    * `str`: device number of an auxiliary device
     """
-    name = device.getName()
+    return common.getContext().getDevice().getId()
 
-    if name.startswith("MIDIIN"):
-        name = name.lstrip("MIDIIN")
-        bracket_start = name.find("(")
-        return name[bracket_start+1:-1]
-    else:
-        return name
-
-def parseDeviceNumber() -> int:
+def getDeviceNum() -> int:
     """
     Determine the number of auxiliary devices that are connected using the
     Universal Event Forwarder
 
-    WARNING: This may not work on MacOS
-
     ### Returns:
-    * `int`: device number of an auxiliary device, or -1 if this is the main
-      device or of an incompatible format
+    * `int`: device number of an auxiliary device
     """
-    name = device.getName()
-
-    if name.startswith("MIDIIN"):
-        name = name.lstrip("MIDIIN")
-        return int(name[0])
-    else:
-        return -1
+    return common.getContext().getDevice().getDeviceNumber()
 
 def isEventForwarded(event: EventData) -> bool:
     """
@@ -77,7 +61,7 @@ def getForwardedEventHeader() -> bytes:
     return bytes([
         0xF0, # Start sysex
         0x7D  # Non-commercial sysex ID
-    ]) + parseDeviceName().encode() \
+    ]) + getDeviceId().encode() \
        + bytes([0])
 
 def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
@@ -97,7 +81,7 @@ def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
     * `bytes`: encoded event data
     """
     if device_num == -1:
-        device_num = parseDeviceNumber()
+        device_num = getDeviceNum()
         if device_num == -1:
             # TODO: Use a custom exception type to improve error checking
             raise ValueError("Either forwarding from an invalid device or "
@@ -146,7 +130,7 @@ def isEventForwardedHere(event: EventData) -> bool:
     assert isEventSysex(event)
 
     if (event.sysex[2:_getForwardedNameEndIdx(event)].decode()
-     != parseDeviceName()
+     != getDeviceId()
     ):
         return False
     return True
@@ -166,7 +150,7 @@ def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
     * `bool`: whether it was forwarded
     """
     if device_num == -1:
-        device_num = parseDeviceNumber()
+        device_num = getDeviceNum()
         if device_num == -1:
             raise ValueError("No target device specified from main script")
 
@@ -220,7 +204,7 @@ def forwardEvent(event: EventData, device_num: int = -1):
     * `device_num` (`int`, optional): target device number if on main script
     """
     if device_num == -1:
-        device_num = parseDeviceNumber()
+        device_num = getDeviceNum()
         if device_num == -1:
             raise ValueError("No target device specified from main script")
     output = encodeForwardedEvent(event, device_num)

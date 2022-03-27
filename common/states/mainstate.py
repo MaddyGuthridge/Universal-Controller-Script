@@ -31,7 +31,7 @@ class MainState(DeviceState):
                 "Event Forwarder' script, rather than the main 'Universal "
                 "Controller' script"
             )
-        common.getContext().setDeviceNum(device.getDeviceNumber())
+        common.getContext().registerDevice(device)
         self._device = device
 
     @classmethod

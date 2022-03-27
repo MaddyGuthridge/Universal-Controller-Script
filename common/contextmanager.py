@@ -14,7 +14,7 @@ __all__ = [
     'resetContext'
 ]
 
-from typing import NoReturn, Optional, Callable
+from typing import NoReturn, Optional, Callable, TYPE_CHECKING
 from time import time_ns
 
 from .settings import Settings
@@ -31,6 +31,9 @@ from .states import (
     StateChangeException,
     catchStateChangeException,
 )
+
+if TYPE_CHECKING:
+    from devices import Device
 
 class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
@@ -56,7 +59,7 @@ class DeviceContextManager:
         self._last_tick = time_ns()
         self._ticks = 0
         self._dropped_ticks = 0
-        self._device_num: Optional[int] = None
+        self._device: Optional[Device] = None
 
     @catchStateChangeException
     def initialise(self, state: IScriptState) -> None:
@@ -144,32 +147,30 @@ class DeviceContextManager:
         new_state.initialise()
         raise StateChangeException("State changed")
 
-    def setDeviceNum(self, num: int):
+    def registerDevice(self, dev: Device):
         """
-        Set the device number for the recognised device
-
-        This is used so that forwarded events can be encoded correctly
+        Register a recognised device
 
         ### Args:
-        * `num` (`int`): device number
+        * `dev` (`int`): device number
         """
-        self._device_num = num
+        self._device = dev
 
-    def getDeviceNum(self) -> int:
+    def getDevice(self) -> Device:
         """
-        Return the device number for a recognised device
+        Return a reference to the recognised device
 
         This is used so that forwarded events can be encoded correctly
 
         ### Raises:
-        * `ValueError`: device number not set
+        * `ValueError`: device not set
 
         ### Returns:
-        * `int`: device number
+        * `Device`: device
         """
-        if self._device_num is None:
+        if self._device is None:
             raise ValueError("Device number not set")
-        return self._device_num
+        return self._device
 
 class ContextResetException(Exception):
     """
