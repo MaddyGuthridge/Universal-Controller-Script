@@ -9,6 +9,8 @@ Authors:
 
 from typing import Optional
 
+import device
+
 from common.eventpattern import BasicPattern
 from common.extensionmanager import ExtensionManager
 from common.types import EventData
@@ -102,6 +104,17 @@ class LaunchkeyMk2(Device):
     @staticmethod
     def getDrumPadSize() -> tuple[int, int]:
         return 2, 8
+
+    def getDeviceNumber(self) -> int:
+        name = device.getName()
+        if "MIDIIN2" in name:
+            return 2
+        elif "MIDI" in name:
+            return 1
+        elif "InCo" in name:
+            return 2
+        else:
+            return 1
 
 class LaunchkeyMk2_49_61(LaunchkeyMk2):
     """
