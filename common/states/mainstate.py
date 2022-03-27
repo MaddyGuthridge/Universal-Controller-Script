@@ -35,7 +35,7 @@ class MainState(DeviceState):
         self._device = device
 
     @classmethod
-    def create(cls, device: Device) -> 'DeviceState':
+    def create(cls, device: 'Device') -> 'DeviceState':
         return cls(device)
 
     def initialise(self) -> None:

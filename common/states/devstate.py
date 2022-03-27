@@ -17,7 +17,7 @@ class DeviceState(IScriptState):
 
     @abstractmethod
     @classmethod
-    def create(cls, device: Device) -> 'DeviceState':
+    def create(cls, device: 'Device') -> 'DeviceState':
         """
         Create an instance of a DeviceState
 

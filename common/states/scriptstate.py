@@ -8,7 +8,8 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from typing import Any, Callable, ParamSpec
+from typing import Any, Callable
+from typing_extensions import ParamSpec
 from abc import abstractmethod
 from common.types import EventData
 

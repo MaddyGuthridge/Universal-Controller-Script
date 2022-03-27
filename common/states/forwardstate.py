@@ -59,7 +59,7 @@ class ForwardState(DeviceState):
         common.getContext().registerDevice(device)
 
     @classmethod
-    def create(cls, device: Device) -> 'DeviceState':
+    def create(cls, device: 'Device') -> 'DeviceState':
         return cls(device)
 
     def initialise(self) -> None:

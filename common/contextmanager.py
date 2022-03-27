@@ -59,7 +59,7 @@ class DeviceContextManager:
         self._last_tick = time_ns()
         self._ticks = 0
         self._dropped_ticks = 0
-        self._device: Optional[Device] = None
+        self._device: Optional['Device'] = None
 
     @catchStateChangeException
     def initialise(self, state: IScriptState) -> None:
@@ -147,16 +147,16 @@ class DeviceContextManager:
         new_state.initialise()
         raise StateChangeException("State changed")
 
-    def registerDevice(self, dev: Device):
+    def registerDevice(self, dev: 'Device'):
         """
         Register a recognised device
 
         ### Args:
-        * `dev` (`int`): device number
+        * `dev` (`Device`): device number
         """
         self._device = dev
 
-    def getDevice(self) -> Device:
+    def getDevice(self) -> 'Device':
         """
         Return a reference to the recognised device
 
