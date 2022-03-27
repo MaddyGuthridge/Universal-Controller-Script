@@ -23,7 +23,7 @@ from .consts import getVersionString
 from .logger import log, verbosity
 from .profiler import ProfilerContext, profilerDecoration
 
-from .contextmanager import getContext, resetContext, catchContextResetException
+from .contextmanager import getContext, resetContext, catchContextResetException, unsafeResetContext
 
 from .eventpattern import BasicPattern, IEventPattern
 

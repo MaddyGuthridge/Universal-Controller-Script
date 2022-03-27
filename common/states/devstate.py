@@ -15,8 +15,8 @@ class DeviceState(IScriptState):
     Abstract state that requires a device to be detected
     """
 
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def create(cls, device: 'Device') -> 'DeviceState':
         """
         Create an instance of a DeviceState

@@ -11,7 +11,8 @@ Authors:
 __all__ = [
     'catchContextResetException',
     'getContext',
-    'resetContext'
+    'resetContext',
+    'unsafeResetContext'
 ]
 
 from typing import NoReturn, Optional, Callable, TYPE_CHECKING
