@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 class DeviceState(IScriptState):
     """
-    State for when device isn't recognised
+    Abstract state that requires a device to be detected
     """
 
     @abstractmethod

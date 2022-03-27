@@ -38,7 +38,7 @@ class Device:
         * `control_matcher` (`IControlMatcher`): Control matching strategy.
         """
         self._matcher = control_matcher
-    
+
     @classmethod
     @abstractmethod
     def create(cls, event: Optional[EventData]) -> 'Device':
@@ -57,17 +57,33 @@ class Device:
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
-    
+
     @staticmethod
     @abstractmethod
     def getId() -> str:
         """
         Returns the id of the device, in the form:
-        
+
         "Manufacturer.Model.Mark.Variant"
-        
+
         ### Returns:
         * `str`: device id
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+
+    @abstractmethod
+    def getDeviceNumber(self) -> int:
+        """
+        Returns the number of a device
+
+        This is used by devices to help with forwarding events to the main
+        script
+
+        ### Returns:
+        * `int`: device number
+              * `1`: Main device
+              * other values: other device numbers.
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
@@ -124,7 +140,7 @@ class Device:
         """
         Called when the device is first recognised, and when FL Studio allows
         communication.
-        
+
         Can be overridden by child classes.
         """
 
@@ -132,7 +148,7 @@ class Device:
     #     """
     #     Called when FL Studio is going to start blocking communication, such as
     #     when a render is going to begin, or when exiting.
-    #     
+    #
     #     Can be overridden by child classes.
     #     """
 
@@ -140,9 +156,9 @@ class Device:
         """
         Called frequently, so that the device can perform any required actions,
         such as maintaining a heartbeat event.
-        
+
         Can be overridden by child classes.
-        
+
         WARNING: Ensure that the super function is still called or control
         surfaces won't get ticked correctly
         """
@@ -154,27 +170,27 @@ class Device:
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
         """
         Match an event from the device, so that the script can operate on it.
-        
+
         This shouldn't be overridden by child classes.
 
         ### Returns:
         * `MatchedEvent`: event data
         """
         return self._matcher.matchEvent(event)
-    
+
     @final
     def getControlShadows(self, group:str=None) -> list[ControlShadow]:
         """
         Returns a list of new control shadows representing all the controls
         available on the device.
-        
+
         This shouldn't be overridden by child classes.
 
         ### Returns:
         * `list[ControlSurface]`: Control shadows
         """
         return [ControlShadow(c) for c in self._matcher.getControls(group)]
-    
+
     @final
     def getGroups(self) -> set[str]:
         """
@@ -182,7 +198,7 @@ class Device:
 
         Refer to the documentation for the group property in the ControlSurface
         type.
-        
+
         This shouldn't be overridden by child classes.
 
         ### Returns:

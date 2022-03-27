@@ -70,20 +70,6 @@ from common.util.misc import formatLongTime
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 import device
 
-def outputForwarded(event: EventData):
-    event = decodeForwardedEvent(event)
-    if isEventSysex(event):
-        device.midiOutSysex(event.sysex)
-    else:
-        if TYPE_CHECKING:
-            assert isEventStandard(event)
-        device.midiOutMsg(
-            event.status + (event.data1 << 8) + (event.data2 << 16)
-        )
-    log(
-        "device.forward.in",
-        "Output event to device: " + eventToString(event)
-    )
 
 class OverallDevice:
     @catchContextResetException
@@ -93,18 +79,6 @@ class OverallDevice:
     @catchContextResetException
     def onMidiIn(self, event) -> None:
         getContext().processEvent(event)
-
-        # print(eventToString(event))
-        # if isEventForwarded(event):
-        #     if isEventForwardedHereFrom(event):
-        #         outputForwarded(event)
-        # else:
-        #     forwardEvent(event)
-        #     log(
-        #         "device.forward.out",
-        #         "Dispatched event to main script: " + eventToString(event)
-        #     )
-        # event.handled = True
 
     @catchContextResetException
     def onIdle(self) -> None:

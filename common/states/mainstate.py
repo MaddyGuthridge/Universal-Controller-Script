@@ -25,6 +25,13 @@ class MainState(DeviceState):
     """
 
     def __init__(self, device: 'Device') -> None:
+        if device.getDeviceNumber() != 1:
+            raise ValueError(
+                "Non-main devices should be configured to use the 'Universal "
+                "Event Forwarder' script, rather than the main 'Universal "
+                "Controller' script"
+            )
+        common.getContext().setDeviceNum(device.getDeviceNumber())
         self._device = device
 
     @classmethod

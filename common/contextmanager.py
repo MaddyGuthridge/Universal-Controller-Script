@@ -56,6 +56,7 @@ class DeviceContextManager:
         self._last_tick = time_ns()
         self._ticks = 0
         self._dropped_ticks = 0
+        self._device_num: Optional[int] = None
 
     @catchStateChangeException
     def initialise(self, state: IScriptState) -> None:
@@ -142,6 +143,33 @@ class DeviceContextManager:
         self.state = new_state
         new_state.initialise()
         raise StateChangeException("State changed")
+
+    def setDeviceNum(self, num: int):
+        """
+        Set the device number for the recognised device
+
+        This is used so that forwarded events can be encoded correctly
+
+        ### Args:
+        * `num` (`int`): device number
+        """
+        self._device_num = num
+
+    def getDeviceNum(self) -> int:
+        """
+        Return the device number for a recognised device
+
+        This is used so that forwarded events can be encoded correctly
+
+        ### Raises:
+        * `ValueError`: device number not set
+
+        ### Returns:
+        * `int`: device number
+        """
+        if self._device_num is None:
+            raise ValueError("Device number not set")
+        return self._device_num
 
 class ContextResetException(Exception):
     """
