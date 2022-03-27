@@ -17,7 +17,7 @@ from common import log, verbosity
 from common.types.eventdata import isEventSysex, EventData
 from common.util.events import eventToString
 
-from . import IScriptState, DeviceNotRecognised, MainState
+from . import IScriptState, DeviceNotRecognised, MainState, DeviceState
 
 LOG_CAT = "bootstrap.device.type_detect"
 
@@ -25,10 +25,17 @@ class WaitingForDevice(IScriptState):
     """
     State for when we're trying to recognise a device
     """
-    def __init__(self) -> None:
+    def __init__(self, switch_to: type[DeviceState]) -> None:
+        """
+        Create the WaitingForDevice state
+
+        ### Args:
+        * `switch_to` (`IScriptState`): state to switch to when the device is recognised
+        """
         self._init_time: Optional[float] = None
         self._sent_enquiry = False
-    
+        self._to = switch_to
+
     def nameAssociations(self) -> None:
         """
         Uses the name associations setting to get device mappings
@@ -37,7 +44,7 @@ class WaitingForDevice(IScriptState):
         * `bool`: whether we found a match
         """
         name_associations = common.getContext().settings.get("bootstrap.name_associations")
-        
+
         device_name = device.getName()
         for name, id in name_associations:
             if name == device_name:
@@ -48,7 +55,7 @@ class WaitingForDevice(IScriptState):
                             f"Recognised device via device name associations: {dev.getId()}",
                             verbosity.INFO
                         )
-                    common.getContext().setState(MainState(dev))
+                    common.getContext().setState(self._to.create(dev))
                 except ValueError:
                     log(
                         f"bootstrap.device.type_detect",
@@ -64,7 +71,7 @@ class WaitingForDevice(IScriptState):
             verbosity.INFO
         )
         return
-    
+
     def detectFallback(self) -> None:
         """
         Fallback method for device detection, using device name
@@ -77,11 +84,11 @@ class WaitingForDevice(IScriptState):
                     f"Recognised device via fallback: {dev.getId()}",
                     verbosity.INFO
                 )
-            common.getContext().setState(MainState(dev))
+            common.getContext().setState(self._to.create(dev))
         except ValueError:
             log(LOG_CAT, f"Failed to recognise device via fallback method", verbosity.WARNING)
             common.getContext().setState(DeviceNotRecognised())
-    
+
     def sendEnquiry(self) -> None:
         self._sent_enquiry = True
         # If the user specified to skip sending enquiry event
@@ -95,7 +102,7 @@ class WaitingForDevice(IScriptState):
         else:
             device.midiOutSysex(bytes([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7]))
             log(LOG_CAT, "Sent universal device enquiry", verbosity.INFO)
-    
+
     def initialise(self) -> None:
         self._init_time = time.time()
         # Check if there's an association between the device name and a device
@@ -105,7 +112,7 @@ class WaitingForDevice(IScriptState):
         log(LOG_CAT, f"Device is assigned: {bool(device.isAssigned())}", verbosity.INFO)
         if not common.getContext().settings.get("bootstrap.delay_enquiry"):
             self.sendEnquiry()
-    
+
     def tick(self) -> None:
         # If it's been too long since we set the time
         if self._sent_enquiry:
@@ -122,7 +129,7 @@ class WaitingForDevice(IScriptState):
                 self.detectFallback()
         else:
             self.sendEnquiry()
-    
+
     def processEvent(self, event: EventData) -> None:
         # Always handle all events
         event.handled = True
@@ -137,7 +144,7 @@ class WaitingForDevice(IScriptState):
                     eventToString(event)
                 )
                 event.handled = True
-                common.getContext().setState(MainState(dev))
+                common.getContext().setState(self._to.create(dev))
             except ValueError:
                 log(
                     LOG_CAT,

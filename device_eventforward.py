@@ -56,17 +56,19 @@ as required
 import fl_typing
 
 from typing import TYPE_CHECKING
+
+from common import consts
+from common.contextmanager import catchContextResetException
+from common.extensionmanager import ExtensionManager
+from common.states import WaitingForDevice, ForwardState
+
 from common import log, verbosity
+from common import getContext
 from common.consts import getVersionString, ASCII_HEADER_ART
 from common.util.events import eventToString, isEventForwarded, isEventForwardedHereFrom, forwardEvent, decodeForwardedEvent
 from common.util.misc import formatLongTime
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 import device
-
-def raiseIncompatibleDevice():
-    raise TypeError("This script should be used to forward extra device "
-                    "port events to the primary device port. This isn't a "
-                    "device port.")
 
 def outputForwarded(event: EventData):
     event = decodeForwardedEvent(event)
@@ -83,25 +85,55 @@ def outputForwarded(event: EventData):
         "Output event to device: " + eventToString(event)
     )
 
-def OnMidiIn(event: EventData):
-    if isEventForwarded(event):
-        if isEventForwardedHereFrom(event):
-            outputForwarded(event)
-    else:
-        forwardEvent(event)
-        log(
-            "device.forward.out",
-            "Dispatched event to main script: " + eventToString(event)
-        )
-    event.handled = True
+class OverallDevice:
+    @catchContextResetException
+    def onInit(self) -> None:
+        getContext().initialise(WaitingForDevice(ForwardState))
+
+    @catchContextResetException
+    def onMidiIn(self, event) -> None:
+        getContext().processEvent(event)
+
+        # print(eventToString(event))
+        # if isEventForwarded(event):
+        #     if isEventForwardedHereFrom(event):
+        #         outputForwarded(event)
+        # else:
+        #     forwardEvent(event)
+        #     log(
+        #         "device.forward.out",
+        #         "Dispatched event to main script: " + eventToString(event)
+        #     )
+        # event.handled = True
+
+    @catchContextResetException
+    def onIdle(self) -> None:
+        getContext().tick()
+
+    @catchContextResetException
+    def bootstrap(self):
+        log("bootstrap.initialize", "Load success", verbosity.INFO)
+        print(consts.ASCII_HEADER_ART)
+        print(f"Universal Event Forwarder: v{getVersionString()}")
+        print(ExtensionManager.getInfo())
+
+dev = OverallDevice()
 
 def OnInit():
-    pass
+    dev.onInit()
 
-log(
-    "device.forward.bootstrap",
-    "Loaded script successfully"
-)
+def OnMidiIn(event):
+    print(eventToString(event))
+    dev.onMidiIn(event)
 
-print(ASCII_HEADER_ART)
-print(f"Universal Event Forwarder: v{getVersionString()}")
+def OnIdle():
+    dev.onIdle()
+
+def OnRefresh(flags: int):
+    dev.onIdle()
+
+def bootstrap():
+    dev.bootstrap()
+
+if __name__ == "__main__":
+    bootstrap()

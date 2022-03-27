@@ -13,12 +13,12 @@ from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
 from common.types import EventData
 from common.util.events import eventToString
-from .scriptstate import IScriptState
+from .devstate import DeviceState
 
 if TYPE_CHECKING:
     from devices import Device
 
-class MainState(IScriptState):
+class MainState(DeviceState):
     """
     Represents the main state of the script, where the device is recognised and
     behaving as expected.
@@ -26,6 +26,10 @@ class MainState(IScriptState):
 
     def __init__(self, device: 'Device') -> None:
         self._device = device
+
+    @classmethod
+    def create(cls, device: Device) -> 'DeviceState':
+        return cls(device)
 
     def initialise(self) -> None:
         pass

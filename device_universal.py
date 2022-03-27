@@ -24,6 +24,10 @@ from common.contextmanager import unsafeResetContext as reset
 from common import consts, log, verbosity, ExtensionManager
 # Import verbosities
 from common.logger.verbosity import *
+# Import some helper functions
+from common.util.events import eventToString
+# Import first state
+from common.states import WaitingForDevice, MainState
 
 # Import console helpers
 from common.util.consolehelpers import *
@@ -31,7 +35,7 @@ from common.util.consolehelpers import *
 class OverallDevice:
     @catchContextResetException
     def onInit(self) -> None:
-        getContext().initialise()
+        getContext().initialise(WaitingForDevice(MainState))
 
     @catchContextResetException
     def onMidiIn(self, event) -> None:
@@ -55,14 +59,10 @@ def OnInit():
     device.onInit()
 
 def OnMidiIn(event):
+    print(eventToString(event))
     device.onMidiIn(event)
 
-idle_uncalled = True
 def OnIdle():
-    global idle_uncalled
-    if idle_uncalled:
-        log("device.idle", "OnIdle() called", verbosity.INFO)
-        idle_uncalled = False
     device.onIdle()
 
 def OnRefresh(flags: int):

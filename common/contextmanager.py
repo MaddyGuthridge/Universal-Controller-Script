@@ -47,7 +47,7 @@ class DeviceContextManager:
         self.settings = Settings()
         self.active = ActivityState()
         # Set the state of the script to wait for the device to be recognised
-        self.state: IScriptState = WaitingForDevice()
+        self.state: Optional[IScriptState] = None
         if self.settings.get("debug.profiling"):
             self.profiler: Optional[ProfilerManager] = ProfilerManager()
         else:
@@ -58,10 +58,13 @@ class DeviceContextManager:
         self._dropped_ticks = 0
 
     @catchStateChangeException
-    def initialise(self) -> None:
+    def initialise(self, state: IScriptState) -> None:
         """Initialise the controller associated with this context manager.
+
+        ### Args:
+        * `state` (`IScriptState`): state to initialise with
         """
-        self.state.initialise()
+        self.state = state
 
     @catchUnsafeOperation
     @catchStateChangeException
@@ -75,6 +78,8 @@ class DeviceContextManager:
         if isEventForwarded(event) and not isEventForwardedHere(event):
             event.handled = True
             return
+        if self.state is None:
+            raise MissingContextException("State not set")
         self.state.processEvent(event)
 
     @catchUnsafeOperation
@@ -83,6 +88,8 @@ class DeviceContextManager:
         """
         Called frequently to allow any required updates to the controller
         """
+        if self.state is None:
+            raise MissingContextException("State not set")
         # Update number of ticks
         self._ticks += 1
         # If the last tick was over 60 ms ago, then our script is getting laggy
