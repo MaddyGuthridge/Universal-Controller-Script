@@ -1,0 +1,4 @@
+[flake8]
+ignore = E302
+exclude = .git,__pycache__,.venv,.env,old,build,dist
+; max-complexity = 10
