@@ -8,7 +8,8 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from typing import Callable
+from typing import Any, Callable
+from typing_extensions import ParamSpec
 from abc import abstractmethod
 from common.types import EventData
 
@@ -59,8 +60,9 @@ class StateChangeException(Exception):
     Raised when the the state of the controller has been reset
     """
 
+P = ParamSpec("P")
 
-def catchStateChangeException(func: Callable) -> Callable:
+def catchStateChangeException(func: Callable[P, Any])-> Callable[P, None]:
     """A decorator for catching StateChangeExceptions so that the program
     continues normally
 

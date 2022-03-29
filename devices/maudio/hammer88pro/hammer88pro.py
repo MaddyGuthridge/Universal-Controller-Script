@@ -9,6 +9,8 @@ Authors:
 
 from typing import Optional
 
+import device
+
 from common import getContext
 from common.eventpattern import (
     BasicPattern,
@@ -219,6 +221,19 @@ class Hammer88Pro(Device):
     def matchDeviceName(name: str) -> bool:
         """Controller can't be matched to FL device name"""
         return False
+
+    def getDeviceNumber(self) -> int:
+        name = device.getName()
+
+        try:
+            return {
+                "Hammer 88 Pro": 1,
+                "Hammer 88 Pro USB MIDI": 1,
+                "MIDIIN3 (Hammer 88 Pro)": 3,
+                "Hammer 88 Pro Mackie/HUI": 3,
+            }[name]
+        except KeyError as e:
+            raise TypeError(f"Couldn't find a mapping for device name") from e
 
 
 ExtensionManager.registerDevice(Hammer88Pro)

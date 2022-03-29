@@ -73,6 +73,22 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
+    @abstractmethod
+    def getDeviceNumber(self) -> int:
+        """
+        Returns the number of a device
+
+        This is used by devices to help with forwarding events to the main
+        script
+
+        ### Returns:
+        * `int`: device number
+              * `1`: Main device
+              * other values: other device numbers.
+        """
+        raise NotImplementedError("This method must be overridden by child "
+                                  "classes")
+
     @staticmethod
     @abstractmethod
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:

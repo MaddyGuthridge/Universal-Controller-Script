@@ -13,20 +13,30 @@ from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
 from common.types import EventData
 from common.util.events import eventToString
-from .scriptstate import IScriptState
+from .devstate import DeviceState
 
 if TYPE_CHECKING:
     from devices import Device
 
-
-class MainState(IScriptState):
+class MainState(DeviceState):
     """
     Represents the main state of the script, where the device is recognised
     and behaving as expected.
     """
 
     def __init__(self, device: 'Device') -> None:
+        if device.getDeviceNumber() != 1:
+            raise ValueError(
+                "Non-main devices should be configured to use the 'Universal "
+                "Event Forwarder' script, rather than the main 'Universal "
+                "Controller' script"
+            )
+        common.getContext().registerDevice(device)
         self._device = device
+
+    @classmethod
+    def create(cls, device: 'Device') -> 'DeviceState':
+        return cls(device)
 
     def initialise(self) -> None:
         pass

@@ -17,7 +17,7 @@ from common import log, verbosity
 from common.types.eventdata import isEventSysex, EventData
 from common.util.events import eventToString
 
-from . import IScriptState, DeviceNotRecognised, MainState
+from . import IScriptState, DeviceNotRecognised, MainState, DeviceState
 
 LOG_CAT = "bootstrap.device.type_detect"
 
@@ -26,10 +26,16 @@ class WaitingForDevice(IScriptState):
     """
     State for when we're trying to recognise a device
     """
+    def __init__(self, switch_to: type[DeviceState]) -> None:
+        """
+        Create the WaitingForDevice state
 
-    def __init__(self) -> None:
+        ### Args:
+        * `switch_to` (`IScriptState`): state to switch to when the device is recognised
+        """
         self._init_time: Optional[float] = None
         self._sent_enquiry = False
+        self._to = switch_to
 
     def nameAssociations(self) -> None:
         """
@@ -53,7 +59,7 @@ class WaitingForDevice(IScriptState):
                         f"{dev.getId()}",
                         verbosity.INFO
                     )
-                    common.getContext().setState(MainState(dev))
+                    common.getContext().setState(self._to.create(dev))
                 except ValueError:
                     log(
                         "bootstrap.device.type_detect",
@@ -82,7 +88,7 @@ class WaitingForDevice(IScriptState):
                 f"Recognised device via fallback: {dev.getId()}",
                 verbosity.INFO
             )
-            common.getContext().setState(MainState(dev))
+            common.getContext().setState(self._to.create(dev))
         except ValueError:
             log(
                 LOG_CAT,
@@ -153,7 +159,7 @@ class WaitingForDevice(IScriptState):
                     eventToString(event)
                 )
                 event.handled = True
-                common.getContext().setState(MainState(dev))
+                common.getContext().setState(self._to.create(dev))
             except ValueError:
                 log(
                     LOG_CAT,

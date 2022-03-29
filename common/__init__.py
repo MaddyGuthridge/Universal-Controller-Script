@@ -16,6 +16,7 @@ __all__ = [
     'profilerDecoration',
     'getContext',
     'resetContext',
+    'unsafeResetContext',
     'catchContextResetException',
     'ExtensionManager'
 ]
@@ -28,6 +29,7 @@ from .profiler import ProfilerContext, profilerDecoration
 from .contextmanager import (
     getContext,
     resetContext,
+    unsafeResetContext,
     catchContextResetException
 )
 

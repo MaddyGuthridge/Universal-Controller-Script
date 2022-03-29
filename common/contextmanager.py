@@ -13,10 +13,11 @@ from .states import WaitingForDevice
 __all__ = [
     'catchContextResetException',
     'getContext',
-    'resetContext'
+    'resetContext',
+    'unsafeResetContext'
 ]
 
-from typing import NoReturn, Optional, Callable
+from typing import NoReturn, Optional, Callable, TYPE_CHECKING
 from time import time_ns
 
 from .settings import Settings
@@ -34,6 +35,9 @@ from .states import (
     catchStateChangeException,
 )
 
+if TYPE_CHECKING:
+    from devices import Device
+
 
 class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
@@ -50,7 +54,7 @@ class DeviceContextManager:
         self.settings = Settings()
         self.active = ActivityState()
         # Set the state of the script to wait for the device to be recognised
-        self.state: IScriptState = WaitingForDevice()
+        self.state: Optional[IScriptState] = None
         if self.settings.get("debug.profiling"):
             self.profiler: Optional[ProfilerManager] = ProfilerManager()
         else:
@@ -59,12 +63,16 @@ class DeviceContextManager:
         self._last_tick = time_ns()
         self._ticks = 0
         self._dropped_ticks = 0
+        self._device: Optional['Device'] = None
 
     @catchStateChangeException
-    def initialise(self) -> None:
+    def initialise(self, state: IScriptState) -> None:
         """Initialise the controller associated with this context manager.
+
+        ### Args:
+        * `state` (`IScriptState`): state to initialise with
         """
-        self.state.initialise()
+        self.state = state
 
     @catchUnsafeOperation
     @catchStateChangeException
@@ -78,6 +86,8 @@ class DeviceContextManager:
         if isEventForwarded(event) and not isEventForwardedHere(event):
             event.handled = True
             return
+        if self.state is None:
+            raise MissingContextException("State not set")
         self.state.processEvent(event)
 
     @catchUnsafeOperation
@@ -86,6 +96,8 @@ class DeviceContextManager:
         """
         Called frequently to allow any required updates to the controller
         """
+        if self.state is None:
+            raise MissingContextException("State not set")
         # Update number of ticks
         self._ticks += 1
         # If the last tick was over 60 ms ago, then our script is getting laggy
@@ -138,6 +150,32 @@ class DeviceContextManager:
         self.state = new_state
         new_state.initialise()
         raise StateChangeException("State changed")
+
+
+    def registerDevice(self, dev: 'Device'):
+        """
+        Register a recognised device
+
+        ### Args:
+        * `dev` (`Device`): device number
+        """
+        self._device = dev
+
+    def getDevice(self) -> 'Device':
+        """
+        Return a reference to the recognised device
+
+        This is used so that forwarded events can be encoded correctly
+
+        ### Raises:
+        * `ValueError`: device not set
+
+        ### Returns:
+        * `Device`: device
+        """
+        if self._device is None:
+            raise ValueError("Device number not set")
+        return self._device
 
 
 class ContextResetException(Exception):
