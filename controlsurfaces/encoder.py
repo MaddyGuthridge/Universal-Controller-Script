@@ -7,7 +7,6 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from .knob import Knob
 from common.eventpattern import IEventPattern
 from controlsurfaces.valuestrategies import IValueStrategy
 from . import ControlSurface
@@ -25,6 +24,7 @@ class Encoder(ControlSurface):
     """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
+        from .knob import Knob
         return (Knob,)
 
     def __init__(

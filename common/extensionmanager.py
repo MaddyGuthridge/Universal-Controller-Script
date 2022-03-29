@@ -544,11 +544,9 @@ class ExtensionManager:
         ### Returns:
         * `str`: extension info
         """
-        import plugs
-        from devices.device import Device
         if isinstance(ext, str):
             return cls._inspectPluginId(ext)
-        elif issubclass(ext, Device):
+        elif issubclass(ext, devices.Device):
             return cls._inspectDevice(ext)
         elif issubclass(ext, plugs.StandardPlugin):
             return cls._inspectStandardPlugin(ext)
@@ -559,5 +557,6 @@ class ExtensionManager:
         else:
             return f"{ext} isn't a Plugin class or plugin ID"
 
-# Import devices
-# Import plugins
+
+# Import devices and plugins
+import devices, plugs  # noqa: E401, E402
