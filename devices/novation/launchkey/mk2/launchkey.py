@@ -36,6 +36,7 @@ from .drumpad import LaunchkeyDrumpad
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
 
+
 class LaunchkeyMk2(Device):
     """
     Novation Launchkey Mk2 series controllers
@@ -103,10 +104,12 @@ class LaunchkeyMk2(Device):
     def getDrumPadSize() -> tuple[int, int]:
         return 2, 8
 
+
 class LaunchkeyMk2_49_61(LaunchkeyMk2):
     """
     Standard controls with added faders
     """
+
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
 
@@ -137,7 +140,6 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
                 )
             )
 
-
         super().__init__(matcher)
 
     @classmethod
@@ -152,15 +154,15 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
     def getUniversalEnquiryResponsePattern():
         return BasicPattern(
             [
-                0xF0, # Sysex start
-                0x7E, # Device response
-                ..., # OS Device ID
-                0x06, # Separator
-                0x02, # Separator
-                0x00, # Manufacturer
-                0x20, # Manufacturer
-                0x29, # Manufacturer
-                (0x7C, 0x7D) # Family code (documented as 0x7A???)
+                0xF0,  # Sysex start
+                0x7E,  # Device response
+                ...,  # OS Device ID
+                0x06,  # Separator
+                0x02,  # Separator
+                0x00,  # Manufacturer
+                0x20,  # Manufacturer
+                0x29,  # Manufacturer
+                (0x7C, 0x7D)  # Family code (documented as 0x7A???)
             ]
         )
 
@@ -169,10 +171,12 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         """Controller can't be matched to FL device name"""
         return False
 
+
 class LaunchkeyMk2_25(LaunchkeyMk2):
     """
     Standard controls with no faders
     """
+
     def __init__(self) -> None:
         super().__init__(BasicControlMatcher())
 
@@ -194,6 +198,7 @@ class LaunchkeyMk2_25(LaunchkeyMk2):
     def matchDeviceName(name: str) -> bool:
         """Controller can't be matched to FL device name"""
         return False
+
 
 # Register devices
 ExtensionManager.registerDevice(LaunchkeyMk2_49_61)

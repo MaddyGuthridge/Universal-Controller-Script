@@ -18,6 +18,7 @@ from controlsurfaces import ControlEvent
 from devices import IControlMatcher
 from abc import abstractmethod
 
+
 class Device:
     """
     Base class for device types.
@@ -25,6 +26,7 @@ class Device:
     All device objects should inherit from this definition and implement its
     functions.
     """
+
     def __init__(self, control_matcher: IControlMatcher) -> None:
         """
         Create a device object.
@@ -80,8 +82,8 @@ class Device:
         matched using this pattern.
 
         ### Returns:
-        * `IEventPattern`: pattern to match universal device enquiry, or None if
-          can't be matched.
+        * `IEventPattern`: pattern to match universal device enquiry, or None
+          if can't be matched.
         """
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
@@ -129,8 +131,8 @@ class Device:
 
     # def deinitialise(self) -> None:
     #     """
-    #     Called when FL Studio is going to start blocking communication, such as
-    #     when a render is going to begin, or when exiting.
+    #     Called when FL Studio is going to start blocking communication, such
+    #     as when a render is going to begin, or when exiting.
     #
     #     Can be overridden by child classes.
     #     """
@@ -147,7 +149,7 @@ class Device:
         """
         for c in self._matcher.getControls():
             # with ProfilerContext("Tick control"):
-                c.tick()
+            c.tick()
 
     @final
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
@@ -162,7 +164,7 @@ class Device:
         return self._matcher.matchEvent(event)
 
     @final
-    def getControlShadows(self, group:str=None) -> list[ControlShadow]:
+    def getControlShadows(self, group: str = None) -> list[ControlShadow]:
         """
         Returns a list of new control shadows representing all the controls
         available on the device.

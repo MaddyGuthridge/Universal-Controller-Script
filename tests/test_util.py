@@ -7,8 +7,12 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au]
 """
 
-from common.util.dicttools import recursiveMergeDictionaries, expandDictShorthand
+from common.util.dicttools import (
+    recursiveMergeDictionaries,
+    expandDictShorthand
+)
 from common.util.snap import snap
+
 
 def test_expand_dict_shorthand():
     t = {
@@ -28,6 +32,7 @@ def test_expand_dict_shorthand():
         }
     }
     assert expandDictShorthand(t) == exp
+
 
 def test_expand_dict_shorthand_complex():
     t = {
@@ -52,6 +57,7 @@ def test_expand_dict_shorthand_complex():
     }
     assert expandDictShorthand(t) == exp
 
+
 def test_recursive_merge_simple():
     ref = {
         "a": {
@@ -74,6 +80,7 @@ def test_recursive_merge_simple():
         "d": 4
     }
     assert recursiveMergeDictionaries(ref, over) == exp
+
 
 def test_snap():
     # TODO: Use contexts to set settings

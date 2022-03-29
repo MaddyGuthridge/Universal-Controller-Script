@@ -3,18 +3,18 @@ plugs > eventfilters > index
 
 Contains filters for filtering by plugin and window indexes
 """
-from typing import Any
-from common.util.apifixes import UnsafePluginIndex
-from controlsurfaces import ControlShadowEvent
 
-def toPluginIndex(func, method:bool=True):
+from common.util.apifixes import UnsafePluginIndex
+
+
+def toPluginIndex(func, method: bool = True):
     """
     Filter out events when the index is not a plugin
 
     ### Args:
     * `func` (`EventCallback`): Function to decorate
-    * `method` (`bool`, optional): Whether to include a self parameter. Defaults
-      to `True`.
+    * `method` (`bool`, optional): Whether to include a self parameter.
+      Defaults to `True`.
 
     ### Returns:
     * `EventCallback`: decorated function
@@ -32,14 +32,15 @@ def toPluginIndex(func, method:bool=True):
             return func(index)
         return wrapper
 
-def toGeneratorIndex(func, method:bool=True):
+
+def toGeneratorIndex(func, method: bool = True):
     """
     Filter out events when the index is not a generator plugin
 
     ### Args:
     * `func` (`EventCallback`): Function to decorate
-    * `method` (`bool`, optional): Whether to include a self parameter. Defaults
-      to `True`.
+    * `method` (`bool`, optional): Whether to include a self parameter.
+      Defaults to `True`.
 
     ### Returns:
     * `EventCallback`: decorated function
@@ -57,14 +58,15 @@ def toGeneratorIndex(func, method:bool=True):
             return func(index)
         return wrapper
 
-def toEffectIndex(func, method:bool=True):
+
+def toEffectIndex(func, method: bool = True):
     """
     Filter out events when the index is not an effect plugin
 
     ### Args:
     * `func` (`EventCallback`): Function to decorate
-    * `method` (`bool`, optional): Whether to include a self parameter. Defaults
-      to `True`.
+    * `method` (`bool`, optional): Whether to include a self parameter.
+      Defaults to `True`.
 
     ### Returns:
     * `EventCallback`: decorated function
@@ -82,14 +84,15 @@ def toEffectIndex(func, method:bool=True):
             return func(index)
         return wrapper
 
-def toWindowIndex(func, method:bool=True):
+
+def toWindowIndex(func, method: bool = True):
     """
     Filter out events when the index is not a window
 
     ### Args:
     * `func` (`EventCallback`): Function to decorate
-    * `method` (`bool`, optional): Whether to include a self parameter. Defaults
-      to `True`.
+    * `method` (`bool`, optional): Whether to include a self parameter.
+      Defaults to `True`.
 
     ### Returns:
     * `EventCallback`: decorated function
@@ -107,14 +110,15 @@ def toWindowIndex(func, method:bool=True):
             return func(index)
         return wrapper
 
-def toSafeIndex(func, method:bool=True):
+
+def toSafeIndex(func, method: bool = True):
     """
     Filter out events when the index is None
 
     ### Args:
     * `func` (`EventCallback`): Function to decorate
-    * `method` (`bool`, optional): Whether to include a self parameter. Defaults
-      to `True`.
+    * `method` (`bool`, optional): Whether to include a self parameter.
+      Defaults to `True`.
 
     ### Returns:
     * `EventCallback`: decorated function

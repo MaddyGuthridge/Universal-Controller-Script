@@ -16,7 +16,10 @@ from common.eventpattern import (
     NullPattern
 )
 
-from controlsurfaces.valuestrategies import IValueStrategy, ForwardedUnionStrategy
+from controlsurfaces.valuestrategies import (
+    IValueStrategy,
+    ForwardedUnionStrategy
+)
 from controlsurfaces import consts
 from controlsurfaces import (
     ControlSurface,
@@ -28,10 +31,12 @@ from controlsurfaces import (
 
 from devices import IControlMatcher
 
+
 class JogValueStrategy(IValueStrategy):
     """
     Value strategy for getting data out of the Hammer 88 Pro jog wheel
     """
+
     def getValueFromEvent(self, event: EventData):
         # Prev
         if event.data2 == 63:
@@ -55,11 +60,14 @@ class JogValueStrategy(IValueStrategy):
     def getFloatFromValue(self, value) -> float:
         return value
 
+
 class JogMatcher(IControlMatcher):
     """
-    The Hammer 88 Pro's jog control matcher, which allows for jog wheel controls
-    to be mapped differently depending on whether the wheel is pressed or not.
+    The Hammer 88 Pro's jog control matcher, which allows for jog wheel
+    controls to be mapped differently depending on whether the wheel is pressed
+    or not.
     """
+
     def __init__(self) -> None:
         self._null = NullEvent(NullPattern())
 
@@ -107,7 +115,8 @@ class JogMatcher(IControlMatcher):
                 return ControlEvent(self._null, 0.0, -1, False)
             else:
                 if self._used_since_press:
-                    ret: Optional[ControlEvent] = ControlEvent(self._null, 0.0, -1, False)
+                    ret: Optional[ControlEvent] = ControlEvent(
+                        self._null, 0.0, -1, False)
                 else:
                     ret = self._jog_standard.match(event)
                 self._pressed = False

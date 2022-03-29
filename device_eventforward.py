@@ -20,8 +20,8 @@ as required
 
 * 0xF0 sysex start
 
-* 0x7D non-commercial system exclusive ID (should prevent overlap with any other
-  hardware which would be using a registered system exclusive ID)
+* 0x7D non-commercial system exclusive ID (should prevent overlap with any
+  other hardware which would be using a registered system exclusive ID)
 
 * [device name] a null-terminated string containing the device name (sans the
   MIDIIN# parts), to allow for the events to be filtered if the universal
@@ -51,6 +51,7 @@ as required
 * Current algorithm assumes less than 10 extra MIDIIN# devices
 * Doesn't support devices with parentheses in device name
 """
+# flake8: noqa
 
 # Add our additional includes to the Python environment
 import fl_typing
@@ -58,15 +59,22 @@ import fl_typing
 from typing import TYPE_CHECKING
 from common import log, verbosity
 from common.consts import getVersionString, ASCII_HEADER_ART
-from common.util.events import eventToString, isEventForwarded, isEventForwardedHereFrom, forwardEvent, decodeForwardedEvent
-from common.util.misc import formatLongTime
+from common.util.events import (
+    eventToString,
+    isEventForwarded,
+    isEventForwardedHereFrom,
+    forwardEvent,
+    decodeForwardedEvent
+)
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 import device
+
 
 def raiseIncompatibleDevice():
     raise TypeError("This script should be used to forward extra device "
                     "port events to the primary device port. This isn't a "
                     "device port.")
+
 
 def outputForwarded(event: EventData):
     event = decodeForwardedEvent(event)
@@ -83,6 +91,7 @@ def outputForwarded(event: EventData):
         "Output event to device: " + eventToString(event)
     )
 
+
 def OnMidiIn(event: EventData):
     if isEventForwarded(event):
         if isEventForwardedHereFrom(event):
@@ -95,8 +104,10 @@ def OnMidiIn(event: EventData):
         )
     event.handled = True
 
+
 def OnInit():
     pass
+
 
 log(
     "device.forward.bootstrap",

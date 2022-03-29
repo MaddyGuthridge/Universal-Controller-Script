@@ -2,13 +2,19 @@
 from typing import Any
 import ui
 from common.extensionmanager import ExtensionManager
-from common.util.apifixes import UnsafeIndex, UnsafePluginIndex
+from common.util.apifixes import UnsafeIndex
 from controlsurfaces import consts
 from controlsurfaces import ControlShadowEvent
-from controlsurfaces import MoveJogWheel, ShiftedJogWheel, StandardJogWheel, JogWheel
+from controlsurfaces import (
+    MoveJogWheel,
+    ShiftedJogWheel,
+    StandardJogWheel,
+    JogWheel
+)
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 from plugs.mappingstrategies import PedalStrategy, WheelStrategy, NoteStrategy
+
 
 class Fallback(SpecialPlugin):
     """
@@ -20,6 +26,7 @@ class Fallback(SpecialPlugin):
     * Mod and pitch wheels
     * Notes
     """
+
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setTransparent(True)
         shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
@@ -40,7 +47,12 @@ class Fallback(SpecialPlugin):
     def tick(self):
         pass
 
-    def jogWheel(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def jogWheel(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         if control.value == consts.ENCODER_NEXT:
             increment = 1
         elif control.value == consts.ENCODER_PREV:
@@ -58,5 +70,6 @@ class Fallback(SpecialPlugin):
         elif isinstance(control.getControl(), MoveJogWheel):
             ui.moveJog(increment)
         return True
+
 
 ExtensionManager.registerSpecialPlugin(Fallback)

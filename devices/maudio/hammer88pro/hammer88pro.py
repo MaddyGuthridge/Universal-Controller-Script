@@ -54,6 +54,7 @@ from controlsurfaces.valuestrategies import (
 from .hammerpitch import HammerPitchWheel
 from .jogmatcher import JogMatcher
 
+
 class Hammer88Pro(Device):
     """
     Device definition for Hammer 88 Pro
@@ -61,6 +62,7 @@ class Hammer88Pro(Device):
     Note: this requires the presets for both DAW and User modes to be loaded
     on the device.
     """
+
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
         # Null events
@@ -199,16 +201,16 @@ class Hammer88Pro(Device):
     def getUniversalEnquiryResponsePattern():
         return BasicPattern(
             [
-                0xF0, # Sysex start
-                0x7E, # Device response
-                ..., # OS Device ID
-                0x06, # Separator
-                0x02, # Separator
-                0x00, # Manufacturer
-                0x01, # Manufacturer
-                0x05, # Manufacturer
-                0x00, # Family code
-                0x3C, # Family code
+                0xF0,  # Sysex start
+                0x7E,  # Device response
+                ...,  # OS Device ID
+                0x06,  # Separator
+                0x02,  # Separator
+                0x00,  # Manufacturer
+                0x01,  # Manufacturer
+                0x05,  # Manufacturer
+                0x00,  # Family code
+                0x3C,  # Family code
                 # Extra details omitted
             ]
         )
@@ -217,5 +219,6 @@ class Hammer88Pro(Device):
     def matchDeviceName(name: str) -> bool:
         """Controller can't be matched to FL device name"""
         return False
+
 
 ExtensionManager.registerDevice(Hammer88Pro)

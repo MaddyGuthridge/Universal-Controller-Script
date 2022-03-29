@@ -8,6 +8,7 @@ from typing import TypeVar, Generator
 
 T = TypeVar("T")
 
+
 def floatApproxEq(expected: float, actual: float) -> bool:
     """
     Return whether there is less than a 5% error between the expected
@@ -18,7 +19,11 @@ def floatApproxEq(expected: float, actual: float) -> bool:
         return abs(actual) < 0.001
     return abs(expected - actual) / abs(expected) < 0.05
 
-def combinations(p: list[T], number: int) -> Generator[tuple[T, ...], None, None]:
+
+def combinations(
+    p: list[T],
+    number: int
+) -> Generator[tuple[T, ...], None, None]:
     """
     Generates a set of combinations
 

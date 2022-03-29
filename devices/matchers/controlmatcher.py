@@ -12,6 +12,7 @@ from abc import abstractmethod
 from common.types import EventData
 from controlsurfaces import ControlEvent, ControlSurface
 
+
 class IControlMatcher:
     """
     The interface for matching controls from MIDI events
@@ -33,7 +34,7 @@ class IControlMatcher:
         """
         raise NotImplementedError("This function should be implemented by "
                                   "child classes")
-    
+
     @abstractmethod
     def getGroups(self) -> set[str]:
         """
@@ -48,9 +49,9 @@ class IControlMatcher:
         """
         raise NotImplementedError("This function should be implemented by "
                                   "child classes")
-    
+
     @abstractmethod
-    def getControls(self, group:str=None) -> list[ControlSurface]:
+    def getControls(self, group: str = None) -> list[ControlSurface]:
         """
         Returns a list of controls contained by the control matcher.
 

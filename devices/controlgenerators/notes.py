@@ -15,10 +15,12 @@ from controlsurfaces import ControlSurface, Note, NoteAfterTouch
 from controlsurfaces.controlmapping import ControlEvent
 from devices.matchers import IControlMatcher
 
+
 class NoteMatcher(IControlMatcher):
     """
     Defines a matcher for note events
     """
+
     def __init__(self) -> None:
         self._notes: list[ControlSurface] = [Note(i) for i in range(128)]
         # A pattern to match any and all notes (this improves efficiency by
@@ -43,12 +45,16 @@ class NoteMatcher(IControlMatcher):
     def getControls(self, group: str = None) -> list[ControlSurface]:
         return self._notes
 
+
 class NoteAfterTouchMatcher(IControlMatcher):
     """
     Defines a matcher for note after-touch events
     """
+
     def __init__(self) -> None:
-        self._touches: list[ControlSurface] = [NoteAfterTouch(i) for i in range(128)]
+        self._touches: list[ControlSurface] = [
+            NoteAfterTouch(i) for i in range(128)
+        ]
         self._touch_pattern = BasicPattern(
             fromNibbles((0xA), ...),
             ...,

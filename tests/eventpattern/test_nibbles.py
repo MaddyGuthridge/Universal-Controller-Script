@@ -8,13 +8,16 @@ import pytest
 
 from common.eventpattern import fromNibbles
 
+
 def test_basic():
     assert fromNibbles(1, 2) == (0x12, )
+
 
 def test_ellipsis():
     n = fromNibbles(5, ...)
     for i in range(16):
         assert 0x50 + i in n
+
 
 @pytest.mark.parametrize(
     'r',

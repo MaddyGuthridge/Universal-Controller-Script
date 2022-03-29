@@ -12,6 +12,7 @@ full copy.
 
 Refer to module `common.consts` for a list of authors for the project
 """
+# flake8: noqa
 
 # Add our additional includes to the Python environment
 import fl_typing
@@ -27,6 +28,7 @@ from common.logger.verbosity import *
 
 # Import console helpers
 from common.util.consolehelpers import *
+
 
 class OverallDevice:
     @catchContextResetException
@@ -49,15 +51,21 @@ class OverallDevice:
         print(ExtensionManager.getInfo())
         print("Type `help` for help using the script\n")
 
+
 device = OverallDevice()
+
 
 def OnInit():
     device.onInit()
 
+
 def OnMidiIn(event):
     device.onMidiIn(event)
 
+
 idle_uncalled = True
+
+
 def OnIdle():
     global idle_uncalled
     if idle_uncalled:
@@ -65,11 +73,14 @@ def OnIdle():
         idle_uncalled = False
     device.onIdle()
 
+
 def OnRefresh(flags: int):
     device.onIdle()
 
+
 def bootstrap():
     device.bootstrap()
+
 
 if __name__ == "__main__":
     bootstrap()

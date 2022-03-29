@@ -16,12 +16,16 @@ from controlsurfaces import DrumPad
 from .colors import COLORS
 
 DRUM_PADS = [
-    [0x28, 0x29, 0x2A, 0x2B, 0x30, 0x31, 0x32, 0x33], # Also 0x68
-    [0x24, 0x25, 0x26, 0x27, 0x2C, 0x2D, 0x2E, 0x2F]  # Also 0x69
+    [0x28, 0x29, 0x2A, 0x2B, 0x30, 0x31, 0x32, 0x33],  # Also 0x68
+    [0x24, 0x25, 0x26, 0x27, 0x2C, 0x2D, 0x2E, 0x2F],  # Also 0x69
 ]
 
-class LaunchkeyDrumpad(DrumPad):
 
+class LaunchkeyDrumpad(DrumPad):
+    """
+    Custom drum pad implementation used by the launchkey Mk2 series controller
+    to provide RGB functionality
+    """
     def __init__(self, coordinate: tuple[int, int]) -> None:
         self._note_num = DRUM_PADS[coordinate[0]][coordinate[1]]
         # Variables to keep the drumpad lights working

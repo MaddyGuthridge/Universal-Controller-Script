@@ -8,5 +8,11 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+__all__ = [
+    'NoteMatcher',
+    'NoteAfterTouchMatcher',
+    'PedalMatcher',
+]
+
 from .notes import NoteMatcher, NoteAfterTouchMatcher
 from .pedals import PedalMatcher

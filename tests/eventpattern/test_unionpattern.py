@@ -9,11 +9,13 @@ import pytest
 from common.eventpattern import BasicPattern, UnionPattern
 from common.types import EventData
 
+
 def test_create_not_enough():
     with pytest.raises(ValueError):
         UnionPattern()
     with pytest.raises(ValueError):
         UnionPattern(BasicPattern(1, 2, 3))
+
 
 def test_union():
     p = UnionPattern(
@@ -30,6 +32,7 @@ def test_union():
     # And make sure it doesn't match anything else
     assert not p.matchEvent(EventData([1, 2, 3]))
     assert not p.matchEvent(EventData(2, 3, 4))
+
 
 def test_union_sysex():
     p = UnionPattern(
