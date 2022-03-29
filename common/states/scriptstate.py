@@ -1,8 +1,8 @@
 """
 common > scriptstate
 
-Contains the IScriptState interface, which contains a state used by the script's
-context manager.
+Contains the IScriptState interface, which contains a state used by the
+script's context manager.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -22,13 +22,15 @@ class IScriptState:
     * Main state (processing events and stuff)
     * Error state (something went horribly wrong)
     """
-    
+
     @abstractmethod
     def initialise(self) -> None:
         """
         Initialise this context
         """
-        raise NotImplementedError("This method must be overridden by child classes")
+        raise NotImplementedError(
+            "This method must be overridden by child classes"
+        )
 
     @abstractmethod
     def processEvent(self, event: EventData) -> None:
@@ -37,21 +39,25 @@ class IScriptState:
         ### Args:
         * `event` (`event`): event to process
         """
-        raise NotImplementedError("This method must be overridden by child classes")
-    
+        raise NotImplementedError(
+            "This method must be overridden by child classes"
+        )
+
     @abstractmethod
     def tick(self) -> None:
         """
         Called frequently to allow any required updates to the controller
         """
-        raise NotImplementedError("This method must be overridden by child classes")
+        raise NotImplementedError(
+            "This method must be overridden by child classes"
+        )
 
 class StateChangeException(Exception):
     """
     Raised when the the state of the controller has been reset
     """
 
-def catchStateChangeException(func: Callable)-> Callable:
+def catchStateChangeException(func: Callable) -> Callable:
     """A decorator for catching StateChangeExceptions so that the program
     continues normally
 

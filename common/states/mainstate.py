@@ -6,7 +6,7 @@ behaving as expected.
 """
 
 import plugins
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import common
 from common import ProfilerContext, profilerDecoration
@@ -20,8 +20,8 @@ if TYPE_CHECKING:
 
 class MainState(IScriptState):
     """
-    Represents the main state of the script, where the device is recognised and
-    behaving as expected.
+    Represents the main state of the script, where the device is recognised
+    and behaving as expected.
     """
 
     def __init__(self, device: 'Device') -> None:
@@ -44,7 +44,7 @@ class MainState(IScriptState):
                     p.apply(thorough=True)
 
         # Tick active standard plugin or window
-        with ProfilerContext(f"getActive"):
+        with ProfilerContext("getActive"):
             plug_idx = common.getContext().active.getActive()
             changed = common.getContext().active.hasChanged()
         if plug_idx is not None:
@@ -54,14 +54,18 @@ class MainState(IScriptState):
                 except TypeError:
                     # Plugin not valid
                     plug_id = ""
-                plug = common.ExtensionManager.getPluginById(plug_id, self._device)
+                plug = common.ExtensionManager.getPluginById(
+                    plug_id, self._device
+                )
                 if plug is not None:
                     with ProfilerContext(f"Tick {type(plug)}"):
                         plug.tick(plug_idx)
                     with ProfilerContext(f"Apply {type(plug)}"):
                         plug.apply(thorough=changed)
             else:
-                window = common.ExtensionManager.getWindowById(plug_idx, self._device)
+                window = common.ExtensionManager.getWindowById(
+                    plug_idx, self._device
+                )
                 if window is not None:
                     with ProfilerContext(f"Tick {type(window)}"):
                         window.tick()
@@ -78,10 +82,13 @@ class MainState(IScriptState):
                 "device.event.in",
                 f"Failed to recognise event: {eventToString(event)}",
                 verbosity.CRITICAL,
-                f"This usually means that the device hasn't been configured "
-                f"correctly. Please contact the device's maintainer."
+                "This usually means that the device hasn't been configured "
+                "correctly. Please contact the device's maintainer."
             )
-            # raise ValueError(f"Couldn't identify event: {eventToString(event)}")
+            # raise ValueError(
+            #     f"Couldn't identify event: "
+            #     f"{eventToString(event)}"
+            # )
             return
 
         else:
@@ -100,14 +107,18 @@ class MainState(IScriptState):
                 except TypeError:
                     # Plugin not valid
                     plug_id = ""
-                plug = common.ExtensionManager.getPluginById(plug_id, self._device)
+                plug = common.ExtensionManager.getPluginById(
+                    plug_id, self._device
+                )
                 if plug is not None:
                     with ProfilerContext(f"Process {type(plug)}"):
                         if plug.processEvent(mapping, plug_idx):
                             event.handled = True
                             return
             else:
-                window = common.ExtensionManager.getWindowById(plug_idx, self._device)
+                window = common.ExtensionManager.getWindowById(
+                    plug_idx, self._device
+                )
                 if window is not None:
                     with ProfilerContext(f"Process {type(window)}"):
                         if window.processEvent(mapping, plug_idx):
