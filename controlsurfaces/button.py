@@ -8,6 +8,7 @@ Authors:
 """
 from .controlsurface import ControlSurface
 
+
 class Button(ControlSurface):
     """
     Defines a button control surface

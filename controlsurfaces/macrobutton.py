@@ -6,10 +6,24 @@ Defines control surfaces used for macros, such as save, undo, etc
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
+
+__all__ = [
+    'MacroButton',
+    'SaveButton',
+    'UndoRedoButton',
+    'UndoButton',
+    'RedoButton',
+    'QuantizeButton',
+    'SwitchActiveButton',
+    'SwitchActivePluginButton',
+    'SwitchActiveWindowButton',
+    'SwitchActiveToggleButton',
+]
+
 from common.eventpattern.ieventpattern import IEventPattern
 from controlsurfaces.valuestrategies.ivaluestrategy import IValueStrategy
-from .controlsurface import ControlSurface
 from controlsurfaces import Button
+
 
 class MacroButton(Button):
     """
@@ -17,10 +31,13 @@ class MacroButton(Button):
     in FL Studio.
     """
 
+
 class SaveButton(Button):
     """
-    Defines a save button, which will be mapped to the save command in FL Studio
+    Defines a save button, which will be mapped to the save command in FL
+    Studio
     """
+
 
 class UndoRedoButton(Button):
     """
@@ -31,12 +48,14 @@ class UndoRedoButton(Button):
     trigger a redo (much like the default Ctrl+Z behaviour in FL Studio).
     """
 
+
 class UndoButton(Button):
     """
     Defines an undo button, which will be mapped to FL Studio's undo command.
 
     This moves one step back in the undo history.
     """
+
 
 class RedoButton(Button):
     """
@@ -45,11 +64,13 @@ class RedoButton(Button):
     This moves one step forward in the undo history.
     """
 
+
 class QuantizeButton(Button):
     """
     Defines a quantize button, which should be mapped to FL Studio's snapping
     control.
     """
+
 
 class SwitchActiveButton(Button):
     """
@@ -67,8 +88,14 @@ class SwitchActiveButton(Button):
     * `SwitchActiveToggleButton` for a button to toggle between windows and
       plugins
     """
-    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy) -> None:
+
+    def __init__(
+        self,
+        event_pattern: IEventPattern,
+        value_strategy: IValueStrategy
+    ) -> None:
         super().__init__(event_pattern, value_strategy, "active")
+
 
 class SwitchActivePluginButton(SwitchActiveButton):
     """
@@ -76,11 +103,13 @@ class SwitchActivePluginButton(SwitchActiveButton):
     processed by the script
     """
 
+
 class SwitchActiveWindowButton(SwitchActiveButton):
     """
     A switch active button that make FL Studio windows be actively
     processed by the script
     """
+
 
 class SwitchActiveToggleButton(SwitchActiveButton):
     """

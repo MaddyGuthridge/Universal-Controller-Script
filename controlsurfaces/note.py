@@ -14,7 +14,7 @@ class Note(ControlSurface):
     """
     Represents a note event, usually linked to a key press on a piano
     """
-    def __init__(self, note_num: int, channel:int = 0) -> None:
+    def __init__(self, note_num: int, channel: int = 0) -> None:
         super().__init__(
             NotePattern(note_num),
             NoteStrategy(),

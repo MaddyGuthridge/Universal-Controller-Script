@@ -12,11 +12,13 @@ from common.types import EventData
 from common.util.events import decodeForwardedEvent, isEventForwarded
 from . import IValueStrategy
 
+
 class ForwardedStrategy(IValueStrategy):
     """
     Value strategy used to get data out of
     forwarded events.
     """
+
     def __init__(self, strat: IValueStrategy) -> None:
         self._strat = strat
 
@@ -34,11 +36,13 @@ class ForwardedStrategy(IValueStrategy):
     def getFloatFromValue(self, value) -> float:
         return self._strat.getFloatFromValue(value)
 
+
 class ForwardedUnionStrategy(IValueStrategy):
     """
-    Value strategy for getting values from events that could be either forwarded
-    or not
+    Value strategy for getting values from events that could be either
+    forwarded or not
     """
+
     def __init__(self, strat: IValueStrategy) -> None:
         self._strat = strat
         self._strat_forward = ForwardedStrategy(strat)

@@ -21,6 +21,7 @@ from .valuestrategies import IValueStrategy
 
 from .controlmapping import ControlEvent, ControlMapping
 
+
 class ControlSurface:
     """
     Defines an abstract base class for a control surface.
@@ -53,7 +54,8 @@ class ControlSurface:
         You must override this method in order to provide double press
         functionality.
 
-        This is used to create the doublePress property for ControlEvent objects
+        This is used to create the doublePress property for ControlEvent
+        objects
 
         ### Args:
         * `value` (`float`): value to check
@@ -68,14 +70,14 @@ class ControlSurface:
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy,
         group: str,
-        coordinate:tuple[int, int]=(0, 0)
+        coordinate: tuple[int, int] = (0, 0)
     ) -> None:
         """
         Create a ControlSurface
 
         ### Args:
-        * `event_pattern` (`IEventPattern`): pattern to use when recognising the
-          event
+        * `event_pattern` (`IEventPattern`): pattern to use when recognising
+          the event
         * `value_strategy` (`IValueStrategy`): strategy for getting values from
           events
         * `group` (`str`): group that this control belongs to. Controls in
@@ -83,7 +85,7 @@ class ControlSurface:
         * `coordinate` (`tuple[int, int]`, optional): coordinate of controls.
           Used if controls form a 2D grid (eg, drum pads). Defaults to (0, 0).
         """
-        self._pattern =  event_pattern
+        self._pattern = event_pattern
         self._color = Color()
         self._annotation = ""
         self._value = value_strategy.getValueFromFloat(0.0)
@@ -98,7 +100,8 @@ class ControlSurface:
         """
         String representation of the control surface
         """
-        return f"{self.__class__}, ({self._group}: {self._coord}, {self.value})"
+        return \
+            f"{self.__class__}, ({self._group}: {self._coord}, {self.value})"
 
     @final
     def getMapping(self) -> ControlMapping:
@@ -131,7 +134,8 @@ class ControlSurface:
             channel = self._value_strategy.getChannelFromEvent(event)
             if self.isPress(self.value):
                 t = time()
-                double_press = t - self._press <= getContext().settings.get("controls.double_press_time")
+                double_press = t - self._press \
+                    <= getContext().settings.get("controls.double_press_time")
                 self._press = t
             else:
                 double_press = False
@@ -139,7 +143,7 @@ class ControlSurface:
         else:
             return None
 
-    ############################################################################
+    ###########################################################################
     # Properties
 
     @property
@@ -165,6 +169,7 @@ class ControlSurface:
         LED lighting.
         """
         return self._color
+
     @color.setter
     def color(self, c: Color):
         if self._color != c:
@@ -180,6 +185,7 @@ class ControlSurface:
         control.
         """
         return self._annotation
+
     @annotation.setter
     def annotation(self, a: str):
         if self._annotation != a:
@@ -193,22 +199,24 @@ class ControlSurface:
         of a knob, or the position of a fader).
 
         It is gotten and set using a float between 0-1.0, but could be
-        represented in other ways inside the class. The way it is gotten and set
-        is determined by the functions _getValue() and _setValue() respectively.
+        represented in other ways inside the class. The way it is gotten and
+        set is determined by the functions _getValue() and _setValue()
+        respectively.
         """
         return self._value_strategy.getFloatFromValue(self._value)
+
     @value.setter
     def value(self, v: float) -> None:
         val = self._value_strategy.getValueFromFloat(v)
         if self._value != val:
             # Ensure value is within bounds
             if not (0 <= v <= 1):
-                raise ValueError(f"Value for control must be between "
-                                f"0 and 1")
+                raise ValueError("Value for control must be between "
+                                 "0 and 1")
             self._value = val
             self.onValueChange()
 
-    ############################################################################
+    ###########################################################################
     # Events
 
     def onColorChange(self) -> None:

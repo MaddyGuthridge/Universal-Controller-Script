@@ -7,9 +7,11 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+from .knob import Knob
 from common.eventpattern import IEventPattern
 from controlsurfaces.valuestrategies import IValueStrategy
 from . import ControlSurface
+
 
 class Encoder(ControlSurface):
     """
@@ -25,7 +27,11 @@ class Encoder(ControlSurface):
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         return (Knob,)
 
-    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy, coordinate: tuple[int, int], group: str = "encoders") -> None:
+    def __init__(
+        self,
+        event_pattern: IEventPattern,
+        value_strategy: IValueStrategy,
+        coordinate: tuple[int, int],
+        group: str = "encoders"
+    ) -> None:
         super().__init__(event_pattern, value_strategy, group, coordinate)
-
-from .knob import Knob
