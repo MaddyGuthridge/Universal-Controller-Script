@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from .. import EventData
 from . import IEventPattern
 
+
 class NullPattern(IEventPattern):
     """
     Null patterns won't match with any events

@@ -11,6 +11,7 @@ from common.util.consolehelpers import NoneNoPrintout
 
 MAX_NAME = 48
 
+
 class ProfileNode:
     """
     A node in the profiler
@@ -64,6 +65,7 @@ class ProfileNode:
         total_time = '<running>' if self._time is None else f"{self._time} ns"
         children = ', '.join([str(c) for c in self._children])
         return f"\"'{self.name}' ({total_time})\":[{children}]"
+
 
 class ProfilerManager:
     """

@@ -12,6 +12,7 @@ from typing import Callable
 from abc import abstractmethod
 from common.types import EventData
 
+
 class IScriptState:
     """
     Represents a state the script can be in.
@@ -52,10 +53,12 @@ class IScriptState:
             "This method must be overridden by child classes"
         )
 
+
 class StateChangeException(Exception):
     """
     Raised when the the state of the controller has been reset
     """
+
 
 def catchStateChangeException(func: Callable) -> Callable:
     """A decorator for catching StateChangeExceptions so that the program

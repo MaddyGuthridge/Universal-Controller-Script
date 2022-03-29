@@ -12,10 +12,11 @@ from . import IEventPattern, UnionPattern
 
 from common.types import EventData
 
+
 class ForwardedPattern(IEventPattern):
     """
-    The forwarded pattern is used to parse data from events which were forwarded
-    from the Universal Event Forwarded device script.
+    The forwarded pattern is used to parse data from events which were
+    forwarded from the Universal Event Forwarded device script.
 
     This decodes the forwarded event, then checks it against another provided
     pattern.
@@ -24,10 +25,11 @@ class ForwardedPattern(IEventPattern):
     simplifies things. Refer to device_eventforward.py for a reference on
     how the event is stored.
     """
+
     def __init__(self, device_num: int, pattern: IEventPattern) -> None:
         """
-        Create a ForwardedPattern recogniser. This is used to pattern match with
-        events that were forwarded from the Universal Event Forwarder.
+        Create a ForwardedPattern recogniser. This is used to pattern match
+        with events that were forwarded from the Universal Event Forwarder.
 
         ### Args:
         * `device_num` (`int`): device number to accept events from
@@ -47,6 +49,7 @@ class ForwardedPattern(IEventPattern):
         # print(eventToString(eventFromForwarded(event, null+2)))
         return self._pattern.matchEvent(decodeForwardedEvent(event))
 
+
 class ForwardedUnionPattern(IEventPattern):
     """
     Represents an event that can either be forwarded or direct.
@@ -60,7 +63,9 @@ class ForwardedUnionPattern(IEventPattern):
         * `device_num` (`int`): device number to recognise
         * `pattern` (`IEventPattern`): pattern to match
         """
-        self._pattern = UnionPattern(pattern, ForwardedPattern(device_num, pattern))
+        self._pattern = UnionPattern(pattern, ForwardedPattern(
+            device_num, pattern
+        ))
 
     def matchEvent(self, event: 'EventData') -> bool:
         return self._pattern.matchEvent(event)

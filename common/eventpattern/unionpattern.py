@@ -11,6 +11,7 @@ Authors:
 from common.types import EventData
 from .ieventpattern import IEventPattern
 
+
 class UnionPattern(IEventPattern):
     """
     Represents the union of multiple event patterns. A match with any of those

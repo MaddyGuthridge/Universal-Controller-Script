@@ -5,10 +5,12 @@ from common.types import EventData
 from common.util.events import eventToString
 from . import IScriptState
 
+
 class DeviceNotRecognised(IScriptState):
     """
     State for when device isn't recognised
     """
+
     def initialise(self) -> None:
         log(
             "bootstrap.device.type_detect",

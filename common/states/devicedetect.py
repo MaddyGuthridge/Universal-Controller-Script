@@ -21,10 +21,12 @@ from . import IScriptState, DeviceNotRecognised, MainState
 
 LOG_CAT = "bootstrap.device.type_detect"
 
+
 class WaitingForDevice(IScriptState):
     """
     State for when we're trying to recognise a device
     """
+
     def __init__(self) -> None:
         self._init_time: Optional[float] = None
         self._sent_enquiry = False
@@ -123,7 +125,7 @@ class WaitingForDevice(IScriptState):
             assert self._init_time is not None
             if (
                 time.time() - self._init_time
-              > common.getContext().settings.get(
+                > common.getContext().settings.get(
                     "bootstrap.detection_timeout"
                 )
             ):

@@ -10,10 +10,12 @@ Authors:
 from . import BasicPattern
 from .bytematch import fromNibbles, ByteMatch
 
+
 class NotePattern(BasicPattern):
     """
     The note pattern is used as a way to recognise note events
     """
+
     def __init__(self, note_num: int, channel_match: ByteMatch = ...) -> None:
         """
         Create a NotePattern, in order to recognise note events.

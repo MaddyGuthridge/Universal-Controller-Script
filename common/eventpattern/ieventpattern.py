@@ -1,8 +1,8 @@
 """
 common > eventpattern > ieventpattern
 
-Contains the definition for IEventPattern, the interface that all event patterns
-must inherit from.
+Contains the definition for IEventPattern, the interface that all event
+patterns must inherit from.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -15,6 +15,7 @@ from abc import abstractmethod
 
 if TYPE_CHECKING:
     from .. import EventData
+
 
 class IEventPattern:
     """
@@ -30,7 +31,8 @@ class IEventPattern:
         """
         Return whether the given event matches the pattern
 
-        This is an abstract method which should be implemented by child classes.
+        This is an abstract method which should be implemented by child
+        classes.
 
         ### Args:
         * `event` (`eventData`): Event to match against

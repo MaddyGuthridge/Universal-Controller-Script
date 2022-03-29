@@ -8,6 +8,7 @@ import common
 from typing import TypeVar, Callable
 from typing_extensions import ParamSpec
 
+
 class ProfilerContext:
     """
     Represents a context used to profile performance in the script. Supports
@@ -37,6 +38,7 @@ class ProfilerContext:
 
 Params = ParamSpec("Params")
 RT = TypeVar("RT")
+
 
 def profilerDecoration(name):
     def decorator(func: Callable[Params, RT]) -> Callable[Params, RT]:

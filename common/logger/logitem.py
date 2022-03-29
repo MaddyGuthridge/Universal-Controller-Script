@@ -7,7 +7,6 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-import math
 import time
 
 from common.util.misc import formatLongTime, formatTime
@@ -15,10 +14,12 @@ from common.util.misc import formatLongTime, formatTime
 
 from .verbosity import Verbosity
 
+
 class LogItem:
     """
     Internal representation of an item that has been logged
     """
+
     def __init__(
         self,
         category: str,
@@ -43,7 +44,7 @@ class LogItem:
         self.verbosity = verbosity
         self.index = index
         self.time = time.time()
-        self.trace = None # traceback.extract_stack(limit=-2)
+        self.trace = None  # traceback.extract_stack(limit=-2)
 
     def __str__(self) -> str:
         """
@@ -53,7 +54,7 @@ class LogItem:
         * `str`: stringified log item
         """
         index = f"[#{self.index:6d}]"
-        time  = formatTime(self.time)
+        time = formatTime(self.time)
         return \
             f"{index}: {time} | {self.category.ljust(30)} : {self.message}"
 
@@ -62,12 +63,15 @@ class LogItem:
         Print full details of the log item, including time, category and
         traceback
         """
-        print(f"Log item #{self.index} ({formatLongTime(self.time)}), verbosity={self.verbosity}")
+        print(
+            f"Log item #{self.index} ({formatLongTime(self.time)}), "
+            f"verbosity={self.verbosity}"
+        )
         print(f"Category: {self.category}")
-        print(f"----------------------------------------")
+        print("----------------------------------------")
         print(self.message)
         if len(self.details):
             print()
             print(self.details)
-        print(f"----------------------------------------")
+        print("----------------------------------------")
         # print(traceback.print_list(self.trace))

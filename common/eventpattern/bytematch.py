@@ -12,10 +12,9 @@ from typing import TYPE_CHECKING, Type, Union
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-EllipsisType: Type = type(Ellipsis)
-
 # Variable type for byte match expression
 ByteMatch = Union[int, range, tuple[int, ...], 'ellipsis']
+
 
 def fromNibbles(upper: ByteMatch, lower: ByteMatch) -> tuple:
     """
@@ -40,10 +39,10 @@ def fromNibbles(upper: ByteMatch, lower: ByteMatch) -> tuple:
             if TYPE_CHECKING:
                 assert not isinstance(b, ellipsis)
             return b
-    u = toIter(upper)
-    l = toIter(lower)
+    up = toIter(upper)
+    lo = toIter(lower)
     ret = []
-    for i in u:
-        for j in l:
+    for i in up:
+        for j in lo:
             ret.append((i << 4) + j)
     return (*ret,)

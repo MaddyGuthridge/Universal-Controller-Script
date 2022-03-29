@@ -18,13 +18,14 @@ from typing import Callable
 import common
 from .misc import _NoneNoPrintout, NoneNoPrintout
 
+
 def printReturn(func: Callable) -> Callable:
     """
     Wrap a function so that its return is printed instead of being returned to
     FL Studio
 
-    Useful for interface functions, as FL Studio removes newlines which is kinda
-    yucky
+    Useful for interface functions, as FL Studio removes newlines which is
+    kinda yucky
 
     ### Args:
     * `func` (`Callable[[], str]`): Function
@@ -38,20 +39,22 @@ def printReturn(func: Callable) -> Callable:
         return NoneNoPrintout
     return wrapper
 
+
 class ConsoleCommand:
     """
     Allows a printout to be generated when a user types a command
     """
-    
+
     def __init__(self, printout: str) -> None:
         self.printout = printout
-    
+
     def __repr__(self) -> str:
         print(self.printout)
         return ''
 
     def __call__(self) -> None:
         print(self)
+
 
 help = ConsoleCommand(
     f"Universal Controller Script\n"
@@ -76,7 +79,7 @@ help = ConsoleCommand(
 _newline = '\n'
 _credit_str = "\n".join(
     f"{key}:{_newline}{_newline.join([f' * {p}' for p in value])}"
-        for key, value in common.consts.AUTHORS.items()
+    for key, value in common.consts.AUTHORS.items()
 )
 credits = ConsoleCommand(
     f"Credits:\n"

@@ -1,8 +1,8 @@
 """
 common > util > apifixes
 
-Contains wrapper code for FL Studio API functions which are just too awful to be
-called directly.
+Contains wrapper code for FL Studio API functions which are just too awful to
+be called directly.
 """
 
 import plugins
@@ -28,6 +28,7 @@ UnsafeWindowIndex = Optional[int]
 
 UnsafeIndex = Union[UnsafePluginIndex, UnsafeWindowIndex]
 
+
 def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
@@ -45,7 +46,7 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     """
     # Check if a channel rack plugin is focused
     # if ui.getFocused(7):
-    form_id =  ui.getFocusedFormID()
+    form_id = ui.getFocusedFormID()
 
     # If a mixer plugin is focused
     if ui.getFocused(6):
@@ -66,6 +67,7 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
             return (channels.selectedChannel(),)
         else:
             return None
+
 
 def getFocusedWindowIndex() -> Optional[int]:
     """
@@ -124,6 +126,7 @@ def isPluginVst(index: PluginIndex) -> bool:
     """
     return plugins.getParamCount(*index) > PARAM_CC_START
 
+
 def getSelectedPlaylistTrack() -> int:
     """
     Returns the index of the first currently selected playlist track, or `1` if
@@ -136,6 +139,7 @@ def getSelectedPlaylistTrack() -> int:
         if playlist.isTrackSelected(i):
             return i
     return 1
+
 
 def catchUnsafeOperation(func):
     """
@@ -151,6 +155,7 @@ def catchUnsafeOperation(func):
             if e.args != ("Operation unsafe at current time",):
                 raise e
     return wrapper
+
 
 def getSelectedDockMixerTracks() -> dict[int, list[int]]:
     """
@@ -169,25 +174,28 @@ def getSelectedDockMixerTracks() -> dict[int, list[int]]:
         1: [],
         2: [],
     }
-    for i in range(1, mixer.trackCount()-1):
+    for i in range(1, mixer.trackCount() - 1):
         if mixer.isTrackSelected(i):
             tracks[mixer.getTrackDockSide(i)].append(i)
 
     return tracks
 
+
 def getSelectedMixerTracks() -> list[int]:
     """
-    Returns a list of the selected mixer tracks, not including master or current
+    Returns a list of the selected mixer tracks, not including master or
+    current
 
     ### Returns:
     * `list[int]`: track selections
     """
     tracks: list[int] = []
-    for i in range(1, mixer.trackCount()-1):
+    for i in range(1, mixer.trackCount() - 1):
         if mixer.isTrackSelected(i):
             tracks.append(i)
 
     return tracks
+
 
 def getMixerDockSides() -> dict[int, list[int]]:
     """
@@ -205,7 +213,7 @@ def getMixerDockSides() -> dict[int, list[int]]:
         1: [],
         2: [],
     }
-    for i in range(mixer.trackCount()-1):
+    for i in range(mixer.trackCount() - 1):
         tracks[mixer.getTrackDockSide(i)].append(i)
 
     return tracks

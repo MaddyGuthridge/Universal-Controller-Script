@@ -18,6 +18,7 @@ from .scriptstate import IScriptState
 if TYPE_CHECKING:
     from devices import Device
 
+
 class MainState(IScriptState):
     """
     Represents the main state of the script, where the device is recognised
