@@ -10,7 +10,6 @@ Authors:
 
 from typing import TYPE_CHECKING, Optional, overload
 
-from common.logger import log, verbosity
 from common.types.eventdata import EventData
 from common.util.consolehelpers import printReturn
 
@@ -18,6 +17,7 @@ if TYPE_CHECKING:
     from devices import Device
     from plugs import StandardPlugin, SpecialPlugin, WindowPlugin, Plugin
     from common.util.apifixes import WindowIndex
+
 
 class ExtensionManager:
     """
@@ -36,12 +36,15 @@ class ExtensionManager:
     # Special plugins
     _special_plugins: 'list[type[SpecialPlugin]]' = []
     # Map types to their instance
-    _instantiated_special_plugins: 'dict[type[SpecialPlugin], SpecialPlugin]' = {}
+    _instantiated_special_plugins: 'dict[type[SpecialPlugin], SpecialPlugin]'\
+        = {}
 
     _devices: list[type['Device']] = []
 
     def __init__(self) -> None:
-        raise TypeError("ExtensionManager is a static class and cannot be instantiated.")
+        raise TypeError(
+            "ExtensionManager is a static class and cannot be instantiated."
+        )
 
     @classmethod
     def registerPlugin(cls, plugin: type['StandardPlugin']) -> None:
@@ -151,10 +154,12 @@ class ExtensionManager:
     @classmethod
     def getDevice(cls, arg: EventData) -> 'Device':
         ...
+
     @overload
     @classmethod
     def getDevice(cls, arg: str) -> 'Device':
         ...
+
     @classmethod
     def getDevice(cls, arg: 'EventData | str') -> 'Device':
         """
@@ -216,7 +221,11 @@ class ExtensionManager:
         return cls._devices
 
     @classmethod
-    def getPluginById(cls, id: str, device: 'Device') -> Optional['StandardPlugin']:
+    def getPluginById(
+        cls,
+        id: str,
+        device: 'Device'
+    ) -> Optional['StandardPlugin']:
         """
         Returns an instance of the standard plugin matching the ID provided.
 
@@ -231,6 +240,7 @@ class ExtensionManager:
         ### Returns:
         * `StandardPlugin`: plugin associated with ID
         """
+        from devices.deviceshadow import DeviceShadow
         # Plugin already instantiated
         if id in cls._instantiated_plugins.keys():
             return cls._instantiated_plugins[id]
@@ -249,7 +259,11 @@ class ExtensionManager:
             return None
 
     @classmethod
-    def getWindowById(cls, id: int, device: 'Device') -> Optional['WindowPlugin']:
+    def getWindowById(
+        cls,
+        id: int,
+        device: 'Device'
+    ) -> Optional['WindowPlugin']:
         """
         Returns an instance of the window plugin matching the ID provided.
 
@@ -264,6 +278,7 @@ class ExtensionManager:
         ### Returns:
         * `WindowPlugin`: plugin associated with ID
         """
+        from devices.deviceshadow import DeviceShadow
         # Plugin already instantiated
         if id in cls._instantiated_windows.keys():
             return cls._instantiated_windows[id]
@@ -296,6 +311,7 @@ class ExtensionManager:
         ### Returns:
         * `list[SpecialPlugin]`: list of active plugins
         """
+        from devices.deviceshadow import DeviceShadow
         ret: list[SpecialPlugin] = []
         for p in cls._special_plugins:
             # If plugin should be active
@@ -348,14 +364,34 @@ class ExtensionManager:
         ### Returns:
         * `str`: info
         """
-        num_devs = f"{len(cls._devices)} device{'s' if len(cls._devices) != 1 else ''}"
-        num_plugs = f"{len(cls._plugins)} plugin{'s' if len(cls._plugins) != 1 else ''}"
-        num_inst_plugs = f" ({len(cls._instantiated_plugins)} instantiated)" if len(cls._instantiated_plugins) else ""
-        num_window_plugs =f"{len(cls._windows)} window plugin{'s' if len(cls._windows) != 1 else ''}"
-        num_inst_window_plugs = f" ({len(cls._instantiated_windows)} instantiated)" if len(cls._instantiated_windows) else ""
-        num_special_plugs =f"{len(cls._special_plugins)} special plugin{'s' if len(cls._special_plugins) != 1 else ''}"
-        num_inst_special_plugs = f" ({len(cls._instantiated_special_plugins)} instantiated)" if len(cls._instantiated_special_plugins) else ""
-        return f"{num_devs}, {num_plugs}{num_inst_plugs}, {num_window_plugs}{num_inst_window_plugs}, {num_special_plugs}{num_inst_special_plugs}"
+        def plural(obj) -> str:
+            return 's' if len(obj) != 1 else ''
+
+        def instantiated(obj) -> str:
+            return f" ({len(obj)} instantiated)" if len(obj) else ""
+
+        # Number of devices
+        n_dev = f"{len(cls._devices)} device{plural(cls._devices)}"
+        # Number of plugins
+        n_plug = f"{len(cls._plugins)} plugin{plural(cls._plugins)}"
+        # Number of instantiated plugins
+        ni_plug = instantiated(cls._instantiated_plugins)
+        # Number of windows
+        n_wind = f"{len(cls._windows)} window plugin{plural(cls._windows)}"
+        # Number of instantiated windows
+        ni_wind = instantiated(cls._instantiated_windows)
+        # Number of special plugins
+        ns_plug = f"{len(cls._special_plugins)} "\
+            f"special plugin{plural(cls._special_plugins)}"
+        # Number of instantiated special plugins
+        nis_plug = instantiated(cls._instantiated_special_plugins)
+        # Compile all that info into one string
+        return (
+            f"{n_dev}, "
+            f"{n_plug}{ni_plug}, "
+            f"{n_wind}{ni_wind}, "
+            f"{ns_plug}{nis_plug}"
+        )
 
     @classmethod
     def _formatPlugin(cls, plug: Optional['Plugin']) -> str:
@@ -397,10 +433,14 @@ class ExtensionManager:
             return f"Plugin {plug} isn't associated with any plugins"
         elif len(matches) == 1:
             id, inst_p = matches[0]
-            return f"{plug} associated with:\n{id}\n{cls._formatPlugin(inst_p)}"
+            return (
+                f"{plug} associated with:\n{id}\n"
+                f"{cls._formatPlugin(inst_p)}"
+            )
         else:
-            return f"{plug}:" + f"\n\n".join([
-                f"> {id}:\n{cls._formatPlugin(inst_p)}" for id, inst_p in matches
+            return f"{plug}:" + "\n\n".join([
+                f"> {id}:\n{cls._formatPlugin(inst_p)}"
+                for id, inst_p in matches
             ])
 
     @classmethod
@@ -417,7 +457,8 @@ class ExtensionManager:
         if id in cls._instantiated_plugins.keys():
             return f"{id} associated with:\n\n{cls._instantiated_plugins[id]}"
         elif id in cls._plugins.keys():
-            return f"{id} associated with: {cls._plugins[id]} (not instantiated)"
+            return \
+                f"{id} associated with: {cls._plugins[id]} (not instantiated)"
         else:
             return f"ID {id} not associated with any plugins"
 
@@ -445,10 +486,14 @@ class ExtensionManager:
             return f"Plugin {plug} isn't associated with any plugins"
         elif len(matches) == 1:
             id, inst_p = matches[0]
-            return f"{plug} associated with:\n{id}\n{cls._formatPlugin(inst_p)}"
+            return (
+                f"{plug} associated with:\n{id}\n"
+                f"{cls._formatPlugin(inst_p)}"
+            )
         else:
-            return f"{plug}:" + f"\n\n".join([
-                f"> {id}:\n{cls._formatPlugin(inst_p)}" for id, inst_p in matches
+            return f"{plug}:" + "\n\n".join([
+                f"> {id}:\n{cls._formatPlugin(inst_p)}"
+                for id, inst_p in matches
             ])
 
     @classmethod
@@ -499,6 +544,8 @@ class ExtensionManager:
         ### Returns:
         * `str`: extension info
         """
+        import plugs
+        from devices.device import Device
         if isinstance(ext, str):
             return cls._inspectPluginId(ext)
         elif issubclass(ext, Device):
@@ -513,7 +560,4 @@ class ExtensionManager:
             return f"{ext} isn't a Plugin class or plugin ID"
 
 # Import devices
-from devices.deviceshadow import DeviceShadow
-from devices.device import Device
 # Import plugins
-import plugs

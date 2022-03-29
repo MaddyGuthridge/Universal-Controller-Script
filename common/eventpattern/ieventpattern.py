@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING
 from abc import abstractmethod
 
 if TYPE_CHECKING:
-    from .. import EventData
+    from common.types import EventData
 
 
 class IEventPattern:

@@ -1,13 +1,15 @@
 """
 common > contextmanager
 
-Contains the DeviceContextManager class, used to manage the state of the script,
-allowing for soft resets of the script when required.
+Contains the DeviceContextManager class, used to manage the state of the
+script, allowing for soft resets of the script when required.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+from . import logger
+from .states import WaitingForDevice
 __all__ = [
     'catchContextResetException',
     'getContext',
@@ -31,6 +33,7 @@ from .states import (
     StateChangeException,
     catchStateChangeException,
 )
+
 
 class DeviceContextManager:
     """Defines the context for the entire script, which allows the modular
@@ -136,18 +139,21 @@ class DeviceContextManager:
         new_state.initialise()
         raise StateChangeException("State changed")
 
+
 class ContextResetException(Exception):
     """
     Raised when the context is reset, so as to prevent any other operations
     using the old context from succeeding
     """
 
+
 class MissingContextException(Exception):
     """
     Raised when the context hasn't been initialised yet
     """
 
-def catchContextResetException(func: Callable)-> Callable:
+
+def catchContextResetException(func: Callable) -> Callable:
     """A decorator for catching ContextResetExceptions so that the program
     continues normally
 
@@ -166,10 +172,12 @@ def catchContextResetException(func: Callable)-> Callable:
             return NoneNoPrintout
     return wrapper
 
+
 # The context manager's instance
 # This should be the only non-constant global variable in the entire program,
 # except for the log
 _context: Optional[DeviceContextManager] = None
+
 
 def getContext() -> DeviceContextManager:
     """Returns a reference to the device context
@@ -186,7 +194,8 @@ def getContext() -> DeviceContextManager:
 
     return _context
 
-def resetContext(reason:str="none") -> NoReturn:
+
+def resetContext(reason: str = "none") -> NoReturn:
     """Resets the context of the script to the default, before raising a
     ContextResetException to halt the current event
 
@@ -204,8 +213,9 @@ def resetContext(reason:str="none") -> NoReturn:
     _context = DeviceContextManager()
     raise ContextResetException(reason)
 
+
 @catchContextResetException
-def unsafeResetContext(reason:str="none") -> None:
+def unsafeResetContext(reason: str = "none") -> None:
     """
     Reset the context of the script to the default, without raising a
     ContextResetException to halt the current event.
@@ -220,6 +230,7 @@ def unsafeResetContext(reason:str="none") -> None:
     """
     resetContext(reason)
 
+
 def _initContext() -> None:
     """
     Initialises the context manager for the script
@@ -227,7 +238,5 @@ def _initContext() -> None:
     global _context
     _context = DeviceContextManager()
 
-from . import logger
-from .states import WaitingForDevice
 
 _initContext()

@@ -13,7 +13,8 @@ from time import time
 from typing import Optional, final
 from abc import abstractmethod
 
-from common import IEventPattern, getContext
+from common import getContext
+from common.eventpattern import IEventPattern
 from common.types import EventData, Color
 
 from .valuestrategies import IValueStrategy

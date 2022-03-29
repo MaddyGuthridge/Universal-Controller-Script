@@ -18,6 +18,7 @@ VERSION_REVISION = VERSION[2]
 # Minimum API version required to run script
 MIN_API_VERSION = 19
 
+
 def getVersionString() -> str:
     """
     Returns the version string of the script
@@ -25,6 +26,7 @@ def getVersionString() -> str:
     Eg: "1.2.3"
     """
     return ".".join(map(str, VERSION))
+
 
 # Website
 WEBSITE = "https://github.com/MiguelGuthridge/Universal-Controller-Script"
@@ -51,19 +53,19 @@ ASCII_HEADER_ART = """
                              ';;'
                             ;;'
              ',;/\\\\/;,    ,L,
-           ,\FFFFFFFFFF; ;L'
+           ,\\FFFFFFFFFF; ;L'
           ;FFFFFFFFFFFFFFF/;;;,,    ',,;;;;;/;;'
-         .FLL\LFFFFFFFFFFFFFFFFFFLL;;,.''    ',L,
-             ;//;/FFFFFFFFFFFFFFFFF\           L;
+         .FLL\\LFFFFFFFFFFFFFFFFFFLL;;,.''    ',L,
+             ;//;/FFFFFFFFFFFFFFFFF\\           L;
                   ;FFFFFFFFFFFFFFFFF/        'L/
                  ';LFFFFFFFFFFFFFFFFL      ';L,
-              .;;;.'/LFFFL\;;,;LL\FF/    ./L,
+              .;;;.'/LFFFL\\;;,;LL\\FF/    ./L,
            .;;,'      '.'      ;; ,;   ;L/,
         ',;,'                  ;'   ,\\\\;
       .;;.                    ,,';\\\\;'
-    .;;'                    ';L\/,
-   ;;'                  ',/\L;'
-  ;/               ',;/\/,'..
+    .;;'                    ';L\\/,
+   ;;'                  ',/\\L;'
+  ;/               ',;/\\/,'..
   /;        '.,;///;;.    ,'
    ,;;;;;;//;;,.         ,
                        .'

@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Any, Callable, Optional
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 from . import ByteMatch, IEventPattern
 
+
 class BasicPattern(IEventPattern):
     """
     Represents a pattern to match with MIDI events.
@@ -25,8 +26,8 @@ class BasicPattern(IEventPattern):
         self,
         # Status byte or sysex data
         status_sysex:  'ByteMatch | list[ByteMatch]',
-        data1: Optional[ByteMatch]=None,
-        data2: Optional[ByteMatch]=None
+        data1: Optional[ByteMatch] = None,
+        data2: Optional[ByteMatch] = None
     ) -> None:
         """
         Create a basic event pattern.
@@ -43,11 +44,12 @@ class BasicPattern(IEventPattern):
         * `...`: A wildcard: any value will match.
 
         For sysex-type events, a list of objects of that type must be provided.
-        If given sysex messages are longer than the pattern, then any extra data
-        will be ignored, and assumed to match with any data.
+        If given sysex messages are longer than the pattern, then any extra
+        data will be ignored, and assumed to match with any data.
 
         ### Args:
-        * `status_sysex` (`ByteMatch | list[ByteMatch]`): Status byte or sysex data.
+        * `status_sysex` (`ByteMatch | list[ByteMatch]`): Status byte or sysex
+          data.
         * `data1` (`ByteMatch`, optional): data1 byte. Defaults to `None`.
         * `data2` (`ByteMatch`, optional): data2 byte. Defaults to `None`.
 
@@ -56,9 +58,9 @@ class BasicPattern(IEventPattern):
         * `EventPattern(0x7F, 0x03, ...)`: Recognise an event, where the status
           is 127, data1 is 3, and data2 is any value
 
-        * `EventPattern((0x90, 0x80), 0x04, range(10, 20))`: Recognise an event,
-          where the status is either 128 or 144, data1 is 4, and data2 is any
-          value between 10 and 20
+        * `EventPattern((0x90, 0x80), 0x04, range(10, 20))`: Recognise an
+          event, where the status is either 128 or 144, data1 is 4, and data2
+          is any value between 10 and 20
 
         * `EventPattern([0x30, 0x40, range(0, 20, 2), ...])`: Recognise a
           sysex event, where the first byte is 48, the second is 64, the third
@@ -70,9 +72,15 @@ class BasicPattern(IEventPattern):
         # Lambda to check if values are none
         # isNone = lambda x: x is None
 
-        # Lambda to check if values are of the required type
-        typeCheck = lambda x: isinstance(x, (int, range, type(...)))\
-            or (isinstance(x, tuple) and all(isinstance(y, (int, range)) for y in x))
+        # Function to check if values are of the required type
+        def typeCheck(x):
+            if isinstance(x, (int, range, type(...))):
+                return True
+            else:
+                return (
+                    isinstance(x, tuple)
+                    and all(isinstance(y, (int, range)) for y in x)
+                )
 
         # Check for sysex event
         if isinstance(status_sysex, list):
@@ -85,11 +93,15 @@ class BasicPattern(IEventPattern):
         # Otherwise check for standard event
         else:
             if any(x is None for x in [data1, data2]):
-                raise TypeError("Incorrect number of arguments for a non-sysex "
-                                "event type. Refer to object documentation.")
+                raise TypeError(
+                    "Incorrect number of arguments for a non-sysex event "
+                    "type. Refer to object documentation."
+                )
             if not all(map(typeCheck, [status_sysex, data1, data2])):
-                raise TypeError("Incorrect types for event data. Refer to "
-                                "object docmentation.")
+                raise TypeError(
+                    "Incorrect types for event data. Refer to object "
+                    "docmentation."
+                )
 
             # Store the data
             if TYPE_CHECKING:
@@ -128,7 +140,10 @@ class BasicPattern(IEventPattern):
         return actual in expected
 
     @staticmethod
-    def _matchByteEllipsis(expected: 'ellipsis', actual: int) -> bool:
+    def _matchByteEllipsis(
+        expected: 'ellipsis',  # noqa: F821
+        actual: int
+    ) -> bool:
         return 0 <= actual <= 127
 
     @staticmethod
@@ -166,4 +181,4 @@ class BasicPattern(IEventPattern):
                    zip(
                        [self.status, self.data1, self.data2],
                        [event.status, event.data1, event.data2]
-                    ))
+        ))
