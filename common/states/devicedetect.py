@@ -17,7 +17,7 @@ from common import log, verbosity
 from common.types.eventdata import isEventSysex, EventData
 from common.util.events import eventToString
 
-from . import IScriptState, DeviceNotRecognised, MainState, DeviceState
+from . import IScriptState, DeviceNotRecognised, DeviceState
 
 LOG_CAT = "bootstrap.device.type_detect"
 
@@ -31,7 +31,8 @@ class WaitingForDevice(IScriptState):
         Create the WaitingForDevice state
 
         ### Args:
-        * `switch_to` (`IScriptState`): state to switch to when the device is recognised
+        * `switch_to` (`IScriptState`): state to switch to when the device is
+          recognised
         """
         self._init_time: Optional[float] = None
         self._sent_enquiry = False

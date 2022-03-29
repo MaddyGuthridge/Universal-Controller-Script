@@ -52,6 +52,7 @@ def combinations(
             for others in combinations(p, number-1):
                 yield item, *others
 
+
 class DummyDevice(Device):
     """A dummy device so that the script doesn't have a hissy fit during testing
     """
@@ -84,15 +85,22 @@ class DummyDevice(Device):
     def getDrumPadSize() -> tuple[int, int]:
         return 0, 0
 
+
 class DummyDevice2(DummyDevice):
     """Another dummy device"""
     @staticmethod
     def getId() -> str:
         return "Dummy.Device.2"
 
+
 class DummyDeviceContext:
     """A context manager for working with dummy devices"""
-    def __init__(self, num: int = 1, dev: type[DummyDevice] = DummyDevice) -> None:
+
+    def __init__(
+        self,
+        num: int = 1,
+        dev: type[DummyDevice] = DummyDevice
+    ) -> None:
         self._dev = dev
         self._num = num
 

@@ -9,11 +9,8 @@ Authors:
 
 import pytest
 
-from fl_context import FlContext
-
 from tests.helpers import DummyDevice2, DummyDeviceContext
 
-from common import getContext, unsafeResetContext
 from common.types import EventData
 from common.util.events import (
     encodeForwardedEvent,
@@ -58,7 +55,9 @@ def test_invalid_event_receive():
 def test_isEventForwarded():
     """Make sure the forwarded event type checker is working"""
     with DummyDeviceContext():
-        assert isEventForwarded(EventData(encodeForwardedEvent(EventData(1, 2, 3), 1)))
+        assert isEventForwarded(EventData(
+            encodeForwardedEvent(EventData(1, 2, 3), 1)
+        ))
 
         assert not isEventForwarded(EventData(1, 2, 3))
 

@@ -8,8 +8,6 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from . import logger
-from .states import WaitingForDevice
 __all__ = [
     'catchContextResetException',
     'getContext',
@@ -17,6 +15,7 @@ __all__ = [
     'unsafeResetContext'
 ]
 
+from . import logger
 from typing import NoReturn, Optional, Callable, TYPE_CHECKING
 from time import time_ns
 
@@ -150,7 +149,6 @@ class DeviceContextManager:
         self.state = new_state
         new_state.initialise()
         raise StateChangeException("State changed")
-
 
     def registerDevice(self, dev: 'Device'):
         """

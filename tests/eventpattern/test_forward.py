@@ -14,6 +14,7 @@ from common.util.events import encodeForwardedEvent
 
 from tests.helpers import DummyDeviceContext
 
+
 def test_forwarded():
     with DummyDeviceContext():
         p = ForwardedPattern(2, BasicPattern(1, 2, 3))

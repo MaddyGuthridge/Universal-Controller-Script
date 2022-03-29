@@ -1,14 +1,11 @@
 
-import ui
-from common import log, verbosity, consts
-from common.types import EventData
-from common.util.events import eventToString
 from abc import abstractmethod
 from . import IScriptState
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from devices import Device
+
 
 class DeviceState(IScriptState):
     """

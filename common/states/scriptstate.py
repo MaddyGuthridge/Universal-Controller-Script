@@ -60,9 +60,11 @@ class StateChangeException(Exception):
     Raised when the the state of the controller has been reset
     """
 
+
 P = ParamSpec("P")
 
-def catchStateChangeException(func: Callable[P, Any])-> Callable[P, None]:
+
+def catchStateChangeException(func: Callable[P, Any]) -> Callable[P, None]:
     """A decorator for catching StateChangeExceptions so that the program
     continues normally
 

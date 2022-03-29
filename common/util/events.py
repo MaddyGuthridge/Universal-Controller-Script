@@ -5,11 +5,8 @@ Contains useful functions for operating on events.
 """
 
 from typing import TYPE_CHECKING
-import device
-from common.types.eventdata import EventData, isEventStandard, isEventSysex
-
 import common
-from common import log
+import device
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
 
 
@@ -138,9 +135,10 @@ def isEventForwardedHere(event: EventData) -> bool:
         return False
     assert isEventSysex(event)
 
-    if (event.sysex[2:_getForwardedNameEndIdx(event)].decode()
+    if (
+        event.sysex[2:_getForwardedNameEndIdx(event)].decode()
         != getDeviceId()
-        ):
+    ):
         return False
     return True
 

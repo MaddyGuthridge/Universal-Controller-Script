@@ -18,6 +18,7 @@ from .devstate import DeviceState
 if TYPE_CHECKING:
     from devices import Device
 
+
 class MainState(DeviceState):
     """
     Represents the main state of the script, where the device is recognised

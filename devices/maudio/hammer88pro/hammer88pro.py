@@ -233,7 +233,7 @@ class Hammer88Pro(Device):
                 "Hammer 88 Pro Mackie/HUI": 3,
             }[name]
         except KeyError as e:
-            raise TypeError(f"Couldn't find a mapping for device name") from e
+            raise TypeError("Couldn't find a mapping for device name") from e
 
 
 ExtensionManager.registerDevice(Hammer88Pro)

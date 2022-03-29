@@ -5,7 +5,7 @@ Represents the forwarder script in its main state, where the device is
 recognised and behaving as expected. Events are forwarded to the main script.
 """
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import device
 
@@ -13,11 +13,18 @@ import common
 from common.logger import log
 from common.types import EventData
 from common.types.eventdata import isEventStandard, isEventSysex
-from common.util.events import decodeForwardedEvent, eventToString, forwardEvent, isEventForwarded, isEventForwardedHereFrom
+from common.util.events import (
+    decodeForwardedEvent,
+    eventToString,
+    forwardEvent,
+    isEventForwarded,
+    isEventForwardedHereFrom
+)
 from .devstate import DeviceState
 
 if TYPE_CHECKING:
     from devices import Device
+
 
 def outputForwarded(event: EventData):
     """
@@ -41,6 +48,7 @@ def outputForwarded(event: EventData):
         "device.forward.in",
         "Output event to device: " + eventToString(event)
     )
+
 
 class ForwardState(DeviceState):
     """

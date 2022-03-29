@@ -20,7 +20,6 @@ from .scriptstate import (
     catchStateChangeException,
     StateChangeException,
 )
-from .scriptstate import IScriptState, catchStateChangeException, StateChangeException
 from .devstate import DeviceState
 from .mainstate import MainState
 from .forwardstate import ForwardState
