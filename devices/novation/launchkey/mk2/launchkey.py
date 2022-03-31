@@ -161,7 +161,11 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
 
     @staticmethod
     def getId() -> str:
-        return f"{ID_PREFIX}.49-61"
+        if "49" in device.getName():
+            num = 49
+        else:
+            num = 61
+        return f"{ID_PREFIX}.{num}"
 
     @staticmethod
     def getUniversalEnquiryResponsePattern():

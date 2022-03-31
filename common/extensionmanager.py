@@ -209,7 +209,7 @@ class ExtensionManager:
         * `Device`: matching device
         """
         for device in cls._devices:
-            if device.getId() == id:
+            if device.__name__ == id:
                 return device.create(None)
         raise ValueError(f"Device with ID {id} not found")
 
