@@ -195,8 +195,7 @@ class Hammer88Pro(Device):
     def create(cls, event: Optional[EventData]) -> Device:
         return cls()
 
-    @staticmethod
-    def getId() -> str:
+    def getId(self) -> str:
         return "Maudio.Hammer88Pro"
 
     @staticmethod

@@ -59,9 +59,8 @@ class Device:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
-    @staticmethod
     @abstractmethod
-    def getId() -> str:
+    def getId(self) -> str:
         """
         Returns the id of the device, in the form:
 
