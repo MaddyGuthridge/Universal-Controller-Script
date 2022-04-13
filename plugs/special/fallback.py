@@ -1,3 +1,11 @@
+"""
+plugs > special > fallback
+
+Contains the definition for the fallback plugin
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au]
+"""
 
 from typing import Any
 import ui
