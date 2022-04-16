@@ -8,6 +8,7 @@ Authors:
 """
 
 import pytest
+from fl_context import FlContext
 
 from tests.helpers import DummyDevice2, DummyDeviceContext
 
@@ -17,7 +18,8 @@ from common.util.events import (
     decodeForwardedEvent,
     isEventForwarded,
     isEventForwardedHere,
-    isEventForwardedHereFrom
+    isEventForwardedHereFrom,
+    forwardEvent,
 )
 
 
@@ -93,6 +95,5 @@ def test_isEventForwardedHereFrom_target():
 def testForwardChecking():
     """Make sure checks are put into place before we forward an event"""
     with DummyDeviceContext(2):
-        # FIXME: Fails because of dispatch receiver count
-        # forwardEvent(EventData(7, 8, 9))
-        pass
+        with FlContext({"dispatch_targets": [1]}):
+            forwardEvent(EventData(7, 8, 9))
