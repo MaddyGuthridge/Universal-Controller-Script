@@ -10,10 +10,15 @@ Authors:
 __all__ = [
     'FaderButton',
     'GenericFaderButton',
+    'MasterGenericFaderButton',
     'MuteButton',
+    'MasterMuteButton',
     'SoloButton',
+    'MasterSoloButton',
     'ArmButton',
+    'MasterArmButton',
     'SelectButton',
+    'MasterSelectButton',
 ]
 
 from common.eventpattern.ieventpattern import IEventPattern
@@ -42,32 +47,92 @@ class FaderButton(Button):
         )
 
 
-class GenericFaderButton(FaderButton):
+class AbstractGenericFaderButton(FaderButton):
+    """Generic fader button's abstract base class
+    """
+
+
+class GenericFaderButton(AbstractGenericFaderButton):
     """
     Represents a generic multi-purpose fader button: plugins should
     intelligently map the behaviour to required controls.
     """
 
 
-class MuteButton(FaderButton):
+class MasterGenericFaderButton(AbstractGenericFaderButton):
+    """
+    Represents a master generic multi-purpose fader button: plugins should
+    intelligently map the behaviour to required controls.
+    """
+
+
+class AbstractMuteButton(FaderButton):
+    """
+    Represents an abstract mute track button
+    """
+
+
+class MuteButton(AbstractMuteButton):
     """
     Represents a mute track button
     """
 
 
-class SoloButton(FaderButton):
+class MasterMuteButton(AbstractMuteButton):
+    """
+    Represents a master mute track button
+    """
+
+
+class AbstractSoloButton(FaderButton):
+    """
+    Represents an abstract solo track button
+    """
+
+
+class SoloButton(AbstractSoloButton):
     """
     Represents a solo track button
     """
 
 
-class ArmButton(FaderButton):
+class MasterSoloButton(AbstractSoloButton):
     """
-    Represents an arm track button
+    Represents a master solo track button
     """
 
 
-class SelectButton(FaderButton):
+class AbstractArmButton(FaderButton):
+    """
+    Represents an abstract arm track button
+    """
+
+
+class ArmButton(AbstractArmButton):
+    """
+    Represents a arm track button
+    """
+
+
+class MasterArmButton(AbstractArmButton):
+    """
+    Represents a master arm track button
+    """
+
+
+class AbstractSelectButton(FaderButton):
+    """
+    Represents an abstract select track button
+    """
+
+
+class SelectButton(AbstractSelectButton):
     """
     Represents a select track button
+    """
+
+
+class MasterSelectButton(AbstractSelectButton):
+    """
+    Represents a master select track button
     """
