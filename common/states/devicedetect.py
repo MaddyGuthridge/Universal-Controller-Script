@@ -13,6 +13,7 @@ from typing import Optional
 import device
 
 import common
+from common.exceptions import DeviceRecogniseError
 from common import log, verbosity
 from common.types.eventdata import isEventSysex, EventData
 from common.util.events import eventToString
@@ -61,7 +62,7 @@ class WaitingForDevice(IScriptState):
                         verbosity.INFO
                     )
                     common.getContext().setState(self._to.create(dev))
-                except ValueError:
+                except DeviceRecogniseError:
                     log(
                         "bootstrap.device.type_detect",
                         f"The device mapping '{name}' -> '{id}' didn't match "
@@ -90,7 +91,7 @@ class WaitingForDevice(IScriptState):
                 verbosity.INFO
             )
             common.getContext().setState(self._to.create(dev))
-        except ValueError:
+        except DeviceRecogniseError:
             log(
                 LOG_CAT,
                 "Failed to recognise device via fallback method",
@@ -161,7 +162,7 @@ class WaitingForDevice(IScriptState):
                 )
                 event.handled = True
                 common.getContext().setState(self._to.create(dev))
-            except ValueError:
+            except DeviceRecogniseError:
                 log(
                     LOG_CAT,
                     "Failed to recognise device via sysex, using fallback "

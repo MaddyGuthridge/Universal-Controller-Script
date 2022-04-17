@@ -10,6 +10,7 @@ Authors:
 
 __all__ = [
     'getVersionString',
+    'exceptions',
     'log',
     'verbosity',
     'ProfilerContext',
@@ -18,11 +19,12 @@ __all__ = [
     'resetContext',
     'unsafeResetContext',
     'catchContextResetException',
-    'ExtensionManager'
+    'ExtensionManager',
 ]
 
 from .consts import getVersionString
 
+from . import exceptions
 from .logger import log, verbosity
 from .profiler import ProfilerContext, profilerDecoration
 
