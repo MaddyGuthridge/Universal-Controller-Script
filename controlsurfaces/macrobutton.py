@@ -14,11 +14,8 @@ __all__ = [
     'UndoButton',
     'RedoButton',
     'QuantizeButton',
-    'ControlSwitchButton',
 ]
 
-from common.eventpattern.ieventpattern import IEventPattern
-from controlsurfaces.valuestrategies.ivaluestrategy import IValueStrategy
 from controlsurfaces import Button
 
 
@@ -67,17 +64,3 @@ class QuantizeButton(MacroButton):
     Defines a quantize button, which should be mapped to FL Studio's snapping
     control.
     """
-
-
-class ControlSwitchButton(MacroButton):
-    """
-    A button that is used to switch modes in some plugins (for example when
-    changing between views). In order to get full control of the script,
-    devices should implement this button somewhere.
-    """
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, "control_switch")
