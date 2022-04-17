@@ -10,6 +10,7 @@ Authors:
 
 from typing import TYPE_CHECKING, Optional, overload
 
+from common.exceptions import DeviceRecogniseError
 from common.types.eventdata import EventData
 from common.util.consolehelpers import printReturn
 
@@ -194,7 +195,7 @@ class ExtensionManager:
                     # If it matches the pattern, then we found the right device
                     # create an instance and return it
                     return device.create(arg)
-        raise ValueError("Device not recognised")
+        raise DeviceRecogniseError("Device not recognised")
 
     @classmethod
     def getDeviceById(cls, id: str) -> 'Device':
@@ -211,7 +212,7 @@ class ExtensionManager:
         for device in cls._devices:
             if device.__name__ == id:
                 return device.create(None)
-        raise ValueError(f"Device with ID {id} not found")
+        raise DeviceRecogniseError(f"Device with ID {id} not found")
 
     @classmethod
     def getAllDevices(cls) -> list[type['Device']]:

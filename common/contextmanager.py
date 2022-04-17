@@ -72,6 +72,18 @@ class DeviceContextManager:
         * `state` (`IScriptState`): state to initialise with
         """
         self.state = state
+        state.initialise()
+
+    @catchStateChangeException
+    def deinitialise(self) -> None:
+        """Deinitialise the controller when FL Studio closes or begins a render
+        """
+        if self._device is not None:
+            self._device.deinitialise()
+            self._device = None
+        if self.state is not None:
+            self.state.deinitialise()
+            self.state = None
 
     @catchUnsafeOperation
     @catchStateChangeException
@@ -172,7 +184,7 @@ class DeviceContextManager:
         * `Device`: device
         """
         if self._device is None:
-            raise ValueError("Device number not set")
+            raise ValueError("Device not set")
         return self._device
 
 

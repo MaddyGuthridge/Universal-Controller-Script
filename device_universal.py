@@ -40,6 +40,10 @@ class OverallDevice:
         getContext().initialise(WaitingForDevice(MainState))
 
     @catchContextResetException
+    def onDeinit(self) -> None:
+        getContext().deinitialise()
+
+    @catchContextResetException
     def onMidiIn(self, event) -> None:
         getContext().processEvent(event)
 
@@ -61,6 +65,10 @@ device = OverallDevice()
 
 def OnInit():
     device.onInit()
+
+
+def OnDeInit():
+    device.onDeinit()
 
 
 def OnMidiIn(event):

@@ -12,6 +12,12 @@ from fl_context import FlContext
 
 from tests.helpers import DummyDevice2, DummyDeviceContext
 
+from common.exceptions import (
+    EventEncodeError,
+    EventInspectError,
+    # EventDecodeError,
+    # EventDispatchError,
+)
 from common.types import EventData
 from common.util.events import (
     encodeForwardedEvent,
@@ -38,7 +44,7 @@ def test_invalid_event_forward():
     the main script
     """
     with DummyDeviceContext():
-        with pytest.raises(ValueError):
+        with pytest.raises(EventEncodeError):
             encodeForwardedEvent(EventData(1, 2, 3))
 
 
@@ -50,7 +56,7 @@ def test_invalid_event_receive():
         e = EventData(encodeForwardedEvent(EventData(1, 2, 3)))
 
     with DummyDeviceContext(1):
-        with pytest.raises(ValueError):
+        with pytest.raises(EventInspectError):
             assert isEventForwardedHereFrom(e)
 
 
