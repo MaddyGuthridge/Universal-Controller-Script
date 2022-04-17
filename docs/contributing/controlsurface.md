@@ -7,9 +7,17 @@ via the [`ControlShadow`](controlshadow.md) type.
 
 ## List of Control Surfaces
 
+This is all the control surfaces defined in the `controlsurfaces` module.
+Classes labelled with `*` have a `Master` variant, which represents that
+control surface, but specifically for the master channel.
+
 * `Note`: Represents a note event
 * `ModWheel`: Represents a modulation wheel
+    * `StandardModWheel`: a mod wheel that behaves in the standard way
 * `PitchWheel`: Represents a pitch bend wheel
+    * `StandardPitchWheel`: a pitch wheel that behaves in the standard way
+    * `Data2PitchWheel`: a pitch wheel that only sends pitch data in the
+      `data2` byte of the event.
 * `AfterTouch`: Represents aftertouch events
     * `ChannelAfterTouch`
     * `NoteAfterTouch`
@@ -18,6 +26,8 @@ via the [`ControlShadow`](controlshadow.md) type.
     * `SostenutoPedal`
     * `SoftPedal`
 * `Button`: Represents a button (used by many transport controls)
+* `ControlSwitchButton`: Used as a command for plugins to switch modes, for
+  example switching from omni mode to sequencer mode in the channel rack.
 * `JogWheel`: Represents an encoder used for transport and navigation
     * `StandardJogWheel`: Scrolling and changing selection
     * `MoveJogWheel`: Moving selection
@@ -39,10 +49,31 @@ via the [`ControlShadow`](controlshadow.md) type.
     * `NextPrevButton`: Next and previous buttons
         * `DirectionNext`
         * `DirectionPrevious`
-* `Fader`: Represents a fader (linear slider)
-* `Knob`: Represents a knob (rotating dial)
+* `FaderButton` * : Represents a button commonly found near a fader
+    * `GenericFaderButton` * : A button that can act as a mute or solo control
+    * `MuteButton` * : A mute track button
+    * `SoloButton` * : A solo track button
+    * `ArmButton` * : An arm track button
+    * `SelectButton` * : A select track button
+* `Fader` * : Represents a fader (linear slider)
+* `Knob` * : Represents a knob (rotating dial)
 * `Encoder`: Represents an encoder (endlessly rotating dial)
 * `DrumPad`: Represents a drum pad
+* `MacroButton`: Represents a button used to perform some action in FL Studio
+    * `SaveButton`
+    * `UndoRedoButton`: Redo if possible, otherwise undo
+    * `UndoButton`
+    * `RedoButton`
+    * `QuantizeButton`
+* `ActivityButton`:
+    * `SwitchActiveButton`: Button that switches between plugins and windows
+      for controllers designed with a split activity scheme
+        * `SwitchActivePluginButton`: Switch activity to the active plugin
+        * `SwitchActiveWindowButton`: Switch activity to the active window
+        * `SwitchActiveToggleButton`: Toggle activity between plugins and
+          windows
+    * `PauseActiveButton`: Pause updating of the active plugin and window.
+* `NullEvent`: Used to handle events that the script should ignore
 
 ## Creating New Control Surfaces
 
