@@ -127,9 +127,6 @@ class WaitingForDevice(IScriptState):
         if not common.getContext().settings.get("bootstrap.delay_enquiry"):
             self.sendEnquiry()
 
-    def deinitialise(self) -> None:
-        pass
-
     def tick(self) -> None:
         # If it's been too long since we set the time
         if self._sent_enquiry:

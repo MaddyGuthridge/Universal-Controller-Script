@@ -11,7 +11,7 @@ from typing import Optional
 
 import device
 
-from common.eventpattern import BasicPattern, ForwardedPattern
+from common.eventpattern import BasicPattern
 from common.extensionmanager import ExtensionManager
 from common.types import EventData
 from controlsurfaces import (
@@ -20,7 +20,6 @@ from controlsurfaces import (
     Fader,
     FastForwardButton,
     GenericFaderButton,
-    MasterGenericFaderButton,
     Knob,
     LoopButton,
     MasterFader,
@@ -31,16 +30,11 @@ from controlsurfaces import (
     StandardPitchWheel,
     StopButton,
 )
-from controlsurfaces.valuestrategies import (
-    ButtonData2Strategy,
-    Data2Strategy,
-    ForwardedStrategy,
-)
+from controlsurfaces.valuestrategies import ButtonData2Strategy, Data2Strategy
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
-from .drumpad import LkDrumPad, LkControlSwitchButton, LkMetronomeButton
-from .incontrol import InControl, InControlMatcher
+from .drumpad import LaunchkeyDrumpad
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
 
@@ -51,9 +45,6 @@ class LaunchkeyMk2(Device):
     """
 
     def __init__(self, matcher: BasicControlMatcher) -> None:
-        # InControl manager
-        self._incontrol = InControl(matcher)
-        matcher.addSubMatcher(InControlMatcher(self._incontrol))
 
         # Notes
         matcher.addSubMatcher(NoteMatcher())
@@ -61,65 +52,55 @@ class LaunchkeyMk2(Device):
         # Drum pads (high priority because they just use note on events)
         for r in range(self.getDrumPadSize()[0]):
             for c in range(self.getDrumPadSize()[1]):
-                matcher.addControl(LkDrumPad((r, c)), 10)
-
-        # Control switch and metronome buttons
-        matcher.addControl(LkControlSwitchButton())
-        matcher.addControl(LkMetronomeButton())
+                matcher.addControl(LaunchkeyDrumpad((r, c)), 10)
 
         # Create knobs
         for i in range(8):
             matcher.addControl(
                 Knob(
-                    ForwardedPattern(2, BasicPattern(0xBF, 0x15 + i, ...)),
-                    ForwardedStrategy(Data2Strategy()),
+                    BasicPattern(0xB0, 0x15 + i, ...),
+                    Data2Strategy(),
                     (0, i)
                 )
             )
 
         # Transport
         matcher.addControl(StopButton(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x72, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
+            BasicPattern(0xB0, 0x72, ...),
+            ButtonData2Strategy()
         ))
         matcher.addControl(PlayButton(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x73, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
+            BasicPattern(0xB0, 0x73, ...),
+            ButtonData2Strategy()
         ))
         matcher.addControl(LoopButton(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x74, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
+            BasicPattern(0xB0, 0x74, ...),
+            ButtonData2Strategy(),
         ))
         matcher.addControl(RecordButton(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
+            BasicPattern(0xB0, 0x75, ...),
+            ButtonData2Strategy()
         ))
         matcher.addControl(DirectionNext(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
+            BasicPattern(0xB0, 0x66, ...),
+            ButtonData2Strategy()
         ))
         matcher.addControl(DirectionPrevious(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
+            BasicPattern(0xB0, 0x67, ...),
+            ButtonData2Strategy(),
         ))
         matcher.addControl(RewindButton(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x70, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
+            BasicPattern(0xB0, 0x70, ...),
+            ButtonData2Strategy(),
         ))
         matcher.addControl(FastForwardButton(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x71, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
+            BasicPattern(0xB0, 0x71, ...),
+            ButtonData2Strategy(),
         ))
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
 
         super().__init__(matcher)
-
-    def initialise(self) -> None:
-        self._incontrol.enable()
-
-    def deinitialise(self) -> None:
-        self._incontrol.enable()
 
     @staticmethod
     def getDrumPadSize() -> tuple[int, int]:
@@ -149,16 +130,16 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         for i in range(8):
             matcher.addControl(
                 Fader(
-                    ForwardedPattern(2, BasicPattern(0xBF, 0x29 + i, ...)),
-                    ForwardedStrategy(Data2Strategy()),
+                    BasicPattern(0xB0, 0x29 + i, ...),
+                    Data2Strategy(),
                     (0, i)
                 )
             )
         # Master fader
         matcher.addControl(
             MasterFader(
-                ForwardedPattern(2, BasicPattern(0xBF, 0x07, ...)),
-                ForwardedStrategy(Data2Strategy())
+                BasicPattern(0xB0, 0x07, ...),
+                Data2Strategy()
             )
         )
 
@@ -166,18 +147,11 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         for i in range(8):
             matcher.addControl(
                 GenericFaderButton(
-                    ForwardedPattern(2, BasicPattern(0xBF, 0x33 + i, ...)),
-                    ForwardedStrategy(Data2Strategy()),
+                    BasicPattern(0xB0, 0x33 + i, ...),
+                    Data2Strategy(),
                     (0, i)
                 )
             )
-
-        matcher.addControl(
-            MasterGenericFaderButton(
-                ForwardedPattern(2, BasicPattern(0xBF, 0x3B, ...)),
-                ForwardedStrategy(Data2Strategy())
-            )
-        )
 
         super().__init__(matcher)
 

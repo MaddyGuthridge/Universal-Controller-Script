@@ -40,9 +40,6 @@ class MainState(DeviceState):
         return cls(device)
 
     def initialise(self) -> None:
-        self._device.initialise()
-
-    def deinitialise(self) -> None:
         pass
 
     @profilerDecoration("tick")
