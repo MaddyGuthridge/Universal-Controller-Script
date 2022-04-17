@@ -35,6 +35,7 @@ from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
 from .drumpad import LaunchkeyDrumpad
+from .incontrol import InControl, InControlMatcher
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
 
@@ -45,6 +46,9 @@ class LaunchkeyMk2(Device):
     """
 
     def __init__(self, matcher: BasicControlMatcher) -> None:
+        # InControl manager
+        self._incontrol = InControl()
+        matcher.addSubMatcher(InControlMatcher(self._incontrol))
 
         # Notes
         matcher.addSubMatcher(NoteMatcher())
