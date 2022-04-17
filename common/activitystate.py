@@ -83,6 +83,8 @@ class ActivityState:
                     self._changed = True
                 self._window = window
                 if not self._split:
+                    if self._plug_active:
+                        self._changed = True
                     self._plug_active = False
                 self._forcePlugUpdate()
             elif (plugin := getFocusedPluginIndex()) is not None:
@@ -97,6 +99,8 @@ class ActivityState:
                 else:
                     self._effect = plugin  # type: ignore
                 if not self._split:
+                    if not self._plug_active:
+                        self._changed = True
                     self._plug_active = True
             else:
                 self._forcePlugUpdate()
