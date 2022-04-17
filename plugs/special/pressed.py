@@ -8,6 +8,7 @@ Authors:
 """
 
 from typing import Any
+from time import time
 from common.types import Color
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import UnsafeIndex
@@ -20,14 +21,24 @@ from controlsurfaces import (
     Encoder,
     ModWheel,
     PitchWheel,
+    ControlSurface,
 )
 from controlsurfaces import ControlShadowEvent
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 
+# How much time to fade buttons to black
+FADE_TIME = 1.0
 
 OFF = Color()
 ON = Color.fromInteger(0xFFFFFF)
+
+
+def fadeOverTime(control: ControlSurface) -> float:
+    """Fade to black over time"""
+    # The longer it's been since we tweaked this control, the
+    # more faded it should be
+    return max(1.0 - (time() - control.last_tweaked) / FADE_TIME, 0)
 
 
 class Press(SpecialPlugin):
@@ -74,14 +85,27 @@ class Press(SpecialPlugin):
     def tick(self):
         self.tickVelocities()
         self.tickButtons()
+        self.tickOthers()
 
     def tickVelocities(self):
         for c in self._velocities:
-            c.color = Color.fade(OFF, ON, c.getControl().value)
+            control = c.getControl()
+            c.color = Color.fade(
+                OFF, ON, control.value * fadeOverTime(control)
+            )
 
     def tickButtons(self):
         for c in self._buttons:
-            c.color = ON if c.getControl().value else OFF
+            control = c.getControl()
+            if control.value:
+                c.color = Color.fade(OFF, ON, fadeOverTime(control))
+            else:
+                c.color = OFF
+
+    def tickOthers(self):
+        for c in self._others:
+            control = c.getControl()
+            c.color = Color.fade(OFF, ON, fadeOverTime(control))
 
 
 ExtensionManager.registerFinalSpecialPlugin(Press)
