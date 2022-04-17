@@ -43,7 +43,7 @@ jobs:
       run: |
         flake8
 
-  Load and Run:
+  Load:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
