@@ -9,7 +9,9 @@ Authors:
 
 from typing import Optional
 
-from common.eventpattern import BasicPattern
+import device
+
+from common.eventpattern import BasicPattern, ForwardedPattern
 from common.extensionmanager import ExtensionManager
 from common.types import EventData
 from controlsurfaces import (
@@ -18,6 +20,7 @@ from controlsurfaces import (
     Fader,
     FastForwardButton,
     GenericFaderButton,
+    MasterGenericFaderButton,
     Knob,
     LoopButton,
     MasterFader,
@@ -28,13 +31,19 @@ from controlsurfaces import (
     StandardPitchWheel,
     StopButton,
 )
-from controlsurfaces.valuestrategies import ButtonData2Strategy, Data2Strategy
+from controlsurfaces.valuestrategies import (
+    ButtonData2Strategy,
+    Data2Strategy,
+    ForwardedStrategy,
+)
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
-from .drumpad import LaunchkeyDrumpad
+from .drumpad import LkDrumPad, LkControlSwitchButton, LkMetronomeButton
+from .incontrol import InControl, InControlMatcher
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
+
 
 class LaunchkeyMk2(Device):
     """
@@ -42,6 +51,9 @@ class LaunchkeyMk2(Device):
     """
 
     def __init__(self, matcher: BasicControlMatcher) -> None:
+        # InControl manager
+        self._incontrol = InControl(matcher)
+        matcher.addSubMatcher(InControlMatcher(self._incontrol))
 
         # Notes
         matcher.addSubMatcher(NoteMatcher())
@@ -49,64 +61,87 @@ class LaunchkeyMk2(Device):
         # Drum pads (high priority because they just use note on events)
         for r in range(self.getDrumPadSize()[0]):
             for c in range(self.getDrumPadSize()[1]):
-                matcher.addControl(LaunchkeyDrumpad((r, c)), 10)
+                matcher.addControl(LkDrumPad((r, c)), 10)
+
+        # Control switch and metronome buttons
+        matcher.addControl(LkControlSwitchButton())
+        matcher.addControl(LkMetronomeButton())
 
         # Create knobs
         for i in range(8):
             matcher.addControl(
                 Knob(
-                    BasicPattern(0xB0, 0x15 + i, ...),
-                    Data2Strategy(),
+                    ForwardedPattern(2, BasicPattern(0xBF, 0x15 + i, ...)),
+                    ForwardedStrategy(Data2Strategy()),
                     (0, i)
                 )
             )
 
         # Transport
         matcher.addControl(StopButton(
-            BasicPattern(0xB0, 0x72, ...),
-            ButtonData2Strategy()
+            ForwardedPattern(2, BasicPattern(0xBF, 0x72, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(PlayButton(
-            BasicPattern(0xB0, 0x73, ...),
-            ButtonData2Strategy()
+            ForwardedPattern(2, BasicPattern(0xBF, 0x73, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(LoopButton(
-            BasicPattern(0xB0, 0x74, ...),
-            ButtonData2Strategy(),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x74, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
         ))
         matcher.addControl(RecordButton(
-            BasicPattern(0xB0, 0x75, ...),
-            ButtonData2Strategy()
+            ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(DirectionNext(
-            BasicPattern(0xB0, 0x66, ...),
-            ButtonData2Strategy()
+            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(DirectionPrevious(
-            BasicPattern(0xB0, 0x67, ...),
-            ButtonData2Strategy(),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
         ))
         matcher.addControl(RewindButton(
-            BasicPattern(0xB0, 0x70, ...),
-            ButtonData2Strategy(),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x70, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
         ))
         matcher.addControl(FastForwardButton(
-            BasicPattern(0xB0, 0x71, ...),
-            ButtonData2Strategy(),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x71, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
         ))
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
 
         super().__init__(matcher)
 
+    def initialise(self) -> None:
+        self._incontrol.enable()
+
+    def deinitialise(self) -> None:
+        self._incontrol.enable()
+
     @staticmethod
     def getDrumPadSize() -> tuple[int, int]:
         return 2, 8
+
+    def getDeviceNumber(self) -> int:
+        name = device.getName()
+        if "MIDIIN2" in name:
+            return 2
+        elif "MIDI" in name:
+            return 1
+        elif "InCo" in name:
+            return 2
+        else:
+            return 1
+
 
 class LaunchkeyMk2_49_61(LaunchkeyMk2):
     """
     Standard controls with added faders
     """
+
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
 
@@ -114,16 +149,16 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         for i in range(8):
             matcher.addControl(
                 Fader(
-                    BasicPattern(0xB0, 0x29 + i, ...),
-                    Data2Strategy(),
+                    ForwardedPattern(2, BasicPattern(0xBF, 0x29 + i, ...)),
+                    ForwardedStrategy(Data2Strategy()),
                     (0, i)
                 )
             )
         # Master fader
         matcher.addControl(
             MasterFader(
-                BasicPattern(0xB0, 0x07, ...),
-                Data2Strategy()
+                ForwardedPattern(2, BasicPattern(0xBF, 0x07, ...)),
+                ForwardedStrategy(Data2Strategy())
             )
         )
 
@@ -131,12 +166,18 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         for i in range(8):
             matcher.addControl(
                 GenericFaderButton(
-                    BasicPattern(0xB0, 0x33 + i, ...),
-                    Data2Strategy(),
+                    ForwardedPattern(2, BasicPattern(0xBF, 0x33 + i, ...)),
+                    ForwardedStrategy(Data2Strategy()),
                     (0, i)
                 )
             )
 
+        matcher.addControl(
+            MasterGenericFaderButton(
+                ForwardedPattern(2, BasicPattern(0xBF, 0x3B, ...)),
+                ForwardedStrategy(Data2Strategy())
+            )
+        )
 
         super().__init__(matcher)
 
@@ -146,21 +187,25 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
 
     @staticmethod
     def getId() -> str:
-        return f"{ID_PREFIX}.49-61"
+        if "49" in device.getName():
+            num = 49
+        else:
+            num = 61
+        return f"{ID_PREFIX}.{num}"
 
     @staticmethod
     def getUniversalEnquiryResponsePattern():
         return BasicPattern(
             [
-                0xF0, # Sysex start
-                0x7E, # Device response
-                ..., # OS Device ID
-                0x06, # Separator
-                0x02, # Separator
-                0x00, # Manufacturer
-                0x20, # Manufacturer
-                0x29, # Manufacturer
-                (0x7C, 0x7D) # Family code (documented as 0x7A???)
+                0xF0,  # Sysex start
+                0x7E,  # Device response
+                ...,  # OS Device ID
+                0x06,  # Separator
+                0x02,  # Separator
+                0x00,  # Manufacturer
+                0x20,  # Manufacturer
+                0x29,  # Manufacturer
+                (0x7C, 0x7D)  # Family code (documented as 0x7A???)
             ]
         )
 
@@ -169,10 +214,12 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         """Controller can't be matched to FL device name"""
         return False
 
+
 class LaunchkeyMk2_25(LaunchkeyMk2):
     """
     Standard controls with no faders
     """
+
     def __init__(self) -> None:
         super().__init__(BasicControlMatcher())
 
@@ -194,6 +241,7 @@ class LaunchkeyMk2_25(LaunchkeyMk2):
     def matchDeviceName(name: str) -> bool:
         """Controller can't be matched to FL device name"""
         return False
+
 
 # Register devices
 ExtensionManager.registerDevice(LaunchkeyMk2_49_61)

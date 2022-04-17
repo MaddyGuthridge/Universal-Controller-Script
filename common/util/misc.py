@@ -8,20 +8,24 @@ import math
 import sys
 import time
 
+
 class _NoneNoPrintout:
     """
     A thing that can be returned instead of None, so that we don't get those
     ugly `None` printouts after user interaction
     """
+
     def __repr__(self) -> str:
         return ''
 
+
 NoneNoPrintout = _NoneNoPrintout()
+
 
 def sizeof(obj, seen=None):
     """
     Recursively finds size of objects.
-    
+
     Source:
     https://goshippo.com/blog/measure-real-size-any-python-object/
     """
@@ -39,9 +43,13 @@ def sizeof(obj, seen=None):
         size += sum([sizeof(k, seen) for k in obj.keys()])
     elif hasattr(obj, '__dict__'):
         size += sizeof(obj.__dict__, seen)
-    elif hasattr(obj, '__iter__') and not isinstance(obj, (str, bytes, bytearray)):
+    elif hasattr(obj, '__iter__') and not isinstance(
+        obj,
+        (str, bytes, bytearray)
+    ):
         size += sum([sizeof(i, seen) for i in obj])
     return size
+
 
 def formatTime(t: float) -> str:
     """
@@ -55,6 +63,7 @@ def formatTime(t: float) -> str:
     """
     t_obj = time.localtime(t)
     return f"{t_obj.tm_hour:02}:{t_obj.tm_min:02}:{t_obj.tm_sec:02}"
+
 
 def formatLongTime(t: float) -> str:
     """

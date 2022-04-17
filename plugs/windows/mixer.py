@@ -1,22 +1,17 @@
 
 from typing import Any
-import midi
 import ui
 import mixer
-import transport
-import general
 from common import getContext
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import (
     UnsafeIndex,
-    getSelectedDockMixerTracks,
-    getMixerDockSides,
     getSelectedMixerTracks,
 )
 from common.util.snap import snap
 from controlsurfaces import consts
 from controlsurfaces import ControlShadowEvent
-from controlsurfaces import (
+from controlsurfaces import (  # noqa: F401
     JogWheel,
     StandardJogWheel,
     Fader,
@@ -35,6 +30,7 @@ from plugs import WindowPlugin
 
 INDEX = 0
 
+
 def snapFaders(value: float) -> float:
     """
     Return the snapped value of a fader, so that getting volumes to 100% is
@@ -51,27 +47,38 @@ def snapFaders(value: float) -> float:
     else:
         return value * 0.8
 
+
 def snapKnobs(value: float) -> float:
     return snap(value, 0.5) * 2 - 1
+
 
 class Mixer(WindowPlugin):
     """
     Used to process events directed
     """
+
     def __init__(self, shadow: DeviceShadow) -> None:
         super().__init__(shadow, [])
 
         # Bind jog wheel
-        self._jog = shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
+        self._jog = shadow.bindMatches(
+            JogWheel, self.jogWheel, raise_on_failure=False)
 
         # Bind main controls
-        self._faders  = shadow.bindMatches(Fader,              self.fader,  raise_on_failure=False)
-        self._knobs   = shadow.bindMatches(Knob,               self.knob,   raise_on_failure=False)
-        self._buttons = shadow.bindMatches(GenericFaderButton, self.button, raise_on_failure=False)
-        self._mutes   = shadow.bindMatches(MuteButton,         self.mute,   raise_on_failure=False)
-        self._solos   = shadow.bindMatches(SoloButton,         self.solo,   raise_on_failure=False)
-        self._arms    = shadow.bindMatches(ArmButton,          self.arm,    raise_on_failure=False)
-        self._selects = shadow.bindMatches(SelectButton,       self.select, raise_on_failure=False)
+        self._faders = shadow.bindMatches(
+            Fader,              self.fader,  raise_on_failure=False)
+        self._knobs = shadow.bindMatches(
+            Knob,               self.knob,   raise_on_failure=False)
+        self._buttons = shadow.bindMatches(
+            GenericFaderButton, self.button, raise_on_failure=False)
+        self._mutes = shadow.bindMatches(
+            MuteButton,         self.mute,   raise_on_failure=False)
+        self._solos = shadow.bindMatches(
+            SoloButton,         self.solo,   raise_on_failure=False)
+        self._arms = shadow.bindMatches(
+            ArmButton,          self.arm,    raise_on_failure=False)
+        self._selects = shadow.bindMatches(
+            SelectButton,       self.select, raise_on_failure=False)
 
         # TODO: Bind master controls
 
@@ -93,8 +100,8 @@ class Mixer(WindowPlugin):
         Update the list of selected tracks
 
         KNOWN ISSUES:
-        * This doesn't respect docking sides: as soon as the mixer rectangle can
-          be displayed in a way that respects them, change this
+        * This doesn't respect docking sides: as soon as the mixer rectangle
+          can be displayed in a way that respects them, change this
         """
         selected = getSelectedMixerTracks()
 
@@ -117,8 +124,8 @@ class Mixer(WindowPlugin):
         # If we need to change selection
         if (
             len(self._selection) == 0
-         or first < self._selection[0]
-         or last  > self._selection[0] + self._len - 1
+            or first < self._selection[0]
+            or last > self._selection[0] + self._len - 1
         ):
             self._selection = list(range(first, first+self._len))
             ui.miDisplayRect(first, first+self._len-1, 2000)
@@ -126,15 +133,20 @@ class Mixer(WindowPlugin):
     def tick(self):
         self.updateSelected()
 
-    def jogWheel(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def jogWheel(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         selected = getSelectedMixerTracks()
         if len(selected) == 0:
             selected = [0]
         # Calculate increment
         if control.value == consts.ENCODER_NEXT:
-            dest =  selected[-1] + 1
+            dest = selected[-1] + 1
         elif control.value == consts.ENCODER_PREV:
-            dest =  selected[0] - 1
+            dest = selected[0] - 1
         elif control.value == consts.ENCODER_SELECT:
             # When we push the encoder, toggle the selected tracks' mutes
             for i in selected:
@@ -155,7 +167,12 @@ class Mixer(WindowPlugin):
 
         return True
 
-    def fader(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def fader(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         """Faders -> volume"""
         index = self._selection[control.getControl().coordinate[1]]
 
@@ -163,7 +180,12 @@ class Mixer(WindowPlugin):
 
         return True
 
-    def knob(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def knob(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         """Knobs -> panning"""
         index = self._selection[control.getControl().coordinate[1]]
         mixer.setTrackPan(index, snapKnobs(control.value))
@@ -171,35 +193,60 @@ class Mixer(WindowPlugin):
         return True
 
     @filterButtonLift
-    def mute(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def mute(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         """Mute track"""
         index = self._selection[control.getControl().coordinate[1]]
         mixer.muteTrack(index)
         return True
 
     @filterButtonLift
-    def solo(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def solo(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         """Solo track"""
         index = self._selection[control.getControl().coordinate[1]]
         mixer.soloTrack(index)
         return True
 
     @filterButtonLift
-    def arm(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def arm(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         """Arm track"""
         index = self._selection[control.getControl().coordinate[1]]
         mixer.armTrack(index)
         return True
 
     @filterButtonLift
-    def select(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def select(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         """Select track"""
         index = self._selection[control.getControl().coordinate[1]]
         mixer.selectTrack(index)
         return True
 
     @filterButtonLift
-    def button(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def button(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         index = self._selection[control.getControl().coordinate[1]]
 
         if control.double or mixer.isTrackSolo(index):
@@ -208,5 +255,6 @@ class Mixer(WindowPlugin):
             mixer.muteTrack(index)
 
         return True
+
 
 ExtensionManager.registerWindowPlugin(Mixer)

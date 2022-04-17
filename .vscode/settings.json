@@ -7,9 +7,8 @@
     // Link up docstring template
     "autoDocstring.customTemplatePath": "resources/docstring_template.mustache",
 
-    // Switch off Pylance and use MyPy instead
+    // Switch off Pylance, since we're using MyPy instead
     "python.analysis.typeCheckingMode": "off",
-    "mypy.runUsingActiveInterpreter": true,
 
     // Pytest configuration
     "python.testing.pytestArgs": [
@@ -17,6 +16,13 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+
+    // Enable linters
+    "python.linting.enabled": true,
+    "python.linting.flake8CategorySeverity.E": "Warning",
+    "python.linting.flake8CategorySeverity.F": "Warning",
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": true,
 
     // Spell checker
     "cSpell.words": [
@@ -27,6 +33,7 @@
         "controlmatcher",
         "controlsurfaces",
         "deinitialise",
+        "deinitialised",
         "deviceconfigs",
         "deviceshadow",
         "dicttools",
@@ -36,7 +43,9 @@
         "eventfilters",
         "eventpattern",
         "flmidimsg",
+        "hintmsg",
         "ieventpattern",
+        "INCONTROL",
         "ivaluestrategy",
         "launchkey",
         "mappingstrategy",
@@ -54,5 +63,5 @@
         "sysex",
         "Tytel",
         "valuestrategy"
-    ]
+    ],
 }

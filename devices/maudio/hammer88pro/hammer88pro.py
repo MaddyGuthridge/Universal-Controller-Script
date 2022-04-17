@@ -9,6 +9,8 @@ Authors:
 
 from typing import Optional
 
+import device
+
 from common import getContext
 from common.eventpattern import (
     BasicPattern,
@@ -54,6 +56,7 @@ from controlsurfaces.valuestrategies import (
 from .hammerpitch import HammerPitchWheel
 from .jogmatcher import JogMatcher
 
+
 class Hammer88Pro(Device):
     """
     Device definition for Hammer 88 Pro
@@ -61,6 +64,7 @@ class Hammer88Pro(Device):
     Note: this requires the presets for both DAW and User modes to be loaded
     on the device.
     """
+
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
         # Null events
@@ -191,24 +195,23 @@ class Hammer88Pro(Device):
     def create(cls, event: Optional[EventData]) -> Device:
         return cls()
 
-    @staticmethod
-    def getId() -> str:
+    def getId(self) -> str:
         return "Maudio.Hammer88Pro"
 
     @staticmethod
     def getUniversalEnquiryResponsePattern():
         return BasicPattern(
             [
-                0xF0, # Sysex start
-                0x7E, # Device response
-                ..., # OS Device ID
-                0x06, # Separator
-                0x02, # Separator
-                0x00, # Manufacturer
-                0x01, # Manufacturer
-                0x05, # Manufacturer
-                0x00, # Family code
-                0x3C, # Family code
+                0xF0,  # Sysex start
+                0x7E,  # Device response
+                ...,  # OS Device ID
+                0x06,  # Separator
+                0x02,  # Separator
+                0x00,  # Manufacturer
+                0x01,  # Manufacturer
+                0x05,  # Manufacturer
+                0x00,  # Family code
+                0x3C,  # Family code
                 # Extra details omitted
             ]
         )
@@ -217,5 +220,19 @@ class Hammer88Pro(Device):
     def matchDeviceName(name: str) -> bool:
         """Controller can't be matched to FL device name"""
         return False
+
+    def getDeviceNumber(self) -> int:
+        name = device.getName()
+
+        try:
+            return {
+                "Hammer 88 Pro": 1,
+                "Hammer 88 Pro USB MIDI": 1,
+                "MIDIIN3 (Hammer 88 Pro)": 3,
+                "Hammer 88 Pro Mackie/HUI": 3,
+            }[name]
+        except KeyError as e:
+            raise TypeError("Couldn't find a mapping for device name") from e
+
 
 ExtensionManager.registerDevice(Hammer88Pro)

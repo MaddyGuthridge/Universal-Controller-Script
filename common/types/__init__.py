@@ -10,5 +10,10 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+__all__ = [
+    'Color',
+    'EventData',
+]
+
 from .eventdata import EventData
 from .color import Color

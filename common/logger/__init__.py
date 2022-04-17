@@ -9,6 +9,10 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from .logger import log
+__all__ = [
+    'log',
+    'verbosity',
+]
 
+from .logger import log
 from . import verbosity

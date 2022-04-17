@@ -9,10 +9,12 @@ Authors:
 from controlsurfaces import SustainPedal, SoftPedal, SostenutoPedal
 from devices.matchers import BasicControlMatcher
 
+
 class PedalMatcher(BasicControlMatcher):
     """
     Control matcher for pedal events
     """
+
     def __init__(self) -> None:
         super().__init__()
         self.addControls([SustainPedal(), SoftPedal(), SostenutoPedal()])

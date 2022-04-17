@@ -14,6 +14,13 @@ __all__ = [
     'Color'
 ]
 
+# Constants for scaling color components when getting distances
+# Higher values contribute more to closeness
+HUE_SCALE = 10.0
+SAT_SCALE = 0.9
+VAL_SCALE = 2.0
+
+
 def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
     """
     Convert HSV to RGB color spaces
@@ -48,7 +55,7 @@ def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
         r, g, b = 0, x, c
     elif h_ < 5:
         r, g, b = x, 0, c
-    else: #h_ < 6
+    else:  # h_ < 6
         r, g, b = c, 0, x
 
     # Finally, get a median value to add to each component
@@ -58,6 +65,7 @@ def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
     # And return them in a reasonable format
     # 0-255
     return r, g, b
+
 
 def rgbToHsv(r: int, g: int, b: int) -> tuple[float, float, float]:
     """
@@ -99,7 +107,7 @@ def rgbToHsv(r: int, g: int, b: int) -> tuple[float, float, float]:
         h = ((g_ - b_) / c)
     elif v == g_:
         h = (2 + (b_ - r_)/c)
-    else: #  v == b
+    else:  # v == b
         h = (4 + (r_ - g_)/c)
     h *= 60
 
@@ -111,6 +119,7 @@ def rgbToHsv(r: int, g: int, b: int) -> tuple[float, float, float]:
         h += 360
 
     return h, s, v
+
 
 class Color:
     """
@@ -138,7 +147,7 @@ class Color:
 
     def __repr__(self) -> str:
         return f"Color(0x{self.integer:06X} | "\
-             + f"r={self.red}, g={self.green}, b={self.blue})"
+            + f"r={self.red}, g={self.green}, b={self.blue})"
 
     def __hash__(self) -> int:
         return self.integer
@@ -154,7 +163,7 @@ class Color:
         c.integer = self.integer
         return c
 
-    ############################################################################
+    ###########################################################################
     # Creation functions
 
     @staticmethod
@@ -214,7 +223,7 @@ class Color:
 
         return c
 
-    ############################################################################
+    ###########################################################################
     # Helper functions
 
     @staticmethod
@@ -234,9 +243,12 @@ class Color:
         """
         if not isinstance(val, int):
             raise TypeError("RGB values must be integers between 0 and 255")
-        if val < 0: return 0
-        if val > 255: return 255
-        else: return val
+        if val < 0:
+            return 0
+        if val > 255:
+            return 255
+        else:
+            return val
 
     @staticmethod
     def __valCheckSatVal(val: float) -> float:
@@ -250,9 +262,12 @@ class Color:
         ### Returns
         * `float`: adjusted and checked value
         """
-        if val < 0: return 0.0
-        if val > 1.0: return 1.0
-        else: return val
+        if val < 0:
+            return 0.0
+        if val > 1.0:
+            return 1.0
+        else:
+            return val
 
     @staticmethod
     def __valCheckHue(h: float) -> float:
@@ -276,7 +291,7 @@ class Color:
             h -= floor(h // 360) * 360
         return h
 
-    ############################################################################
+    ###########################################################################
     # Properties
 
     @property
@@ -293,9 +308,10 @@ class Color:
         """
         return (
             (self.red << 16)
-          + (self.green << 8)
-          + self.blue
+            + (self.green << 8)
+            + self.blue
         )
+
     @integer.setter
     def integer(self, i: int) -> None:
         """
@@ -315,8 +331,8 @@ class Color:
     @property
     def hsv(self) -> tuple[float, float, float]:
         """
-        Represents the colour as a tuple of floats representing hue, saturation,
-        and value
+        Represents the colour as a tuple of floats representing hue,
+        saturation, and value
 
         NOTE: Under the hood, values are still stored as RGB - conversions are
         made as required.
@@ -328,6 +344,7 @@ class Color:
             * value (0-1.0)
         """
         return rgbToHsv(self.red, self.green, self.blue)
+
     @hsv.setter
     def hsv(self, hsv: tuple[float, float, float]) -> None:
         """
@@ -363,6 +380,7 @@ class Color:
         * `int`: red
         """
         return self._red
+
     @red.setter
     def red(self, r: int) -> None:
         """
@@ -382,6 +400,7 @@ class Color:
         * `int`: green
         """
         return self._green
+
     @green.setter
     def green(self, g) -> None:
         """
@@ -401,6 +420,7 @@ class Color:
         * `int`: blue
         """
         return self._blue
+
     @blue.setter
     def blue(self, b) -> None:
         """
@@ -423,6 +443,7 @@ class Color:
         * `float`: hue (degrees: 0-360)
         """
         return self.hsv[0]
+
     @hue.setter
     def hue(self, h: float):
         """
@@ -449,6 +470,7 @@ class Color:
         * `float`: saturation
         """
         return self.hsv[1]
+
     @saturation.setter
     def saturation(self, s: float):
         """
@@ -475,6 +497,7 @@ class Color:
         * `float`: value
         """
         return self.hsv[2]
+
     @value.setter
     def value(self, v: float):
         """
@@ -489,11 +512,11 @@ class Color:
         h, s, _ = self.hsv
         self.hsv = h, s, v
 
-    ############################################################################
+    ###########################################################################
     # Operators
 
     @staticmethod
-    def fade(start: 'Color', end: 'Color', position:float=0.5) -> 'Color':
+    def fade(start: 'Color', end: 'Color', position: float = 0.5) -> 'Color':
         """
         Fade between two colors, using the HSV color space to ensure that
         intermediate colors remain vibrant
@@ -524,7 +547,7 @@ class Color:
             end.value * position + start.value * rev_pos
         )
 
-    def fadeBlack(self: 'Color', position:float=0.5) -> 'Color':
+    def fadeBlack(self: 'Color', position: float = 0.5) -> 'Color':
         """
         Fade between this color and black
 
@@ -538,7 +561,7 @@ class Color:
         black = Color()
         return Color.fade(self, black, position)
 
-    def fadeGray(self: 'Color', position:float=0.5) -> 'Color':
+    def fadeGray(self: 'Color', position: float = 0.5) -> 'Color':
         """
         Fade between this color and gray
 
@@ -578,10 +601,10 @@ class Color:
         elif h2 - h1 > 180:
             h2 -= 360
 
-        # Get deltas
-        delta_h = abs(h2 - h1) / 360
-        delta_s = abs(s2 - s1)
-        delta_v = abs(v2 - v1)
+        # Get scaled deltas
+        delta_h = abs(h2 - h1) / 360 * HUE_SCALE
+        delta_s = abs(s2 - s1) * SAT_SCALE
+        delta_v = abs(v2 - v1) * VAL_SCALE
 
         # Don't bother doing square root since it's arbitrary anyway
         return delta_h**2 + delta_s**2 + delta_v**2
@@ -660,8 +683,8 @@ class Color:
         if isinstance(other, Color):
             return (
                 self._red == other._red
-            and self._green == other._green
-            and self._blue == other._blue
+                and self._green == other._green
+                and self._blue == other._blue
             )
         elif isinstance(other, int):
             return self.integer == other

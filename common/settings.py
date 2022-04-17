@@ -18,6 +18,7 @@ from .util import dicttools, hotreload
 
 from . import defaultconfig as d
 
+
 class Settings:
     """
     A container for the configuration of the script
@@ -26,16 +27,17 @@ class Settings:
     dictionaries. Also manages the differences between the default config and
     any user modifications.
     """
-    
+
     def __init__(self) -> None:
         """
         Initialise and load the script's settings
         """
-        
+
         c = hotreload.getTemporaryModule('config')
         config = dicttools.expandDictShorthand(c.CONFIG)
-        self._settings_dict = dicttools.recursiveMergeDictionaries(d.CONFIG, config)
-    
+        self._settings_dict = dicttools.recursiveMergeDictionaries(
+            d.CONFIG, config)
+
     @staticmethod
     def _recursiveGet(keys: list[str], settings: dict) -> Any:
         """
@@ -69,6 +71,8 @@ class Settings:
         try:
             return Settings._recursiveGet(key.split('.'), self._settings_dict)
         except KeyError as e:
-            raise KeyError(f"Unable to find setting at '{key}'. Failed for key {e}") from None
+            raise KeyError(
+                f"Unable to find setting at '{key}'. Failed for key {e}"
+            ) from None
         except IndexError:
             raise KeyError(f"Unable to find setting at '{key}'") from None

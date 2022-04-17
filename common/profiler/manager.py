@@ -11,6 +11,7 @@ from common.util.consolehelpers import NoneNoPrintout
 
 MAX_NAME = 48
 
+
 class ProfileNode:
     """
     A node in the profiler
@@ -30,13 +31,13 @@ class ProfileNode:
         self._children: list[ProfileNode] = []
         self._opened = time.time_ns()
         self._time: Optional[int] = None
-    
+
     def close(self):
         """
         Close this profile node
         """
         self._time = time.time_ns() - self._opened
-    
+
     def addChild(self, child: 'ProfileNode'):
         """
         Add a child node to this node
@@ -65,6 +66,7 @@ class ProfileNode:
         children = ', '.join([str(c) for c in self._children])
         return f"\"'{self.name}' ({total_time})\":[{children}]"
 
+
 class ProfilerManager:
     """
     Class for managing profiles
@@ -75,21 +77,21 @@ class ProfilerManager:
             return n.name
         else:
             return ProfilerManager._getProfileName(n.parent) + "." + n.name
-    
+
     def __init__(self) -> None:
         self._current: Optional[ProfileNode] = None
         self._max_name = 0
         self._totals: dict[str, float] = {}
         self._number: dict[str, float] = {}
         self._maxes: dict[str, float] = {}
-    
+
     def __repr__(self) -> str:
         if not len(self._totals):
             return "Profiler (inactive)"
         else:
             total = sum(self._number.values())
             return f"Profiler ({total} profiles taken)"
-    
+
     def openProfile(self, name: str):
         """
         Open a new profile
@@ -101,7 +103,7 @@ class ProfilerManager:
         if self._current is not None:
             self._current.addChild(n)
         self._current = n
-    
+
     def closeProfile(self):
         """
         Close the current profile
@@ -132,12 +134,20 @@ class ProfilerManager:
         """
         Inspect details about the profiler
         """
-        header = f" {'Name'.ljust(self._max_name)} | Total (ms)     | Samples | Ave (ms)   | Max (ms)"
+        header = (
+            f" {'Name'.ljust(self._max_name)} | Total (ms)     "
+            f"| Samples | Ave (ms)   | Max (ms)"
+        )
         print()
         print(header)
-        print('='*len(header))
-        for (name, total), number, max in zip(self._totals.items(), self._number.values(), self._maxes.values()):
-            ave = total/number
-            print(f" {name.ljust(self._max_name)} | {total: 14.5f} | {number:7} | {ave: 10.5f} | {max: 10.5f}")
+        print('=' * len(header))
+        for (name, total), number, max in zip(
+            self._totals.items(), self._number.values(), self._maxes.values()
+        ):
+            ave = total / number
+            print(
+                f" {name.ljust(self._max_name)} | {total: 14.5f} | {number:7} "
+                f"| {ave: 10.5f} | {max: 10.5f}"
+            )
         print()
         return NoneNoPrintout

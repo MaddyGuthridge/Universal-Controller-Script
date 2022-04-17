@@ -10,12 +10,14 @@ Authors:
 from common.types.eventdata import EventData, isEventStandard
 from . import IValueStrategy
 
+
 class DataStrategy(IValueStrategy):
     """
     A value strategy using a data property of an event as the value
 
     Usable for most basic event types
     """
+
     def __init__(self, prop: str) -> None:
         """
         Create a data strategy, given the property to use
@@ -24,18 +26,20 @@ class DataStrategy(IValueStrategy):
         * `prop` (`str`): property to use
         """
         self._prop = prop
+
     def getValueFromEvent(self, event: EventData) -> int:
         return getattr(event, self._prop)
-    
+
     def getChannelFromEvent(self, event: EventData) -> int:
         assert isEventStandard(event)
         return event.status & 0xF
-    
+
     def getValueFromFloat(self, f: float) -> int:
         return int(f * 127)
 
     def getFloatFromValue(self, value: int) -> float:
         return value / 127
+
 
 class Data2Strategy(DataStrategy):
     """
@@ -43,8 +47,10 @@ class Data2Strategy(DataStrategy):
 
     Usable for most basic event types
     """
+
     def __init__(self) -> None:
         super().__init__("data2")
+
 
 class Data1Strategy(DataStrategy):
     """
@@ -53,5 +59,6 @@ class Data1Strategy(DataStrategy):
     Usable for event types where the value is stored in data1, such as channel
     aftertouch
     """
+
     def __init__(self) -> None:
         super().__init__("data1")

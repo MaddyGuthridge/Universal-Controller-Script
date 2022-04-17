@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from . import ControlSurface
     from . import ControlShadow
 
+
 class IControlHash:
     """
     Interface for values where their hashes map to a ControlSurface or
@@ -37,11 +38,13 @@ class IControlHash:
         raise NotImplementedError("This method should be implemented by child "
                                   "classes")
 
+
 class ControlMapping(IControlHash):
     """
     Defines a mapping to a control surface, which has the property that
     different instances of a mapping to the same control have the same hash.
     """
+
     def __init__(
         self,
         map_to: 'ControlSurface'
@@ -60,18 +63,20 @@ class ControlMapping(IControlHash):
     def getControl(self) -> 'ControlSurface':
         return self._map_to
 
+
 class ControlEvent(IControlHash):
     """
     Represents an event outside the context of plugins (maps to a control
     surface). Contains info on the channel and value of the event that was
     fired.
     """
+
     def __init__(
         self,
         map_to: 'ControlSurface',
         value: float,
-        channel:int,
-        double:bool,
+        channel: int,
+        double: bool,
     ) -> None:
         self._map_to = map_to
         self._value = value
@@ -109,6 +114,7 @@ class ControlEvent(IControlHash):
         """
         return self._double
 
+
 class ControlShadowEvent(IControlHash):
     """
     Defines a mapping to a control shadow, where hashes are shared with
@@ -117,7 +123,12 @@ class ControlShadowEvent(IControlHash):
     Used to represent a single event within the context of plugins, allowing
     for info about this event to be managed.
     """
-    def __init__(self, map_from: ControlEvent, map_to: 'ControlShadow') -> None:
+
+    def __init__(
+        self,
+        map_from: ControlEvent,
+        map_to: 'ControlShadow'
+    ) -> None:
         self._map_from = map_from
         self._map_to = map_to
 

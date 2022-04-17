@@ -9,6 +9,7 @@ Authors:
 
 import sys
 
+
 def getTemporaryModule(name: str):
     """
     Returns a reference to a module that will be hot reloaded each time a
@@ -16,8 +17,9 @@ def getTemporaryModule(name: str):
 
     WARNING: This implementation is very unreliable, and if possible, using
     importlib is preferred - this is only included until importlib actually
-    becomes a component in the standard library for FL Studio's Python interface
-    
+    becomes a component in the standard library for FL Studio's Python
+    interface
+
     ### THIS WILL FAIL WHEN:
     * The module is already loaded elsewhere
     * The module is a component of a higher-level module (not sure why)
@@ -28,10 +30,10 @@ def getTemporaryModule(name: str):
     ### Returns:
     * `module`: temporary module
     """
-    
+
     # Import the module
     module = __import__(name)
-    
+
     sys.modules.pop(name)
-    
+
     return module

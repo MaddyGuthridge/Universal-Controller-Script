@@ -1,8 +1,8 @@
 """
 common > activitystate
 
-Contains the definition for the ActivityState class which manages what plugin or
-window should be active.
+Contains the definition for the ActivityState class which manages what plugin
+or window should be active.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
@@ -18,10 +18,12 @@ from common.util.apifixes import (
 )
 from common.util.apifixes import getFocusedPluginIndex, getFocusedWindowIndex
 
+
 class ActivityState:
     """
     Maintains the currently selected plugin or window
     """
+
     def __init__(self) -> None:
         """
         Create an ActivityState object
@@ -54,16 +56,20 @@ class ActivityState:
         plugin = getFocusedPluginIndex(force=True)
         if plugin is None:
             if not self._plug_unsafe:
-                log("state.active", "Using plugin not from selected channel rack group", verbosity.WARNING)
+                log(
+                    "state.active",
+                    "Using plugin not from selected channel rack group",
+                    verbosity.WARNING
+                )
                 self._plug_unsafe = True
                 self._plugin = (-1,)
                 self._generator = (-1,)
             return
         self._plugin = plugin
         if len(plugin) == 1:
-            self._generator = plugin # type: ignore
+            self._generator = plugin  # type: ignore
         else:
-            self._effect = plugin # type: ignore
+            self._effect = plugin  # type: ignore
 
     def tick(self) -> None:
         """
@@ -77,6 +83,8 @@ class ActivityState:
                     self._changed = True
                 self._window = window
                 if not self._split:
+                    if self._plug_active:
+                        self._changed = True
                     self._plug_active = False
                 self._forcePlugUpdate()
             elif (plugin := getFocusedPluginIndex()) is not None:
@@ -84,12 +92,15 @@ class ActivityState:
                 if plugin != self._plugin:
                     self._changed = True
                 self._plugin = plugin
-                # Ignore typing because len(plugin) doesn't narrow types in mypy
+                # Ignore typing because len(plugin) doesn't narrow types in
+                # mypy
                 if len(plugin) == 1:
-                    self._generator = plugin # type: ignore
+                    self._generator = plugin  # type: ignore
                 else:
-                    self._effect = plugin # type: ignore
+                    self._effect = plugin  # type: ignore
                 if not self._split:
+                    if not self._plug_active:
+                        self._changed = True
                     self._plug_active = True
             else:
                 self._forcePlugUpdate()
@@ -153,8 +164,8 @@ class ActivityState:
         Pause or resume updating the active plugin
 
         ### Args:
-        * `value` (`bool`, optional): Whether the updating should happen or not.
-          Defaults to `None` (toggle).
+        * `value` (`bool`, optional): Whether the updating should happen or
+          not. Defaults to `None` (toggle).
 
         ### Returns:
         * `bool`: whether updating will happen
@@ -187,7 +198,8 @@ class ActivityState:
 
         ### Args:
         * `value` (`bool`, optional): whether the active plugin should be a
-        plugin (True) or a window (False), or toggled (None). Defaults to `None`.
+          plugin (True) or a window (False), or toggled (None). Defaults to
+          `None`.
 
         ### Raises:
         * `ValueError`: setSplitWindowsPlugins() hasn't been called
@@ -200,5 +212,6 @@ class ActivityState:
                              "they are being addressed independently")
         else:
             self._changed = True
-            self._plug_active = not self._plug_active if value is None else value
+            self._plug_active = \
+                not self._plug_active if value is None else value
             return self._plug_active

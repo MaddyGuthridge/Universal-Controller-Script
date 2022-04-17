@@ -12,8 +12,9 @@ Authors:
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .. import EventData
+    from common.types import EventData
 from . import IEventPattern
+
 
 class NullPattern(IEventPattern):
     """

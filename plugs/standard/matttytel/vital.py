@@ -12,10 +12,12 @@ from plugs import eventfilters, tickfilters
 
 MACRO_START = 211
 
+
 class Vital(StandardPlugin):
     """
     Used to interact with Matt Tytel's Vital plugin, mapping macros to faders
     """
+
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.bindMatches(
             Fader, self.faders, ..., target_num=4, raise_on_failure=False)
@@ -34,8 +36,16 @@ class Vital(StandardPlugin):
         pass
 
     @eventfilters.toGeneratorIndex
-    def faders(self, control: ControlShadowEvent, index: GeneratorIndex, idx: int, *args: Any) -> bool:
-        plugins.setParamValue(control.value, MACRO_START + control.getShadow().coordinate[1], *index)
+    def faders(
+        self,
+        control: ControlShadowEvent,
+        index: GeneratorIndex,
+        idx: int,
+        *args: Any
+    ) -> bool:
+        plugins.setParamValue(control.value, MACRO_START +
+                              control.getShadow().coordinate[1], *index)
         return True
+
 
 ExtensionManager.registerPlugin(Vital)

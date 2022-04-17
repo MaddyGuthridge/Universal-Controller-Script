@@ -11,6 +11,7 @@ from common.eventpattern import IEventPattern
 from controlsurfaces.valuestrategies import IValueStrategy
 from . import ControlSurface
 
+
 class Encoder(ControlSurface):
     """
     Encoders are an endless rotating knob that is used for mapping to
@@ -23,9 +24,14 @@ class Encoder(ControlSurface):
     """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
+        from .knob import Knob
         return (Knob,)
 
-    def __init__(self, event_pattern: IEventPattern, value_strategy: IValueStrategy, coordinate: tuple[int, int], group: str = "encoders") -> None:
+    def __init__(
+        self,
+        event_pattern: IEventPattern,
+        value_strategy: IValueStrategy,
+        coordinate: tuple[int, int],
+        group: str = "encoders"
+    ) -> None:
         super().__init__(event_pattern, value_strategy, group, coordinate)
-
-from .knob import Knob

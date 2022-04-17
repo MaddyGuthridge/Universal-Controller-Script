@@ -10,19 +10,20 @@ Authors:
 import channels
 
 from typing import Any
-from common.util.apifixes import UnsafeIndex, PluginIndex
+from common.util.apifixes import UnsafeIndex
 from common import getContext
 
 from controlsurfaces import Note
 from controlsurfaces import ControlShadowEvent
 from devices import DeviceShadow
-# from plugs.eventfilters import filterToGeneratorIndex
 from . import IMappingStrategy
+
 
 class NoteStrategy(IMappingStrategy):
     """
     Maps notes to the active generator plugin
     """
+
     def apply(self, shadow: DeviceShadow) -> None:
         # Bind note events to noteCallback()
         shadow.bindMatches(

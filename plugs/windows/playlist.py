@@ -14,10 +14,12 @@ from plugs import WindowPlugin
 
 INDEX = 2
 
+
 class Playlist(WindowPlugin):
     """
     Used to process events directed at the playlist
     """
+
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
         super().__init__(shadow, [])
@@ -33,7 +35,12 @@ class Playlist(WindowPlugin):
     def tick(self):
         pass
 
-    def jogWheel(self, control: ControlShadowEvent, index: UnsafeIndex, *args: Any) -> bool:
+    def jogWheel(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
         if control.value == consts.ENCODER_NEXT:
             increment = 1
         elif control.value == consts.ENCODER_PREV:
@@ -62,5 +69,6 @@ class Playlist(WindowPlugin):
             # TODO: Make this work with time signature markers
             transport.setSongPos(bar * general.getRecPPB(), 2)
         return True
+
 
 ExtensionManager.registerWindowPlugin(Playlist)

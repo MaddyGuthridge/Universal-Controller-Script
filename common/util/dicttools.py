@@ -10,6 +10,7 @@ Authors:
 from typing import Any, Protocol, TypeVar
 # from copy import deepcopy
 
+
 class SupportsComparison(Protocol):
     """
     Defines a protocol for objects that can be used with comparison operators:
@@ -19,25 +20,39 @@ class SupportsComparison(Protocol):
     * greater than or equals >=
     * less than or equals <=
     """
-    def __eq__(self, __other: Any) -> bool: ...
-    def __gt__(self, __other: Any) -> bool: ...
-    def __ge__(self, __other: Any) -> bool: ...
-    def __lt__(self, __other: Any) -> bool: ...
-    def __le__(self, __other: Any) -> bool: ...
+
+    def __eq__(self, __other: Any) -> bool:
+        ...
+
+    def __gt__(self, __other: Any) -> bool:
+        ...
+
+    def __ge__(self, __other: Any) -> bool:
+        ...
+
+    def __lt__(self, __other: Any) -> bool:
+        ...
+
+    def __le__(self, __other: Any) -> bool:
+        ...
+
 
 K = TypeVar("K")
 V = TypeVar("V", bound=SupportsComparison)
 
-def recursiveMergeDictionaries(ref: dict, override: dict, path:str='') -> dict:
+
+def recursiveMergeDictionaries(
+    ref: dict, override: dict, path: str = ''
+) -> dict:
     """
-    Merge the contents of two nested dictionaries, ensuring all values in second
-    override existing values in the first
+    Merge the contents of two nested dictionaries, ensuring all values in
+    second override existing values in the first
 
     ### Args:
     * `ref` (`dict`): reference dictionary
     * `override` (`dict`): override dictionary
-    * `path` (`str`, optional): path of current setting, used to give meaningful
-      exception info. Defaults to ''.
+    * `path` (`str`, optional): path of current setting, used to give
+      meaningful exception info. Defaults to ''.
 
     ### Returns:
     * `dict`: new dictionary representing the merged results
@@ -47,7 +62,7 @@ def recursiveMergeDictionaries(ref: dict, override: dict, path:str='') -> dict:
     # Note that a deep copy isn't necessary as nested contents will be copied
     # when we recurse, effectively making a manual deep copy
     new = ref.copy()
-    
+
     for key, value in override.items():
         # Check for invalid settings value
         key_path = path + '.' + key
@@ -55,10 +70,10 @@ def recursiveMergeDictionaries(ref: dict, override: dict, path:str='') -> dict:
             raise KeyError(f"{ERROR_HEADER}: {key_path} is "
                            f"not a valid settings value")
         ref_value = ref[key]
-        
+
         # If it's a dictionary, we should recurse and copy those settings
-        ## Using `type(x) is dict` so that a different inherited type can be used
-        ## to specify when an actual settings value is of type dictionary
+        # Using `type(x) is dict` so that a different inherited type can be
+        # used to specify when an actual settings value is of type dictionary
         if type(ref_value) is dict:
             # But first, make sure that we're given the correct type of setting
             if type(value) is not dict:
@@ -66,24 +81,27 @@ def recursiveMergeDictionaries(ref: dict, override: dict, path:str='') -> dict:
                                 f"{key_path}, not a value")
             # Recurse and merge the result
             new[key] = recursiveMergeDictionaries(ref_value, value, key_path)
-        
+
         # Otherwise, we should set the value directly, by creating a copy
         else:
             # Make sure that we're using the correct type for the setting
-            ## Check that the reference value is an instance of the type of the
-            ## actual value. This ensures that if we have a settings value that
-            ## is literally a dictionary, it won't cause it to fail when the
-            ## user uses the simple `dict` type.
+            # Check that the reference value is an instance of the type of the
+            # actual value. This ensures that if we have a settings value that
+            # is literally a dictionary, it won't cause it to fail when the
+            # user uses the simple `dict` type.
             if not isinstance(ref_value, type(value)):
                 raise TypeError(f"{ERROR_HEADER}: expected a value of type "
                                 f"{type(ref_value)} for settings value at "
                                 f"{key_path}")
-            new[key] = value # deepcopy(value)
-    
+            new[key] = value  # deepcopy(value)
+
     # Finally return the new dictionary
     return new
 
-def dictKeyRecursiveInsert(d: dict, keys: list[str], val: Any, key_full: str) -> None:
+
+def dictKeyRecursiveInsert(
+    d: dict, keys: list[str], val: Any, key_full: str
+) -> None:
     """
     Insert a value at the location of a nested key, adding new dictionaries as
     required
@@ -103,7 +121,8 @@ def dictKeyRecursiveInsert(d: dict, keys: list[str], val: Any, key_full: str) ->
         d[keys[0]] = {}
     dictKeyRecursiveInsert(d[keys[0]], keys[1:], val, key_full)
 
-def expandDictShorthand(d: dict[str, Any], path:str='') -> dict:
+
+def expandDictShorthand(d: dict[str, Any], path: str = '') -> dict:
     """
     Recursively expands short-hand notation for dictionary data
 
@@ -135,7 +154,7 @@ def expandDictShorthand(d: dict[str, Any], path:str='') -> dict:
     * `dict`: new dictionary that is expanded
     """
     new: dict[str, Any] = {}
-    
+
     for key, value in d.items():
         full_key = path + '.' + key
         # If it's a dict, make sure it is expanded as well
@@ -144,8 +163,9 @@ def expandDictShorthand(d: dict[str, Any], path:str='') -> dict:
         # Expand the path and insert it in the correct location
         split_path = key.split('.')
         dictKeyRecursiveInsert(new, split_path, value, full_key)
-        
+
     return new
+
 
 def greatestKey(d: dict[K, V]) -> K:
     """
@@ -163,7 +183,7 @@ def greatestKey(d: dict[K, V]) -> K:
     """
     highest = None
     highest_val = None
-    
+
     for k, v in d.items():
         if highest_val is None or v > highest_val:
             highest = k
@@ -172,7 +192,8 @@ def greatestKey(d: dict[K, V]) -> K:
         raise ValueError("Dictionary cannot be empty")
     return highest
 
-def lowestValueGrEqTarget(d: dict[K, V], target:V) -> K:
+
+def lowestValueGrEqTarget(d: dict[K, V], target: V) -> K:
     """
     Returns the key which maps to the lowest value that is still above the
     threshold value.
@@ -191,7 +212,7 @@ def lowestValueGrEqTarget(d: dict[K, V], target:V) -> K:
     """
     highest = None
     highest_val = None
-    
+
     for k, v in d.items():
         if v >= target and (highest_val is None or v < highest_val):
             highest = k

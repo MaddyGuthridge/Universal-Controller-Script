@@ -8,23 +8,27 @@ Authors:
 """
 
 # Version info
-VERSION = (0, 4, 1)
+VERSION = (0, 5, 0)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
 VERSION_MINOR = VERSION[1]
 VERSION_REVISION = VERSION[2]
+VERSION_SUFFIX = ""
 
 # Minimum API version required to run script
 MIN_API_VERSION = 19
+
 
 def getVersionString() -> str:
     """
     Returns the version string of the script
 
-    Eg: "1.2.3"
+    Eg: "1.2.3-beta"
     """
-    return ".".join(map(str, VERSION))
+    suffix = f"-{VERSION_SUFFIX}" if VERSION_SUFFIX else ""
+    return ".".join(map(str, VERSION)) + suffix
+
 
 # Website
 WEBSITE = "https://github.com/MiguelGuthridge/Universal-Controller-Script"
@@ -51,19 +55,19 @@ ASCII_HEADER_ART = """
                              ';;'
                             ;;'
              ',;/\\\\/;,    ,L,
-           ,\FFFFFFFFFF; ;L'
+           ,\\FFFFFFFFFF; ;L'
           ;FFFFFFFFFFFFFFF/;;;,,    ',,;;;;;/;;'
-         .FLL\LFFFFFFFFFFFFFFFFFFLL;;,.''    ',L,
-             ;//;/FFFFFFFFFFFFFFFFF\           L;
+         .FLL\\LFFFFFFFFFFFFFFFFFFLL;;,.''    ',L,
+             ;//;/FFFFFFFFFFFFFFFFF\\           L;
                   ;FFFFFFFFFFFFFFFFF/        'L/
                  ';LFFFFFFFFFFFFFFFFL      ';L,
-              .;;;.'/LFFFL\;;,;LL\FF/    ./L,
+              .;;;.'/LFFFL\\;;,;LL\\FF/    ./L,
            .;;,'      '.'      ;; ,;   ;L/,
         ',;,'                  ;'   ,\\\\;
       .;;.                    ,,';\\\\;'
-    .;;'                    ';L\/,
-   ;;'                  ',/\L;'
-  ;/               ',;/\/,'..
+    .;;'                    ';L\\/,
+   ;;'                  ',/\\L;'
+  ;/               ',;/\\/,'..
   /;        '.,;///;;.    ,'
    ,;;;;;;//;;,.         ,
                        .'

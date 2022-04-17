@@ -9,11 +9,20 @@ import plugins
 from typing import Any
 from common.consts import PARAM_CC_START
 from common.util.apifixes import PluginIndex, isPluginVst
-from controlsurfaces.pedal import *
+from controlsurfaces.pedal import (
+    Pedal,
+    SustainPedal,
+    SostenutoPedal,
+    SoftPedal,
+    SUSTAIN,
+    SOSTENUTO,
+    SOFT,
+)
 from controlsurfaces import ControlShadowEvent, ControlShadow
 from devices import DeviceShadow
 from plugs.eventfilters import toPluginIndex
 from . import IMappingStrategy
+
 
 class PedalStrategy(IMappingStrategy):
     def __init__(self, raise_on_error: bool = True) -> None:
@@ -21,7 +30,8 @@ class PedalStrategy(IMappingStrategy):
         Create a WheelStrategy for binding mod and pitch wheel events
 
         ### Args:
-        * `raise_on_error` (`bool`, optional): Whether an error should be raised
+        * `raise_on_error` (`bool`, optional): Whether an error should be
+          raised
           if the plugin doesn't support CC parameters. Defaults to `True`.
         """
         self._raise = raise_on_error
@@ -63,7 +73,8 @@ class PedalStrategy(IMappingStrategy):
         Called when a pedal event is detected
 
         ### Args:
-        * `control` (`ControlShadowEvent`): control surface shadow that was detected
+        * `control` (`ControlShadowEvent`): control surface shadow that was
+          detected
         * `index` (`PluginIndex`): index of plugin to map to
         * `t_ped` (`type[Pedal]`): type of pedal that was called
 
@@ -77,17 +88,20 @@ class PedalStrategy(IMappingStrategy):
         # Filter out non-VSTs
         if not isPluginVst(index):
             if self._raise:
-                raise TypeError("Expected a plugin of VST type - make sure that "
-                                "this plugin is a VST, and not an FL Studio plugin")
+                raise TypeError("Expected a plugin of VST type - make sure "
+                                "that this plugin is a VST, and not an FL "
+                                "Studio plugin")
             else:
                 return False
 
         # Assign parameters
         if t_ped is SustainPedal:
-            plugins.setParamValue(control.value, PARAM_CC_START + SUSTAIN, *index)
+            plugins.setParamValue(
+                control.value, PARAM_CC_START + SUSTAIN, *index)
         elif t_ped is SostenutoPedal:
-            plugins.setParamValue(control.value, PARAM_CC_START + SOSTENUTO, *index)
-        elif t_ped is SustainPedal:
+            plugins.setParamValue(
+                control.value, PARAM_CC_START + SOSTENUTO, *index)
+        elif t_ped is SoftPedal:
             plugins.setParamValue(control.value, PARAM_CC_START + SOFT, *index)
         else:
             raise NotImplementedError("Pedal type not recognised")

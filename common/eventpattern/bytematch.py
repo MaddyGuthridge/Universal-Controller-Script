@@ -8,14 +8,13 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from typing import TYPE_CHECKING, Type, Union
+from typing import TYPE_CHECKING, Union
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-EllipsisType: Type = type(Ellipsis)
-
 # Variable type for byte match expression
-ByteMatch = Union[int, range, tuple[int, ...], 'ellipsis']
+ByteMatch = Union[int, range, tuple[int, ...], 'ellipsis']  # noqa: F821
+
 
 def fromNibbles(upper: ByteMatch, lower: ByteMatch) -> tuple:
     """
@@ -38,12 +37,12 @@ def fromNibbles(upper: ByteMatch, lower: ByteMatch) -> tuple:
             return [i for i in range(16)]
         else:
             if TYPE_CHECKING:
-                assert not isinstance(b, ellipsis)
+                assert not isinstance(b, ellipsis)  # noqa: F821
             return b
-    u = toIter(upper)
-    l = toIter(lower)
+    up = toIter(upper)
+    lo = toIter(lower)
     ret = []
-    for i in u:
-        for j in l:
+    for i in up:
+        for j in lo:
             ret.append((i << 4) + j)
     return (*ret,)

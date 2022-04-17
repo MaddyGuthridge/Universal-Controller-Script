@@ -12,6 +12,7 @@ full copy.
 
 Refer to module `common.consts` for a list of authors for the project
 """
+# flake8: noqa
 
 # Add our additional includes to the Python environment
 import fl_typing
@@ -24,14 +25,23 @@ from common.contextmanager import unsafeResetContext as reset
 from common import consts, log, verbosity, ExtensionManager
 # Import verbosities
 from common.logger.verbosity import *
+# Import some helper functions
+from common.util.events import eventToString
+# Import first state
+from common.states import WaitingForDevice, MainState
 
 # Import console helpers
 from common.util.consolehelpers import *
 
+
 class OverallDevice:
     @catchContextResetException
     def onInit(self) -> None:
-        getContext().initialise()
+        getContext().initialise(WaitingForDevice(MainState))
+
+    @catchContextResetException
+    def onDeinit(self) -> None:
+        getContext().deinitialise()
 
     @catchContextResetException
     def onMidiIn(self, event) -> None:
@@ -49,27 +59,33 @@ class OverallDevice:
         print(ExtensionManager.getInfo())
         print("Type `help` for help using the script\n")
 
+
 device = OverallDevice()
+
 
 def OnInit():
     device.onInit()
 
+
+def OnDeInit():
+    device.onDeinit()
+
+
 def OnMidiIn(event):
     device.onMidiIn(event)
 
-idle_uncalled = True
+
 def OnIdle():
-    global idle_uncalled
-    if idle_uncalled:
-        log("device.idle", "OnIdle() called", verbosity.INFO)
-        idle_uncalled = False
     device.onIdle()
+
 
 def OnRefresh(flags: int):
     device.onIdle()
 
+
 def bootstrap():
     device.bootstrap()
+
 
 if __name__ == "__main__":
     bootstrap()

@@ -7,30 +7,35 @@ BasicControlMatcher for simple devices
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
+
 from typing import Optional
-from abc import abstractmethod
 from common.types import EventData
-from common.util.events import eventToString
 from controlsurfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
 
+
 class BasicControlMatcher(IControlMatcher):
     """
-    A basic implementation of the control mapper, using a list of controls and a
-    set of groups.
+    A basic implementation of the control mapper, using a list of controls and
+    a set of groups.
 
     This should be usable for most basic controllers, but for more complex
     controllers with many controls, it may have poor performance compared to
     hard-coded custom matchers, which can be created by extending
     the IControlMatcher class.
     """
+
     def __init__(self) -> None:
         self._priorities: set[int] = set()
         self._controls: dict[int, list[ControlSurface]] = {}
         self._groups: set[str] = set()
         self._sub_matchers: dict[int, list[IControlMatcher]] = {}
 
-    def addControls(self, controls: list[ControlSurface], priority: int = 0) -> None:
+    def addControls(
+        self,
+        controls: list[ControlSurface],
+        priority: int = 0
+    ) -> None:
         """
         Register and add a list of controls to the control matcher.
 
@@ -58,7 +63,11 @@ class BasicControlMatcher(IControlMatcher):
             self._controls[priority] = [control]
         self._groups.add(control.group)
 
-    def addSubMatcher(self, matcher: IControlMatcher, priority: int = 0) -> None:
+    def addSubMatcher(
+        self,
+        matcher: IControlMatcher,
+        priority: int = 0
+    ) -> None:
         """
         Register a control matcher to work as a component of this control
         matcher
@@ -101,7 +110,7 @@ class BasicControlMatcher(IControlMatcher):
         controls = []
         for p in self._controls:
             controls += self._controls[p]
-        for p  in self._sub_matchers:
+        for p in self._sub_matchers:
             for s in self._sub_matchers[p]:
                 controls += s.getControls()
         if group is None:
