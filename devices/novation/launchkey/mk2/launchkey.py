@@ -20,6 +20,7 @@ from controlsurfaces import (
     Fader,
     FastForwardButton,
     GenericFaderButton,
+    MasterGenericFaderButton,
     Knob,
     LoopButton,
     MasterFader,
@@ -166,6 +167,13 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
                     (0, i)
                 )
             )
+
+        matcher.addControl(
+            MasterGenericFaderButton(
+                ForwardedPattern(2, BasicPattern(0xBF, 0x3B, ...)),
+                ForwardedStrategy(Data2Strategy())
+            )
+        )
 
         super().__init__(matcher)
 
