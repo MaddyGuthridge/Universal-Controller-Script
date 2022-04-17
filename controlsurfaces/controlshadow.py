@@ -115,12 +115,28 @@ class ControlShadow:
         """
         return self._control.coordinate
 
-    def apply(self, thorough: bool) -> None:
+    def apply(self, thorough: bool, transparent: bool) -> None:
         """
         Apply the configuration of the control shadow to the control it
-        represents
+        representsApply the configuration of the control shadow to the control
+        it represents
+
+        ### Args:
+        * `thorough` (`bool`): whether we should always apply the values,
+          regardless of whether they changed or not
+        * `transparent` (`bool`): whether we should only set colours, and treat
+          black as transparent
         """
-        if thorough or self._changed:
+        # If our device shadow is transparent, we should only set the colour
+        if transparent:
+            if self.color != Color() or self._changed:
+                # IDEA: Superimpose the added colour
+                # Requires smarter updating of plugins and stuff
+                self._control.color = self.color
+                self._changed = False
+        # If we're being thorough, or the shadow has changed since last time,
+        # or if the control needs an update
+        elif thorough or self._changed or self._control.needs_update:
             self._control.color = self.color
             self._control.annotation = self.annotation
             self._control.value = self.value

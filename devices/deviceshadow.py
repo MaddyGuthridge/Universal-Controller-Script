@@ -70,6 +70,7 @@ class DeviceShadow:
             IControlHash,
             tuple[ControlShadow, EventCallback, tuple]
         ] = {}
+        self._minimal = False
         self._transparent = False
 
     def __repr__(self) -> str:
@@ -119,9 +120,9 @@ class DeviceShadow:
         """
         return self._device
 
-    def setTransparent(self, value: bool) -> None:
+    def setMinimal(self, value: bool) -> None:
         """
-        Control whether this device shadow is "transparent"
+        Control whether this device shadow is "minimal"
 
         If it is, then all unassigned controls will be ignored, such that they
         can be modified and processed from other plugins. This should be used
@@ -129,7 +130,19 @@ class DeviceShadow:
         signals to the device.
 
         ### Args:
-        * `value` (`bool`): new transparency value
+        * `value` (`bool`): new minimal value
+        """
+        self._minimal = value
+
+    def setTransparent(self, value: bool) -> None:
+        """
+        Control whether this device shadow is "transparent"
+
+        If it is, then any controls where the color is set to off will be
+        ignored during updating
+
+        ### Args:
+        * `value` (`bool`): new transparent value
         """
         self._transparent = value
 
@@ -583,7 +596,8 @@ class DeviceShadow:
             # If we get a KeyError, the control isn't assigned and we should do
             # nothing
             return False
-
+        # Set the value of the control as required
+        control_shadow.value = control.value
         # Generate a control shadow mapping to send to the device
         mapping = ControlShadowEvent(control, control_shadow)
         # Call the bound function with any extra required args
@@ -594,9 +608,9 @@ class DeviceShadow:
         Apply the configuration of the device shadow to the control it
         represents
         """
-        if self._transparent or not thorough:
+        if self._minimal or not thorough:
             controls = (c for c, _, _ in self._assigned_controls.values())
         else:
             controls = (c for c in self._all_controls)
         for c in controls:
-            c.apply(thorough)
+            c.apply(thorough, self._transparent)

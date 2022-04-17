@@ -48,7 +48,7 @@ class MainState(DeviceState):
     @profilerDecoration("tick")
     def tick(self) -> None:
         with ProfilerContext("Device tick"):
-            self._device.tick()
+            self._device.doTick()
 
         # Tick special plugins
         for p in common.ExtensionManager.getSpecialPlugins(self._device):
@@ -86,6 +86,14 @@ class MainState(DeviceState):
                         window.tick()
                     with ProfilerContext(f"Apply {type(window)}"):
                         window.apply(thorough=changed)
+
+        # Tick final special plugins
+        for p in common.ExtensionManager.getFinalSpecialPlugins(self._device):
+            if p.shouldBeActive():
+                with ProfilerContext(f"Tick {type(p)}"):
+                    p.tick()
+                with ProfilerContext(f"Apply {type(p)}"):
+                    p.apply(thorough=True)
 
     @profilerDecoration("processEvent")
     def processEvent(self, event: EventData) -> None:
@@ -141,7 +149,10 @@ class MainState(DeviceState):
                             return
 
         # Get special plugins
-        for p in common.ExtensionManager.getSpecialPlugins(self._device):
+        for p in (
+            common.ExtensionManager.getSpecialPlugins(self._device)
+            + common.ExtensionManager.getFinalSpecialPlugins(self._device)
+        ):
             if p.shouldBeActive():
                 with ProfilerContext(f"Process {type(p)}"):
                     if p.processEvent(mapping, plug_idx):

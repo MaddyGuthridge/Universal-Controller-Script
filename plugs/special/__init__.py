@@ -8,9 +8,11 @@ behaviours such as transport, macros, and fallback processing.
 __all__ = [
     'transport',
     'fallback',
-    'macro'
+    'macro',
+    'pressed',
 ]
 
 from . import transport
 from . import fallback
 from . import macro
+from . import pressed

@@ -92,9 +92,13 @@ class ControlSurface:
         self._value_strategy = value_strategy
         self._group = group
         self._coord = coordinate
+        self._needs_update = False
+        self._got_update = False
 
         # The time that this control was pressed last
         self._press = 0.0
+        # The time that this control was tweaked last
+        self._tweak = 0.0
 
     def __repr__(self) -> str:
         """
@@ -132,8 +136,11 @@ class ControlSurface:
         if self._pattern.matchEvent(event):
             self._value = self._value_strategy.getValueFromEvent(event)
             channel = self._value_strategy.getChannelFromEvent(event)
+            self._needs_update = True
+            self._got_update = False
+            t = time()
+            self._tweak = t
             if self.isPress(self.value):
-                t = time()
                 double_press = t - self._press \
                     <= getContext().settings.get("controls.double_press_time")
                 self._press = t
@@ -172,6 +179,7 @@ class ControlSurface:
 
     @color.setter
     def color(self, c: Color):
+        self._got_update = True
         if self._color != c:
             self._color = c
             self.onColorChange()
@@ -207,14 +215,35 @@ class ControlSurface:
 
     @value.setter
     def value(self, v: float) -> None:
+        # Ensure value is within bounds
+        if not (0 <= v <= 1):
+            raise ValueError(
+                "Value for control must be between 0 and 1"
+            )
         val = self._value_strategy.getValueFromFloat(v)
         if self._value != val:
-            # Ensure value is within bounds
-            if not (0 <= v <= 1):
-                raise ValueError("Value for control must be between "
-                                 "0 and 1")
             self._value = val
+            self._needs_update = True
+            self._got_update = False
             self.onValueChange()
+
+    @property
+    def needs_update(self) -> bool:
+        """
+        Represents whether the value of the control has changed since the last
+        time the color was set.
+        """
+        return self._needs_update
+
+    @property
+    def last_tweaked(self) -> float:
+        """
+        Returns the last time that the control was tweaked
+
+        ### Returns:
+        * `float`: unix time of last tweak
+        """
+        return self._tweak
 
     ###########################################################################
     # Events
@@ -242,6 +271,19 @@ class ControlSurface:
         This can be overridden to send a MIDI message to the controller if
         required, so that the value can be shown on compatible controls.
         """
+
+    @final
+    def doTick(self) -> None:
+        """
+        Called when a tick happens
+
+        This function is used to call the main tick method which is overridden
+        by child classes
+        """
+        self.tick()
+        if self._got_update:
+            self._needs_update = False
+            self._got_update = False
 
     def tick(self) -> None:
         """
