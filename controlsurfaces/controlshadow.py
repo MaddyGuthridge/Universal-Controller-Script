@@ -129,10 +129,14 @@ class ControlShadow:
         """
         # If our device shadow is transparent, we should only set the colour
         if transparent:
-            if self.color != Color() or self._changed:
+            if self.color != Color():
                 # IDEA: Superimpose the added colour
                 # Requires smarter updating of plugins and stuff
                 self._control.color = self.color
+                self._changed = False
+            elif self._changed:
+                if not self._control.got_update:
+                    self._control.color = self.color
                 self._changed = False
         # If we're being thorough, or the shadow has changed since last time,
         # or if the control needs an update

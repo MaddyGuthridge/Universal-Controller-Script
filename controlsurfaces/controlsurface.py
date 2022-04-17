@@ -236,6 +236,14 @@ class ControlSurface:
         return self._needs_update
 
     @property
+    def got_update(self) -> bool:
+        """
+        Represents whether the value of the control has changed since the last
+        time the color was set, and was since updated.
+        """
+        return self._got_update
+
+    @property
     def last_tweaked(self) -> float:
         """
         Returns the last time that the control was tweaked
