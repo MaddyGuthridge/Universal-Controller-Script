@@ -34,9 +34,9 @@ class ControlShadow:
         * `control` (`ControlSurface`): control associated with this event
         """
         self._control = control
-        self._value = control.value
-        self._color = control.color.copy()
-        self._annotation = control.annotation
+        self._value = 0.0
+        self._color = Color()
+        self._annotation = ""
         self._changed = False
 
     def __repr__(self) -> str:
