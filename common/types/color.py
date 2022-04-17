@@ -14,6 +14,12 @@ __all__ = [
     'Color'
 ]
 
+# Constants for scaling color components when getting distances
+# Higher values contribute more to closeness
+HUE_SCALE = 10.0
+SAT_SCALE = 0.9
+VAL_SCALE = 2.0
+
 
 def hsvToRgb(h: float, s: float, v: float) -> tuple[int, int, int]:
     """
@@ -595,10 +601,10 @@ class Color:
         elif h2 - h1 > 180:
             h2 -= 360
 
-        # Get deltas
-        delta_h = abs(h2 - h1) / 360
-        delta_s = abs(s2 - s1)
-        delta_v = abs(v2 - v1)
+        # Get scaled deltas
+        delta_h = abs(h2 - h1) / 360 * HUE_SCALE
+        delta_s = abs(s2 - s1) * SAT_SCALE
+        delta_v = abs(v2 - v1) * VAL_SCALE
 
         # Don't bother doing square root since it's arbitrary anyway
         return delta_h**2 + delta_s**2 + delta_v**2

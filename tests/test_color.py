@@ -191,8 +191,8 @@ def test_closest():
         Color.fromHsv(10, 1, 1),
         Color.fromHsv(11, 1, 0.8),
         Color.fromHsv(355, 1, 0.9),
+        Color.fromHsv(354, 1, 1),
         Color.fromHsv(355, 0.99, 1),
-        Color.fromHsv(354, 1, 1)
     ]
 
     assert c.closest(options) == options[-1]
