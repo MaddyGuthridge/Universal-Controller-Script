@@ -8,16 +8,17 @@ Authors:
 """
 
 from common import profilerDecoration
+from common.eventpattern import ForwardedPattern
 from common.eventpattern.notepattern import NotePattern
 from common.types import EventData
 from common.util.events import forwardEvent
-from controlsurfaces.valuestrategies import NoteStrategy
+from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import DrumPad
 from .colors import COLORS
 
 DRUM_PADS = [
-    [0x28, 0x29, 0x2A, 0x2B, 0x30, 0x31, 0x32, 0x33],  # Also 0x68
-    [0x24, 0x25, 0x26, 0x27, 0x2C, 0x2D, 0x2E, 0x2F],  # Also 0x69
+    [0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67],  # Also 0x68
+    [0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77],  # Also 0x78
 ]
 
 
@@ -32,8 +33,8 @@ class LaunchkeyDrumpad(DrumPad):
         self._ticker_timer = 0
         self._need_update = False
         super().__init__(
-            NotePattern(self._note_num, 9),
-            NoteStrategy(),
+            ForwardedPattern(2, NotePattern(self._note_num, 0xF)),
+            ForwardedStrategy(NoteStrategy()),
             coordinate
         )
 

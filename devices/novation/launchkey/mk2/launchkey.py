@@ -11,7 +11,7 @@ from typing import Optional
 
 import device
 
-from common.eventpattern import BasicPattern
+from common.eventpattern import BasicPattern, ForwardedPattern
 from common.extensionmanager import ExtensionManager
 from common.types import EventData
 from controlsurfaces import (
@@ -30,7 +30,11 @@ from controlsurfaces import (
     StandardPitchWheel,
     StopButton,
 )
-from controlsurfaces.valuestrategies import ButtonData2Strategy, Data2Strategy
+from controlsurfaces.valuestrategies import (
+    ButtonData2Strategy,
+    Data2Strategy,
+    ForwardedStrategy,
+)
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
@@ -62,49 +66,55 @@ class LaunchkeyMk2(Device):
         for i in range(8):
             matcher.addControl(
                 Knob(
-                    BasicPattern(0xB0, 0x15 + i, ...),
-                    Data2Strategy(),
+                    ForwardedPattern(2, BasicPattern(0xBF, 0x15 + i, ...)),
+                    ForwardedStrategy(Data2Strategy()),
                     (0, i)
                 )
             )
 
         # Transport
         matcher.addControl(StopButton(
-            BasicPattern(0xB0, 0x72, ...),
-            ButtonData2Strategy()
+            ForwardedPattern(2, BasicPattern(0xBF, 0x72, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(PlayButton(
-            BasicPattern(0xB0, 0x73, ...),
-            ButtonData2Strategy()
+            ForwardedPattern(2, BasicPattern(0xBF, 0x73, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(LoopButton(
-            BasicPattern(0xB0, 0x74, ...),
-            ButtonData2Strategy(),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x74, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
         ))
         matcher.addControl(RecordButton(
-            BasicPattern(0xB0, 0x75, ...),
-            ButtonData2Strategy()
+            ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(DirectionNext(
-            BasicPattern(0xB0, 0x66, ...),
-            ButtonData2Strategy()
+            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
         ))
         matcher.addControl(DirectionPrevious(
-            BasicPattern(0xB0, 0x67, ...),
-            ButtonData2Strategy(),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
         ))
         matcher.addControl(RewindButton(
-            BasicPattern(0xB0, 0x70, ...),
-            ButtonData2Strategy(),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x70, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
         ))
         matcher.addControl(FastForwardButton(
-            BasicPattern(0xB0, 0x71, ...),
-            ButtonData2Strategy(),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x71, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
         ))
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
 
         super().__init__(matcher)
+
+    def initialise(self) -> None:
+        self._incontrol.enable()
+
+    def deinitialise(self) -> None:
+        self._incontrol.enable()
 
     @staticmethod
     def getDrumPadSize() -> tuple[int, int]:
@@ -134,16 +144,16 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         for i in range(8):
             matcher.addControl(
                 Fader(
-                    BasicPattern(0xB0, 0x29 + i, ...),
-                    Data2Strategy(),
+                    ForwardedPattern(2, BasicPattern(0xBF, 0x29 + i, ...)),
+                    ForwardedStrategy(Data2Strategy()),
                     (0, i)
                 )
             )
         # Master fader
         matcher.addControl(
             MasterFader(
-                BasicPattern(0xB0, 0x07, ...),
-                Data2Strategy()
+                ForwardedPattern(2, BasicPattern(0xBF, 0x07, ...)),
+                ForwardedStrategy(Data2Strategy())
             )
         )
 
@@ -151,8 +161,8 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         for i in range(8):
             matcher.addControl(
                 GenericFaderButton(
-                    BasicPattern(0xB0, 0x33 + i, ...),
-                    Data2Strategy(),
+                    ForwardedPattern(2, BasicPattern(0xBF, 0x33 + i, ...)),
+                    ForwardedStrategy(Data2Strategy()),
                     (0, i)
                 )
             )

@@ -9,7 +9,7 @@ from common.util.events import forwardEvent
 # Pattern for matching
 INCONTROL_MATCH = ForwardedPattern(
     2,
-    BasicPattern(0x9F, range(0x0C, 0x10), ...)
+    BasicPattern(0x9F, range(0x0C, 0x11), ...)
 )
 
 # Events for enabling and disabling  InControl
@@ -42,11 +42,11 @@ class InControl:
         behaviour.
         """
         if FADERS_BUTTON.matchEvent(event):
-            forwardEvent(FADERS_RESPONSE)
+            forwardEvent(FADERS_RESPONSE, 2)
         elif KNOBS_BUTTON.matchEvent(event):
-            forwardEvent(KNOBS_RESPONSE)
+            forwardEvent(KNOBS_RESPONSE, 2)
         elif DRUMS_BUTTON.matchEvent(event):
-            forwardEvent(DRUMS_RESPONSE)
+            forwardEvent(DRUMS_RESPONSE, 2)
 
 
 class InControlMatcher(IControlMatcher):
