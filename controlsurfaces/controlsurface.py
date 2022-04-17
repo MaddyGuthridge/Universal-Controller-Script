@@ -97,6 +97,8 @@ class ControlSurface:
 
         # The time that this control was pressed last
         self._press = 0.0
+        # The time that this control was tweaked last
+        self._tweak = 0.0
 
     def __repr__(self) -> str:
         """
@@ -136,8 +138,9 @@ class ControlSurface:
             channel = self._value_strategy.getChannelFromEvent(event)
             self._needs_update = True
             self._got_update = False
+            t = time()
+            self._tweak = t
             if self.isPress(self.value):
-                t = time()
                 double_press = t - self._press \
                     <= getContext().settings.get("controls.double_press_time")
                 self._press = t
@@ -231,6 +234,16 @@ class ControlSurface:
         time the color was set.
         """
         return self._needs_update
+
+    @property
+    def last_tweaked(self) -> float:
+        """
+        Returns the last time that the control was tweaked
+
+        ### Returns:
+        * `float`: unix time of last tweak
+        """
+        return self._tweak
 
     ###########################################################################
     # Events
