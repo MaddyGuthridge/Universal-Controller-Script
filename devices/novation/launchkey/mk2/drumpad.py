@@ -13,7 +13,7 @@ from common.eventpattern.notepattern import NotePattern
 from common.types import EventData
 from common.util.events import forwardEvent
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
-from controlsurfaces import DrumPad
+from controlsurfaces import DrumPad, MetronomeButton, ControlSwitchButton
 from .colors import COLORS
 
 DRUM_PADS = [
@@ -22,7 +22,7 @@ DRUM_PADS = [
 ]
 
 
-class LaunchkeyDrumpad(DrumPad):
+class LkDrumPad(DrumPad):
     """
     Custom drum pad implementation used by the launchkey Mk2 series controller
     to provide RGB functionality
@@ -45,6 +45,45 @@ class LaunchkeyDrumpad(DrumPad):
 
     def tick(self) -> None:
         # Occasionally refresh lights since launchkey lights are sorta buggy
+        if self._ticker_timer % 20 == 0:
+            self.onColorChange()
+        self._ticker_timer += 1
+
+
+# TODO: Find a way to make there be less repeated code
+class LkControlSwitchButton(ControlSwitchButton):
+    def __init__(self) -> None:
+        self._note_num = 0x68
+        self._ticker_timer = 0
+        super().__init__(
+            ForwardedPattern(2, NotePattern(self._note_num, 0xF)),
+            ForwardedStrategy(NoteStrategy())
+        )
+
+    def onColorChange(self) -> None:
+        c_num = COLORS[self.color.closest(list(COLORS.keys()))]
+        forwardEvent(EventData(0x9F, self._note_num, c_num), 2)
+
+    def tick(self) -> None:
+        if self._ticker_timer % 20 == 0:
+            self.onColorChange()
+        self._ticker_timer += 1
+
+
+class LkMetronomeButton(MetronomeButton):
+    def __init__(self) -> None:
+        self._note_num = 0x78
+        self._ticker_timer = 0
+        super().__init__(
+            ForwardedPattern(2, NotePattern(self._note_num, 0xF)),
+            ForwardedStrategy(NoteStrategy())
+        )
+
+    def onColorChange(self) -> None:
+        c_num = COLORS[self.color.closest(list(COLORS.keys()))]
+        forwardEvent(EventData(0x9F, self._note_num, c_num), 2)
+
+    def tick(self) -> None:
         if self._ticker_timer % 20 == 0:
             self.onColorChange()
         self._ticker_timer += 1

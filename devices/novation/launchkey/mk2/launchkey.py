@@ -11,7 +11,7 @@ from typing import Optional
 
 import device
 
-from common.eventpattern import BasicPattern, ForwardedPattern, NotePattern
+from common.eventpattern import BasicPattern, ForwardedPattern
 from common.extensionmanager import ExtensionManager
 from common.types import EventData
 from controlsurfaces import (
@@ -30,19 +30,16 @@ from controlsurfaces import (
     StandardModWheel,
     StandardPitchWheel,
     StopButton,
-    ControlSwitchButton,
-    MetronomeButton,
 )
 from controlsurfaces.valuestrategies import (
     ButtonData2Strategy,
     Data2Strategy,
     ForwardedStrategy,
-    NoteStrategy,
 )
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
-from .drumpad import LaunchkeyDrumpad
+from .drumpad import LkDrumPad, LkControlSwitchButton, LkMetronomeButton
 from .incontrol import InControl, InControlMatcher
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
@@ -64,21 +61,11 @@ class LaunchkeyMk2(Device):
         # Drum pads (high priority because they just use note on events)
         for r in range(self.getDrumPadSize()[0]):
             for c in range(self.getDrumPadSize()[1]):
-                matcher.addControl(LaunchkeyDrumpad((r, c)), 10)
+                matcher.addControl(LkDrumPad((r, c)), 10)
 
         # Control switch and metronome buttons
-        matcher.addControl(
-            ControlSwitchButton(
-                ForwardedPattern(2, NotePattern(0x68, 0xF)),
-                ForwardedStrategy(NoteStrategy()),
-            )
-        )
-        matcher.addControl(
-            MetronomeButton(
-                ForwardedPattern(2, NotePattern(0x78, 0xF)),
-                ForwardedStrategy(NoteStrategy()),
-            )
-        )
+        matcher.addControl(LkControlSwitchButton())
+        matcher.addControl(LkMetronomeButton())
 
         # Create knobs
         for i in range(8):

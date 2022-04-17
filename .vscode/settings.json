@@ -33,6 +33,7 @@
         "controlmatcher",
         "controlsurfaces",
         "deinitialise",
+        "deinitialised",
         "deviceconfigs",
         "deviceshadow",
         "dicttools",

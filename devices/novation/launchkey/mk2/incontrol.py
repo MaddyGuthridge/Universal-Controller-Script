@@ -6,7 +6,7 @@ from common.eventpattern import BasicPattern, ForwardedPattern
 from common.types import EventData
 from common.util.events import forwardEvent
 
-from .drumpad import LaunchkeyDrumpad
+from .drumpad import LkDrumPad
 
 # Pattern for matching
 INCONTROL_MATCH = ForwardedPattern(
@@ -58,7 +58,7 @@ class InControl:
         """Refresh drum pads on startup so that their colours don't break
         """
         for control in self._matcher.getControls():
-            if isinstance(control, LaunchkeyDrumpad):
+            if isinstance(control, LkDrumPad):
                 control.onColorChange()
 
 
