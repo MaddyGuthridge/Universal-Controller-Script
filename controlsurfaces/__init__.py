@@ -137,7 +137,7 @@ from .pedal import (
     SostenutoPedal,
     SoftPedal,
 )
-from .button import Button
+from .button import Button, ControlSwitchButton
 from .transport import (
     TransportButton,
     PlayButton,
@@ -192,7 +192,6 @@ from .macrobutton import (
     UndoButton,
     RedoButton,
     QuantizeButton,
-    ControlSwitchButton,
 )
 from .activitybutton import (
     SwitchActiveButton,
