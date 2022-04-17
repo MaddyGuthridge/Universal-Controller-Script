@@ -45,4 +45,6 @@ COLORS = {
     Color.fromInteger(0x73298B):  82,  # Dull pink
     Color.fromInteger(0xA14577):  82,  # Dull Pink
     Color.fromInteger(0x75A02E):  85,  # Dull lime
+    Color.fromInteger(0x618442):  18,  # Dark dull green
+    Color.fromInteger(0x614F51):   7,  # Dark dull red
 }
