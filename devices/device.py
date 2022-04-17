@@ -144,13 +144,13 @@ class Device:
         Can be overridden by child classes.
         """
 
-    def deinitialise(self) -> None:
-        """
-        Called when FL Studio is going to start blocking communication, such
-        as when a render is going to begin, or when exiting.
-
-        Can be overridden by child classes.
-        """
+    # def deinitialise(self) -> None:
+    #     """
+    #     Called when FL Studio is going to start blocking communication, such
+    #     as when a render is going to begin, or when exiting.
+    #
+    #     Can be overridden by child classes.
+    #     """
 
     def tick(self) -> None:
         """

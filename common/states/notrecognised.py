@@ -22,9 +22,6 @@ class DeviceNotRecognised(IScriptState):
             "for details: " + consts.WEBSITE)
         ui.setHintMsg("Failed to recognise device")
 
-    def deinitialise(self) -> None:
-        pass
-
     def tick(self) -> None:
         ui.setHintMsg("Failed to recognise device")
 

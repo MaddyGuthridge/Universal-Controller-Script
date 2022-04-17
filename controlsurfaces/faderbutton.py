@@ -10,15 +10,10 @@ Authors:
 __all__ = [
     'FaderButton',
     'GenericFaderButton',
-    'MasterGenericFaderButton',
     'MuteButton',
-    'MasterMuteButton',
     'SoloButton',
-    'MasterSoloButton',
     'ArmButton',
-    'MasterArmButton',
     'SelectButton',
-    'MasterSelectButton',
 ]
 
 from common.eventpattern.ieventpattern import IEventPattern
@@ -47,127 +42,32 @@ class FaderButton(Button):
         )
 
 
-class AbstractGenericFaderButton(FaderButton):
-    """Generic fader button's abstract base class
-    """
-
-
-class GenericFaderButton(AbstractGenericFaderButton):
+class GenericFaderButton(FaderButton):
     """
     Represents a generic multi-purpose fader button: plugins should
     intelligently map the behaviour to required controls.
     """
 
 
-class MasterGenericFaderButton(AbstractGenericFaderButton):
-    """
-    Represents a master generic multi-purpose fader button: plugins should
-    intelligently map the behaviour to required controls.
-    """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))
-
-
-class AbstractMuteButton(FaderButton):
-    """
-    Represents an abstract mute track button
-    """
-
-
-class MuteButton(AbstractMuteButton):
+class MuteButton(FaderButton):
     """
     Represents a mute track button
     """
 
 
-class MasterMuteButton(AbstractMuteButton):
-    """
-    Represents a master mute track button
-    """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))
-
-
-class AbstractSoloButton(FaderButton):
-    """
-    Represents an abstract solo track button
-    """
-
-
-class SoloButton(AbstractSoloButton):
+class SoloButton(FaderButton):
     """
     Represents a solo track button
     """
 
 
-class MasterSoloButton(AbstractSoloButton):
+class ArmButton(FaderButton):
     """
-    Represents a master solo track button
-    """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))
-
-
-class AbstractArmButton(FaderButton):
-    """
-    Represents an abstract arm track button
+    Represents an arm track button
     """
 
 
-class ArmButton(AbstractArmButton):
-    """
-    Represents a arm track button
-    """
-
-
-class MasterArmButton(AbstractArmButton):
-    """
-    Represents a master arm track button
-    """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))
-
-
-class AbstractSelectButton(FaderButton):
-    """
-    Represents an abstract select track button
-    """
-
-
-class SelectButton(AbstractSelectButton):
+class SelectButton(FaderButton):
     """
     Represents a select track button
     """
-
-
-class MasterSelectButton(AbstractSelectButton):
-    """
-    Represents a master select track button
-    """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))

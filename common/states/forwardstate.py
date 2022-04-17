@@ -73,9 +73,6 @@ class ForwardState(DeviceState):
     def initialise(self) -> None:
         pass
 
-    def deinitialise(self) -> None:
-        pass
-
     def tick(self) -> None:
         pass
 
