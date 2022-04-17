@@ -596,7 +596,8 @@ class DeviceShadow:
             # If we get a KeyError, the control isn't assigned and we should do
             # nothing
             return False
-
+        # Set the value of the control as required
+        control_shadow.value = control.value
         # Generate a control shadow mapping to send to the device
         mapping = ControlShadowEvent(control, control_shadow)
         # Call the bound function with any extra required args
