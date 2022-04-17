@@ -31,6 +31,7 @@ from controlsurfaces import (
     RecordButton,
     LoopButton,
     MetronomeButton,
+    HintMsg,
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
@@ -96,6 +97,9 @@ class Transport(SpecialPlugin):
         )
         self._navigation = shadow.bindMatches(
             NavigationButton, self.navigationButtons, raise_on_failure=False
+        )
+        self._hint = shadow.bindMatch(
+            HintMsg, self.nullEvent, raise_on_failure=False
         )
         super().__init__(shadow, [])
 
@@ -198,6 +202,7 @@ class Transport(SpecialPlugin):
         self.tickPlayback()
         self.tickRec()
         self.tickMetro()
+        self.tickHint()
 
     def tickPlayback(self):
         """Color play and stop buttons"""
@@ -231,6 +236,11 @@ class Transport(SpecialPlugin):
                 self._metronome.color = getBeatColor(GRAY)
             else:
                 self._metronome.color = OFF
+
+    def tickHint(self):
+        """Set hint message"""
+        if self._hint is not None:
+            self._hint.annotation = ui.getHintMsg()
 
 
 ExtensionManager.registerSpecialPlugin(Transport)

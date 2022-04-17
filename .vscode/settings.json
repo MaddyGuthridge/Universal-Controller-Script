@@ -43,6 +43,7 @@
         "eventfilters",
         "eventpattern",
         "flmidimsg",
+        "hintmsg",
         "ieventpattern",
         "INCONTROL",
         "ivaluestrategy",
