@@ -15,8 +15,8 @@ from tests.helpers import DummyDevice2, DummyDeviceContext
 from common.exceptions import (
     EventEncodeError,
     EventInspectError,
-    EventDecodeError,
-    EventDispatchError,
+    # EventDecodeError,
+    # EventDispatchError,
 )
 from common.types import EventData
 from common.util.events import (

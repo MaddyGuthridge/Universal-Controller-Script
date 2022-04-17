@@ -31,5 +31,6 @@ class EventDispatchError(EventForwardError):
 class EventInspectError(EventForwardError):
     """Insufficient or incorrect information to inspect event"""
 
+
 class DeviceRecogniseError(UcsException):
     """Failed to recognise device"""
