@@ -28,7 +28,16 @@ class IScriptState:
     @abstractmethod
     def initialise(self) -> None:
         """
-        Initialise this context
+        Initialise this state
+        """
+        raise NotImplementedError(
+            "This method must be overridden by child classes"
+        )
+
+    @abstractmethod
+    def deinitialise(self) -> None:
+        """
+        Deinitialise this state
         """
         raise NotImplementedError(
             "This method must be overridden by child classes"
