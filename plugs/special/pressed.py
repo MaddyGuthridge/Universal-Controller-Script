@@ -23,7 +23,7 @@ from controlsurfaces import (
     PitchWheel,
     ControlSurface,
 )
-from controlsurfaces import ControlShadowEvent
+from controlsurfaces import ControlShadow, ControlShadowEvent
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 
@@ -47,22 +47,34 @@ class Press(SpecialPlugin):
     tweaked.
     """
 
+    def bind_all(
+        self,
+        shadow: DeviceShadow,
+        t: type[ControlSurface]
+    ) -> list[ControlShadow]:
+        """Continually bind all the controls"""
+        ret: list[ControlShadow] = []
+        while True:
+            len_ret = len(ret)
+            ret += shadow.bindMatches(t, self.any)
+            if len_ret == len(ret):
+                break
+        return ret
+
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
         shadow.setTransparent(True)
         self._velocities = (
-            shadow.bindMatches(DrumPad, self.any, raise_on_failure=False)
-            + shadow.bindMatches(Note, self.any, raise_on_failure=False)
+            self.bind_all(shadow, DrumPad)
+            + self.bind_all(shadow, Note)
         )
-        self._buttons = (
-            shadow.bindMatches(Button, self.any, raise_on_failure=False)
-        )
+        self._buttons = self.bind_all(shadow, Button)
         self._others = (
-            shadow.bindMatches(Knob, self.any, raise_on_failure=False)
-            + shadow.bindMatches(Fader, self.any, raise_on_failure=False)
-            + shadow.bindMatches(Encoder, self.any, raise_on_failure=False)
-            + shadow.bindMatches(ModWheel, self.any, raise_on_failure=False)
-            + shadow.bindMatches(PitchWheel, self.any, raise_on_failure=False)
+            self.bind_all(shadow, Knob)
+            + self.bind_all(shadow, Fader)
+            + self.bind_all(shadow, Encoder)
+            + self.bind_all(shadow, ModWheel)
+            + self.bind_all(shadow, PitchWheel)
         )
         super().__init__(shadow, [])
 
@@ -91,14 +103,14 @@ class Press(SpecialPlugin):
         for c in self._velocities:
             control = c.getControl()
             c.color = Color.fade(
-                OFF, ON, control.value * fadeOverTime(control)
+                OFF, ON, control.value  # * fadeOverTime(control)
             )
 
     def tickButtons(self):
         for c in self._buttons:
             control = c.getControl()
             if control.value:
-                c.color = Color.fade(OFF, ON, fadeOverTime(control))
+                c.color = ON  # Color.fade(OFF, ON, fadeOverTime(control))
             else:
                 c.color = OFF
 
