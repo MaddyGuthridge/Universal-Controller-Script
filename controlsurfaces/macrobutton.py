@@ -18,6 +18,8 @@ __all__ = [
     'SwitchActivePluginButton',
     'SwitchActiveWindowButton',
     'SwitchActiveToggleButton',
+    'PauseActiveButton',
+    'ControlSwitchButton',
 ]
 
 from common.eventpattern.ieventpattern import IEventPattern
@@ -118,7 +120,7 @@ class SwitchActiveToggleButton(SwitchActiveButton):
     """
 
 
-class PauseActivePluginButton(MacroButton):
+class PauseActiveButton(MacroButton):
     """
     A pause active button that pauses the updating of the active plugin,
     allowing users to keep their parameters mapped to the currently selected

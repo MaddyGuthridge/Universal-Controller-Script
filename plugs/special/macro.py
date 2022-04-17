@@ -26,6 +26,7 @@ from controlsurfaces import (
     SwitchActivePluginButton,
     SwitchActiveWindowButton,
     SwitchActiveToggleButton,
+    PauseActiveButton,
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
@@ -49,6 +50,8 @@ class Macro(SpecialPlugin):
                          raise_on_failure=False)
         shadow.bindMatches(SwitchActiveButton,
                            self.switchActive, raise_on_failure=False)
+        shadow.bindMatches(PauseActiveButton,
+                           self.pauseActive, raise_on_failure=False)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
@@ -126,6 +129,18 @@ class Macro(SpecialPlugin):
         elif isinstance(c, SwitchActiveToggleButton):
             # Toggle between windows and plugins
             getContext().active.toggleWindowsPlugins()
+        return True
+
+    @filterButtonLift
+    def pauseActive(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
+        # TODO: If there's enough demand, potentially add support for a direct
+        # controls as well as just a toggle
+        getContext().active.playPause()
         return True
 
 

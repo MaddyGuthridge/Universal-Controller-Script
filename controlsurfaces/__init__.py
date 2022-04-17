@@ -93,6 +93,8 @@ __all__ = [
     'SwitchActivePluginButton',
     'SwitchActiveWindowButton',
     'SwitchActiveToggleButton',
+    'PauseActiveButton',
+    'ControlSwitchButton',
 ]
 
 from .controlsurface import ControlSurface
@@ -194,4 +196,6 @@ from .macrobutton import (
     SwitchActivePluginButton,
     SwitchActiveWindowButton,
     SwitchActiveToggleButton,
+    PauseActiveButton,
+    ControlSwitchButton,
 )
