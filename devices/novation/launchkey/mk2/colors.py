@@ -13,7 +13,7 @@ from common.types.color import Color
 COLORS = {
     #                 0xRRGGBB
     Color.fromInteger(0x000000):   0,  # Off
-    Color.fromInteger(0x484848):   1,  # Grey
+    Color.fromInteger(0x5C656A):   1,  # Grey (default FL Colour)
     Color.fromInteger(0xFFFFFF):   3,  # White
     Color.fromInteger(0x94323E):   5,  # Red
     Color.fromInteger(0x45A147):  25,  # Green
