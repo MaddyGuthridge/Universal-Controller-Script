@@ -6,6 +6,8 @@ from common.eventpattern import BasicPattern, ForwardedPattern
 from common.types import EventData
 from common.util.events import forwardEvent
 
+from .drumpad import LaunchkeyDrumpad
+
 # Pattern for matching
 INCONTROL_MATCH = ForwardedPattern(
     2,
@@ -27,10 +29,13 @@ DRUMS_RESPONSE = EventData(0x9F, 0x0F, 0x7F)
 
 class InControl:
 
-    def __init__(self) -> None:
+    def __init__(self, matcher: IControlMatcher) -> None:
         self._enabled = False
+        self._matcher = matcher
 
     def enable(self):
+        # Disable before we enable to ensure it's set up correctly
+        self.disable()
         forwardEvent(INCONTROL_ENABLE, 2)
 
     def disable(self):
@@ -47,6 +52,14 @@ class InControl:
             forwardEvent(KNOBS_RESPONSE, 2)
         elif DRUMS_BUTTON.matchEvent(event):
             forwardEvent(DRUMS_RESPONSE, 2)
+            self.refreshDrumPads()
+
+    def refreshDrumPads(self):
+        """Refresh drum pads on startup so that their colours don't break
+        """
+        for control in self._matcher.getControls():
+            if isinstance(control, LaunchkeyDrumpad):
+                control.onColorChange()
 
 
 class InControlMatcher(IControlMatcher):

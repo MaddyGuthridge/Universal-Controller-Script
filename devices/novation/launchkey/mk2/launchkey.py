@@ -52,7 +52,7 @@ class LaunchkeyMk2(Device):
 
     def __init__(self, matcher: BasicControlMatcher) -> None:
         # InControl manager
-        self._incontrol = InControl()
+        self._incontrol = InControl(matcher)
         matcher.addSubMatcher(InControlMatcher(self._incontrol))
 
         # Notes
