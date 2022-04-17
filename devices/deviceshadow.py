@@ -70,7 +70,7 @@ class DeviceShadow:
             IControlHash,
             tuple[ControlShadow, EventCallback, tuple]
         ] = {}
-        self._transparent = False
+        self._minimal = False
 
     def __repr__(self) -> str:
         """
@@ -119,9 +119,9 @@ class DeviceShadow:
         """
         return self._device
 
-    def setTransparent(self, value: bool) -> None:
+    def setMinimal(self, value: bool) -> None:
         """
-        Control whether this device shadow is "transparent"
+        Control whether this device shadow is "minimal"
 
         If it is, then all unassigned controls will be ignored, such that they
         can be modified and processed from other plugins. This should be used
@@ -129,9 +129,9 @@ class DeviceShadow:
         signals to the device.
 
         ### Args:
-        * `value` (`bool`): new transparency value
+        * `value` (`bool`): new minimal value
         """
-        self._transparent = value
+        self._minimal = value
 
     def _getMatches(
         self,
@@ -594,7 +594,7 @@ class DeviceShadow:
         Apply the configuration of the device shadow to the control it
         represents
         """
-        if self._transparent or not thorough:
+        if self._minimal or not thorough:
             controls = (c for c, _, _ in self._assigned_controls.values())
         else:
             controls = (c for c in self._all_controls)

@@ -37,7 +37,7 @@ class Press(SpecialPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.setTransparent(True)
+        shadow.setMinimal(True)
         self._velocities = (
             shadow.bindMatches(DrumPad, self.any, raise_on_failure=False)
             + shadow.bindMatches(Note, self.any, raise_on_failure=False)

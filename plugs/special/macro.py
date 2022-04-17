@@ -39,7 +39,7 @@ class Macro(SpecialPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.setTransparent(True)
+        shadow.setMinimal(True)
         super().__init__(shadow, [])
         # Macro buttons
         shadow.bindMatch(UndoButton, self.undo, raise_on_failure=False)

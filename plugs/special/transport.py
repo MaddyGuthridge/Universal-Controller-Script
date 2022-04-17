@@ -77,7 +77,7 @@ class Transport(SpecialPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.setTransparent(True)
+        shadow.setMinimal(True)
         shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)
         self._play = shadow.bindMatch(
             PlayButton, self.playButton, raise_on_failure=False
