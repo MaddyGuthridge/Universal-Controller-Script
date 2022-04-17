@@ -71,6 +71,7 @@ class DeviceShadow:
             tuple[ControlShadow, EventCallback, tuple]
         ] = {}
         self._minimal = False
+        self._transparent = False
 
     def __repr__(self) -> str:
         """
@@ -132,6 +133,18 @@ class DeviceShadow:
         * `value` (`bool`): new minimal value
         """
         self._minimal = value
+
+    def setTransparent(self, value: bool) -> None:
+        """
+        Control whether this device shadow is "transparent"
+
+        If it is, then any controls where the color is set to off will be
+        ignored during updating
+
+        ### Args:
+        * `value` (`bool`): new transparent value
+        """
+        self._transparent = value
 
     def _getMatches(
         self,
@@ -599,4 +612,4 @@ class DeviceShadow:
         else:
             controls = (c for c in self._all_controls)
         for c in controls:
-            c.apply(thorough)
+            c.apply(thorough, self._transparent)

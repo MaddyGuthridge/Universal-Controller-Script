@@ -152,19 +152,26 @@ class Device:
         Can be overridden by child classes.
         """
 
+    @final
+    def doTick(self) -> None:
+        """
+        Called frequently, so that the device can perform any required actions,
+        such as maintaining a heartbeat event.
+
+        This method forwards ticks onto other parts of the controller as well
+        as to its own tick() method which is overridden by child classes
+        """
+        for c in self._matcher.getControls():
+            # with ProfilerContext("Tick control"):
+            c.doTick()
+
     def tick(self) -> None:
         """
         Called frequently, so that the device can perform any required actions,
         such as maintaining a heartbeat event.
 
         Can be overridden by child classes.
-
-        WARNING: Ensure that the super function is still called or control
-        surfaces won't get ticked correctly
         """
-        for c in self._matcher.getControls():
-            # with ProfilerContext("Tick control"):
-            c.tick()
 
     @final
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:

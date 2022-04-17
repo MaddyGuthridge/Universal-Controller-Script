@@ -38,6 +38,7 @@ class Press(SpecialPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
+        shadow.setTransparent(True)
         self._velocities = (
             shadow.bindMatches(DrumPad, self.any, raise_on_failure=False)
             + shadow.bindMatches(Note, self.any, raise_on_failure=False)
@@ -76,15 +77,11 @@ class Press(SpecialPlugin):
 
     def tickVelocities(self):
         for c in self._velocities:
-            c.value = c.getControl().value
-            if c.value != 0:
-                print(c)
-            c.color = Color.fade(OFF, ON, c.value)
+            c.color = Color.fade(OFF, ON, c.getControl().value)
 
     def tickButtons(self):
         for c in self._buttons:
-            c.value = c.getControl().value
-            c.color = ON if c.value else OFF
+            c.color = ON if c.getControl().value else OFF
 
 
 ExtensionManager.registerSpecialPlugin(Press)
