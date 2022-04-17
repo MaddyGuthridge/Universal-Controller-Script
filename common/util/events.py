@@ -8,6 +8,12 @@ from typing import TYPE_CHECKING
 import common
 import device
 from common.types.eventdata import EventData, isEventStandard, isEventSysex
+from common.exceptions import (
+    EventEncodeError,
+    EventInspectError,
+    EventDecodeError,
+    EventDispatchError,
+)
 
 
 def getDeviceId() -> str:
@@ -88,8 +94,10 @@ def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
         device_num = getDeviceNum()
         if device_num == 1:
             # TODO: Use a custom exception type to improve error checking
-            raise ValueError("Either forwarding from an invalid device or "
-                             "target device number is unspecified")
+            raise EventEncodeError(
+                "Either forwarding from an invalid device or target device "
+                "number is unspecified"
+            )
 
     sysex = getForwardedEventHeader() + bytes([device_num])
 
@@ -160,7 +168,9 @@ def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
     if device_num == -1:
         device_num = getDeviceNum()
         if device_num == 1:
-            raise ValueError("No target device specified from main script")
+            raise EventInspectError(
+                "No target device specified from main script"
+            )
 
     if not isEventForwardedHere(event):
         return False
@@ -188,7 +198,7 @@ def decodeForwardedEvent(event: EventData, type_idx: int = -1) -> EventData:
     * `eventData`: decoded data
     """
     if not isEventForwarded(event):
-        raise TypeError(f"Event not forwarded: {eventToString(event)}")
+        raise EventDecodeError(f"Event not forwarded: {eventToString(event)}")
     assert isEventSysex(event)
     if type_idx == -1:
         type_idx = _getForwardedNameEndIdx(event) + 2
@@ -216,12 +226,16 @@ def forwardEvent(event: EventData, device_num: int = -1):
     if device_num == -1:
         device_num = getDeviceNum()
         if device_num == 1:
-            raise ValueError("No target device specified from main script")
+            raise EventEncodeError(
+                "No target device specified from main script"
+            )
     output = encodeForwardedEvent(event, device_num)
     # Dispatch to all available devices
     if device.dispatchReceiverCount() == 0:
-        raise TypeError(f"Unable to forward event to/from device {device_num}."
-                        f" Is the controller configured correctly?")
+        raise EventDispatchError(
+            f"Unable to forward event to/from device {device_num}."
+            f" Is the controller configured correctly?"
+        )
     for i in range(device.dispatchReceiverCount()):
         device.dispatch(i, 0xF0, output)
 

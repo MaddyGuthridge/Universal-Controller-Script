@@ -172,7 +172,7 @@ class DeviceContextManager:
         * `Device`: device
         """
         if self._device is None:
-            raise ValueError("Device number not set")
+            raise ValueError("Device not set")
         return self._device
 
 
