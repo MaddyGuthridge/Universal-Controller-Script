@@ -84,4 +84,4 @@ class Press(SpecialPlugin):
             c.color = ON if c.getControl().value else OFF
 
 
-ExtensionManager.registerSpecialPlugin(Press)
+ExtensionManager.registerFinalSpecialPlugin(Press)

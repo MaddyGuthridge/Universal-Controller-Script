@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from common.util.apifixes import WindowIndex
 
 
+# TODO: Clean up this awfulness - so much repeated code
 class ExtensionManager:
     """
     Manages all extensions registered with the script, allowing for extensions
@@ -39,6 +40,12 @@ class ExtensionManager:
     # Map types to their instance
     _instantiated_special_plugins: 'dict[type[SpecialPlugin], SpecialPlugin]'\
         = {}
+
+    # Final special plugins
+    _final_special_plugins: 'list[type[SpecialPlugin]]' = []
+    # Map types to their instance
+    _instantiated_final_special_plugins: \
+        'dict[type[SpecialPlugin], SpecialPlugin]' = {}
 
     _devices: list[type['Device']] = []
 
@@ -105,7 +112,7 @@ class ExtensionManager:
     @classmethod
     def registerSpecialPlugin(cls, plugin: type['SpecialPlugin']) -> None:
         """
-        Register a plugin type
+        Register a final plugin type
 
         This should be called after defining the class object for a plugin, so
         that the class can be instantiated if the plugin is in use.
@@ -128,6 +135,38 @@ class ExtensionManager:
         reset to their default state and control bindings are removed.
         """
         cls._special_plugins.append(plugin)
+
+    @classmethod
+    def registerFinalSpecialPlugin(cls, plugin: type['SpecialPlugin']) -> None:
+        """
+        Register a final special plugin type.
+
+        Final special plugins differ from other special plugins as they
+        have the opportunity to process events and colours last. As such, they
+        should be designed carefully to ensure they don't interfere with other
+        plugins.
+
+        This should be called after defining the class object for a plugin, so
+        that the class can be instantiated if the plugin is in use.
+
+        ### Args:
+        * `plugin` (`type[SpecialPlugin]`): plugin to register
+
+        ### Example Usage
+        ```py
+        # Create a plugin
+        class MyPlugin(SpecialPlugin):
+            ...
+        # Register it
+        ExtensionManager.registerFinalSpecialPlugin(MyPlugin)
+        ```
+
+        WARNING: Plugins assume that device definitions don't change over time.
+        If the active device changes, or the available controls change, the
+        function `resetPlugins()` should be called so that plugins are
+        reset to their default state and control bindings are removed.
+        """
+        cls._final_special_plugins.append(plugin)
 
     @classmethod
     def registerDevice(cls, device: type['Device']) -> None:
@@ -326,6 +365,34 @@ class ExtensionManager:
         return ret
 
     @classmethod
+    def getFinalSpecialPlugins(cls, device: 'Device') -> list['SpecialPlugin']:
+        """
+        Returns a list of the final special plugins that are currently active
+        and should process the event
+
+        If an active plugin hasn't been instantiated, the device object will be
+        used to create one.
+
+        ### Args:
+        * `device` (`Device`): current device
+
+        ### Returns:
+        * `list[SpecialPlugin]`: list of active plugins
+        """
+        from devices.deviceshadow import DeviceShadow
+        ret: list[SpecialPlugin] = []
+        for p in cls._final_special_plugins:
+            # If plugin should be active
+            if p.shouldBeActive():
+                # If it hasn't been instantiated yet, instantiate it
+                if p not in cls._instantiated_final_special_plugins.keys():
+                    cls._instantiated_final_special_plugins[p] \
+                        = p.create(DeviceShadow(device))
+                ret.append(cls._instantiated_final_special_plugins[p])
+
+        return ret
+
+    @classmethod
     def resetPlugins(cls) -> None:
         """
         Resets all active plugins (standard and special) which can account for
@@ -333,6 +400,7 @@ class ExtensionManager:
         """
         cls._instantiated_plugins = {}
         cls._instantiated_special_plugins = {}
+        cls._instantiated_final_special_plugins = {}
         cls._instantiated_windows = {}
 
     @classmethod
@@ -348,6 +416,13 @@ class ExtensionManager:
         Returns a list of all special plugins
         """
         return cls._special_plugins
+
+    @classmethod
+    def getAllFinalSpecialPlugins(cls) -> list[type]:
+        """
+        Returns a list of all final special plugins
+        """
+        return cls._final_special_plugins
 
     @classmethod
     def getAllWindowPlugins(cls) -> list[type]:
@@ -386,12 +461,18 @@ class ExtensionManager:
             f"special plugin{plural(cls._special_plugins)}"
         # Number of instantiated special plugins
         nis_plug = instantiated(cls._instantiated_special_plugins)
+        # Number of final special plugins
+        nfs_plug = f"{len(cls._final_special_plugins)} "\
+            f"final special plugin{plural(cls._final_special_plugins)}"
+        # Number of instantiated final special plugins
+        nifs_plug = instantiated(cls._instantiated_final_special_plugins)
         # Compile all that info into one string
         return (
             f"{n_dev}, "
             f"{n_plug}{ni_plug}, "
             f"{n_wind}{ni_wind}, "
-            f"{ns_plug}{nis_plug}"
+            f"{ns_plug}{nis_plug}, "
+            f"{nfs_plug}{nifs_plug}"
         )
 
     @classmethod
@@ -511,6 +592,10 @@ class ExtensionManager:
         if plug in cls._instantiated_special_plugins.keys():
             return str(cls._instantiated_special_plugins[plug])
         elif plug in cls._special_plugins:
+            return f"{plug} is registered but not instantiated"
+        if plug in cls._instantiated_final_special_plugins.keys():
+            return str(cls._instantiated_final_special_plugins[plug])
+        elif plug in cls._final_special_plugins:
             return f"{plug} is registered but not instantiated"
         else:
             return f"{plug} isn't registered"

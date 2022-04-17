@@ -87,6 +87,14 @@ class MainState(DeviceState):
                     with ProfilerContext(f"Apply {type(window)}"):
                         window.apply(thorough=changed)
 
+        # Tick final special plugins
+        for p in common.ExtensionManager.getFinalSpecialPlugins(self._device):
+            if p.shouldBeActive():
+                with ProfilerContext(f"Tick {type(p)}"):
+                    p.tick()
+                with ProfilerContext(f"Apply {type(p)}"):
+                    p.apply(thorough=True)
+
     @profilerDecoration("processEvent")
     def processEvent(self, event: EventData) -> None:
         with ProfilerContext("Match event"):
@@ -141,7 +149,10 @@ class MainState(DeviceState):
                             return
 
         # Get special plugins
-        for p in common.ExtensionManager.getSpecialPlugins(self._device):
+        for p in (
+            common.ExtensionManager.getSpecialPlugins(self._device)
+            + common.ExtensionManager.getFinalSpecialPlugins(self._device)
+        ):
             if p.shouldBeActive():
                 with ProfilerContext(f"Process {type(p)}"):
                     if p.processEvent(mapping, plug_idx):
