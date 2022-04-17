@@ -57,7 +57,9 @@ class ChannelRack(WindowPlugin):
     ) -> bool:
         """Bind drum pads to omni preview"""
         try:
-            idx = channels.getChannelIndex(self.coordToIndex(control.getShadow()))
+            idx = channels.getChannelIndex(
+                self.coordToIndex(control.getShadow())
+            )
         except TypeError:  # Index out of range
             return True
         channels.midiNoteOn(
