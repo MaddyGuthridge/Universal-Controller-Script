@@ -192,10 +192,12 @@ from .macrobutton import (
     UndoButton,
     RedoButton,
     QuantizeButton,
+    ControlSwitchButton,
+)
+from .activitybutton import (
     SwitchActiveButton,
     SwitchActivePluginButton,
     SwitchActiveWindowButton,
     SwitchActiveToggleButton,
     PauseActiveButton,
-    ControlSwitchButton,
 )

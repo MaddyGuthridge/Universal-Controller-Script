@@ -14,11 +14,6 @@ __all__ = [
     'UndoButton',
     'RedoButton',
     'QuantizeButton',
-    'SwitchActiveButton',
-    'SwitchActivePluginButton',
-    'SwitchActiveWindowButton',
-    'SwitchActiveToggleButton',
-    'PauseActiveButton',
     'ControlSwitchButton',
 ]
 
@@ -74,63 +69,15 @@ class QuantizeButton(MacroButton):
     """
 
 
-class SwitchActiveButton(MacroButton):
-    """
-    Defines a switch active button, which is handled internally to switch
-    event handling between the active plugin and the active window.
-
-    Using this type of control will cause an error unless the device calls
-    `getContext().activity.setSplitWindowsPlugins(self, value: bool)`
-    in order to inform the script context that windows and plugins should be
-    addressed independently.
-
-    This is the abstract base class: to implement this, use
-    * `SwitchActivePluginButton` for a button to switch to plugins
-    * `SwitchActiveWindowButton` for a button to switch to windows
-    * `SwitchActiveToggleButton` for a button to toggle between windows and
-      plugins
-    """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, "active")
-
-
-class SwitchActivePluginButton(SwitchActiveButton):
-    """
-    A switch active button that makes generator and effects plugins be actively
-    processed by the script.
-    """
-
-
-class SwitchActiveWindowButton(SwitchActiveButton):
-    """
-    A switch active button that makes FL Studio windows be actively
-    processed by the script.
-    """
-
-
-class SwitchActiveToggleButton(SwitchActiveButton):
-    """
-    A switch active button that toggles between plugins and FL Studio windows
-    being actively processed by the script.
-    """
-
-
-class PauseActiveButton(MacroButton):
-    """
-    A pause active button that pauses the updating of the active plugin,
-    allowing users to keep their parameters mapped to the currently selected
-    plugin, even if they choose a new plugin.
-    """
-
-
 class ControlSwitchButton(MacroButton):
     """
     A button that is used to switch modes in some plugins (for example when
     changing between views). In order to get full control of the script,
     devices should implement this button somewhere.
     """
+    def __init__(
+        self,
+        event_pattern: IEventPattern,
+        value_strategy: IValueStrategy
+    ) -> None:
+        super().__init__(event_pattern, value_strategy, "control_switch")
