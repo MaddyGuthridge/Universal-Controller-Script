@@ -14,10 +14,7 @@ __all__ = [
     'UndoButton',
     'RedoButton',
     'QuantizeButton',
-    'SwitchActiveButton',
-    'SwitchActivePluginButton',
-    'SwitchActiveWindowButton',
-    'SwitchActiveToggleButton',
+    'ControlSwitchButton',
 ]
 
 from common.eventpattern.ieventpattern import IEventPattern
@@ -32,14 +29,14 @@ class MacroButton(Button):
     """
 
 
-class SaveButton(Button):
+class SaveButton(MacroButton):
     """
     Defines a save button, which will be mapped to the save command in FL
     Studio
     """
 
 
-class UndoRedoButton(Button):
+class UndoRedoButton(MacroButton):
     """
     Defines an undo-redo button, which will be mapped to FL Studio's undo-redo
     command.
@@ -49,7 +46,7 @@ class UndoRedoButton(Button):
     """
 
 
-class UndoButton(Button):
+class UndoButton(MacroButton):
     """
     Defines an undo button, which will be mapped to FL Studio's undo command.
 
@@ -57,7 +54,7 @@ class UndoButton(Button):
     """
 
 
-class RedoButton(Button):
+class RedoButton(MacroButton):
     """
     Defines a redo button, which will be mapped to FL Studio's redo command.
 
@@ -65,54 +62,22 @@ class RedoButton(Button):
     """
 
 
-class QuantizeButton(Button):
+class QuantizeButton(MacroButton):
     """
     Defines a quantize button, which should be mapped to FL Studio's snapping
     control.
     """
 
 
-class SwitchActiveButton(Button):
+class ControlSwitchButton(MacroButton):
     """
-    Defines a switch active button, which is handled internally to switch
-    event handling between the active plugin and the active window.
-
-    Using this type of control will cause an error unless the device calls
-    `getContext().activity.setSplitWindowsPlugins(self, value: bool)`
-    in order to inform the script context that windows and plugins should be
-    addressed independently.
-
-    This is the abstract base class: to implement this, use
-    * `SwitchActivePluginButton` for a button to switch to plugins
-    * `SwitchActiveWindowButton` for a button to switch to windows
-    * `SwitchActiveToggleButton` for a button to toggle between windows and
-      plugins
+    A button that is used to switch modes in some plugins (for example when
+    changing between views). In order to get full control of the script,
+    devices should implement this button somewhere.
     """
-
     def __init__(
         self,
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy
     ) -> None:
-        super().__init__(event_pattern, value_strategy, "active")
-
-
-class SwitchActivePluginButton(SwitchActiveButton):
-    """
-    A switch active button that make generator and effects plugins be actively
-    processed by the script
-    """
-
-
-class SwitchActiveWindowButton(SwitchActiveButton):
-    """
-    A switch active button that make FL Studio windows be actively
-    processed by the script
-    """
-
-
-class SwitchActiveToggleButton(SwitchActiveButton):
-    """
-    A switch active button that toggles between plugins and FL Studio windows
-    being actively processed by the script
-    """
+        super().__init__(event_pattern, value_strategy, "control_switch")

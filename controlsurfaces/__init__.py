@@ -70,10 +70,15 @@ __all__ = [
     'MasterFader',
     'FaderButton',
     'GenericFaderButton',
+    'MasterGenericFaderButton',
     'MuteButton',
+    'MasterMuteButton',
     'SoloButton',
+    'MasterSoloButton',
     'ArmButton',
+    'MasterArmButton',
     'SelectButton',
+    'MasterSelectButton',
     'Knob',
     'MasterKnob',
     'Encoder',
@@ -88,6 +93,8 @@ __all__ = [
     'SwitchActivePluginButton',
     'SwitchActiveWindowButton',
     'SwitchActiveToggleButton',
+    'PauseActiveButton',
+    'ControlSwitchButton',
 ]
 
 from .controlsurface import ControlSurface
@@ -164,10 +171,15 @@ from .fader import Fader, MasterFader
 from .faderbutton import (
     FaderButton,
     GenericFaderButton,
+    MasterGenericFaderButton,
     MuteButton,
+    MasterMuteButton,
     SoloButton,
+    MasterSoloButton,
     ArmButton,
+    MasterArmButton,
     SelectButton,
+    MasterSelectButton,
 )
 from .knob import Knob, MasterKnob
 from .encoder import Encoder
@@ -180,8 +192,12 @@ from .macrobutton import (
     UndoButton,
     RedoButton,
     QuantizeButton,
+    ControlSwitchButton,
+)
+from .activitybutton import (
     SwitchActiveButton,
     SwitchActivePluginButton,
     SwitchActiveWindowButton,
     SwitchActiveToggleButton,
+    PauseActiveButton,
 )

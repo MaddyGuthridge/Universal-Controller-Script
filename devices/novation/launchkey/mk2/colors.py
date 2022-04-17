@@ -19,6 +19,7 @@ COLORS = {
     Color.fromInteger(0x45A147):  25,  # Green
     Color.fromInteger(0x4A958C):  77,  # Teal
     Color.fromInteger(0xC34B75):  53,  # Pink
+    Color.fromInteger(0xAD3A8D):  94,  # Pinker
     Color.fromInteger(0x294E8B):  45,  # Blue
     Color.fromInteger(0xC0A443):  13,  # Yellow
     Color.fromInteger(0x6439AC):  49,  # Purple
@@ -42,5 +43,6 @@ COLORS = {
     Color.fromInteger(0xA14745): 106,  # Dull red
     Color.fromInteger(0xA17C45): 126,  # Dull orange
     Color.fromInteger(0x73298B):  82,  # Dull pink
+    Color.fromInteger(0xA14577):  82,  # Dull Pink
     Color.fromInteger(0x75A02E):  85,  # Dull lime
 }
