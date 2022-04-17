@@ -70,10 +70,15 @@ __all__ = [
     'MasterFader',
     'FaderButton',
     'GenericFaderButton',
+    'MasterGenericFaderButton',
     'MuteButton',
+    'MasterMuteButton',
     'SoloButton',
+    'MasterSoloButton',
     'ArmButton',
+    'MasterArmButton',
     'SelectButton',
+    'MasterSelectButton',
     'Knob',
     'MasterKnob',
     'Encoder',
@@ -164,10 +169,15 @@ from .fader import Fader, MasterFader
 from .faderbutton import (
     FaderButton,
     GenericFaderButton,
+    MasterGenericFaderButton,
     MuteButton,
+    MasterMuteButton,
     SoloButton,
+    MasterSoloButton,
     ArmButton,
+    MasterArmButton,
     SelectButton,
+    MasterSelectButton,
 )
 from .knob import Knob, MasterKnob
 from .encoder import Encoder
