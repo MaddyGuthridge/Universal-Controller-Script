@@ -15,21 +15,11 @@ from common.eventpattern import BasicPattern, ForwardedPattern
 from common.extensionmanager import ExtensionManager
 from common.types import EventData
 from controlsurfaces import (
-    DirectionNext,
-    DirectionPrevious,
-    Fader,
-    FastForwardButton,
-    GenericFaderButton,
-    MasterGenericFaderButton,
     Knob,
-    LoopButton,
-    MasterFader,
     PlayButton,
     RecordButton,
-    RewindButton,
     StandardModWheel,
     StandardPitchWheel,
-    StopButton,
 )
 from controlsurfaces.valuestrategies import (
     ButtonData2Strategy,
@@ -39,7 +29,7 @@ from controlsurfaces.valuestrategies import (
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
-from .drumpad import LkDrumPad, LkControlSwitchButton, LkMetronomeButton
+from .drumpad import LkDrumPad
 from .incontrol import InControl, InControlMatcher
 
 DEVICE_ID = "Novation.Launchkey.Mk3.Mini"
@@ -86,14 +76,6 @@ class LaunchkeyMiniMk3(Device):
         matcher.addControl(RecordButton(
             ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
             ForwardedStrategy(ButtonData2Strategy())
-        ))
-        matcher.addControl(DirectionNext(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        ))
-        matcher.addControl(DirectionPrevious(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
         ))
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())

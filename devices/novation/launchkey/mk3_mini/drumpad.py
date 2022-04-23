@@ -14,7 +14,7 @@ from common.types import EventData
 from common.util.events import forwardEvent
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import DrumPad, MetronomeButton, ControlSwitchButton
-# from .colors import COLORS
+from .colors import COLORS
 
 DRUM_PADS = [
     [0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67],  # Also 0x68
@@ -32,15 +32,15 @@ class LkDrumPad(DrumPad):
         # Variables to keep the drumpad lights working
         self._ticker_timer = 0
         super().__init__(
-            ForwardedPattern(2, NotePattern(self._note_num, 0xF)),
+            ForwardedPattern(2, NotePattern(self._note_num, 0)),
             ForwardedStrategy(NoteStrategy()),
             coordinate
         )
 
     @profilerDecoration("LaunchKey onColorChange")
     def onColorChange(self) -> None:
-        # c_num = COLORS[self.color.closest(list(COLORS.keys()))]
-        # forwardEvent(EventData(0x9F, self._note_num, c_num), 2)
+        c_num = COLORS[self.color.closest(list(COLORS.keys()))]
+        forwardEvent(EventData(0x90, self._note_num, c_num), 2)
         # print(f"{self.coordinate} : #{self.color.integer:06X} -> {c_num}")
         pass
 
