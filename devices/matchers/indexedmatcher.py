@@ -16,7 +16,6 @@ class IndexedMatcher(IControlMatcher):
         controls: list[ControlSurface],
         device: int = 1,
     ) -> None:
-        print(status, data1)
         self.__pattern: IEventPattern = BasicPattern(
             status,
             range(data1, data1 + len(controls)),
@@ -33,7 +32,6 @@ class IndexedMatcher(IControlMatcher):
 
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
         if not self.__pattern.matchEvent(event):
-            print("No")
             return None
         if self.__forwarded:
             decoded = decodeForwardedEvent(event)
