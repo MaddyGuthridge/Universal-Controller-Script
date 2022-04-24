@@ -118,7 +118,12 @@ class Transport(SpecialPlugin):
         index: UnsafeIndex,
         *args: Any
     ) -> bool:
-        transport.start()
+        # If there's no stop button, this should behave like a stop button
+        # when playing
+        if self._stop is None and transport.isPlaying():
+            transport.stop()
+        else:
+            transport.start()
         return True
 
     @filterButtonLift
