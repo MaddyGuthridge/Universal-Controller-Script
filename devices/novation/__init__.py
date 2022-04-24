@@ -1,6 +1,8 @@
 
 __all__ = [
-    'launchkey'
+    'launchkey',
+    'incontrol',
 ]
 
 from . import launchkey
+from . import incontrol

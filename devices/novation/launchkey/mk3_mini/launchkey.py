@@ -29,7 +29,7 @@ from controlsurfaces.valuestrategies import (
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
-from ..incontrol import (
+from devices.novation.incontrol import (
     InControl,
     InControlMatcher,
     LkMk3DrumPad,
