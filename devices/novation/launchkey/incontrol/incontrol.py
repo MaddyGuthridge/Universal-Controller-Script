@@ -59,7 +59,7 @@ class InControl:
         """
         for control in self._matcher.getControls():
             if isinstance(control, LkDrumPad):
-                control.onColorChange()
+                control.onColorChange(control.color)
 
 
 class InControlMatcher(IControlMatcher):
