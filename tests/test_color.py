@@ -73,41 +73,25 @@ def test_integer_negative():
     assert c == -9261254
 
 
-def test_copy():
-    c = Color.fromRgb(10, 15, 20)
-    c2 = c.copy()
-    c.blue = 10
-    c.red = 50
-    assert c2.red == 10
-    assert c2.green == 15
-    assert c2.blue == 20
-
-
 def test_assign_out_of_bounds_rgb():
-    c = Color.fromInteger(0xFF)
-
-    c.red = -12
-    assert c.red == 0
-
-    c.green = 270
-    assert c.green == 255
+    assert Color.fromRgb(-12, 0, 0) == Color()
+    assert Color.fromRgb(270, 0, 0) == Color.fromRgb(255, 0, 0)
 
     with pytest.raises(TypeError):
-        c.red = 0.75
+        Color.fromRgb(1.5, 0, 0)
 
 
 def test_assign_out_of_bounds():
-    c = Color.fromInteger(0xFF)
-
-    c.saturation = 1.2
+    c = Color.fromHsv(0, 1.2, 1.0)
     assert floatApproxEq(1.0, c.saturation)
 
-    c.value = 1.2
+    c = Color.fromHsv(0, 1.0, 1.2)
     assert floatApproxEq(1.0, c.value)
 
-    c.hue = 370.0
+    c = Color.fromHsv(370, 1.0, 1.0)
     assert floatApproxEq(10.0, c.hue)
-    c.hue = -10.0
+
+    c = Color.fromHsv(-10, 1.0, 1.0)
     assert floatApproxEq(350.0, c.hue)
 
 

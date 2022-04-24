@@ -141,9 +141,9 @@ class Color:
         * `Color.fromRgb()`
         * `Color.fromHsv()`
         """
-        self._red = 0
-        self._green = 0
-        self._blue = 0
+        self.__red = 0
+        self.__green = 0
+        self.__blue = 0
 
     def __repr__(self) -> str:
         return f"Color(0x{self.integer:06X} | "\
@@ -152,16 +152,16 @@ class Color:
     def __hash__(self) -> int:
         return self.integer
 
-    def copy(self) -> 'Color':
-        """
-        Create an identical copy of this color object
-
-        ### Returns:
-        * `Color`: colour object copy
-        """
-        c = Color()
-        c.integer = self.integer
-        return c
+#     def copy(self) -> 'Color':
+#         """
+#         Create an identical copy of this color object
+#
+#         ### Returns:
+#         * `Color`: colour object copy
+#         """
+#         c = Color()
+#         c.integer = self.integer
+#         return c
 
     ###########################################################################
     # Creation functions
@@ -179,7 +179,13 @@ class Color:
         """
         c = Color()
 
-        c.integer = rgb
+        r = (rgb & 0xFF0000) >> 16
+        g = (rgb & 0x00FF00) >> 8
+        b = (rgb & 0x0000FF)
+
+        c.__red = r
+        c.__green = g
+        c.__blue = b
 
         return c
 
@@ -198,9 +204,13 @@ class Color:
         """
         c = Color()
 
-        c.red = r
-        c.green = g
-        c.blue = b
+        r = c.__valCheckRgb(r)
+        g = c.__valCheckRgb(g)
+        b = c.__valCheckRgb(b)
+
+        c.__red = r
+        c.__green = g
+        c.__blue = b
 
         return c
 
@@ -219,7 +229,15 @@ class Color:
         """
         c = Color()
 
-        c.hsv = hue, saturation, value
+        hue = c.__valCheckHue(hue)
+        saturation = c.__valCheckSatVal(saturation)
+        value = c.__valCheckSatVal(value)
+
+        r, g, b = hsvToRgb(hue, saturation, value)
+
+        c.__red = r
+        c.__green = g
+        c.__blue = b
 
         return c
 
@@ -312,21 +330,21 @@ class Color:
             + self.blue
         )
 
-    @integer.setter
-    def integer(self, i: int) -> None:
-        """
-        Set the colour using a 3-byte integer comprised of red, green and blue
-        values.
-
-        The value takes the form 0xRRGGBB. This is useful for interacting with
-        FL Studio's APIs
-
-        ### Args:
-        * `i` (`int`): color integer
-        """
-        self.red = (i & 0xFF0000) >> 16
-        self.green = (i & 0x00FF00) >> 8
-        self.blue = (i & 0x0000FF)
+#     @integer.setter
+#     def integer(self, i: int) -> None:
+#         """
+#         Set the colour using a 3-byte integer comprised of red, green and blue
+#         values.
+#
+#         The value takes the form 0xRRGGBB. This is useful for interacting with
+#         FL Studio's APIs
+#
+#         ### Args:
+#         * `i` (`int`): color integer
+#         """
+#         self.red = (i & 0xFF0000) >> 16
+#         self.green = (i & 0x00FF00) >> 8
+#         self.blue = (i & 0x0000FF)
 
     @property
     def hsv(self) -> tuple[float, float, float]:
@@ -345,31 +363,31 @@ class Color:
         """
         return rgbToHsv(self.red, self.green, self.blue)
 
-    @hsv.setter
-    def hsv(self, hsv: tuple[float, float, float]) -> None:
-        """
-        Set the color using an HSV value
-
-        NOTE: Under the hood, values are still stored as RGB - conversions are
-        made as required.
-
-        ### Args:
-        * `hsv` (`tuple[float, float, float]`):
-            * hue (degrees: 0-360)
-            * saturation (0-1.0)
-            * value (0-1.0)
-        """
-        h, s, v = hsv
-
-        # Get within range
-        h = self.__valCheckHue(h)
-        s = self.__valCheckSatVal(s)
-        v = self.__valCheckSatVal(v)
-
-        r, g, b = hsvToRgb(h, s, v)
-        self.red = r
-        self.green = g
-        self.blue = b
+#     @hsv.setter
+#     def hsv(self, hsv: tuple[float, float, float]) -> None:
+#         """
+#         Set the color using an HSV value
+#
+#         NOTE: Under the hood, values are still stored as RGB - conversions are
+#         made as required.
+#
+#         ### Args:
+#         * `hsv` (`tuple[float, float, float]`):
+#             * hue (degrees: 0-360)
+#             * saturation (0-1.0)
+#             * value (0-1.0)
+#         """
+#         h, s, v = hsv
+#
+#         # Get within range
+#         h = self.__valCheckHue(h)
+#         s = self.__valCheckSatVal(s)
+#         v = self.__valCheckSatVal(v)
+#
+#         r, g, b = hsvToRgb(h, s, v)
+#         self.red = r
+#         self.green = g
+#         self.blue = b
 
     @property
     def red(self) -> int:
@@ -379,17 +397,17 @@ class Color:
         ### Returns:
         * `int`: red
         """
-        return self._red
+        return self.__red
 
-    @red.setter
-    def red(self, r: int) -> None:
-        """
-        Set the red component of the color
-
-        ### Args:
-        * `r` (`int`): red
-        """
-        self._red = Color.__valCheckRgb(r)
+#     @red.setter
+#     def red(self, r: int) -> None:
+#         """
+#         Set the red component of the color
+#
+#         ### Args:
+#         * `r` (`int`): red
+#         """
+#         self._red = Color.__valCheckRgb(r)
 
     @property
     def green(self) -> int:
@@ -399,17 +417,17 @@ class Color:
         ### Returns:
         * `int`: green
         """
-        return self._green
+        return self.__green
 
-    @green.setter
-    def green(self, g) -> None:
-        """
-        Set the green component of the color
-
-        ### Args:
-        * `g` (`int`): green
-        """
-        self._green = Color.__valCheckRgb(g)
+#     @green.setter
+#     def green(self, g) -> None:
+#         """
+#         Set the green component of the color
+#
+#         ### Args:
+#         * `g` (`int`): green
+#         """
+#         self._green = Color.__valCheckRgb(g)
 
     @property
     def blue(self) -> int:
@@ -419,17 +437,17 @@ class Color:
         ### Returns:
         * `int`: blue
         """
-        return self._blue
+        return self.__blue
 
-    @blue.setter
-    def blue(self, b) -> None:
-        """
-        Set the blue component of the color
-
-        ### Args:
-        * `b` (`int`): blue
-        """
-        self._blue = Color.__valCheckRgb(b)
+#     @blue.setter
+#     def blue(self, b) -> None:
+#         """
+#         Set the blue component of the color
+#
+#         ### Args:
+#         * `b` (`int`): blue
+#         """
+#         self._blue = Color.__valCheckRgb(b)
 
     @property
     def hue(self) -> float:
@@ -444,19 +462,19 @@ class Color:
         """
         return self.hsv[0]
 
-    @hue.setter
-    def hue(self, h: float):
-        """
-        Set the hue of the color
-
-        NOTE: Under the hood, values are still stored as RGB - conversions are
-        made as required.
-
-        ### Args:
-        * `h` (`float`): hue (degrees: 0-360)
-        """
-        _, s, v = self.hsv
-        self.hsv = h, s, v
+#     @hue.setter
+#     def hue(self, h: float):
+#         """
+#         Set the hue of the color
+#
+#         NOTE: Under the hood, values are still stored as RGB - conversions are
+#         made as required.
+#
+#         ### Args:
+#         * `h` (`float`): hue (degrees: 0-360)
+#         """
+#         _, s, v = self.hsv
+#         self.hsv = h, s, v
 
     @property
     def saturation(self) -> float:
@@ -471,19 +489,19 @@ class Color:
         """
         return self.hsv[1]
 
-    @saturation.setter
-    def saturation(self, s: float):
-        """
-        Set the saturation of the color
-
-        NOTE: Under the hood, values are still stored as RGB - conversions are
-        made as required.
-
-        ### Args:
-        * `s` (`float`): saturation
-        """
-        h, _, v = self.hsv
-        self.hsv = h, s, v
+#     @saturation.setter
+#     def saturation(self, s: float):
+#         """
+#         Set the saturation of the color
+#
+#         NOTE: Under the hood, values are still stored as RGB - conversions are
+#         made as required.
+#
+#         ### Args:
+#         * `s` (`float`): saturation
+#         """
+#         h, _, v = self.hsv
+#         self.hsv = h, s, v
 
     @property
     def value(self) -> float:
@@ -498,19 +516,19 @@ class Color:
         """
         return self.hsv[2]
 
-    @value.setter
-    def value(self, v: float):
-        """
-        Set the value of the color
-
-        NOTE: Under the hood, values are still stored as RGB - conversions are
-        made as required.
-
-        ### Args:
-        * `v` (`float`): value (luminosity)
-        """
-        h, s, _ = self.hsv
-        self.hsv = h, s, v
+#     @value.setter
+#     def value(self, v: float):
+#         """
+#         Set the value of the color
+#
+#         NOTE: Under the hood, values are still stored as RGB - conversions are
+#         made as required.
+#
+#         ### Args:
+#         * `v` (`float`): value (luminosity)
+#         """
+#         h, s, _ = self.hsv
+#         self.hsv = h, s, v
 
     ###########################################################################
     # Operators
@@ -682,9 +700,9 @@ class Color:
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Color):
             return (
-                self._red == other._red
-                and self._green == other._green
-                and self._blue == other._blue
+                self.__red == other.__red
+                and self.__green == other.__green
+                and self.__blue == other.__blue
             )
         elif isinstance(other, int):
             return self == Color.fromInteger(other)
