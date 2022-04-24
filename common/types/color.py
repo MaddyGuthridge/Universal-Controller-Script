@@ -687,6 +687,6 @@ class Color:
                 and self._blue == other._blue
             )
         elif isinstance(other, int):
-            return self.integer == other
+            return self == Color.fromInteger(other)
         else:
             return NotImplemented

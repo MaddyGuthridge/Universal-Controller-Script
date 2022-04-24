@@ -65,6 +65,14 @@ def test_integer():
     assert c.integer == 0xAABBCC
 
 
+def test_integer_negative():
+    """Sometimes, FL Studio returns a negative color integer - we should be
+    able to handle that
+    """
+    c = Color.fromInteger(0x72AF3A)
+    assert c == -9261254
+
+
 def test_copy():
     c = Color.fromRgb(10, 15, 20)
     c2 = c.copy()
