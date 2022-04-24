@@ -23,12 +23,13 @@ from devices.controlgenerators import NoteMatcher
 from devices.novation.incontrol import (
     InControl,
     InControlMatcher,
-    LkMk3DrumPad,
 )
 from devices.novation.incontrol.controls import (
     LkPlayButton,
     LkRecordButton,
-    LkKnobSet
+    LkKnobSet,
+    LkMk3DrumPad,
+    LkDrumPadMatcher,
 )
 
 DEVICE_ID = "Novation.Launchkey.Mk3.Mini"
@@ -48,15 +49,8 @@ class LaunchkeyMiniMk3(Device):
         # Notes
         matcher.addSubMatcher(NoteMatcher())
 
-        # Drum pads (high priority because they just use note on events)
-        for r in range(self.getDrumPadSize()[0]):
-            for c in range(self.getDrumPadSize()[1]):
-                matcher.addControl(LkMk3DrumPad((r, c)), 10)
-
-        # Create knobs
+        matcher.addSubMatcher(LkDrumPadMatcher(LkMk3DrumPad))
         matcher.addSubMatcher(LkKnobSet())
-
-        # Transport
         matcher.addControl(LkPlayButton())
         matcher.addControl(LkRecordButton())
         matcher.addControl(StandardPitchWheel())

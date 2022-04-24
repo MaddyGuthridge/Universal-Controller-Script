@@ -49,8 +49,13 @@ from .fader import (
     LkMasterFaderButton,
     LkFaderSet,
 )
-
 from .knob import (
     LkKnob,
     LkKnobSet,
+)
+from .metronome import (
+    LkMk2MetronomeButton,
+)
+from .controlswitch import (
+    LkMk2ControlSwitchButton,
 )
