@@ -76,6 +76,9 @@ ASCII_HEADER_ART = """
               '.''
 """
 
+# Device enquiry message
+UNIVERSAL_DEVICE_ENQUIRY = bytes([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7])
+
 # Device type constants
 DEVICE_TYPE_CONTROLLER = 1
 DEVICE_TYPE_FORWARDER = 2

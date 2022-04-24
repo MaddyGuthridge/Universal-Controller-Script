@@ -13,6 +13,7 @@ from typing import Optional
 import device
 
 import common
+from common.consts import UNIVERSAL_DEVICE_ENQUIRY
 from common.exceptions import DeviceRecogniseError
 from common import log, verbosity
 from common.types.eventdata import isEventSysex, EventData
@@ -110,7 +111,7 @@ class WaitingForDevice(IScriptState):
             )
             self.detectFallback()
         else:
-            device.midiOutSysex(bytes([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7]))
+            device.midiOutSysex(UNIVERSAL_DEVICE_ENQUIRY)
             log(LOG_CAT, "Sent universal device enquiry", verbosity.INFO)
 
     def initialise(self) -> None:
