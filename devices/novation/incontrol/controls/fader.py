@@ -73,10 +73,10 @@ class LkFaderSet(BasicControlMatcher):
         super().__init__()
         self.addSubMatcher(IndexedMatcher(0xBF, F_START, [
             LkFader(i) for i in range(8)
-        ]))
+        ], 2))
         self.addSubMatcher(IndexedMatcher(0xBF, FB_START, [
             LkFaderButton(i) for i in range(8)
-        ]))
+        ], 2))
         self.addControls([
             LkMasterFader(),
             LkMasterFaderButton(),

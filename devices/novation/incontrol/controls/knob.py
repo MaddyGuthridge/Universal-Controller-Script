@@ -34,4 +34,4 @@ class LkKnobSet(IndexedMatcher):
     def __init__(self) -> None:
         super().__init__(0xBF, K_START, [
             LkKnob(i) for i in range(8)
-        ])
+        ], 2)
