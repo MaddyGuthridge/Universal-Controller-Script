@@ -4,10 +4,7 @@ devices > novation > incontrol > controls > fader
 Definitions for fader controls shared between Launchkey devices
 """
 
-from typing import Optional
 from common.eventpattern import BasicPattern, ForwardedPattern
-from common.types import EventData
-from controlsurfaces import ControlEvent, ControlSurface
 from controlsurfaces import (
     Fader,
     GenericFaderButton,
@@ -19,7 +16,6 @@ from controlsurfaces.valuestrategies import (
     ForwardedStrategy,
 )
 from devices.matchers import (
-    IControlMatcher,
     BasicControlMatcher,
     IndexedMatcher
 )

@@ -4,19 +4,13 @@ devices > novation > incontrol > controls > knob
 Definitions for knob controls shared between Launchkey devices
 """
 
-from typing import Optional
 from common.eventpattern import BasicPattern, ForwardedPattern
-from common.types import EventData
-from controlsurfaces import ControlEvent, ControlSurface
 from controlsurfaces import Knob
 from controlsurfaces.valuestrategies import (
     Data2Strategy,
     ForwardedStrategy,
 )
-from devices.matchers import (
-    IControlMatcher,
-    IndexedMatcher
-)
+from devices.matchers import IndexedMatcher
 
 __all__ = [
     'LkKnob',

@@ -330,22 +330,6 @@ class Color:
             + self.blue
         )
 
-#     @integer.setter
-#     def integer(self, i: int) -> None:
-#         """
-#         Set the colour using a 3-byte integer comprised of red, green and blue
-#         values.
-#
-#         The value takes the form 0xRRGGBB. This is useful for interacting with
-#         FL Studio's APIs
-#
-#         ### Args:
-#         * `i` (`int`): color integer
-#         """
-#         self.red = (i & 0xFF0000) >> 16
-#         self.green = (i & 0x00FF00) >> 8
-#         self.blue = (i & 0x0000FF)
-
     @property
     def hsv(self) -> tuple[float, float, float]:
         """
@@ -363,32 +347,6 @@ class Color:
         """
         return rgbToHsv(self.red, self.green, self.blue)
 
-#     @hsv.setter
-#     def hsv(self, hsv: tuple[float, float, float]) -> None:
-#         """
-#         Set the color using an HSV value
-#
-#         NOTE: Under the hood, values are still stored as RGB - conversions are
-#         made as required.
-#
-#         ### Args:
-#         * `hsv` (`tuple[float, float, float]`):
-#             * hue (degrees: 0-360)
-#             * saturation (0-1.0)
-#             * value (0-1.0)
-#         """
-#         h, s, v = hsv
-#
-#         # Get within range
-#         h = self.__valCheckHue(h)
-#         s = self.__valCheckSatVal(s)
-#         v = self.__valCheckSatVal(v)
-#
-#         r, g, b = hsvToRgb(h, s, v)
-#         self.red = r
-#         self.green = g
-#         self.blue = b
-
     @property
     def red(self) -> int:
         """
@@ -398,16 +356,6 @@ class Color:
         * `int`: red
         """
         return self.__red
-
-#     @red.setter
-#     def red(self, r: int) -> None:
-#         """
-#         Set the red component of the color
-#
-#         ### Args:
-#         * `r` (`int`): red
-#         """
-#         self._red = Color.__valCheckRgb(r)
 
     @property
     def green(self) -> int:
@@ -419,16 +367,6 @@ class Color:
         """
         return self.__green
 
-#     @green.setter
-#     def green(self, g) -> None:
-#         """
-#         Set the green component of the color
-#
-#         ### Args:
-#         * `g` (`int`): green
-#         """
-#         self._green = Color.__valCheckRgb(g)
-
     @property
     def blue(self) -> int:
         """
@@ -438,16 +376,6 @@ class Color:
         * `int`: blue
         """
         return self.__blue
-
-#     @blue.setter
-#     def blue(self, b) -> None:
-#         """
-#         Set the blue component of the color
-#
-#         ### Args:
-#         * `b` (`int`): blue
-#         """
-#         self._blue = Color.__valCheckRgb(b)
 
     @property
     def hue(self) -> float:
@@ -462,20 +390,6 @@ class Color:
         """
         return self.hsv[0]
 
-#     @hue.setter
-#     def hue(self, h: float):
-#         """
-#         Set the hue of the color
-#
-#         NOTE: Under the hood, values are still stored as RGB - conversions are
-#         made as required.
-#
-#         ### Args:
-#         * `h` (`float`): hue (degrees: 0-360)
-#         """
-#         _, s, v = self.hsv
-#         self.hsv = h, s, v
-
     @property
     def saturation(self) -> float:
         """
@@ -489,20 +403,6 @@ class Color:
         """
         return self.hsv[1]
 
-#     @saturation.setter
-#     def saturation(self, s: float):
-#         """
-#         Set the saturation of the color
-#
-#         NOTE: Under the hood, values are still stored as RGB - conversions are
-#         made as required.
-#
-#         ### Args:
-#         * `s` (`float`): saturation
-#         """
-#         h, _, v = self.hsv
-#         self.hsv = h, s, v
-
     @property
     def value(self) -> float:
         """
@@ -515,20 +415,6 @@ class Color:
         * `float`: value
         """
         return self.hsv[2]
-
-#     @value.setter
-#     def value(self, v: float):
-#         """
-#         Set the value of the color
-#
-#         NOTE: Under the hood, values are still stored as RGB - conversions are
-#         made as required.
-#
-#         ### Args:
-#         * `v` (`float`): value (luminosity)
-#         """
-#         h, s, _ = self.hsv
-#         self.hsv = h, s, v
 
     ###########################################################################
     # Operators

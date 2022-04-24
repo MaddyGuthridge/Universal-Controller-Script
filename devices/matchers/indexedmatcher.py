@@ -1,5 +1,5 @@
 from typing import Optional
-from common.eventpattern import ByteMatch, BasicPattern
+from common.eventpattern import BasicPattern
 from common.types.eventdata import EventData, isEventStandard
 from controlsurfaces import ControlEvent, ControlSurface
 from . import IControlMatcher

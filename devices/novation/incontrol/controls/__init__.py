@@ -24,6 +24,8 @@ __all__ = [
     'LkFaderSet',
     'LkKnob',
     'LkKnobSet',
+    'LkMk2MetronomeButton',
+    'LkMk2ControlSwitchButton',
 ]
 
 from .incontrolsurface import InControlSurface
