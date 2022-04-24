@@ -1,6 +1,6 @@
 
 from .drumpad import LkDrumPad
-from ..colors.standard import COLORS
+from ...colors.standard import COLORS
 
 DRUM_PADS = [
     [0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67],
@@ -10,13 +10,14 @@ DRUM_PADS = [
 
 class LkMk3DrumPad(LkDrumPad):
 
-    def __init__(
-        self,
-        coordinate: tuple[int, int],
-    ) -> None:
+    def __init__(self, row: int, col: int) -> None:
         super().__init__(
-            coordinate,
+            (row, col),
             0x0,
-            DRUM_PADS[coordinate[0]][coordinate[1]],
+            DRUM_PADS[row][col],
             COLORS,
         )
+
+    @classmethod
+    def create(cls, row: int, col: int) -> 'LkMk3DrumPad':
+        return LkMk3DrumPad(row, col)

@@ -36,17 +36,8 @@ class LkKnob(Knob):
         )
 
 
-class LkKnobSet(IControlMatcher):
+class LkKnobSet(IndexedMatcher):
     def __init__(self) -> None:
-        self.__matcher = IndexedMatcher(0xBF, K_START, [
+        super().__init__(0xBF, K_START, [
             LkKnob(i) for i in range(8)
         ])
-
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
-        return self.__matcher.matchEvent(event)
-
-    def getGroups(self) -> set[str]:
-        return self.__matcher.getGroups()
-
-    def getControls(self, group: str = None) -> list[ControlSurface]:
-        return self.__matcher.getControls()

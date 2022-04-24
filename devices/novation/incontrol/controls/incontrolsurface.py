@@ -2,7 +2,7 @@
 from common import profilerDecoration
 from common.types import EventData, Color
 from common.util.events import forwardEvent
-from .consts import REFRESH_INTERVAL
+from ..consts import REFRESH_INTERVAL
 
 
 class InControlSurface:

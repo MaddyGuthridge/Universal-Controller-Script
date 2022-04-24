@@ -6,10 +6,11 @@ Contains common code for managing InControl drum pads
 
 __all__ = [
     'LkDrumPad',
+    'LkDrumPadMatcher',
     'LkMk2DrumPad',
     'LkMk3DrumPad',
 ]
 
-from .drumpad import LkDrumPad
+from .drumpad import LkDrumPad, LkDrumPadMatcher
 from .mk2 import LkMk2DrumPad
 from .mk3 import LkMk3DrumPad

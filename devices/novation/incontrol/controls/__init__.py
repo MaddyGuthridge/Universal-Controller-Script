@@ -5,6 +5,7 @@ Definitions for controls shared between Novation devices
 """
 
 __all__ = [
+    'InControlSurface',
     'LkDirectionNext',
     'LkDirectionPrevious',
     'LkFastForwardButton',
@@ -13,6 +14,9 @@ __all__ = [
     'LkRecordButton',
     'LkRewindButton',
     'LkStopButton',
+    'LkMk2DrumPad',
+    'LkMk3DrumPad',
+    'LkDrumPadMatcher',
     'LkFader',
     'LkMasterFader',
     'LkFaderButton',
@@ -22,6 +26,7 @@ __all__ = [
     'LkKnobSet',
 ]
 
+from .incontrolsurface import InControlSurface
 from .transport import (
     LkDirectionNext,
     LkDirectionPrevious,
@@ -31,6 +36,11 @@ from .transport import (
     LkRecordButton,
     LkRewindButton,
     LkStopButton,
+)
+from .drumpad import (
+    LkMk2DrumPad,
+    LkMk3DrumPad,
+    LkDrumPadMatcher,
 )
 from .fader import (
     LkFader,

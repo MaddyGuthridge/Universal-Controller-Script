@@ -72,26 +72,16 @@ class LkMasterFaderButton(MasterGenericFaderButton):
                 )
 
 
-class LkFaderSet(IControlMatcher):
+class LkFaderSet(BasicControlMatcher):
     def __init__(self) -> None:
-        matcher = BasicControlMatcher()
-        matcher.addSubMatcher(IndexedMatcher(0xBF, F_START, [
+        super().__init__()
+        self.addSubMatcher(IndexedMatcher(0xBF, F_START, [
             LkFader(i) for i in range(8)
         ]))
-        matcher.addSubMatcher(IndexedMatcher(0xBF, FB_START, [
+        self.addSubMatcher(IndexedMatcher(0xBF, FB_START, [
             LkFaderButton(i) for i in range(8)
         ]))
-        matcher.addControls([
+        self.addControls([
             LkMasterFader(),
             LkMasterFaderButton(),
         ])
-        self.__matcher = matcher
-
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
-        return self.__matcher.matchEvent(event)
-
-    def getGroups(self) -> set[str]:
-        return self.__matcher.getGroups()
-
-    def getControls(self, group: str = None) -> list[ControlSurface]:
-        return self.__matcher.getControls()
