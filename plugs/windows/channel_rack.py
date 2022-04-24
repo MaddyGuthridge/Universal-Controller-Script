@@ -3,6 +3,7 @@ from typing import Any
 import channels
 from common import getContext
 from common.extensionmanager import ExtensionManager
+from common.types.color import Color
 from common.util.apifixes import UnsafeIndex
 from controlsurfaces import ControlShadowEvent, ControlShadow
 from controlsurfaces import (
@@ -76,7 +77,7 @@ class ChannelRack(WindowPlugin):
             index = self.coordToIndex(drum)
             if index == -1:
                 continue
-            drum.color.integer = channels.getChannelColor(index)
+            drum.color = Color.fromInteger(channels.getChannelColor(index))
             drum.annotation = channels.getChannelName(index)
 
 
