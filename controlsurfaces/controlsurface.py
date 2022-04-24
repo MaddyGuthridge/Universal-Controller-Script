@@ -182,7 +182,7 @@ class ControlSurface:
         self._got_update = True
         if self._color != c:
             self._color = c
-            self.onColorChange()
+            self.onColorChange(c)
 
     @property
     def annotation(self) -> str:
@@ -198,7 +198,7 @@ class ControlSurface:
     def annotation(self, a: str):
         if self._annotation != a:
             self._annotation = a
-            self.onAnnotationChange()
+            self.onAnnotationChange(a)
 
     @property
     def value(self) -> float:
@@ -225,7 +225,7 @@ class ControlSurface:
             self._value = val
             self._needs_update = True
             self._got_update = False
-            self.onValueChange()
+            self.onValueChange(self.value)
 
     @property
     def needs_update(self) -> bool:
@@ -256,28 +256,37 @@ class ControlSurface:
     ###########################################################################
     # Events
 
-    def onColorChange(self) -> None:
+    def onColorChange(self, new: Color) -> None:
         """
         Called when the color of the control changes
 
         This can be overridden to send a MIDI message to the controller if
         required, so that the color can be shown on compatible controls.
+
+        ## Args:
+        * `new` (`Color`): The new value
         """
 
-    def onAnnotationChange(self) -> None:
+    def onAnnotationChange(self, new: str) -> None:
         """
         Called when the annotation of the control changes
 
         This can be overridden to send a MIDI message to the controller if
         required, so that the annotation can be shown on compatible controls.
+
+        ## Args:
+        * `new` (`str`): The new value
         """
 
-    def onValueChange(self) -> None:
+    def onValueChange(self, new: float) -> None:
         """
         Called when the value of the control changes
 
         This can be overridden to send a MIDI message to the controller if
         required, so that the value can be shown on compatible controls.
+
+        ## Args:
+        * `new` (`float`): The new value as a float between `0` and `1`
         """
 
     @final
