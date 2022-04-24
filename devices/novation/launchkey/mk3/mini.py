@@ -11,28 +11,24 @@ from typing import Optional
 
 import device
 
-from common.eventpattern import BasicPattern, ForwardedPattern
+from common.eventpattern import BasicPattern
 from common.extensionmanager import ExtensionManager
 from common.types import EventData
 from controlsurfaces import (
-    Knob,
-    PlayButton,
-    RecordButton,
     StandardModWheel,
     StandardPitchWheel,
 )
-from controlsurfaces.valuestrategies import (
-    ButtonData2Strategy,
-    Data2Strategy,
-    ForwardedStrategy,
-)
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
-
 from devices.novation.incontrol import (
     InControl,
     InControlMatcher,
     LkMk3DrumPad,
+)
+from devices.novation.incontrol.controls import (
+    LkPlayButton,
+    LkRecordButton,
+    LkKnobSet
 )
 
 DEVICE_ID = "Novation.Launchkey.Mk3.Mini"
@@ -57,29 +53,12 @@ class LaunchkeyMiniMk3(Device):
             for c in range(self.getDrumPadSize()[1]):
                 matcher.addControl(LkMk3DrumPad((r, c)), 10)
 
-        # Control switch and metronome buttons
-        # matcher.addControl(LkControlSwitchButton())
-        # matcher.addControl(LkMetronomeButton())
-
         # Create knobs
-        for i in range(8):
-            matcher.addControl(
-                Knob(
-                    ForwardedPattern(2, BasicPattern(0xBF, 0x15 + i, ...)),
-                    ForwardedStrategy(Data2Strategy()),
-                    (0, i)
-                )
-            )
+        matcher.addSubMatcher(LkKnobSet())
 
         # Transport
-        matcher.addControl(PlayButton(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x73, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        ))
-        matcher.addControl(RecordButton(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        ))
+        matcher.addControl(LkPlayButton())
+        matcher.addControl(LkRecordButton())
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
 
@@ -120,6 +99,7 @@ class LaunchkeyMiniMk3(Device):
                 0x29,  # Manufacturer
                 0x02,  # Family code (documented as 0x7A???)
                 0x01,
+                0x00,
                 0x00,
             ]
         )

@@ -11,4 +11,4 @@ __all__ = [
     'LaunchkeyMiniMk3',
 ]
 
-from .launchkey import LaunchkeyMiniMk3
+from .mini import LaunchkeyMiniMk3
