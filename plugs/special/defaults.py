@@ -1,7 +1,7 @@
 """
-plugs > special > fallback
+plugs > special > default
 
-Contains the definition for the fallback plugin
+Contains the definition for the default mappings plugin
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au]
@@ -24,15 +24,16 @@ from plugs import SpecialPlugin
 from plugs.mappingstrategies import PedalStrategy, WheelStrategy, NoteStrategy
 
 
-class Fallback(SpecialPlugin):
+class Defaults(SpecialPlugin):
     """
-    Used to process events as a fallback if there isn't a plugin registered for
-    the active FL plugin.
+    Used to provide logical default mappings for plugins, so that devlopers
+    of plugin mappings don't need to make so many manual assignments.
 
     Handles:
     * Pedals
     * Mod and pitch wheels
     * Notes
+    * Jog wheels
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
@@ -80,4 +81,4 @@ class Fallback(SpecialPlugin):
         return True
 
 
-ExtensionManager.registerSpecialPlugin(Fallback)
+ExtensionManager.registerSpecialPlugin(Defaults)

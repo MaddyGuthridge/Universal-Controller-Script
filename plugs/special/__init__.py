@@ -7,12 +7,12 @@ behaviours such as transport, macros, and fallback processing.
 
 __all__ = [
     'transport',
-    'fallback',
+    'defaults',
     'macro',
     'pressed',
 ]
 
 from . import transport
-from . import fallback
+from . import defaults
 from . import macro
 from . import pressed
