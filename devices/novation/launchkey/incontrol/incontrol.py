@@ -6,7 +6,7 @@ from common.eventpattern import BasicPattern, ForwardedPattern
 from common.types import EventData
 from common.util.events import forwardEvent
 
-from .drumpad import LkDrumPad
+from .drumpad.drumpad import LkDrumPad
 
 # Pattern for matching
 INCONTROL_MATCH = ForwardedPattern(

@@ -46,6 +46,7 @@
         "hintmsg",
         "ieventpattern",
         "INCONTROL",
+        "incontrolsurface",
         "ivaluestrategy",
         "launchkey",
         "mappingstrategy",

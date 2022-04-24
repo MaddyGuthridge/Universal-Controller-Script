@@ -39,8 +39,13 @@ from controlsurfaces.valuestrategies import (
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
-from .drumpad import LkDrumPad, LkControlSwitchButton, LkMetronomeButton
-from .incontrol import InControl, InControlMatcher
+from ..incontrol import (
+    InControl,
+    InControlMatcher,
+    LkMk2DrumPad,
+    LkMk2ControlSwitchButton,
+    LkMk2MetronomeButton,
+)
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
 
@@ -61,11 +66,11 @@ class LaunchkeyMk2(Device):
         # Drum pads (high priority because they just use note on events)
         for r in range(self.getDrumPadSize()[0]):
             for c in range(self.getDrumPadSize()[1]):
-                matcher.addControl(LkDrumPad((r, c)), 10)
+                matcher.addControl(LkMk2DrumPad((r, c)), 10)
 
         # Control switch and metronome buttons
-        matcher.addControl(LkControlSwitchButton())
-        matcher.addControl(LkMetronomeButton())
+        matcher.addControl(LkMk2ControlSwitchButton())
+        matcher.addControl(LkMk2MetronomeButton())
 
         # Create knobs
         for i in range(8):

@@ -29,8 +29,11 @@ from controlsurfaces.valuestrategies import (
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
-from .drumpad import LkDrumPad
-from .incontrol import InControl, InControlMatcher
+from ..incontrol import (
+    InControl,
+    InControlMatcher,
+    LkMk3DrumPad,
+)
 
 DEVICE_ID = "Novation.Launchkey.Mk3.Mini"
 
@@ -52,7 +55,7 @@ class LaunchkeyMiniMk3(Device):
         # Drum pads (high priority because they just use note on events)
         for r in range(self.getDrumPadSize()[0]):
             for c in range(self.getDrumPadSize()[1]):
-                matcher.addControl(LkDrumPad((r, c)), 10)
+                matcher.addControl(LkMk3DrumPad((r, c)), 10)
 
         # Control switch and metronome buttons
         # matcher.addControl(LkControlSwitchButton())
