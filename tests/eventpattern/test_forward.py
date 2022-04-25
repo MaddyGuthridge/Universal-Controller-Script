@@ -12,7 +12,7 @@ from common.eventpattern import (
 from common.types import EventData
 from common.util.events import encodeForwardedEvent
 
-from tests.helpers import DummyDeviceContext
+from tests.helpers.devices import DummyDeviceContext
 
 
 def test_forwarded():

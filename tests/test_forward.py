@@ -10,7 +10,7 @@ Authors:
 import pytest
 from fl_context import FlContext
 
-from tests.helpers import DummyDevice2, DummyDeviceContext
+from tests.helpers.devices import DummyDevice2, DummyDeviceContext
 
 from common.exceptions import (
     EventEncodeError,
