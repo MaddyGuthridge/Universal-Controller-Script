@@ -17,9 +17,9 @@ def test_match():
     c2 = SimpleControl(2)
     matcher.addControl(c2)
 
-    assert matcher.matchEvent(EventData(0, 1, 0)).getControl() == c1
+    assert matcher.matchEvent(EventData(0, 1, 0)).getControl() is c1
 
-    assert matcher.matchEvent(EventData(0, 2, 0)).getControl() == c2
+    assert matcher.matchEvent(EventData(0, 2, 0)).getControl() is c2
 
     assert matcher.matchEvent(EventData(0, 3, 0)) is None
 
@@ -33,7 +33,7 @@ def test_submatchers():
     main.addSubMatcher(sub)
 
     match = main.matchEvent(EventData(0, 1, 0))
-    assert match.getControl() == c1
+    assert match.getControl() is c1
 
 
 def test_priorities():
@@ -44,5 +44,5 @@ def test_priorities():
     c2 = SimplerControl(1)
     matcher.addControl(c2, priority=2)
 
-    assert matcher.matchEvent(EventData(0, 1, 0)).getControl() == c2
-    assert matcher.matchEvent(EventData(0, 1, 1)).getControl() == c1
+    assert matcher.matchEvent(EventData(0, 1, 0)).getControl() is c2
+    assert matcher.matchEvent(EventData(0, 1, 1)).getControl() is c1
