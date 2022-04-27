@@ -12,10 +12,10 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Python: Test Script Load",
+            "name": "Python: Test Programmer Load",
             "type": "python",
             "request": "launch",
-            "program": "device_universal.py",
+            "program": "src/device_universal.py",
             "console": "integratedTerminal"
         }
     ]
