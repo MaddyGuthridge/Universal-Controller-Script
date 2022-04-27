@@ -18,4 +18,4 @@ jobs:
     - name: Add built files to release
       uses: JasonEtco/upload-to-release@v0.1.1
       with:
-        args: UniversalController.zip
+        args: build.zip

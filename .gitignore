@@ -132,4 +132,4 @@ dmypy.json
 temp.*
 
 # Build output
-UniversalController.zip
+build.zip

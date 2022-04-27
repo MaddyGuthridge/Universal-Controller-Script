@@ -1,8 +1,8 @@
 
 # Contributing
 
-Note that documentation is only of overarching designs and how-tos. Code in
-the project is documented using docstring, and will be displayed inline by
+Note that this documentation is only of overarching designs and how-tos. Code
+in the project is documented using docstring, and will be displayed inline by
 most code editors.
 
 ## Getting Started
