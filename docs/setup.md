@@ -11,7 +11,7 @@ To install the script, the following steps are recommended:
 3.  Navigate to `Documents/Image-Line/FL Studio/Settings/Hardware` in your file
     manager and use the right click menu to open it in a terminal (you might
     need to use "See more options" on Windows).
-4.  Run the command `git clone --recursive https://github.com/MiguelGuthridge/Universal-Controller-Script`
+4.  Run the command `git clone --recursive https://github.com/MiguelGuthridge/Universal-Controller-Script.git`
     which will download and install the script.
 5.  Launch (or close and relaunch) FL Studio, and open the MIDI Settings window.
 6.  Set your desired controller's ports to be the same (non-zero) value in both
