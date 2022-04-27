@@ -124,7 +124,10 @@ def isPluginVst(index: PluginIndex) -> bool:
     ### Args:
     * `index` (`PluginIndex`): plugin index
     """
-    return plugins.getParamCount(*index) > PARAM_CC_START
+    try:
+        return plugins.getParamCount(*index) > PARAM_CC_START
+    except TypeError:
+        return False
 
 
 def getSelectedPlaylistTrack() -> int:
