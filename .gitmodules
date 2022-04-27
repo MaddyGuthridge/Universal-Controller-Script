@@ -1,3 +1,3 @@
 [submodule "fl_typing"]
-	path = fl_typing
+	path = src/fl_typing
 	url = git@github.com:MiguelGuthridge/fl_typing.git
