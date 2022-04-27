@@ -130,3 +130,6 @@ dmypy.json
 
 # Temporary files
 temp.*
+
+# Build output
+build.zip

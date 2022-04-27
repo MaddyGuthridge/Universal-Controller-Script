@@ -4,7 +4,5 @@ __all__ = [
     'mk3',
 ]
 
-from . import (
-    mk2,
-    mk3,
-)
+from . import mk2
+from . import mk3

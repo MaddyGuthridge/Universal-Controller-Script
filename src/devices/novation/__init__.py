@@ -4,5 +4,5 @@ __all__ = [
     'incontrol',
 ]
 
-from . import launchkey
 from . import incontrol
+from . import launchkey
