@@ -34,7 +34,7 @@ def walk_subdir(d: str) -> list[str]:
 def main():
     files = walk_subdir('src')
 
-    z = zipfile.ZipFile('build.zip', 'w')
+    z = zipfile.ZipFile('UniversalController.zip', 'w')
     for i, f in enumerate(files):
         print(f'{i/len(files):.0%}\r', end='')
         # Rename paths
