@@ -73,5 +73,5 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test script load
       run: |
-        python device_universal.py
-        python device_eventforward.py
+        python src/device_universal.py
+        python src/device_eventforward.py
