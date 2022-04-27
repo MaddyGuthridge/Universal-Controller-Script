@@ -1,23 +1,22 @@
+"""
+build.py
+
+A simple script to build the project into a .zip file
+"""
 
 import os
 import zipfile
 
-top_include = [
-    'common',
-    'controlsurfaces',
-    'devices',
-    'fl_typing',
-    'plugs',
-    'resources',
-    'config.py',
-    'device_eventforward.py',
-    'device_universal.py',
-    'LICENSE',
-]
-
 exclude = [
     '__pycache__',
 ]
+
+
+def path_full_split(path: str) -> list[str]:
+    head, tail = os.path.split(path)
+    if head == '':
+        return [tail]
+    return path_full_split(head) + [tail]
 
 
 def walk_subdir(d: str) -> list[str]:
@@ -33,18 +32,17 @@ def walk_subdir(d: str) -> list[str]:
 
 
 def main():
-    files: list[str] = []
-    for d in os.listdir('.'):
-        if d in top_include:
-            os.
-            files += walk_subdir(os.path.join('.', d))
-
-    for f in os.scandir()
+    files = walk_subdir('src')
 
     z = zipfile.ZipFile('build.zip', 'w')
-    for f in files:
-        z.write(f)
+    for i, f in enumerate(files):
+        print(f'{i/len(files):.0%}\r', end='')
+        # Rename paths
+        s = path_full_split(f)[1:]
+        f_new = os.path.join('UniversalController', *s)
+        z.write(f, f_new)
     z.close()
+    print('Done!' + ' ' * 10)
 
 
 if __name__ == "__main__":
