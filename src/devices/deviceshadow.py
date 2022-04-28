@@ -179,13 +179,6 @@ class DeviceShadow:
                 else:
                     type_matches[type(c.getControl())] = [c]
 
-        # print()
-        # print()
-        # print(self._all_controls)
-        # print()
-        # print(self._free_controls)
-        # print(num_type_matches)
-        # print(type_matches)
         if target_num is None:
             highest = greatestKey(num_type_matches)
         else:
