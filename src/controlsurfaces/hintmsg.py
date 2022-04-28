@@ -14,7 +14,7 @@ from . import ControlSurface
 class HintMsg(ControlSurface):
     """
     Defines a hint message control surface. This control surface's annotation
-    property can be used to set a hint message for a value. Controllers can
+    property is used to represent FL Studio's hint message. Controllers can
     extend this class to implement code to send hint messages to the device.
     """
     @staticmethod

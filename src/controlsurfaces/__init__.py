@@ -96,6 +96,7 @@ __all__ = [
     'PauseActiveButton',
     'ControlSwitchButton',
     'HintMsg',
+    'NotifMsg',
 ]
 
 from .controlsurface import ControlSurface
@@ -202,3 +203,4 @@ from .activitybutton import (
     PauseActiveButton,
 )
 from .hintmsg import HintMsg
+from .notifmsg import NotifMsg

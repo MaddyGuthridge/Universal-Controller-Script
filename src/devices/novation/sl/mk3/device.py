@@ -37,6 +37,7 @@ from .controls.transport import (
 from .controls import (
     SlFaderSet,
     SlDrumPadMatcher,
+    SlNotifMsg,
 )
 
 DEVICE_ID = "Novation.SL.Mk3"
@@ -52,6 +53,8 @@ class SlMk3(Device):
         # InControl manager
         self._incontrol = InControl(matcher)
         matcher.addSubMatcher(InControlMatcher(self._incontrol))
+
+        matcher.addControl(SlNotifMsg())
 
         # Notes
         matcher.addSubMatcher(NoteMatcher())
