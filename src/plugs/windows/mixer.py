@@ -3,6 +3,7 @@ from typing import Any
 import ui
 import mixer
 from common import getContext
+from common.types import Color
 from common.extensionmanager import ExtensionManager
 from common.util.apifixes import (
     UnsafeIndex,
@@ -203,6 +204,40 @@ class Mixer(WindowPlugin):
 
         return True
 
+    def updateColors(self):
+        # For each selected track
+        for n, i in enumerate(self._selection):
+            c = Color.fromInteger(mixer.getTrackColor(i))
+            # Only apply to controls that are within range
+            if len(self._faders) > n:
+                self._faders[n].color = c
+            if len(self._knobs) > n:
+                self._knobs[n].color = c
+            # Generic fader buttons
+            if len(self._buttons) > n:
+                if mixer.isTrackEnabled(i):
+                    self._buttons[n].color = c
+                else:
+                    self._buttons[n].color = c.fadeBlack()
+            # Mute buttons
+            if len(self._mutes) > n:
+                if mixer.isTrackMuted(i):
+                    self._mutes[n].color = c
+                else:
+                    self._mutes[n].color = c.fadeBlack()
+            # Solo buttons
+            if len(self._solos) > n:
+                if mixer.isTrackSolo(i):
+                    self._solos[n].color = c
+                else:
+                    self._solos[n].color = c.fadeBlack()
+            # Select buttons
+            if len(self._selects) > n:
+                if mixer.isTrackMuted(i):
+                    self._selects[n].color = c
+                else:
+                    self._selects[n].color = c.fadeBlack()
+
     def knob(
         self,
         control: ControlShadowEvent,
@@ -270,6 +305,7 @@ class Mixer(WindowPlugin):
         index: UnsafeIndex,
         *args: Any
     ) -> bool:
+        """Generic fader buttons"""
         index = self._selection[control.getControl().coordinate[1]]
 
         if control.double or mixer.isTrackSolo(index):
