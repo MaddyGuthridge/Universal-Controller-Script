@@ -120,6 +120,17 @@ class DeviceShadow:
         """
         return self._device
 
+    def copy(self) -> 'DeviceShadow':
+        """
+        Make a copy of this device shadow
+
+        This returns a new DeviceShadow that maps to the same device
+
+        ### Returns:
+        * `DeviceShadow`: copy
+        """
+        return DeviceShadow(self.getDevice())
+
     def setMinimal(self, value: bool) -> None:
         """
         Control whether this device shadow is "minimal"

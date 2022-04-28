@@ -3,6 +3,9 @@ plugins > plugin
 
 Contains the definition of the Plugin base class, and its two main types
 StandardPlugin and SpecialPlugin.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 from common import log, verbosity
@@ -56,6 +59,8 @@ class Plugin:
     def apply(self, thorough: bool) -> None:
         """
         Apply the current state of this plugin to the device
+
+        Ordinarily, you shouldn't need to override this behaviour.
         """
         self._shadow.apply(thorough)
 
@@ -71,8 +76,21 @@ class Plugin:
         raise NotImplementedError("This method must be overridden by child "
                                   "classes")
 
-    @final
     def processEvent(self, mapping: ControlEvent, index: UnsafeIndex) -> bool:
+        """
+        Process the event
+
+        By default this forwards the event to the device shadow to allow
+        associated callbacks to be called correctly. Generally, you won't want
+        to override this behaviour.
+
+        ### Args:
+        * `mapping` (`ControlEvent`): event to process
+        * `index` (`UnsafeIndex`): index to be used by plugin
+
+        ### Returns:
+        * `bool`: whether the event should be handled
+        """
         log("plugins",
             f"Processing event at {type(self)}", verbosity=verbosity.EVENT)
         return self._shadow.processEvent(mapping, index)
