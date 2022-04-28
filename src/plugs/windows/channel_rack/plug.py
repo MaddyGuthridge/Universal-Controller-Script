@@ -4,6 +4,7 @@ from devices import DeviceShadow
 from plugs import WindowPlugin, PluginPager
 from .helpers import INDEX
 from .omni import OmniPreview
+from .sequence import StepSequencer
 
 
 class ChannelRack(PluginPager, WindowPlugin):
@@ -14,6 +15,7 @@ class ChannelRack(PluginPager, WindowPlugin):
     def __init__(self, shadow: DeviceShadow) -> None:
         WindowPlugin.__init__(self, shadow, [])
         PluginPager.__init__(self)
+        self.addPage(StepSequencer(shadow.copy()))
         self.addPage(OmniPreview(shadow.copy()))
 
     @staticmethod

@@ -14,7 +14,6 @@ from controlsurfaces import ControlEvent
 from devices import DeviceShadow
 from plugs.mappingstrategies import IMappingStrategy
 from abc import abstractmethod
-from typing import final
 
 
 class Plugin:

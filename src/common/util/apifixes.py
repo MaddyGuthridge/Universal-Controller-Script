@@ -220,3 +220,20 @@ def getMixerDockSides() -> dict[int, list[int]]:
         tracks[mixer.getTrackDockSide(i)].append(i)
 
     return tracks
+
+
+def getSelectedChannels(global_mode: bool) -> list[int]:
+    """
+    Returns a list of the selected channels on the channel rack
+
+    ### Returns:
+    * `list[int]`: list of selected channels (using global indexes)
+    """
+    num_channels = channels.channelCount(global_mode)
+    selections: list[int] = []
+    for ch in range(num_channels):
+        if channels.isChannelSelected(channels.getChannelIndex(ch)):
+            if global_mode:
+                ch = channels.getChannelIndex(ch)
+            selections.append(ch)
+    return selections
