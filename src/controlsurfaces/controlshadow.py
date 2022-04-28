@@ -102,13 +102,6 @@ class ControlShadow:
             self._changed = True
 
     @property
-    def group(self) -> str:
-        """
-        The group that the control is in
-        """
-        return self._control.group
-
-    @property
     def coordinate(self) -> tuple[int, int]:
         """
         The coordinate of the control

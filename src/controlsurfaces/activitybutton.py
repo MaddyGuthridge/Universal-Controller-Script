@@ -50,7 +50,7 @@ class SwitchActiveButton(ActivityButton):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy
     ) -> None:
-        super().__init__(event_pattern, value_strategy, "active")
+        super().__init__(event_pattern, value_strategy)
 
 
 class SwitchActivePluginButton(SwitchActiveButton):
@@ -85,4 +85,4 @@ class PauseActiveButton(ActivityButton):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy
     ) -> None:
-        super().__init__(event_pattern, value_strategy, "active")
+        super().__init__(event_pattern, value_strategy)

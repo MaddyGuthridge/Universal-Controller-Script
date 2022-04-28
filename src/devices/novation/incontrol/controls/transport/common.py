@@ -88,7 +88,6 @@ class LkQuantizeButton(QuantizeButton):
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x4B, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
-            'quantize'
         )
 
 
@@ -105,7 +104,6 @@ class LkUndoRedoButton(UndoRedoButton):
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x4D, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
-            'undo'
         )
 
 

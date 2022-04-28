@@ -38,7 +38,7 @@ class NavigationControl(ControlSurface):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy
     ) -> None:
-        super().__init__(event_pattern, value_strategy, "navigation")
+        super().__init__(event_pattern, value_strategy)
 
 
 class NavigationButton(Button, NavigationControl):

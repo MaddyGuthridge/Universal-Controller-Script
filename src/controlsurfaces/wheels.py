@@ -39,7 +39,6 @@ class StandardModWheel(ModWheel):
         super().__init__(
             BasicPattern(fromNibbles(0xB, ...), 0x1, ...),
             Data2Strategy(),
-            "wheels"
         )
 
 
@@ -79,7 +78,7 @@ class PitchWheel(ControlSurface):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy
     ) -> None:
-        super().__init__(event_pattern, value_strategy, "wheels")
+        super().__init__(event_pattern, value_strategy)
 
 
 class StandardPitchWheel(PitchWheel):

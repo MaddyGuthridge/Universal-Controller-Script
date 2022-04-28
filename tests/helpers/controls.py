@@ -18,7 +18,6 @@ class SimpleControl(ControlSurface):
         super().__init__(
             BasicPattern(0, i, ...),
             Data2Strategy(),
-            "group",
         )
 
 
@@ -31,5 +30,4 @@ class SimplerControl(ControlSurface):
         super().__init__(
             BasicPattern(0, i, 0),
             Data2Strategy(),
-            "group",
         )

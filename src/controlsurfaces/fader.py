@@ -34,9 +34,8 @@ class Fader(GenericFader):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy,
         coordinate: tuple[int, int],
-        group: str = "generic faders"
     ) -> None:
-        super().__init__(event_pattern, value_strategy, group, coordinate)
+        super().__init__(event_pattern, value_strategy, coordinate)
 
 
 class MasterFader(GenericFader):
@@ -55,4 +54,4 @@ class MasterFader(GenericFader):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy
     ) -> None:
-        super().__init__(event_pattern, value_strategy, "master fader")
+        super().__init__(event_pattern, value_strategy)

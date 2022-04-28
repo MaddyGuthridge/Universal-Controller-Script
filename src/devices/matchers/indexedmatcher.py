@@ -43,18 +43,5 @@ class IndexedMatcher(IControlMatcher):
         assert match is not None
         return match
 
-    def getGroups(self) -> set[str]:
-        ret = set()
-        for c in self.__controls:
-            ret |= {c.group}
-        return ret
-
-    def getControls(self, group: str = None) -> list[ControlSurface]:
-        if group is None:
-            return self.__controls
-        else:
-            ret = []
-            for c in self.__controls:
-                if c.group == group:
-                    ret.append(c)
-            return ret
+    def getControls(self) -> list[ControlSurface]:
+        return self.__controls

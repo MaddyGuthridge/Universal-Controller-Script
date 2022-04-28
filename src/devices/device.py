@@ -186,7 +186,7 @@ class Device:
         return self._matcher.matchEvent(event)
 
     @final
-    def getControlShadows(self, group: str = None) -> list[ControlShadow]:
+    def getControlShadows(self) -> list[ControlShadow]:
         """
         Returns a list of new control shadows representing all the controls
         available on the device.
@@ -196,19 +196,4 @@ class Device:
         ### Returns:
         * `list[ControlSurface]`: Control shadows
         """
-        return [ControlShadow(c) for c in self._matcher.getControls(group)]
-
-    @final
-    def getGroups(self) -> set[str]:
-        """
-        Returns a set of groups that controls are placed into.
-
-        Refer to the documentation for the group property in the ControlSurface
-        type.
-
-        This shouldn't be overridden by child classes.
-
-        ### Returns:
-        * `set[str]`: Set of groups
-        """
-        return self._matcher.getGroups()
+        return [ControlShadow(c) for c in self._matcher.getControls()]

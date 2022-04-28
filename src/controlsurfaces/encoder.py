@@ -32,6 +32,5 @@ class Encoder(ControlSurface):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy,
         coordinate: tuple[int, int],
-        group: str = "encoders"
     ) -> None:
-        super().__init__(event_pattern, value_strategy, group, coordinate)
+        super().__init__(event_pattern, value_strategy, coordinate)

@@ -32,6 +32,5 @@ class DrumPad(ControlSurface):
         super().__init__(
             event_pattern,
             value_strategy,
-            "drum pads",
             coordinate
         )

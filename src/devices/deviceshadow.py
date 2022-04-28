@@ -167,28 +167,36 @@ class DeviceShadow:
         ### Returns:
         * `list[ControlShadow]`: List of available controls
         """
-        num_group_matches = dict.fromkeys(self._device.getGroups(), 0)
-        group_matches: dict[str, list] = {g: []
-                                          for g in self._device.getGroups()}
+        type_matches: dict[type[ControlSurface], list[ControlShadow]] = {}
+        num_type_matches: dict[type[ControlSurface], int] = {}
         for c in self._free_controls:
+            # If we want to assign this control
             if expr(c.getControl()):
-                num_group_matches[c.group] += 1
-                if c.group in group_matches:
-                    group_matches[c.group].append(c)
+                num_type_matches[type(c.getControl())] = \
+                    num_type_matches.get(type(c.getControl()), 0) + 1
+                if type(c.getControl()) in type_matches:
+                    type_matches[type(c.getControl())].append(c)
                 else:
-                    group_matches[c.group] = [c]
+                    type_matches[type(c.getControl())] = [c]
 
+        # print()
+        # print()
+        # print(self._all_controls)
+        # print()
+        # print(self._free_controls)
+        # print(num_type_matches)
+        # print(type_matches)
         if target_num is None:
-            highest = greatestKey(num_group_matches)
+            highest = greatestKey(num_type_matches)
         else:
             try:
                 # Find the lowest value above the allowed amount
-                highest = lowestValueGrEqTarget(num_group_matches, target_num)
+                highest = lowestValueGrEqTarget(num_type_matches, target_num)
             except ValueError:
                 # If that fails, just use the highest value available
-                highest = greatestKey(num_group_matches)
+                highest = greatestKey(num_type_matches)
 
-        return group_matches[highest]
+        return type_matches[highest]
 
     def getControlMatches(
         self,
@@ -272,7 +280,7 @@ class DeviceShadow:
 
         # Make sure we have results
         if raise_on_zero and len(ret) == 0:
-            raise ValueError("No matching controls found")
+            raise ValueError(f"No matching controls found for type {control}")
 
         # If we have no target, ignore exact and trim parameters
         if target_num is None:
@@ -556,7 +564,7 @@ class DeviceShadow:
             )
         except ValueError as e:
             if raise_on_failure:
-                raise ValueError("Error binding controls") from e
+                raise ValueError(f"Error binding controls {control}") from e
             else:
                 return []
 

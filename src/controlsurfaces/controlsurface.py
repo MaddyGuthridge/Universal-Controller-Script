@@ -69,7 +69,6 @@ class ControlSurface:
         self,
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy,
-        group: str,
         coordinate: tuple[int, int] = (0, 0)
     ) -> None:
         """
@@ -90,7 +89,6 @@ class ControlSurface:
         self._annotation = ""
         self._value = value_strategy.getValueFromFloat(0.0)
         self._value_strategy = value_strategy
-        self._group = group
         self._coord = coordinate
         self._needs_update = False
         self._got_update = False
@@ -105,7 +103,7 @@ class ControlSurface:
         String representation of the control surface
         """
         return \
-            f"{self.__class__}, ({self._group}: {self._coord}, {self.value})"
+            f"{self.__class__}, ({self._coord}, {self.value})"
 
     @final
     def getMapping(self) -> ControlMapping:
@@ -159,13 +157,6 @@ class ControlSurface:
         Coordinate of the control. Read only.
         """
         return self._coord
-
-    @property
-    def group(self) -> str:
-        """
-        The group that this control is a member of.
-        """
-        return self._group
 
     @property
     def color(self) -> Color:

@@ -32,7 +32,7 @@ class TransportButton(Button):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy
     ) -> None:
-        super().__init__(event_pattern, value_strategy, "transport")
+        super().__init__(event_pattern, value_strategy)
 
 
 class PlayButton(TransportButton):

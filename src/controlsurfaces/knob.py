@@ -38,9 +38,8 @@ class Knob(GenericKnob):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy,
         coordinate: tuple[int, int],
-        group: str = "generic knobs"
     ) -> None:
-        super().__init__(event_pattern, value_strategy, group, coordinate)
+        super().__init__(event_pattern, value_strategy, coordinate)
 
 
 class MasterKnob(GenericKnob):
@@ -61,4 +60,4 @@ class MasterKnob(GenericKnob):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy
     ) -> None:
-        super().__init__(event_pattern, value_strategy, "master knob")
+        super().__init__(event_pattern, value_strategy)

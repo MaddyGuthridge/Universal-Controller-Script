@@ -36,22 +36,7 @@ class IControlMatcher:
                                   "child classes")
 
     @abstractmethod
-    def getGroups(self) -> set[str]:
-        """
-        Return a set of groups for all the control surfaces managed by this
-        matcher.
-
-        Refer to the documentation for the group property in the ControlSurface
-        type.
-
-        ### Returns:
-        * `set[str]`: set of groups
-        """
-        raise NotImplementedError("This function should be implemented by "
-                                  "child classes")
-
-    @abstractmethod
-    def getControls(self, group: str = None) -> list[ControlSurface]:
+    def getControls(self) -> list[ControlSurface]:
         """
         Returns a list of controls contained by the control matcher.
 

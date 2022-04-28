@@ -30,7 +30,6 @@ class Pedal(ControlSurface):
         super().__init__(
             pattern,
             ButtonData2Strategy(),
-            "pedals"
         )
 
     @staticmethod

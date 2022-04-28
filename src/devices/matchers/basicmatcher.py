@@ -61,7 +61,6 @@ class BasicControlMatcher(IControlMatcher):
         else:
             self._priorities.add(priority)
             self._controls[priority] = [control]
-        self._groups.add(control.group)
 
     def addSubMatcher(
         self,
@@ -99,13 +98,6 @@ class BasicControlMatcher(IControlMatcher):
                         return m
         return None
 
-    def getGroups(self) -> set[str]:
-        g = self._groups
-        for p in self._sub_matchers:
-            for s in self._sub_matchers[p]:
-                g |= s.getGroups()
-        return g
-
     def getControls(self, group: str = None) -> list[ControlSurface]:
         controls = []
         for p in self._controls:
@@ -113,11 +105,4 @@ class BasicControlMatcher(IControlMatcher):
         for p in self._sub_matchers:
             for s in self._sub_matchers[p]:
                 controls += s.getControls()
-        if group is None:
-            return controls
-        else:
-            ret = []
-            for c in controls:
-                if c.group == group:
-                    ret.append(c)
-            return ret
+        return controls

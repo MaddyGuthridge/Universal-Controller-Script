@@ -37,4 +37,4 @@ class ControlSwitchButton(Button):
         event_pattern: IEventPattern,
         value_strategy: IValueStrategy
     ) -> None:
-        super().__init__(event_pattern, value_strategy, "control_switch")
+        super().__init__(event_pattern, value_strategy)

@@ -25,6 +25,5 @@ class HintMsg(ControlSurface):
         super().__init__(
             NullPattern(),
             NullEventStrategy(),
-            "hint",
             (0, 0)
         )

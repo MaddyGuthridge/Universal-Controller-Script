@@ -26,7 +26,7 @@ class NullEvent(ControlSurface):
         ### Args:
         * `event_pattern` (`IEventPattern`): pattern to match
         """
-        super().__init__(event_pattern, NullEventStrategy(), "null")
+        super().__init__(event_pattern, NullEventStrategy())
 
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:

@@ -18,7 +18,6 @@ class Note(ControlSurface):
         super().__init__(
             NotePattern(note_num),
             NoteStrategy(),
-            "notes",
             (channel, note_num)
         )
 

@@ -42,7 +42,6 @@ class FaderButton(Button):
         super().__init__(
             event_pattern,
             value_strategy,
-            "fader buttons",
             coordinate
         )
 
