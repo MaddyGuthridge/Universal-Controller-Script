@@ -57,6 +57,7 @@
         "pmeflags",
         "Rect",
         "RRGGBB",
+        "slcolorsurface",
         "sorta",
         "Sostenuto",
         "staticmethod",

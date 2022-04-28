@@ -24,17 +24,19 @@ from devices.novation.incontrol import (
     InControl,
     InControlMatcher,
 )
-from devices.novation.incontrol.controls import (
-    LkPlayButton,
-    LkStopButton,
-    LkLoopButton,
-    LkRecordButton,
-    LkKnobSet,
-    LkFaderSet,
-    LkMk3DrumPad,
-    LkDrumPadMatcher,
-    LkDirectionNext,
-    LkDirectionPrevious,
+from .controls.transport import (
+    SlPlayButton,
+    SlStopButton,
+    SlLoopButton,
+    SlRecordButton,
+    SlDirectionNext,
+    SlDirectionPrevious,
+    SlRewindButton,
+    SlFastForwardButton,
+)
+from .controls import (
+    SlFaderSet,
+    SlDrumPadMatcher,
 )
 
 DEVICE_ID = "Novation.SL.Mk3"
@@ -54,15 +56,17 @@ class SlMk3(Device):
         # Notes
         matcher.addSubMatcher(NoteMatcher())
 
-        matcher.addSubMatcher(LkDrumPadMatcher(LkMk3DrumPad))
-        matcher.addSubMatcher(LkKnobSet())
-        matcher.addSubMatcher(LkFaderSet())
-        matcher.addControl(LkStopButton())
-        matcher.addControl(LkPlayButton())
-        matcher.addControl(LkLoopButton())
-        matcher.addControl(LkDirectionNext())
-        matcher.addControl(LkDirectionPrevious())
-        matcher.addControl(LkRecordButton())
+        matcher.addSubMatcher(SlDrumPadMatcher())
+        # matcher.addSubMatcher(LkKnobSet())
+        matcher.addSubMatcher(SlFaderSet())
+        matcher.addControl(SlStopButton())
+        matcher.addControl(SlPlayButton())
+        matcher.addControl(SlLoopButton())
+        matcher.addControl(SlRewindButton())
+        matcher.addControl(SlFastForwardButton())
+        matcher.addControl(SlDirectionNext())
+        matcher.addControl(SlDirectionPrevious())
+        matcher.addControl(SlRecordButton())
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
 
