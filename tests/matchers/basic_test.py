@@ -24,15 +24,6 @@ def test_match():
     assert matcher.matchEvent(EventData(0, 3, 0)) is None
 
 
-def test_get_controls_groups():
-    """Test getting controls"""
-    controls = [SimpleControl(i) for i in range(10)]
-    matcher = BasicControlMatcher()
-    matcher.addControls(controls)
-    assert matcher.getControls() == controls
-    assert matcher.getGroups() == {"group"}
-
-
 def test_submatchers():
     """Test we can match things in sub matchers"""
     main = BasicControlMatcher()
