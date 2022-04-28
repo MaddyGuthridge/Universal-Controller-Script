@@ -30,6 +30,7 @@ from devices.novation.launchkey.incontrol.controls import (
     LkKnobSet,
     LkMk3DrumPad,
     LkDrumPadMatcher,
+    LkMk3ControlSwitchButton,
 )
 
 DEVICE_ID = "Novation.Launchkey.Mk3.Mini"
@@ -53,6 +54,7 @@ class LaunchkeyMiniMk3(Device):
         matcher.addSubMatcher(LkKnobSet())
         matcher.addControl(LkPlayButton())
         matcher.addControl(LkRecordButton())
+        matcher.addControl(LkMk3ControlSwitchButton())
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
 

@@ -8,7 +8,7 @@ Authors:
 """
 
 from common.eventpattern import ForwardedPattern
-from common.eventpattern.notepattern import NotePattern
+from common.eventpattern import BasicPattern, NotePattern
 from common.types import Color
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import ControlSwitchButton
@@ -22,11 +22,12 @@ class LkControlSwitchButton(InControlSurface, ControlSwitchButton):
     """
     def __init__(
         self,
+        status: int,
         channel: int,
         note_num: int,
         colors: dict[Color, int],
     ) -> None:
-        self._color_manager = InControlSurface(channel, note_num, colors)
+        self._color_manager = InControlSurface(status, note_num, colors)
         # Variable to keep the drumpad lights working
         self._ticker_timer = 0
         InControlSurface.__init__(
@@ -37,6 +38,6 @@ class LkControlSwitchButton(InControlSurface, ControlSwitchButton):
         )
         ControlSwitchButton.__init__(
             self,
-            ForwardedPattern(2, NotePattern(note_num, channel)),
+            ForwardedPattern(2, BasicPattern(status, note_num, ...)),
             ForwardedStrategy(NoteStrategy()),
         )

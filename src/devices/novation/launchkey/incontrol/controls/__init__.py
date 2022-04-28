@@ -28,6 +28,7 @@ __all__ = [
     'LkKnobSet',
     'LkMk2MetronomeButton',
     'LkMk2ControlSwitchButton',
+    'LkMk3ControlSwitchButton',
     'LkCaptureMidiButton',
     'LkQuantizeButton',
     'LkMetronomeButton',
@@ -72,4 +73,5 @@ from .metronome import (
 )
 from .controlswitch import (
     LkMk2ControlSwitchButton,
+    LkMk3ControlSwitchButton,
 )

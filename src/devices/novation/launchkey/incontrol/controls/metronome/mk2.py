@@ -10,6 +10,6 @@ class LkMk2MetronomeButton(LkMetronomeButton):
     ) -> None:
         super().__init__(
             0xF,
-            68,
+            0x78,
             COLORS,
         )
