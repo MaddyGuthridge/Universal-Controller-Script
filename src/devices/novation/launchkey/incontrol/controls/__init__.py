@@ -27,11 +27,11 @@ __all__ = [
     'LkKnob',
     'LkKnobSet',
     'LkMk2MetronomeButton',
+    'LkMk3MetronomeButton',
     'LkMk2ControlSwitchButton',
     'LkMk3ControlSwitchButton',
     'LkCaptureMidiButton',
     'LkQuantizeButton',
-    'LkMetronomeButton',
     'LkUndoRedoButton',
 ]
 
@@ -49,7 +49,6 @@ from .transport import (
     LkMk3StopButton,
     LkCaptureMidiButton,
     LkQuantizeButton,
-    LkMetronomeButton,
     LkUndoRedoButton,
 )
 from .drumpad import (
@@ -70,6 +69,7 @@ from .knob import (
 )
 from .metronome import (
     LkMk2MetronomeButton,
+    LkMk3MetronomeButton,
 )
 from .controlswitch import (
     LkMk2ControlSwitchButton,

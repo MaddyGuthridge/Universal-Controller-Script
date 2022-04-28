@@ -13,7 +13,6 @@ from controlsurfaces import (
     RecordButton,
     RewindButton,
     QuantizeButton,
-    MetronomeButton,
     UndoRedoButton,
 )
 from controlsurfaces.valuestrategies import (
@@ -29,7 +28,6 @@ __all__ = [
     'LkRecordButton',
     'LkRewindButton',
     'LkQuantizeButton',
-    'LkMetronomeButton',
     'LkUndoRedoButton',
     'LkCaptureMidiButton',
 ]
@@ -88,14 +86,6 @@ class LkQuantizeButton(QuantizeButton):
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x4B, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
-        )
-
-
-class LkMetronomeButton(MetronomeButton):
-    def __init__(self) -> None:
-        super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x4C, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
         )
 
 

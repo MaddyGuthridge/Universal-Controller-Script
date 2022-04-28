@@ -7,7 +7,6 @@ __all__ = [
     'LkRecordButton',
     'LkRewindButton',
     'LkQuantizeButton',
-    'LkMetronomeButton',
     'LkUndoRedoButton',
     'LkCaptureMidiButton',
     'LkMk2LoopButton',
@@ -24,7 +23,6 @@ from .common import (
     LkRecordButton,
     LkRewindButton,
     LkQuantizeButton,
-    LkMetronomeButton,
     LkUndoRedoButton,
     LkCaptureMidiButton,
 )
