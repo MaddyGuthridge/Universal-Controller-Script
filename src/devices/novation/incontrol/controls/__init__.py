@@ -29,7 +29,7 @@ __all__ = [
 ]
 
 from .incontrolsurface import InControlSurface
-from .transport import (
+from .transport.common import (
     LkDirectionNext,
     LkDirectionPrevious,
     LkFastForwardButton,

@@ -187,6 +187,17 @@ class DeviceContextManager:
             raise ValueError("Device not set")
         return self._device
 
+    def getDeviceId(self) -> str:
+        """
+        Return the type of device that's been recognised
+
+        This can be used to ensure that devices are recognised correctly
+
+        ### Returns:
+        * `str`: device type
+        """
+        return self._device.getId()
+
 
 class ContextResetException(Exception):
     """

@@ -1,5 +1,5 @@
 """
-devices > novation > incontrol > controls > transport
+devices > novation > incontrol > controls > transport > common
 
 Definitions for transport controls shared between Launchkey devices
 """
@@ -9,11 +9,12 @@ from controlsurfaces import (
     DirectionNext,
     DirectionPrevious,
     FastForwardButton,
-    LoopButton,
     PlayButton,
     RecordButton,
     RewindButton,
-    StopButton,
+    QuantizeButton,
+    MetronomeButton,
+    UndoRedoButton,
 )
 from controlsurfaces.valuestrategies import (
     ButtonData2Strategy,
@@ -24,34 +25,20 @@ __all__ = [
     'LkDirectionNext',
     'LkDirectionPrevious',
     'LkFastForwardButton',
-    'LkLoopButton',
     'LkPlayButton',
     'LkRecordButton',
     'LkRewindButton',
-    'LkStopButton',
+    'LkQuantizeButton',
+    'LkMetronomeButton',
+    'LkUndoRedoButton',
+    'LkCaptureMidiButton',
 ]
-
-
-class LkStopButton(StopButton):
-    def __init__(self) -> None:
-        super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x72, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
 
 
 class LkPlayButton(PlayButton):
     def __init__(self) -> None:
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x73, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-
-
-class LkLoopButton(LoopButton):
-    def __init__(self) -> None:
-        super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x74, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         )
 
@@ -94,3 +81,40 @@ class LkFastForwardButton(FastForwardButton):
             ForwardedPattern(2, BasicPattern(0xBF, 0x71, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         )
+
+
+class LkQuantizeButton(QuantizeButton):
+    def __init__(self) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0xBF, 0x4B, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            'quantize'
+        )
+
+
+class LkMetronomeButton(MetronomeButton):
+    def __init__(self) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0xBF, 0x4C, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
+        )
+
+
+class LkUndoRedoButton(UndoRedoButton):
+    def __init__(self) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0xBF, 0x4D, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            'undo'
+        )
+
+
+class LkCaptureMidiButton():
+    def __init__(self) -> None:
+        # TODO: Figure out what this does
+        # super().__init__(
+        #     ForwardedPattern(2, BasicPattern(0xBF, 0x4A, ...)),
+        #     ForwardedStrategy(ButtonData2Strategy()),
+        #     'undo'
+        # )
+        pass
