@@ -18,6 +18,7 @@ class PluginPager:
     def __init__(self) -> None:
         self.__pages: list[Plugin] = []
         self.__index: int = 0
+        self.__needs_update = False
 
     def addPage(self, new: Plugin) -> None:
         """
@@ -35,6 +36,7 @@ class PluginPager:
         self.__index += 1
         if self.__index == len(self.__pages):
             self.__index = 0
+        self.__needs_update = True
 
     def processEvent(self, mapping: ControlEvent, index: UnsafeIndex) -> bool:
         """Secret override of the processEvent method for the Plugin class
@@ -62,4 +64,8 @@ class PluginPager:
     def apply(self, thorough: bool) -> None:
         """Secret override of the apply method for the Plugin class
         """
-        self.__pages[self.__index].apply(thorough)
+        if not self.__needs_update:
+            self.__pages[self.__index].apply(thorough)
+        else:
+            self.__pages[self.__index].apply(True)
+            self.__needs_update = False

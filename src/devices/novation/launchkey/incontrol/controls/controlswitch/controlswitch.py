@@ -8,7 +8,7 @@ Authors:
 """
 
 from common.eventpattern import ForwardedPattern
-from common.eventpattern import BasicPattern, NotePattern
+from common.eventpattern import BasicPattern
 from common.types import Color
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import ControlSwitchButton
