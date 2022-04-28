@@ -31,14 +31,14 @@ from devices.novation.incontrol.controls import (
     LkMk2ControlSwitchButton,
     LkMk2MetronomeButton,
     LkKnobSet,
-    LkStopButton,
+    LkMk2StopButton,
     LkPlayButton,
     LkDirectionNext,
     LkDirectionPrevious,
     LkFastForwardButton,
     LkRewindButton,
     LkRecordButton,
-    LkLoopButton,
+    LkMk2LoopButton,
     LkFaderSet,
 )
 
@@ -64,9 +64,9 @@ class LaunchkeyMk2(Device):
         matcher.addSubMatcher(LkKnobSet())
 
         # Transport
-        matcher.addControl(LkStopButton())
+        matcher.addControl(LkMk2StopButton())
         matcher.addControl(LkPlayButton())
-        matcher.addControl(LkLoopButton())
+        matcher.addControl(LkMk2LoopButton())
         matcher.addControl(LkRecordButton())
         matcher.addControl(LkDirectionNext())
         matcher.addControl(LkDirectionPrevious())

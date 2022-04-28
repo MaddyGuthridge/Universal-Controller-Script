@@ -196,7 +196,10 @@ class DeviceContextManager:
         ### Returns:
         * `str`: device type
         """
-        return self._device.getId()
+        if self._device is not None:
+            return self._device.getId()
+        else:
+            return 'Device not recognised'
 
 
 class ContextResetException(Exception):

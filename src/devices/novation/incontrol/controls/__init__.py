@@ -9,11 +9,13 @@ __all__ = [
     'LkDirectionNext',
     'LkDirectionPrevious',
     'LkFastForwardButton',
-    'LkLoopButton',
+    'LkMk2LoopButton',
+    'LkMk3LoopButton',
+    'LkMk2StopButton',
+    'LkMk3StopButton',
     'LkPlayButton',
     'LkRecordButton',
     'LkRewindButton',
-    'LkStopButton',
     'LkMk2DrumPad',
     'LkMk3DrumPad',
     'LkDrumPadMatcher',
@@ -26,18 +28,28 @@ __all__ = [
     'LkKnobSet',
     'LkMk2MetronomeButton',
     'LkMk2ControlSwitchButton',
+    'LkCaptureMidiButton',
+    'LkQuantizeButton',
+    'LkMetronomeButton',
+    'LkUndoRedoButton',
 ]
 
 from .incontrolsurface import InControlSurface
-from .transport.common import (
+from .transport import (
     LkDirectionNext,
     LkDirectionPrevious,
     LkFastForwardButton,
-    LkLoopButton,
     LkPlayButton,
     LkRecordButton,
     LkRewindButton,
-    LkStopButton,
+    LkMk2LoopButton,
+    LkMk2StopButton,
+    LkMk3LoopButton,
+    LkMk3StopButton,
+    LkCaptureMidiButton,
+    LkQuantizeButton,
+    LkMetronomeButton,
+    LkUndoRedoButton,
 )
 from .drumpad import (
     LkMk2DrumPad,
