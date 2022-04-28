@@ -8,7 +8,7 @@ from controlsurfaces import (
 )
 from devices import DeviceShadow
 from plugs import WindowPlugin
-from .helpers import coordToIndex, INDEX
+from .helpers import INDEX
 
 
 class StepSequencer(WindowPlugin):
@@ -84,4 +84,4 @@ class StepSequencer(WindowPlugin):
             if channels.getGridBit(ch_idx, col):
                 control.color = c
             else:
-                control.color = c.fadeGray()
+                control.color = Color.fromInteger(0x333333)

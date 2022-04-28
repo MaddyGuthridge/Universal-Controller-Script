@@ -66,7 +66,7 @@ COLORS = {
     Color.fromInteger(0x0C0641):  51,  # Dark purple
     Color.fromInteger(0xFF6DFF):  52,
     Color.fromInteger(0xFF40FF):  53,  # Pink
-    Color.fromInteger(0x6F166D):  54,
+    Color.fromInteger(0xDD61DD):  54,
     Color.fromInteger(0x220221):  55,
     Color.fromInteger(0xFF6796):  56,
     Color.fromInteger(0xFF2C64):  57,
