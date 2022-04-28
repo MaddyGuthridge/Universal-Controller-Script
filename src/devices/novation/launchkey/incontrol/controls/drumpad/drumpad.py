@@ -13,7 +13,7 @@ from common.types import Color
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import DrumPad
 from .. import InControlSurface
-from devices.novation.incontrol.consts import DRUM_ROWS, DRUM_COLS
+from ...consts import DRUM_ROWS, DRUM_COLS
 from devices.matchers import (
     BasicControlMatcher,
 )

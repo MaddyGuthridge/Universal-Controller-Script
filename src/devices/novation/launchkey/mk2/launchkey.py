@@ -21,11 +21,11 @@ from controlsurfaces import (
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
 
-from devices.novation.incontrol import (
+from devices.novation.launchkey.incontrol import (
     InControl,
     InControlMatcher,
 )
-from devices.novation.incontrol.controls import (
+from devices.novation.launchkey.incontrol.controls import (
     LkMk2DrumPad,
     LkDrumPadMatcher,
     LkMk2ControlSwitchButton,

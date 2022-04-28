@@ -12,7 +12,6 @@ from common.eventpattern.notepattern import NotePattern
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import DrumPad
 from . import SlColorSurface
-from devices.novation.incontrol.consts import DRUM_ROWS, DRUM_COLS
 from devices.matchers import (
     BasicControlMatcher,
 )
@@ -55,6 +54,6 @@ class SlDrumPadMatcher(BasicControlMatcher):
     """Matcher for SL drum pads"""
     def __init__(self) -> None:
         super().__init__()
-        for r in range(DRUM_ROWS):
-            for c in range(DRUM_COLS):
+        for r in range(2):
+            for c in range(8):
                 self.addControl(SlDrumPad((r, c)), 10)

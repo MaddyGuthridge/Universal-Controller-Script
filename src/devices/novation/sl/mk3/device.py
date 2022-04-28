@@ -20,10 +20,10 @@ from controlsurfaces import (
 )
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
-from devices.novation.incontrol import (
-    InControl,
-    InControlMatcher,
-)
+# from devices.novation.incontrol import (
+#     InControl,
+#     InControlMatcher,
+# )
 from .controls.transport import (
     SlPlayButton,
     SlStopButton,
@@ -51,8 +51,8 @@ class SlMk3(Device):
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
         # InControl manager
-        self._incontrol = InControl(matcher)
-        matcher.addSubMatcher(InControlMatcher(self._incontrol))
+        # self._incontrol = InControl(matcher)
+        # matcher.addSubMatcher(InControlMatcher(self._incontrol))
 
         matcher.addControl(SlNotifMsg())
 
@@ -75,11 +75,11 @@ class SlMk3(Device):
 
         super().__init__(matcher)
 
-    def initialise(self) -> None:
-        self._incontrol.enable()
-
-    def deinitialise(self) -> None:
-        self._incontrol.enable()
+#     def initialise(self) -> None:
+#         self._incontrol.enable()
+#
+#     def deinitialise(self) -> None:
+#         self._incontrol.enable()
 
     @staticmethod
     def getDrumPadSize() -> tuple[int, int]:
