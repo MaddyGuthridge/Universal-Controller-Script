@@ -8,13 +8,7 @@ Authors:
 """
 
 __all__ = [
-    'mini',
-    'lk_25_37',
-    'lk_49_61',
+    'device',
 ]
 
-from . import (
-    mini,
-    lk_25_37,
-    lk_49_61,
-)
+from . import device
