@@ -11,7 +11,7 @@ class SlColorSurface:
         self,
         note_num: int,
     ) -> None:
-        self.__note = note_num
+        self.__index = note_num
 
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
@@ -25,7 +25,8 @@ class SlColorSurface:
                 0x0A,
                 0x01,
                 0x03,
-                self.__note,
+                self.__index,
+                0x01,
                 new.red // 2,
                 new.green // 2,
                 new.blue // 2,
