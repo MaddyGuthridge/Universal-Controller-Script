@@ -4,12 +4,16 @@ tests > test_devices
 Test to ensure device objects are behaving correctly
 """
 
+import pytest
 from common import ExtensionManager
 
 
-def test_create():
-    for dev in ExtensionManager.getAllDevices():
-        dev.create(None)
+@pytest.mark.parametrize(
+    'dev',
+    ExtensionManager.getAllDevices()
+)
+def test_create(dev):
+    dev.create(None)
 
 
 def test_getId():

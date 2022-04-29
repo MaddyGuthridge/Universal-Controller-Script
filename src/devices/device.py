@@ -25,6 +25,41 @@ class Device:
 
     All device objects should inherit from this definition and implement its
     functions.
+
+    ## Methods to implement:
+    For full documentation, refer to the docstrings for each function.
+
+    ### Class methods
+
+    * `create(cls, event: Optional[EventData]) -> Device`: create an instance
+      of this device
+
+    ### Static methods
+
+    * `getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]`:
+      Get the event pattern for a universal device enquiry response
+
+    * `matchDeviceName(name: str) -> bool`: Return whether this device matches
+      the given name of a device (used as a fallback method for device
+      matching)
+
+    * `getDrumPadSize() -> tuple[int, int]`: Return the number of rows and
+      columns in the drum pad grid.
+
+    ### Instance methods
+
+    * `getId(self) -> str`: Return the device ID
+
+    * `getDeviceNumber(self) -> int`: Return the device number
+
+    ## Optional methods
+
+    * `initialise(self)`: Called when we initialise the device
+
+    * `deinitialise(self)`: Called when we deinitialise the device
+
+    * `tick(self)`: Called frequently to allow for
+      devices to perform any required actions.
     """
 
     def __init__(self, control_matcher: IControlMatcher) -> None:
