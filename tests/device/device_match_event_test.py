@@ -30,4 +30,6 @@ def test_match_faders():
     """Can we match the faders"""
     d = DummyDevice()
     for i in range(4):
-        assert isinstance(d.matchEvent(EventData(1, i, 0)).getControl(), Fader)
+        match = d.matchEvent(EventData(1, i, 0))
+        assert isinstance(match.getControl(), Fader)
+        assert match.getControl() == d.faders[i]
