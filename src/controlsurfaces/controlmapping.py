@@ -114,6 +114,12 @@ class ControlEvent(IControlHash):
         """
         return self._double
 
+    @property
+    def coordinate(self) -> tuple[int, int]:
+        """Coordinate of the control
+        """
+        return self._map_to.coordinate
+
 
 class ControlShadowEvent(IControlHash):
     """
@@ -165,3 +171,9 @@ class ControlShadowEvent(IControlHash):
         """Whether this event is a double press or not
         """
         return self._map_from.double
+
+    @property
+    def coordinate(self) -> tuple[int, int]:
+        """Coordinate of the control
+        """
+        return self._map_to.coordinate
