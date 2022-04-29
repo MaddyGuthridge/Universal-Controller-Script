@@ -190,16 +190,22 @@ class DeviceShadow:
                 else:
                     type_matches[type(c.getControl())] = [c]
 
-        if target_num is None:
-            highest = greatestKey(num_type_matches)
-        else:
-            try:
-                # Find the lowest value above the allowed amount
-                highest = lowestValueGrEqTarget(num_type_matches, target_num)
-            except ValueError:
-                # If that fails, just use the highest value available
+        try:
+            if target_num is None:
                 highest = greatestKey(num_type_matches)
-
+            else:
+                try:
+                    # Find the lowest value above the allowed amount
+                    highest = lowestValueGrEqTarget(
+                        num_type_matches,
+                        target_num
+                    )
+                except ValueError:
+                    # If that fails, just use the highest value available
+                    highest = greatestKey(num_type_matches)
+        except ValueError:
+            # No matches causes greatestKey() to fail since there's no keys
+            return []
         return type_matches[highest]
 
     def getControlMatches(
