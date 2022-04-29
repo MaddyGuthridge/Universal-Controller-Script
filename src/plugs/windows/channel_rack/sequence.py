@@ -56,6 +56,10 @@ class StepSequencer(WindowPlugin):
         else:
             ch_idx = selections[row]
 
+        # Check for index out of range
+        if ch_idx >= channels.channelCount(True):
+            return True
+
         val = not channels.getGridBit(ch_idx, col)
         channels.setGridBit(ch_idx, col, val)
         return True
@@ -79,6 +83,10 @@ class StepSequencer(WindowPlugin):
                 ) + (row - len(selections) + 1)
             else:
                 ch_idx = selections[row]
+
+            # Check for index out of range
+            if ch_idx >= channels.channelCount(True):
+                return
 
             c = Color.fromInteger(channels.getChannelColor(ch_idx))
             if channels.getGridBit(ch_idx, col):
