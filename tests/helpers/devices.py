@@ -38,17 +38,20 @@ class DummyDevice(Device):
         # Match notes
         matcher.addSubMatcher(NoteMatcher())
         # Match play button
-        matcher.addControl(PlayButton(
+        self.play_button = PlayButton(
             BasicPattern(0, 0, ...),
             ButtonData2Strategy()
-        ))
+        )
+        matcher.addControl(self.play_button)
         # Add 4 faders
-        for i in range(4):
-            matcher.addControl(Fader(
+        self.faders = [
+            Fader(
                 BasicPattern(1, i, ...),
                 Data2Strategy(),
                 (0, i),
-            ))
+            ) for i in range(4)
+        ]
+        matcher.addControls(self.faders)
         super().__init__(matcher)
 
     @classmethod
