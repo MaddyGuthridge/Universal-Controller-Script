@@ -9,7 +9,7 @@ from common.eventpattern import IEventPattern, BasicPattern
 from common.types.eventdata import EventData
 from devices import Device, BasicControlMatcher
 from devices.controlgenerators import NoteMatcher
-from controlsurfaces import Fader, PlayButton
+from controlsurfaces import Fader, PlayButton, ControlSurface
 from controlsurfaces.valuestrategies import Data2Strategy, ButtonData2Strategy
 
 __all__ = [
@@ -44,7 +44,7 @@ class DummyDevice(Device):
         )
         matcher.addControl(self.play_button)
         # Add 4 faders
-        self.faders = [
+        self.faders: list[ControlSurface] = [
             Fader(
                 BasicPattern(1, i, ...),
                 Data2Strategy(),
