@@ -11,8 +11,9 @@ from controlsurfaces import (
     Note,
     PlayButton,
     StopButton,
+    LoopButton,
     Fader,
-    Knob
+    Knob,
 )
 from devices import DeviceShadow
 from tests.helpers.devices import DummyDevice
@@ -162,3 +163,25 @@ def test_get_matches_none_raise():
             StopButton,
             raise_on_zero=True,
         )
+
+
+def test_get_matches_subtypes():
+    """Make sure that we get only one subtype when we don't disable the
+    one_type flag
+    """
+    s = DeviceShadow(DummyDevice())
+
+    assert len(s.getControlMatches(
+        LoopButton,
+    )) == 1
+
+
+def test_get_matches_subtypes_one_type():
+    """Make sure that we get all subtypes when we disable the one_type flag
+    """
+    s = DeviceShadow(DummyDevice())
+
+    assert len(s.getControlMatches(
+        LoopButton,
+        one_type=False,
+    )) == 2

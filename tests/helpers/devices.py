@@ -9,7 +9,7 @@ from common.eventpattern import IEventPattern, BasicPattern
 from common.types.eventdata import EventData
 from devices import Device, BasicControlMatcher
 from devices.controlgenerators import NoteMatcher
-from controlsurfaces import Fader, PlayButton, ControlSurface
+from controlsurfaces import Fader, PlayButton, LoopButton, ControlSurface
 from controlsurfaces.valuestrategies import Data2Strategy, ButtonData2Strategy
 
 __all__ = [
@@ -17,6 +17,16 @@ __all__ = [
     'DummyDevice2',
     'DummyDeviceContext',
 ]
+
+
+class DummyLoopButton1(LoopButton):
+    """One type of loop button on our controller. This is used to test the
+    one_type flag when matching events.
+    """
+
+
+class DummyLoopButton2(LoopButton):
+    """Another type of loop button on our controller"""
 
 
 class DummyDevice(Device):
@@ -30,6 +40,8 @@ class DummyDevice(Device):
     * Play button (0, 0, ...)
 
     * 4 faders (1, i, ...)
+
+    * 2 loop buttons (2, i, ...)
     """
 
     def __init__(self, device_num: int = 1) -> None:
@@ -52,6 +64,18 @@ class DummyDevice(Device):
             ) for i in range(4)
         ]
         matcher.addControls(self.faders)
+        # Add both our loop buttons
+        self.loop_buttons = [
+            DummyLoopButton1(
+                BasicPattern(2, 0, ...),
+                ButtonData2Strategy()
+            ),
+            DummyLoopButton2(
+                BasicPattern(2, 1, ...),
+                ButtonData2Strategy()
+            )
+        ]
+        matcher.addControls(self.loop_buttons)
         super().__init__(matcher)
 
     @classmethod

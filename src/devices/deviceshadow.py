@@ -160,20 +160,22 @@ class DeviceShadow:
     def _getMatches(
         self,
         expr: Callable[[ControlSurface], bool],
-        target_num: int = None
+        target_num: int = None,
+        one_type: bool = True,
     ) -> list[ControlShadow]:
         """
         Returns a list of control matches for a give condition lambda
 
-        This function is called by getControlMatches and getSubsControlMatches
-        to remove repeated code. Calling this function from outside this class
-        is not recommended.
+        This function is called by getControlMatches to reduce complexity.
+        Calling this function from outside this class is not recommended.
 
         ### Args:
         * `expr` (`Callable[[ControlSurface], bool]`): Expression to check
           types
         * `target_num` (`int`, optional): Target number to get, so that we
-          don't use more space than necessary. Defaults to `...`.
+          don't use more space than necessary. Defaults to `None`.
+        * `one_type` (`bool`, optional): Whether controls should be separated
+          based on subclasses. Defaults to `True`.
 
         ### Returns:
         * `list[ControlShadow]`: List of available controls
@@ -181,14 +183,18 @@ class DeviceShadow:
         type_matches: dict[type[ControlSurface], list[ControlShadow]] = {}
         num_type_matches: dict[type[ControlSurface], int] = {}
         for c in self._free_controls:
+            if one_type:
+                t = type(c.getControl())
+            else:
+                t = ControlSurface
             # If we want to assign this control
             if expr(c.getControl()):
-                num_type_matches[type(c.getControl())] = \
-                    num_type_matches.get(type(c.getControl()), 0) + 1
-                if type(c.getControl()) in type_matches:
-                    type_matches[type(c.getControl())].append(c)
+                num_type_matches[t] = \
+                    num_type_matches.get(t, 0) + 1
+                if t in type_matches:
+                    type_matches[t].append(c)
                 else:
-                    type_matches[type(c.getControl())] = [c]
+                    type_matches[t] = [c]
 
         try:
             if target_num is None:
@@ -215,7 +221,8 @@ class DeviceShadow:
         target_num: int = None,
         trim: bool = True,
         exact: bool = True,
-        raise_on_zero: bool = False
+        raise_on_zero: bool = False,
+        one_type: bool = True,
     ) -> list[ControlShadow]:
         """
         Returns a list of matching controls.
@@ -243,6 +250,12 @@ class DeviceShadow:
         * `raise_on_zero`  (`bool`, optional): Whether to raise an error if no
           matching controls are found. This is to prevent errors when
           attempting to bind to a control when there aren't any matches at all.
+          Defaults to `False`.
+        * `one_type` (`bool`, optional): Whether the matches should be
+          restricted so that they can only be from one subclass. This helps
+          prevent mixing of different control groups if a controller has
+          multiple controls of the same overarching type that should be
+          addressed independently. Defaults to `True`.
 
         ### Raises:
         * `ValueError`: Not enough matching controls found, when `exact` is
@@ -267,21 +280,24 @@ class DeviceShadow:
         if allow_substitution:
             ret = self._getMatches(
                 no_subs,
-                target_num
+                target_num,
+                one_type,
             )
             t = target_num if target_num is not None else 1
             # If we didn't get enough matches, then we should try substitution
-            # TODO: Improve this
+            # TODO: Improve the efficiency of this
             if len(ret) < t:
                 ret = self._getMatches(
                     subs,
-                    target_num
+                    target_num,
+                    one_type,
                 )
 
         else:
             ret = self._getMatches(
                 no_subs,
-                target_num
+                target_num,
+                one_type,
             )
 
         # Sort the matches based on coordinate
@@ -313,7 +329,8 @@ class DeviceShadow:
     def getNumControlMatches(
         self,
         control: type[ControlSurface],
-        allow_substitution: bool = False
+        allow_substitution: bool = False,
+        one_type: bool = True,
     ) -> int:
         """
         Returns the number of controls matching the required type.
@@ -327,6 +344,11 @@ class DeviceShadow:
         * `allow_substitution` (`bool`, optional): Whether substitutable
           controls should be allowed to be used if a better number of them are
           available. Defaults to `False`.
+        * `one_type` (`bool`, optional): Whether the matches should be
+          restricted so that they can only be from one subclass. This helps
+          prevent mixing of different control groups if a controller has
+          multiple controls of the same overarching type that should be
+          addressed independently. Defaults to `True`.
 
         ### Returns:
         * `int`: number of types that match
@@ -334,7 +356,8 @@ class DeviceShadow:
         return len(self.getControlMatches(
             control,
             allow_substitution,
-            raise_on_zero=False
+            raise_on_zero=False,
+            one_type=one_type,
         ))
 
     def bindControl(
@@ -503,7 +526,8 @@ class DeviceShadow:
         target_num: int = None,
         trim: bool = True,
         exact: bool = True,
-        raise_on_failure: bool = True
+        raise_on_failure: bool = True,
+        one_type: bool = True,
     ) -> list[ControlShadow]:
         """
         Finds all controls of a matching type and binds them to the given
@@ -546,6 +570,11 @@ class DeviceShadow:
         * `raise_on_failure` (`bool`, optional): whether failure to assign the
           control should result in a `ValueError` being raised. When this is
           `False`, an empty list will be returned instead. Defaults to `True`.
+        * `one_type` (`bool`, optional): Whether the matches should be
+          restricted so that they can only be from one subclass. This helps
+          prevent mixing of different control groups if a controller has
+          multiple controls of the same overarching type that should be
+          addressed independently. Defaults to `True`.
 
         ### Raises:
         * `TypeError`: Potential bad number of callback arguments due to
@@ -570,7 +599,8 @@ class DeviceShadow:
                 allow_substitution,
                 target_num,
                 trim,
-                exact
+                exact,
+                one_type=one_type
             )
         except ValueError as e:
             if raise_on_failure:
