@@ -65,7 +65,7 @@ class DummyDevice(Device):
         ]
         matcher.addControls(self.faders)
         # Add both our loop buttons
-        self.loop_buttons = [
+        self.loop_buttons: list[ControlSurface] = [
             DummyLoopButton1(
                 BasicPattern(2, 0, ...),
                 ButtonData2Strategy()
