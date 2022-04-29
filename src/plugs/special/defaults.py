@@ -38,7 +38,12 @@ class Defaults(SpecialPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
-        shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
+        shadow.bindMatches(
+            JogWheel,
+            self.jogWheel,
+            raise_on_failure=False,
+            one_type=False,
+        )
         super().__init__(shadow, [
             PedalStrategy(raise_on_error=False),
             WheelStrategy(raise_on_error=False),

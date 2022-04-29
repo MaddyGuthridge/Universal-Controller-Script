@@ -48,10 +48,18 @@ class Macro(SpecialPlugin):
         shadow.bindMatch(SaveButton, self.save, raise_on_failure=False)
         shadow.bindMatch(QuantizeButton, self.quantize,
                          raise_on_failure=False)
-        shadow.bindMatches(SwitchActiveButton,
-                           self.switchActive, raise_on_failure=False)
-        shadow.bindMatches(PauseActiveButton,
-                           self.pauseActive, raise_on_failure=False)
+        shadow.bindMatches(
+            SwitchActiveButton,
+            self.switchActive,
+            raise_on_failure=False,
+            one_type=False,
+        )
+        shadow.bindMatches(
+            PauseActiveButton,
+            self.pauseActive,
+            raise_on_failure=False,
+            one_type=False,
+        )
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':

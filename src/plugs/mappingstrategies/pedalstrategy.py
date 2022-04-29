@@ -58,7 +58,8 @@ class PedalStrategy(IMappingStrategy):
             Pedal,
             self.pedalCallback,
             argument_generator,
-            raise_on_failure=False
+            raise_on_failure=False,
+            one_type=False,
         )
 
     @toPluginIndex
