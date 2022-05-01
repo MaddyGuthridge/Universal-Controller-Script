@@ -78,8 +78,10 @@ class ProfilerManager:
         else:
             return ProfilerManager._getProfileName(n.parent) + "." + n.name
 
-    def __init__(self) -> None:
+    def __init__(self, print_traces: bool) -> None:
+        self._print = print_traces
         self._current: Optional[ProfileNode] = None
+        self._depth = 0
         self._max_name = 0
         self._totals: dict[str, float] = {}
         self._number: dict[str, float] = {}
@@ -99,6 +101,9 @@ class ProfilerManager:
         ### Args:
         * `name` (`str`): name of profile to open
         """
+        self._depth += 1
+        if self._print:
+            print("+"*self._depth + name)
         n = ProfileNode(self._current, name)
         if self._current is not None:
             self._current.addChild(n)
@@ -111,6 +116,9 @@ class ProfilerManager:
         ### Raises:
         * `ValueError`: no profile to close
         """
+        if self._print:
+            print("-"*self._depth + self._current.name)
+        self._depth -= 1
         self._current.close()
         if self._current is None:
             raise ValueError("No profile to close")

@@ -24,10 +24,9 @@ most code editors.
     `Documents/Image-Line/FL Studio/Settings/Hardware` folder, so that FL
     Studio can detect it. Note that when creating symbolic links, you must
 
-    * On Windows, run
-      `mklink /J 'C:\Users\<username>\Documents\Image-Line\FL Studio\Settings\Hardware' '\path\to\clone\location\Universal-Controller-Script\src'`
-      inside the same terminal that you used to `git clone` the project.
-      Note to self, test this, also with the `\D` flag and the like.
+    * On Windows inside an admin command prompt (this doesn't work in
+      PowerShell), run the command
+      `mklink /D "C:\Users\<username>\Documents\Image-Line\FL Studio\Settings\Hardware\UniversalController" "\path\to\clone\location\Universal-Controller-Script\src"`.
 
     * On MacOS (please test) and Linux, you can run
       `ln -s /path/to/clone/button/Universal-Controller-Script/src/ '/path/to/user/directory/Documents/Image-Line/FL Studio/Settings/Hardware/UniversalController'`.
