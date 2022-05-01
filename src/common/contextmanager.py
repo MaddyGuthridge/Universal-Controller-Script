@@ -15,6 +15,7 @@ __all__ = [
     'unsafeResetContext'
 ]
 
+from .profiler import profilerDecoration
 from . import logger
 from typing import NoReturn, Optional, Callable, TYPE_CHECKING
 from time import time_ns
@@ -55,7 +56,8 @@ class DeviceContextManager:
         # Set the state of the script to wait for the device to be recognised
         self.state: Optional[IScriptState] = None
         if self.settings.get("debug.profiling"):
-            self.profiler: Optional[ProfilerManager] = ProfilerManager()
+            trace = self.settings.get("debug.exec_tracing")
+            self.profiler: Optional[ProfilerManager] = ProfilerManager(trace)
         else:
             self.profiler = None
         # Time the device last ticked at
@@ -65,6 +67,7 @@ class DeviceContextManager:
         self._device: Optional['Device'] = None
 
     @catchStateChangeException
+    @profilerDecoration("initialise")
     def initialise(self, state: IScriptState) -> None:
         """Initialise the controller associated with this context manager.
 
@@ -75,6 +78,7 @@ class DeviceContextManager:
         state.initialise()
 
     @catchStateChangeException
+    @profilerDecoration("deinitialise")
     def deinitialise(self) -> None:
         """Deinitialise the controller when FL Studio closes or begins a render
         """
@@ -87,6 +91,7 @@ class DeviceContextManager:
 
     @catchUnsafeOperation
     @catchStateChangeException
+    @profilerDecoration("processEvent")
     def processEvent(self, event: EventData) -> None:
         """Process a MIDI event
 
@@ -103,6 +108,7 @@ class DeviceContextManager:
 
     @catchUnsafeOperation
     @catchStateChangeException
+    @profilerDecoration("tick")
     def tick(self) -> None:
         """
         Called frequently to allow any required updates to the controller

@@ -8,6 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
 """
 
+from common.profiler import profilerDecoration
 from common.logger import log, verbosity
 from common.util.apifixes import (
     PluginIndex,
@@ -16,7 +17,8 @@ from common.util.apifixes import (
     EffectIndex,
     WindowIndex,
 )
-from common.util.apifixes import getFocusedPluginIndex, getFocusedWindowIndex
+from common.util.apifixes import getFocusedPluginIndex, getFocusedWindowIndex,\
+    reset_generator_active
 
 
 class ActivityState:
@@ -71,10 +73,13 @@ class ActivityState:
         else:
             self._effect = plugin  # type: ignore
 
+    @profilerDecoration("activity.tick")
     def tick(self) -> None:
         """
         Called frequently when we need to update the current window
         """
+        # HACK: Fix FL Studio bugs
+        reset_generator_active()
         self._changed = False
         if self._doUpdate:
             # Manually update plugin using selection

@@ -12,6 +12,7 @@ import mixer
 import playlist
 
 from typing import Union, Optional
+from common.profiler import profilerDecoration, ProfilerContext
 from common.consts import PARAM_CC_START
 
 GeneratorIndex = tuple[int]
@@ -29,11 +30,25 @@ UnsafeWindowIndex = Optional[int]
 UnsafeIndex = Union[UnsafePluginIndex, UnsafeWindowIndex]
 
 
+# HACK: A terrible horrible no good really bad global variable to make sure
+# that we hopefully avoid crashes in getFocusedPluginIndex
+generator_previously_active = 0
+
+
+def reset_generator_active():
+    """Horrible hacky function to hopefully work around a bug in FL Studio"""
+    global generator_previously_active
+    if generator_previously_active != 0:
+        generator_previously_active -= 1
+
+
+@profilerDecoration("getFocusedPluginIndex")
 def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
 
-    Values are returned as tuples so that they can be unwrapped when
+    Values are returned as tuples so that they can be unwrapped when being
+    passed to other API functions
 
     Args:
     * `force` (`bool`, optional): whether to return the selected plugin on the
@@ -44,18 +59,31 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     * `int`: grouped index of a channel rack plugin if one is focused
     * `int, int`: index of a mixer plugin if one is focused
     """
-    # Check if a channel rack plugin is focused
-    # if ui.getFocused(7):
-    form_id = ui.getFocusedFormID()
-
+    # HACK: Move this elsewhere
+    global generator_previously_active
+    with ProfilerContext("getFocused"):
+        # for i in range(8):
+        #     print(f"    {ui.getFocused(i)=}, {i=}")
+        ui_6 = ui.getFocused(6)
+        ui_7 = ui.getFocused(7)
     # If a mixer plugin is focused
-    if ui.getFocused(6):
+    if ui_6:
+        # HACK: Error checking to hopefully avoid a crash due to bugs in FL
+        # Studio
+        if generator_previously_active:
+            print("getFocusedPluginIndex() crash prevention")
+            return None
+        with ProfilerContext("getFocusedFormID @ mixer"):
+            form_id = ui.getFocusedFormID()
         track = form_id // 4194304
         slot = (form_id - 4194304 * track) // 65536
         return track, slot
     # Otherwise, assume that a channel is selected
     # Use the channel rack index so that we always have one
-    elif ui.getFocused(7):
+    elif ui_7:
+        generator_previously_active = 3
+        with ProfilerContext("getFocusedFormID @ cr"):
+            form_id = ui.getFocusedFormID()
         # NOTE: When using groups, ui.getFocusedFormID() returns the index
         # respecting groups, instead of the global index, yuck
         if form_id == -1:
@@ -63,30 +91,29 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
             return None
         return (form_id,)
     else:
+        generator_previously_active = 3
         if force:
-            return (channels.selectedChannel(),)
+            with ProfilerContext("selectedChannel"):
+                ret = (channels.selectedChannel(),)
+            return ret
         else:
             return None
 
 
+@profilerDecoration("getFocusedWindowIndex")
 def getFocusedWindowIndex() -> Optional[int]:
     """
-    Fixes the horrible ui.getFocusedFormIndex() function
-
-    Values are returned as tuples so that they can be unwrapped when
+    Fixes the horrible ui.getFocused() function
 
     Returns:
         * `None`: if no window is focused
         * `int`: index of window
     """
-    # Check if a channel rack plugin is focused
-    if getFocusedPluginIndex() is not None:
-        return None
-    else:
-        ret = ui.getFocusedFormID()
-        if ret == -1:
-            return None
-        return ret
+    for i in range(5):
+        if ui.getFocused(i):
+            return i
+    return None
+
 
 # def getPluginName(index: UnsafeIndex) -> str:
 #     """
