@@ -45,7 +45,7 @@ class MainState(DeviceState):
     def deinitialise(self) -> None:
         pass
 
-    @profilerDecoration("tick")
+    @profilerDecoration("main.tick")
     def tick(self) -> None:
         with ProfilerContext("Device tick"):
             self._device.doTick()
@@ -95,7 +95,7 @@ class MainState(DeviceState):
                 with ProfilerContext(f"Apply {type(p)}"):
                     p.apply(thorough=True)
 
-    @profilerDecoration("processEvent")
+    @profilerDecoration("main.processEvent")
     def processEvent(self, event: EventData) -> None:
         with ProfilerContext("Match event"):
             mapping = self._device.matchEvent(event)
