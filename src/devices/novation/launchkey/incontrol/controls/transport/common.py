@@ -9,7 +9,6 @@ from controlsurfaces import (
     DirectionNext,
     DirectionPrevious,
     FastForwardButton,
-    RecordButton,
     RewindButton,
     QuantizeButton,
     UndoRedoButton,

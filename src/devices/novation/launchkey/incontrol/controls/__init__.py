@@ -5,7 +5,7 @@ Definitions for controls shared between Novation devices
 """
 
 __all__ = [
-    'InControlSurface',
+    'ColorInControlSurface',
     'LkDirectionNext',
     'LkDirectionPrevious',
     'LkFastForwardButton',
@@ -38,7 +38,7 @@ __all__ = [
     'LkUndoRedoButton',
 ]
 
-from .incontrolsurface import InControlSurface
+from .incontrolsurface import ColorInControlSurface
 from .transport import (
     LkDirectionNext,
     LkDirectionPrevious,

@@ -15,8 +15,8 @@ from controlsurfaces.valuestrategies import (
     ButtonData2Strategy,
     ForwardedStrategy,
 )
-from ..incontrolsurface import InControlSurface
-from ...colors.standard import COLORS
+from ..incontrolsurface import GrayscaleInControlSurface
+from ...colors.greyscale import COLORS
 
 __all__ = [
     'LkMk3LoopButton',
@@ -26,49 +26,69 @@ __all__ = [
 ]
 
 
-class LkMk3StopButton(StopButton):
+class LkMk3StopButton(GrayscaleInControlSurface, StopButton):
     def __init__(self) -> None:
-        super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x74, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
-        )
-
-
-class LkMk3LoopButton(LoopButton):
-    def __init__(self) -> None:
-        super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x76, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
-        )
-
-
-class LkMk3PlayButton(InControlSurface, PlayButton):
-    def __init__(self) -> None:
-        PlayButton.__init__(
+        val = 0x74
+        StopButton.__init__(
             self,
-            ForwardedPattern(2, BasicPattern(0xBF, 0x73, ...)),
-            ForwardedStrategy(ButtonData2Strategy()),
+            ForwardedPattern(2, BasicPattern(0xBF, val, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
         )
-        InControlSurface.__init__(
+        GrayscaleInControlSurface.__init__(
             self,
             0x0,
-            0x73,
+            val,
             COLORS,
             0xB,
         )
 
 
-class LkMk3RecordButton(InControlSurface, RecordButton):
+class LkMk3LoopButton(GrayscaleInControlSurface, LoopButton):
     def __init__(self) -> None:
-        RecordButton.__init__(
+        val = 0x76
+        LoopButton.__init__(
             self,
-            ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
+            ForwardedPattern(2, BasicPattern(0xBF, val, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         )
-        InControlSurface.__init__(
+        GrayscaleInControlSurface.__init__(
             self,
             0x0,
-            0x75,
+            val,
+            COLORS,
+            0xB,
+        )
+
+
+class LkMk3PlayButton(GrayscaleInControlSurface, PlayButton):
+    def __init__(self) -> None:
+        val = 0x73
+        PlayButton.__init__(
+            self,
+            ForwardedPattern(2, BasicPattern(0xBF, val, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
+        )
+        GrayscaleInControlSurface.__init__(
+            self,
+            0x0,
+            val,
+            COLORS,
+            0xB,
+        )
+
+
+class LkMk3RecordButton(GrayscaleInControlSurface, RecordButton):
+    def __init__(self) -> None:
+        val = 0x75
+        RecordButton.__init__(
+            self,
+            ForwardedPattern(2, BasicPattern(0xBF, val, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
+        )
+        GrayscaleInControlSurface.__init__(
+            self,
+            0x0,
+            val,
             COLORS,
             0xB,
         )

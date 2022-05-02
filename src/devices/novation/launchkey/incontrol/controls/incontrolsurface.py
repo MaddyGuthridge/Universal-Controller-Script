@@ -4,32 +4,23 @@ from common.types import EventData, Color
 from common.util.events import forwardEvent
 from ..consts import REFRESH_INTERVAL
 
+__all__ = [
+    'ColorInControlSurface',
+    'GrayscaleInControlSurface',
+]
+
 
 class InControlSurface:
-    """Forwarder to manage sending color events to Launchkey controls
-    """
-
-    def __init__(
-        self,
-        channel: int,
-        note_num: int,
-        colors: dict[Color, int],
-        event_num: int = 0x9,
-    ) -> None:
-        # Initialise whatever
-        self.__status = (event_num << 4) + channel
-        self.__note = note_num
-        self.__colors = colors
-        self.__recent_col = 0
-        # Variable to keep the drumpad lights working
+    def __init__(self, status: int, note: int) -> None:
+        self.__status = status
+        self.__note = note
+        self.__color = 0
+        # Variable to keep the lights working, since sometimes they might be
+        # set to the wrong value through other means
         self.__ticker_timer = 0
 
-    @profilerDecoration("LaunchKey onColorChange")
-    def onColorChange(self, new: Color) -> None:
-        """Called when the color changes"""
-        c_num = self.__colors[new.closest(list(self.__colors.keys()))]
-        self.__recent_col = c_num
-        self.updateColor()
+    def setColor(self, new: int):
+        self.__color = new
 
     def updateColor(self) -> None:
         """Send a color update event from the recent color"""
@@ -37,7 +28,7 @@ class InControlSurface:
             EventData(
                 self.__status,
                 self.__note,
-                self.__recent_col,
+                self.__color,
             ),
             2,
         )
@@ -45,6 +36,51 @@ class InControlSurface:
     def tick(self) -> None:
         """Occasionally refresh lights since launchkey lights are sorta buggy
         """
-        # if self.__ticker_timer % REFRESH_INTERVAL == 0:
-        #     self.updateColor()
+        if self.__ticker_timer % REFRESH_INTERVAL == 0:
+            self.updateColor()
         self.__ticker_timer += 1
+
+
+class ColorInControlSurface(InControlSurface):
+    """Forwarder to manage sending color events to Launchkey controls
+    """
+    def __init__(
+        self,
+        channel: int,
+        note_num: int,
+        colors: dict[Color, int],
+        event_num: int = 0x9,
+    ) -> None:
+        status = (event_num << 4) + channel
+        self.__colors = colors
+        super().__init__(status, note_num)
+
+    @profilerDecoration("LaunchKey onColorChange")
+    def onColorChange(self, new: Color) -> None:
+        """Called when the color changes"""
+        self.setColor(self.__colors[new.closest(list(self.__colors.keys()))])
+        self.updateColor()
+
+
+class GrayscaleInControlSurface(InControlSurface):
+    """Forwarder to manage sending grayscale color events to Launchkey controls
+    """
+
+    def __init__(
+        self,
+        channel: int,
+        note_num: int,
+        colors: dict[float, int],
+        event_num: int = 0x9,
+    ) -> None:
+        status = (event_num << 4) + channel
+        self.__colors = colors
+        super().__init__(status, note_num)
+
+    @profilerDecoration("LaunchKey onColorChange")
+    def onColorChange(self, new: Color) -> None:
+        """Called when the color changes"""
+        self.setColor(self.__colors[new.closestGrayscale(
+            list(self.__colors.keys())
+        )])
+        self.updateColor()

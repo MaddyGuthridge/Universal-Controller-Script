@@ -12,14 +12,14 @@ from common.eventpattern.notepattern import NotePattern
 from common.types import Color
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import DrumPad
-from .. import InControlSurface
+from .. import ColorInControlSurface
 from ...consts import DRUM_ROWS, DRUM_COLS
 from devices.matchers import (
     BasicControlMatcher,
 )
 
 
-class LkDrumPad(InControlSurface, DrumPad):
+class LkDrumPad(ColorInControlSurface, DrumPad):
     """
     Custom drum pad implementation used by Lunchkey series controllers
     to provide RGB functionality
@@ -31,7 +31,7 @@ class LkDrumPad(InControlSurface, DrumPad):
         note_num: int,
         colors: dict[Color, int]
     ) -> None:
-        InControlSurface.__init__(
+        ColorInControlSurface.__init__(
             self,
             channel,
             note_num,

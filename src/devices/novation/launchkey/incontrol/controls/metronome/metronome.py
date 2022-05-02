@@ -12,10 +12,10 @@ from common.eventpattern.notepattern import NotePattern
 from common.types import Color
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import MetronomeButton
-from ..incontrolsurface import InControlSurface
+from ..incontrolsurface import ColorInControlSurface
 
 
-class LkMetronomeButton(InControlSurface, MetronomeButton):
+class LkMetronomeButton(ColorInControlSurface, MetronomeButton):
     """
     Custom drum pad implementation used by Lunchkey series controllers
     to provide RGB functionality
@@ -27,10 +27,10 @@ class LkMetronomeButton(InControlSurface, MetronomeButton):
         colors: dict[Color, int],
         event_num: int,
     ) -> None:
-        self._color_manager = InControlSurface(channel, note_num, colors)
+        self._color_manager = ColorInControlSurface(channel, note_num, colors)
         # Variable to keep the drumpad lights working
         self._ticker_timer = 0
-        InControlSurface.__init__(
+        ColorInControlSurface.__init__(
             self,
             channel,
             note_num,

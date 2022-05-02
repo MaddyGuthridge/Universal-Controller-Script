@@ -12,10 +12,10 @@ from common.eventpattern import BasicPattern
 from common.types import Color
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import ControlSwitchButton
-from ..incontrolsurface import InControlSurface
+from ..incontrolsurface import ColorInControlSurface
 
 
-class LkControlSwitchButton(InControlSurface, ControlSwitchButton):
+class LkControlSwitchButton(ColorInControlSurface, ControlSwitchButton):
     """
     Custom drum pad implementation used by Lunchkey series controllers
     to provide RGB functionality
@@ -28,10 +28,10 @@ class LkControlSwitchButton(InControlSurface, ControlSwitchButton):
         event_num: int,
     ) -> None:
         status = (event_num << 4) + channel
-        self._color_manager = InControlSurface(status, note_num, colors)
+        self._color_manager = ColorInControlSurface(status, note_num, colors)
         # Variable to keep the drumpad lights working
         self._ticker_timer = 0
-        InControlSurface.__init__(
+        ColorInControlSurface.__init__(
             self,
             channel,
             note_num,
