@@ -188,3 +188,25 @@ def test_closest():
     ]
 
     assert c.closest(options) == options[-1]
+
+
+def test_grayscale():
+    c = Color.fromGrayscale(0.5)
+    assert c.grayscale == 0.5
+
+
+def test_grayscale_hsv():
+    c = Color.fromHsv(0, 1.0, 0.5)
+    assert floatApproxEq(c.grayscale, 0.5)
+
+
+def test_grayscale_rgb():
+    c = Color.fromHsv(0, 1.0, 0.5)
+    c = Color.fromRgb(c.red, c.green, c.blue)
+    assert floatApproxEq(c.grayscale, 0.5)
+
+
+def test_grayscale_int():
+    c = Color.fromHsv(0, 1.0, 0.5)
+    c = Color.fromInteger(c.integer)
+    assert floatApproxEq(c.grayscale, 0.5)
