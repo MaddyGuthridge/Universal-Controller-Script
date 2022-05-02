@@ -181,7 +181,7 @@ class Color:
             self.__grayscale = grayscale
 
         if enabled is None:
-            self.__enabled = self != 0
+            self.__enabled = self != Color()
         else:
             self.__enabled = enabled
 
