@@ -96,3 +96,5 @@ class PluginPager:
         else:
             self.__pages[self.__index].apply(True)
             self.__needs_update = False
+        # Apply the main one last so that it overrides any other controls
+        self.__shadow.apply(thorough)
