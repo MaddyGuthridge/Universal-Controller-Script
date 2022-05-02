@@ -671,10 +671,13 @@ class Color:
             raise ValueError("Set cannot be empty")
 
         closest = others[0]
+        closest_dist = 1.0
 
         for val in others[1:]:
-            if val < closest:
+            dist = abs(self.grayscale - val)
+            if dist < closest_dist:
                 closest = val
+                closest_dist = dist
 
         return closest
 

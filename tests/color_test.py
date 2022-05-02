@@ -210,3 +210,8 @@ def test_grayscale_int():
     c = Color.fromHsv(0, 1.0, 0.5)
     c = Color.fromInteger(c.integer)
     assert floatApproxEq(c.grayscale, 0.5)
+
+
+def test_closest_grayscale():
+    c = Color.fromGrayscale(0.7)
+    assert c.closestGrayscale([0.0, 0.2, 0.3, 0.6, 0.9]) == 0.6
