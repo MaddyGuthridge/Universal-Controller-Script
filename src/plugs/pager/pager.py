@@ -1,7 +1,12 @@
 
+from typing import Any
+from common.types import Color
 from common.util.apifixes import UnsafeIndex
 from controlsurfaces import ControlEvent, ControlSwitchButton
+from controlsurfaces.controlmapping import ControlShadowEvent
+from devices import DeviceShadow
 from plugs import Plugin
+from plugs.eventfilters.filters import filterButtonLift
 
 
 class PluginPager:
@@ -15,12 +20,16 @@ class PluginPager:
     TODO: Example usage
     """
 
-    def __init__(self) -> None:
+    def __init__(self, shadow: DeviceShadow) -> None:
+        self.__shadow = shadow
+        self.__controlSwitch = shadow.bindMatch(ControlSwitchButton,
+                                                self.controlSwitch)
         self.__pages: list[Plugin] = []
+        self.__page_colors: list[Color] = []
         self.__index: int = 0
         self.__needs_update = False
 
-    def addPage(self, new: Plugin) -> None:
+    def addPage(self, new: Plugin, color: Color) -> None:
         """
         Add a page to this plugin
 
@@ -28,6 +37,7 @@ class PluginPager:
         * `new` (`Page`): page to add
         """
         self.__pages.append(new)
+        self.__page_colors.append(color)
 
     def nextPage(self) -> None:
         """
@@ -41,15 +51,26 @@ class PluginPager:
     def processEvent(self, mapping: ControlEvent, index: UnsafeIndex) -> bool:
         """Secret override of the processEvent method for the Plugin class
         """
+        # Process events for the main plugin first
+        if self.__shadow.processEvent(mapping, index):
+            return True
+
         if not len(self.__pages):
             raise ValueError(f"No pages added for PluginPager {type(self)}")
-        # Check to see if we need to switch to the next page
-        if isinstance(mapping.getControl(), ControlSwitchButton):
-            if mapping.value:
-                self.nextPage()
-            return True
         # Process the event in the required page
         return self.__pages[self.__index].processEvent(mapping, index)
+
+    @filterButtonLift
+    def controlSwitch(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
+        """Switch between pages"""
+        if control.value:
+            self.nextPage()
+        return True
 
     def tick(self, *args, **kwargs) -> None:
         """Secret override of the tick method for the Plugin class
@@ -58,6 +79,12 @@ class PluginPager:
         """
         if not len(self.__pages):
             raise ValueError(f"No pages added for PluginPager {type(self)}")
+
+        # Set color of the control switch to the color of the current page
+        if self.__controlSwitch is not None:
+            self.__controlSwitch.color = self.__page_colors[self.__index]
+
+        # Now tick the page
         # Ignore type since this function does exist for all subclasses
         self.__pages[self.__index].tick(*args, **kwargs)  # type: ignore
 

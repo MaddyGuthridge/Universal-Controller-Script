@@ -1,5 +1,6 @@
 
 from common.extensionmanager import ExtensionManager
+from common.types import Color
 from devices import DeviceShadow
 from plugs import WindowPlugin, PluginPager
 from .helpers import INDEX
@@ -13,10 +14,10 @@ class ChannelRack(PluginPager, WindowPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
+        PluginPager.__init__(self, shadow)
+        self.addPage(StepSequencer(shadow.copy()), Color.fromRgb(0, 127, 255))
+        self.addPage(OmniPreview(shadow.copy()), Color.fromRgb(127, 0, 255))
         WindowPlugin.__init__(self, shadow, [])
-        PluginPager.__init__(self)
-        self.addPage(StepSequencer(shadow.copy()))
-        self.addPage(OmniPreview(shadow.copy()))
 
     @staticmethod
     def getWindowId() -> int:
