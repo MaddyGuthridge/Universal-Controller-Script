@@ -38,16 +38,16 @@ from plugs import SpecialPlugin
 from plugs.eventfilters import filterButtonLift
 
 OFF = Color()
-GRAY = Color.fromInteger(0x606060)
-ON = Color.fromInteger(0xFFFFFF)
+GRAY = Color.fromInteger(0x606060, 0.3, False)
+ON = Color.fromInteger(0xFFFFFF, 1.0, True)
 
-SONG_COLOR = Color.fromInteger(0x45A147)
-PAT_COLOR = Color.fromInteger(0xF78F41)
-REC_COLOR = Color.fromInteger(0xAF0000)
-STOP_COLOR = Color.fromInteger(0xB9413E)
+SONG_COLOR = Color.fromInteger(0x45A147, 0.6, True)
+PAT_COLOR = Color.fromInteger(0xF78F41, 0.6, True)
+REC_COLOR = Color.fromInteger(0xAF0000, 1.0, True)
+STOP_COLOR = Color.fromInteger(0xB9413E, 1.0, True)
 
-BEAT_SONG_COLOR = Color.fromInteger(0x00A0F0)
-BEAT_PAT_COLOR = Color.fromInteger(0xA43A37)
+BEAT_SONG_COLOR = Color.fromInteger(0x00A0F0, 1.0, True)
+BEAT_PAT_COLOR = Color.fromInteger(0xA43A37, 1.0, True)
 
 
 def getPatSongCol() -> Color:
@@ -60,13 +60,16 @@ def getPatSongCol() -> Color:
 def getBeatColor(off: Color) -> Color:
     beat = transport.getHWBeatLEDState()
     # print(beat)
+    # odd number -> off beat
     if beat % 2 == 1:
         return off
+    # 0 -> new bar
     elif beat == 0:
         if transport.getLoopMode():
             return BEAT_SONG_COLOR
         else:
             return BEAT_PAT_COLOR
+    # -> new beat
     else:
         return getPatSongCol()
 
@@ -216,13 +219,13 @@ class Transport(SpecialPlugin):
             if self._play is not None:
                 self._play.color = getBeatColor(off=GRAY)
             if self._stop is not None:
-                self._stop.color = STOP_COLOR
+                self._stop.color = GRAY
         # Playback off
         else:
             if self._play is not None:
-                self._play.color = OFF
+                self._play.color = GRAY
             if self._stop is not None:
-                self._stop.color = GRAY
+                self._stop.color = STOP_COLOR
 
     def tickLoopMode(self):
         """Color loop mode button"""
@@ -240,7 +243,7 @@ class Transport(SpecialPlugin):
             if ui.isMetronomeEnabled():
                 self._metronome.color = getBeatColor(GRAY)
             else:
-                self._metronome.color = OFF
+                self._metronome.color = GRAY
 
     def tickHint(self):
         """Set hint message"""
