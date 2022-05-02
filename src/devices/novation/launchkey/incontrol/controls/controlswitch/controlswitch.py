@@ -8,7 +8,7 @@ Authors:
 """
 
 from common.eventpattern import ForwardedPattern
-from common.eventpattern import BasicPattern
+from common.eventpattern import BasicPattern, NotePattern, IEventPattern
 from common.types import Color
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import ControlSwitchButton
@@ -38,8 +38,14 @@ class LkControlSwitchButton(ColorInControlSurface, ControlSwitchButton):
             colors,
             event_num,
         )
+        if event_num == 9:
+            # Note
+            pat: IEventPattern = NotePattern(note_num, channel)
+        else:
+            # Something else
+            pat = BasicPattern(status, note_num, ...)
         ControlSwitchButton.__init__(
             self,
-            ForwardedPattern(2, BasicPattern(status, note_num, ...)),
+            ForwardedPattern(2, pat),
             ForwardedStrategy(NoteStrategy()),
         )
