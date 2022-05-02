@@ -241,7 +241,10 @@ class Transport(SpecialPlugin):
         """Color metronome button"""
         if self._metronome is not None:
             if ui.isMetronomeEnabled():
-                self._metronome.color = getBeatColor(GRAY)
+                if transport.isPlaying():
+                    self._metronome.color = getBeatColor(GRAY)
+                else:
+                    self._metronome.color = ON
             else:
                 self._metronome.color = GRAY
 
