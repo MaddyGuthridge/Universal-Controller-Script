@@ -9,6 +9,7 @@ Authors:
 # from __future__ import annotations
 
 from math import floor
+from typing import Optional
 
 __all__ = [
     'Color'
@@ -144,6 +145,8 @@ class Color:
         self.__red = 0
         self.__green = 0
         self.__blue = 0
+        self.__grayscale = 0.0
+        self.__enabled = False
 
     def __repr__(self) -> str:
         return f"Color(0x{self.integer:06X} | "\
@@ -166,13 +169,37 @@ class Color:
     ###########################################################################
     # Creation functions
 
+    def __setGrayscaleEnabled(
+        self,
+        grayscale: Optional[float],
+        enabled: Optional[bool],
+    ):
+        """Update the grayscale and enabled values of this color object"""
+        if grayscale is None:
+            self.__grayscale = self.value
+        else:
+            self.__grayscale = grayscale
+
+        if enabled is None:
+            self.__enabled = self != 0
+        else:
+            self.__enabled = enabled
+
     @staticmethod
-    def fromInteger(rgb: int) -> 'Color':
+    def fromInteger(
+        rgb: int,
+        grayscale: float = None,
+        enabled: bool = None,
+    ) -> 'Color':
         """
         Create a color object from an FL Studio color int
 
         ### Args:
         * `rgb` (`int`): rgb color (0xRRGGBB)
+        * `grayscale` (`float`, optional): brightness for grayscale LEDs.
+          Defaults to value of color.
+        * `enabled` (`bool`, optional): whether the LED should be on for on/off
+          LEDs. Defaults to True for non-black colors.
 
         ### Returns:
         * `Color`: new color object
@@ -187,10 +214,18 @@ class Color:
         c.__green = g
         c.__blue = b
 
+        c.__setGrayscaleEnabled(grayscale, enabled)
+
         return c
 
     @staticmethod
-    def fromRgb(r: int, g: int, b: int) -> 'Color':
+    def fromRgb(
+        r: int,
+        g: int,
+        b: int,
+        grayscale: float = None,
+        enabled: bool = None,
+    ) -> 'Color':
         """
         Create a color object from RGB values
 
@@ -198,6 +233,10 @@ class Color:
         * `r` (`int`): red
         * `g` (`int`): green
         * `b` (`int`): blue
+        * `grayscale` (`float`, optional): brightness for grayscale LEDs.
+          Defaults to value of color.
+        * `enabled` (`bool`, optional): whether the LED should be on for on/off
+          LEDs. Defaults to True for non-black colors.
 
         ### Returns:
         * `Color`: colour
@@ -212,17 +251,29 @@ class Color:
         c.__green = g
         c.__blue = b
 
+        c.__setGrayscaleEnabled(grayscale, enabled)
+
         return c
 
     @staticmethod
-    def fromHsv(hue: float, saturation: float, value: float) -> 'Color':
+    def fromHsv(
+        hue: float,
+        saturation: float,
+        value: float,
+        grayscale: float = None,
+        enabled: bool = None,
+    ) -> 'Color':
         """
-        Crewate a color object from hue, saturation and value valuesr, g, b
+        Create a color object from hue, saturation and value values
 
         ### Args:
         * `hue` (`float`): hue (degrees, 0-360)
         * `saturation` (`float`): saturation (0-1)
         * `value` (`float`): value (0-1)
+        * `grayscale` (`float`, optional): brightness for grayscale LEDs.
+          Defaults to value of color.
+        * `enabled` (`bool`, optional): whether the LED should be on for on/off
+          LEDs. Defaults to True for non-black colors.
 
         ### Returns:
         * `Color`: colour
@@ -238,6 +289,39 @@ class Color:
         c.__red = r
         c.__green = g
         c.__blue = b
+
+        c.__setGrayscaleEnabled(grayscale, enabled)
+
+        return c
+
+    @staticmethod
+    def fromGrayscale(
+        grayscale: float,
+        enabled: bool = None,
+    ) -> 'Color':
+        """
+        Create a color object from a grayscale value
+
+        ### Args:
+        * `grayscale` (`float`): brightness for grayscale LEDs.
+        * `enabled` (`bool`, optional): whether the LED should be on for on/off
+          LEDs. Defaults to True for non-black colors.
+
+        ### Returns:
+        * `Color`: new color object
+        """
+        c = Color()
+
+        value = int(grayscale*255)
+
+        c.__red = value
+        c.__green = value
+        c.__blue = value
+        c.__grayscale = grayscale
+        if enabled is None:
+            c.__enabled = grayscale != 0
+        else:
+            c.__enabled = enabled
 
         return c
 
@@ -416,6 +500,32 @@ class Color:
         """
         return self.hsv[2]
 
+    @property
+    def grayscale(self) -> float:
+        """
+        Represents the color as a shade of grey (between 0.0 and 1.0).
+
+        This value should be used by controllers whose LEDs don't support RGB
+        colors.
+
+        ### Returns:
+        * `float`: grayscale value
+        """
+        return self.__grayscale
+
+    @property
+    def enabled(self) -> bool:
+        """
+        Represents the color as a either on or off.
+
+        This value should be used by controllers whose LEDs don't support
+        shading.
+
+        ### Returns:
+        * `bool`: grayscale value
+        """
+        return self.__enabled
+
     ###########################################################################
     # Operators
 
@@ -423,7 +533,10 @@ class Color:
     def fade(start: 'Color', end: 'Color', position: float = 0.5) -> 'Color':
         """
         Fade between two colors, using the HSV color space to ensure that
-        intermediate colors remain vibrant
+        intermediate colors remain vibrant.
+
+        Grayscale values are averaged, and enabled values are set to the
+        default for the result.
 
         ### Args:
         * `start` (`Color`): color to fade from
@@ -448,12 +561,16 @@ class Color:
         return Color.fromHsv(
             hue_end * position + hue_start * rev_pos,
             end.saturation * position + start.saturation * rev_pos,
-            end.value * position + start.value * rev_pos
+            end.value * position + start.value * rev_pos,
+            start.grayscale * position + end.grayscale * rev_pos,
         )
 
     def fadeBlack(self: 'Color', position: float = 0.5) -> 'Color':
         """
         Fade between this color and black
+
+        Grayscale values are averaged, and enabled values are set to the
+        default for the result.
 
         ### Args:
         * `position` (`float`, optional): position of the fade to use (0-1.0).
@@ -468,6 +585,9 @@ class Color:
     def fadeGray(self: 'Color', position: float = 0.5) -> 'Color':
         """
         Fade between this color and gray
+
+        Grayscale values are averaged, and enabled values are set to the
+        default for the result.
 
         ### Args:
         * `position` (`float`, optional): position of the fade to use (0-1.0).
@@ -537,12 +657,35 @@ class Color:
 
         return closest
 
+    def closestGrayscale(self, others: list[float]) -> float:
+        """
+        Given a set of grayscale values, find the closest one and return it
+
+        ### Args:
+        * `others` (`list[float]`): List of values to pick from
+
+        ### Returns:
+        * `float`: closest match
+        """
+        if len(others) == 0:
+            raise ValueError("Set cannot be empty")
+
+        closest = others[0]
+
+        for val in others[1:]:
+            if val < closest:
+                closest = val
+
+        return closest
+
     def __add__(self, other) -> 'Color':
         if isinstance(other, Color):
             return Color.fromRgb(
                 self.red + other.red,
                 self.green + other.green,
-                self.blue + other.blue
+                self.blue + other.blue,
+                self.grayscale + other.grayscale,
+                self.enabled or other.enabled,
             )
         elif isinstance(other, int):
             return Color.fromRgb(
@@ -562,7 +705,8 @@ class Color:
             return Color.fromRgb(
                 self.red - other.red,
                 self.green - other.green,
-                self.blue - other.blue
+                self.blue - other.blue,
+                self.grayscale - other.grayscale,
             )
         elif isinstance(other, int):
             return Color.fromRgb(
@@ -586,9 +730,11 @@ class Color:
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Color):
             return (
-                self.__red == other.__red
-                and self.__green == other.__green
-                and self.__blue == other.__blue
+                self.red == other.red
+                and self.green == other.green
+                and self.blue == other.blue
+                and self.grayscale == other.grayscale
+                and self.enabled == other.enabled
             )
         elif isinstance(other, int):
             return self == Color.fromInteger(other)
