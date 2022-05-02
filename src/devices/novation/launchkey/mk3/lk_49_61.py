@@ -25,10 +25,10 @@ from devices.novation.launchkey.incontrol import (
     InControlMatcher,
 )
 from devices.novation.launchkey.incontrol.controls import (
-    LkPlayButton,
+    LkMk3PlayButton,
     LkMk3StopButton,
     LkMk3LoopButton,
-    LkRecordButton,
+    LkMk3RecordButton,
     LkKnobSet,
     LkFaderSet,
     LkMk3DrumPad,
@@ -62,11 +62,11 @@ class LaunchkeyMk3_49_61(Device):
         matcher.addSubMatcher(LkKnobSet())
         matcher.addSubMatcher(LkFaderSet())
         matcher.addControl(LkMk3StopButton())
-        matcher.addControl(LkPlayButton())
+        matcher.addControl(LkMk3PlayButton())
         matcher.addControl(LkMk3LoopButton())
         matcher.addControl(LkDirectionNext())
         matcher.addControl(LkDirectionPrevious())
-        matcher.addControl(LkRecordButton())
+        matcher.addControl(LkMk3RecordButton())
         matcher.addControl(LkMk3ControlSwitchButton())
         matcher.addControl(LkQuantizeButton())
         matcher.addControl(LkMk3MetronomeButton())

@@ -22,11 +22,12 @@ class LkControlSwitchButton(InControlSurface, ControlSwitchButton):
     """
     def __init__(
         self,
-        status: int,
         channel: int,
         note_num: int,
         colors: dict[Color, int],
+        event_num: int,
     ) -> None:
+        status = (event_num << 4) + channel
         self._color_manager = InControlSurface(status, note_num, colors)
         # Variable to keep the drumpad lights working
         self._ticker_timer = 0
@@ -35,6 +36,7 @@ class LkControlSwitchButton(InControlSurface, ControlSwitchButton):
             channel,
             note_num,
             colors,
+            event_num,
         )
         ControlSwitchButton.__init__(
             self,

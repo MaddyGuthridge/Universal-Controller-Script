@@ -25,6 +25,7 @@ class LkMetronomeButton(InControlSurface, MetronomeButton):
         channel: int,
         note_num: int,
         colors: dict[Color, int],
+        event_num: int,
     ) -> None:
         self._color_manager = InControlSurface(channel, note_num, colors)
         # Variable to keep the drumpad lights working
@@ -34,6 +35,7 @@ class LkMetronomeButton(InControlSurface, MetronomeButton):
             channel,
             note_num,
             colors,
+            event_num,
         )
         MetronomeButton.__init__(
             self,

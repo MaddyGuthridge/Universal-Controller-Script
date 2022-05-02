@@ -9,8 +9,8 @@ class LkMk2ControlSwitchButton(LkControlSwitchButton):
         self,
     ) -> None:
         super().__init__(
-            0x9F,
             0xF,
             0x68,
             COLORS,
+            0x9
         )

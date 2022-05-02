@@ -25,8 +25,8 @@ from devices.novation.launchkey.incontrol import (
     InControlMatcher,
 )
 from devices.novation.launchkey.incontrol.controls import (
-    LkPlayButton,
-    LkRecordButton,
+    LkMk3PlayButton,
+    LkMk3RecordButton,
     LkKnobSet,
     LkMk3DrumPad,
     LkDrumPadMatcher,
@@ -52,8 +52,8 @@ class LaunchkeyMiniMk3(Device):
 
         matcher.addSubMatcher(LkDrumPadMatcher(LkMk3DrumPad))
         matcher.addSubMatcher(LkKnobSet())
-        matcher.addControl(LkPlayButton())
-        matcher.addControl(LkRecordButton())
+        matcher.addControl(LkMk3PlayButton())
+        matcher.addControl(LkMk3RecordButton())
         matcher.addControl(LkMk3ControlSwitchButton())
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())

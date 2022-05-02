@@ -14,9 +14,10 @@ class InControlSurface:
         channel: int,
         note_num: int,
         colors: dict[Color, int],
+        event_num: int = 0x9,
     ) -> None:
         # Initialise whatever
-        self.__channel = channel
+        self.__status = (event_num << 4) + channel
         self.__note = note_num
         self.__colors = colors
         self.__recent_col = 0
@@ -34,7 +35,7 @@ class InControlSurface:
         """Send a color update event from the recent color"""
         forwardEvent(
             EventData(
-                (9 << 4) + self.__channel,
+                self.__status,
                 self.__note,
                 self.__recent_col,
             ),
@@ -44,6 +45,6 @@ class InControlSurface:
     def tick(self) -> None:
         """Occasionally refresh lights since launchkey lights are sorta buggy
         """
-        if self.__ticker_timer % REFRESH_INTERVAL == 0:
-            self.updateColor()
+        # if self.__ticker_timer % REFRESH_INTERVAL == 0:
+        #     self.updateColor()
         self.__ticker_timer += 1

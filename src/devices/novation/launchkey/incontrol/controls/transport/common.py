@@ -9,7 +9,6 @@ from controlsurfaces import (
     DirectionNext,
     DirectionPrevious,
     FastForwardButton,
-    PlayButton,
     RecordButton,
     RewindButton,
     QuantizeButton,
@@ -24,29 +23,11 @@ __all__ = [
     'LkDirectionNext',
     'LkDirectionPrevious',
     'LkFastForwardButton',
-    'LkPlayButton',
-    'LkRecordButton',
     'LkRewindButton',
     'LkQuantizeButton',
     'LkUndoRedoButton',
     'LkCaptureMidiButton',
 ]
-
-
-class LkPlayButton(PlayButton):
-    def __init__(self) -> None:
-        super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x73, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-
-
-class LkRecordButton(RecordButton):
-    def __init__(self) -> None:
-        super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
 
 
 class LkDirectionNext(DirectionNext):

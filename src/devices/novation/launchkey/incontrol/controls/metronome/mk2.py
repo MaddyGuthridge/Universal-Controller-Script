@@ -12,4 +12,5 @@ class LkMk2MetronomeButton(LkMetronomeButton):
             0xF,
             0x78,
             COLORS,
+            0x9
         )
