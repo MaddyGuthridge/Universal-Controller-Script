@@ -44,6 +44,8 @@ intend to contribute code to the script, you should follow the
     device does, it may just need some manual configuration. Refer to its manual
     page in the [devices section](devices/devices.md).
 
+Don't forget to read the basic [usage instructions](usage.md) for the script
+so that you can take full advantage of the integration it provides!
 
 Note that you'll need to download and extract the `build.zip` file for all new
 updates. When Image-Line introduce their new distribution system, I will switch

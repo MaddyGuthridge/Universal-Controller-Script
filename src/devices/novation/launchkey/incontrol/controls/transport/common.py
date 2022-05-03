@@ -25,7 +25,6 @@ __all__ = [
     'LkRewindButton',
     'LkQuantizeButton',
     'LkUndoRedoButton',
-    'LkCaptureMidiButton',
 ]
 
 

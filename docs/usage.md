@@ -1,0 +1,80 @@
+
+# Basic Usage
+
+A few common functions are maintained throughout the entirety of the script.
+
+Make sure you refer to your [device's page](devices/README.md) in the manual
+for information on how these controls are implemented in particular for your
+device. Every device is different, so it's a good idea to double check so you
+can be sure you're getting the most out of the script.
+
+## Basic Events
+
+* Notes are sent to the selected plugin.
+
+* Aftertouch is sent to the selected plugin if the plugin is a VST.
+
+* Pedals are sent to the selected plugin if the plugin is a VST. Otherwise,
+  the hold pedal increases note length (the default behaviour in FL).
+
+## Transport Controls
+
+* Stop button stops playback
+
+* Play button plays or pauses (playhead location isn't reset) playback.
+  If no stop button is available, playback is stopped.
+
+* Loop button switches the loop mode between pattern and song mode.
+
+* Record button toggles recording.
+
+* Fast forward and rewind buttons do what you'd expect.
+
+* Jog wheel changes selection.
+
+* Direction buttons (including next/previous track buttons) change the
+  selection.
+
+## Macros
+
+* Metronome button toggles the metronome.
+
+* Undo button undoes things.
+
+* Save button hits save.
+
+* Quantize button quantizes the selection.
+
+* Capture MIDI button writes the last 2 minutes of MIDI data to the selected
+  pattern.
+
+# Activity Management
+
+The script tracks the active plugin and FL Studio window so that it can
+automatically map controls the the most logical destinations.
+
+This activity can be controlled using a few useful controls:
+
+* Pause active button prevents the active plugin or window selection from being
+  updated, meaning that you can continue interfacing with that plugin, even if
+  you change your selection.
+
+There are two different ways that this can be managed, depending on the design
+of your device. Make sure you know which one your device uses.
+
+## Split Controls
+
+FL Studio windows (mixer, channel rack, etc) are controlled separately to
+plugins. Your device will let you select a DAW mode or a Plugin mode to
+determine what will be controlled.
+
+## Unified Controls
+
+FL Studio windows are controlled alongside plugins. Your device will map
+controls to whichever window or plugin is currently selected.
+
+# Plugin-specific Usage
+
+For information on how the script interacts with FL Studio windows and
+plugins, refer to the [plugins](plugins/README.md) section of the
+documentation.
