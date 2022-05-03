@@ -49,6 +49,7 @@
         "INCONTROL",
         "incontrolsurface",
         "ivaluestrategy",
+        "keyswitch",
         "Kontrol",
         "Korg",
         "launchkey",
@@ -70,6 +71,7 @@
         "strat",
         "sysex",
         "Tytel",
+        "Univ",
         "valuestrategy"
     ],
 }

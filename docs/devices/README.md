@@ -1,6 +1,10 @@
 
 # Devices
 
+## Korg
+
+* [NanoKontrol Mk1](korg/nanokontrol.mk1.md)
+
 ## M-Audio
 
 * [Hammer 88 Pro](maudio/hammer88pro.md)

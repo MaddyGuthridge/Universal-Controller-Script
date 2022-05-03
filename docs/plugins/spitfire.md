@@ -8,6 +8,7 @@ run into any issues ith plugin detection, let me know and I can fix it.
 
 ## Mappings
 * First 2 faders to expression and dynamics
+* Drum pads to keyswitch selection
 
 ## Who to contact
 This plugin is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),

@@ -21,7 +21,7 @@ from devices.matchers import BasicControlMatcher
 from controlsurfaces import (
     StopButton,
     PlayButton,
-    LoopButton,
+    ControlSwitchButton,
     RecordButton,
     FastForwardButton,
     RewindButton,
@@ -61,7 +61,7 @@ class NanoKontrol(Device):
             BasicPattern(0xB0, 0x30, ...),
             ButtonData2Strategy()
         ))
-        matcher.addControl(LoopButton(
+        matcher.addControl(ControlSwitchButton(
             BasicPattern(0xB0, 0x31, ...),
             ButtonData2Strategy()
         ))
