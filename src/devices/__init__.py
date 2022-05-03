@@ -22,9 +22,11 @@ from .deviceshadow import DeviceShadow, EventCallback
 # Device manufacturers
 from . import (
     novation,
-    maudio
+    maudio,
+    korg,
 )
 del (
     novation,
-    maudio
+    maudio,
+    korg,
 )
