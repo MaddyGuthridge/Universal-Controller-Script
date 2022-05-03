@@ -75,14 +75,3 @@ class LkUndoRedoButton(UndoRedoButton):
             ForwardedPattern(2, BasicPattern(0xBF, 0x4D, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
         )
-
-
-class LkCaptureMidiButton():
-    def __init__(self) -> None:
-        # TODO: Figure out what this does
-        # super().__init__(
-        #     ForwardedPattern(2, BasicPattern(0xBF, 0x4A, ...)),
-        #     ForwardedStrategy(ButtonData2Strategy()),
-        #     'undo'
-        # )
-        pass

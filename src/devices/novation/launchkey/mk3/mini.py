@@ -31,6 +31,7 @@ from devices.novation.launchkey.incontrol.controls import (
     LkMk3DrumPad,
     LkDrumPadMatcher,
     LkMk3ControlSwitchButton,
+    # LkMk3CaptureMidiButton,
 )
 
 DEVICE_ID = "Novation.Launchkey.Mk3.Mini"

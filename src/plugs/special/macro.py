@@ -27,6 +27,7 @@ from controlsurfaces import (
     SwitchActiveWindowButton,
     SwitchActiveToggleButton,
     PauseActiveButton,
+    CaptureMidiButton,
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
@@ -47,6 +48,8 @@ class Macro(SpecialPlugin):
         shadow.bindMatch(UndoRedoButton, self.undoRedo, raise_on_failure=False)
         shadow.bindMatch(SaveButton, self.save, raise_on_failure=False)
         shadow.bindMatch(QuantizeButton, self.quantize,
+                         raise_on_failure=False)
+        shadow.bindMatch(CaptureMidiButton, self.captureMidi,
                          raise_on_failure=False)
         shadow.bindMatches(
             SwitchActiveButton,
@@ -149,6 +152,19 @@ class Macro(SpecialPlugin):
         # TODO: If there's enough demand, potentially add support for a direct
         # controls as well as just a toggle
         getContext().active.playPause()
+        return True
+
+    @filterButtonLift
+    def captureMidi(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any
+    ) -> bool:
+        # Find out how much length to write
+        time = \
+            getContext().settings.get("plugins.general.score_log_dump_length")
+        general.dumpScoreLog(time, 0)
         return True
 
 

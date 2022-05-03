@@ -33,7 +33,7 @@ __all__ = [
     'LkMk3MetronomeButton',
     'LkMk2ControlSwitchButton',
     'LkMk3ControlSwitchButton',
-    'LkCaptureMidiButton',
+    'LkMk3CaptureMidiButton',
     'LkQuantizeButton',
     'LkUndoRedoButton',
 ]
@@ -52,7 +52,7 @@ from .transport import (
     LkMk3PlayButton,
     LkMk2RecordButton,
     LkMk3RecordButton,
-    LkCaptureMidiButton,
+    LkMk3CaptureMidiButton,
     LkQuantizeButton,
     LkUndoRedoButton,
 )

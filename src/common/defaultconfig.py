@@ -69,7 +69,10 @@ CONFIG = {
         "general": {
             # Whether values that have a centred default should snap close
             # values to the default
-            "do_snap": True
+            "do_snap": True,
+            # The length of time to dump to the score log when a capture MIDI
+            # button is pressed, in seconds.
+            "score_log_dump_length": 120
         },
         # FL Studio mixer
         "mixer": {

@@ -10,6 +10,7 @@ from controlsurfaces import (
     StopButton,
     PlayButton,
     RecordButton,
+    CaptureMidiButton,
 )
 from controlsurfaces.valuestrategies import (
     ButtonData2Strategy,
@@ -92,3 +93,12 @@ class LkMk3RecordButton(GrayscaleInControlSurface, RecordButton):
             COLORS,
             0xB,
         )
+
+
+class LkMk3CaptureMidiButton(CaptureMidiButton):
+    def __init__(self) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0xBF, 0x4A, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+        )
+        pass

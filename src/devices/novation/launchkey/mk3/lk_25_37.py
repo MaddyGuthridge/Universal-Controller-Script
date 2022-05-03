@@ -35,6 +35,7 @@ from devices.novation.launchkey.incontrol.controls import (
     LkDirectionNext,
     LkDirectionPrevious,
     LkMk3ControlSwitchButton,
+    LkMk3CaptureMidiButton,
 )
 
 DEVICE_ID = "Novation.Launchkey.Mk3.25-37"
@@ -65,6 +66,7 @@ class LaunchkeyMk3_25_37(Device):
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
         matcher.addControl(LkMk3ControlSwitchButton())
+        matcher.addControl(LkMk3CaptureMidiButton())
 
         super().__init__(matcher)
 

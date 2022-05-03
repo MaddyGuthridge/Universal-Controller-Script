@@ -89,6 +89,7 @@ __all__ = [
     'UndoButton',
     'RedoButton',
     'QuantizeButton',
+    'CaptureMidiButton',
     'SwitchActiveButton',
     'SwitchActivePluginButton',
     'SwitchActiveWindowButton',
@@ -194,6 +195,7 @@ from .macrobutton import (
     UndoButton,
     RedoButton,
     QuantizeButton,
+    CaptureMidiButton,
 )
 from .activitybutton import (
     SwitchActiveButton,

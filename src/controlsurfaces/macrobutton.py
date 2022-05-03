@@ -14,6 +14,7 @@ __all__ = [
     'UndoButton',
     'RedoButton',
     'QuantizeButton',
+    'CaptureMidiButton',
 ]
 
 from controlsurfaces import Button
@@ -63,4 +64,11 @@ class QuantizeButton(MacroButton):
     """
     Defines a quantize button, which should be mapped to FL Studio's snapping
     control.
+    """
+
+
+class CaptureMidiButton(MacroButton):
+    """
+    Defines a capture MIDI button, which dumps recent MIDI input to the
+    selected pattern.
     """
