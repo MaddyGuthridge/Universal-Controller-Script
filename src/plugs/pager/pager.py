@@ -18,16 +18,22 @@ class PluginPager:
     being the first class to inherit from.
 
     TODO: Example usage
+
+    Note that the central plugin will always be transparent, so that it won't
+    interfere with how values are applied from various pages.
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
+        # PluginPagers are always transparent, so that they won't interfere
+        # with the pages
+        shadow.setTransparent(True)
         self.__shadow = shadow
         self.__controlSwitch = shadow.bindMatch(ControlSwitchButton,
                                                 self.controlSwitch)
         self.__pages: list[Plugin] = []
         self.__page_colors: list[Color] = []
         self.__index: int = 0
-        self.__needs_update = False
+        self.__needs_update = True
 
     def addPage(self, new: Plugin, color: Color) -> None:
         """
