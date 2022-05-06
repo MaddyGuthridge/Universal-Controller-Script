@@ -20,6 +20,8 @@ from controlsurfaces import (
     NullEvent,
     PlayButton,
     StopButton,
+    FastForwardButton,
+    RewindButton,
     DirectionNext,
     DirectionPrevious,
     NavigationButton,
@@ -36,6 +38,13 @@ from controlsurfaces import (
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 from plugs.eventfilters import filterButtonLift
+
+# Constants
+FAST_FORWARDING = 1
+REWINDING = -1
+NORMAL_SPEED = 0
+
+# Color definitions
 
 OFF = Color()
 GRAY = Color.fromInteger(0x606060, 0.3, False)
@@ -104,6 +113,14 @@ class Transport(SpecialPlugin):
         self._hint = shadow.bindMatch(
             HintMsg, self.nullEvent, raise_on_failure=False
         )
+        self._ff = shadow.bindMatch(
+            FastForwardButton, self.fastForward, raise_on_failure=False
+        )
+        self._rw = shadow.bindMatch(
+            RewindButton, self.rewind, raise_on_failure=False
+        )
+        # Whether
+        self._playback_ff_rw = 0
         super().__init__(shadow, [])
 
     @classmethod
@@ -205,12 +222,35 @@ class Transport(SpecialPlugin):
             return False
         return True
 
+    def fastForward(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any,
+    ) -> bool:
+        val = control.value != 0
+        transport.fastForward(2 if val else 0)
+        self._playback_ff_rw = FAST_FORWARDING if val else 0
+        return True
+
+    def rewind(
+        self,
+        control: ControlShadowEvent,
+        index: UnsafeIndex,
+        *args: Any,
+    ) -> bool:
+        val = control.value != 0
+        transport.rewind(2 if val else 0)
+        self._playback_ff_rw = REWINDING if val else 0
+        return True
+
     def tick(self):
         self.tickLoopMode()
         self.tickPlayback()
         self.tickRec()
         self.tickMetro()
         self.tickHint()
+        self.tickFfRw()
 
     def tickPlayback(self):
         """Color play and stop buttons"""
@@ -252,6 +292,19 @@ class Transport(SpecialPlugin):
         """Set hint message"""
         if self._hint is not None:
             self._hint.annotation = ui.getHintMsg()
+
+    def tickFfRw(self):
+        """Fast forward and rewind"""
+        if self._ff is not None:
+            if self._playback_ff_rw == FAST_FORWARDING:
+                self._ff.color = ON
+            else:
+                self._ff.color = GRAY
+        if self._rw is not None:
+            if self._playback_ff_rw == REWINDING:
+                self._rw.color = ON
+            else:
+                self._rw.color = GRAY
 
 
 ExtensionManager.registerSpecialPlugin(Transport)
