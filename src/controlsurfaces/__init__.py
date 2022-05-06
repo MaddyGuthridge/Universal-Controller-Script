@@ -17,16 +17,9 @@ __all__ = [
     'ControlMapping',
     'ControlEvent',
     'ControlShadowEvent',
-    # Value Strategies
-    'IValueStrategy',
-    'NoteStrategy',
-    'Data2Strategy',
-    'Data1Strategy',
-    'ButtonData2Strategy',
-    'ButtonSinglePressStrategy',
-    'ForwardedStrategy',
-    'ForwardedUnionStrategy',
-    'NullEventStrategy',
+    # Other imports
+    'valuestrategies',
+    'eventpattern',
     # Control surfaces
     'NullEvent',
     'Note',
@@ -108,17 +101,9 @@ from .controlmapping import (
     ControlEvent,
     ControlShadowEvent
 )
-from .valuestrategies import (
-    IValueStrategy,
-    NoteStrategy,
-    Data2Strategy,
-    Data1Strategy,
-    ButtonData2Strategy,
-    ButtonSinglePressStrategy,
-    ForwardedStrategy,
-    ForwardedUnionStrategy,
-    NullEventStrategy,
-)
+
+from . import valuestrategies
+from . import eventpattern
 
 from .nullevent import NullEvent
 from .note import Note

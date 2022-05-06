@@ -6,7 +6,7 @@ Tests generating event patterns from nibbles
 
 import pytest
 
-from common.eventpattern import fromNibbles
+from controlsurfaces.eventpattern import fromNibbles
 
 
 def test_basic():

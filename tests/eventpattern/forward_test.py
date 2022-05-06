@@ -4,7 +4,7 @@ tests > eventpattern > test_forward
 Tests for forwarded event pattern matching
 """
 
-from common.eventpattern import (
+from controlsurfaces.eventpattern import (
     BasicPattern,
     ForwardedPattern,
     ForwardedUnionPattern,

@@ -9,7 +9,7 @@ Authors:
 """
 
 from typing import Optional
-from common.eventpattern import BasicPattern, fromNibbles
+from controlsurfaces.eventpattern import BasicPattern, fromNibbles
 from common.types.eventdata import EventData, isEventStandard
 from controlsurfaces import ControlSurface, Note, NoteAfterTouch
 from controlsurfaces.controlmapping import ControlEvent

@@ -16,7 +16,7 @@ __all__ = [
     'SOFT'
 ]
 
-from common.eventpattern import BasicPattern, IEventPattern
+from .eventpattern import BasicPattern, IEventPattern
 from . import ControlSurface
 from .valuestrategies import ButtonData2Strategy
 

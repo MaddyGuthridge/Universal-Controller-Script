@@ -4,7 +4,7 @@ devices > novation > sl > mk3 > fader
 Definitions for fader controls used by the SL Mk3 device
 """
 
-from common.eventpattern import BasicPattern, ForwardedPattern
+from controlsurfaces.eventpattern import BasicPattern, ForwardedPattern
 from controlsurfaces import (
     Fader,
 )

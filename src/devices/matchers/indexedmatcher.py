@@ -1,5 +1,9 @@
 from typing import Optional
-from common.eventpattern import IEventPattern, BasicPattern, ForwardedPattern
+from controlsurfaces.eventpattern import (
+    IEventPattern,
+    BasicPattern,
+    ForwardedPattern
+)
 from common.types.eventdata import EventData, isEventStandard
 from common.util.events import decodeForwardedEvent
 from controlsurfaces import ControlEvent, ControlSurface

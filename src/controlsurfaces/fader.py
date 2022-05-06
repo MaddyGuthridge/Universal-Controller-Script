@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 from .knob import Knob, MasterKnob
-from common.eventpattern.ieventpattern import IEventPattern
+from .eventpattern.ieventpattern import IEventPattern
 from controlsurfaces.valuestrategies.ivaluestrategy import IValueStrategy
 from . import ControlSurface
 

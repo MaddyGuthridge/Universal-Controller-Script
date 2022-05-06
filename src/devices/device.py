@@ -10,7 +10,7 @@ Authors:
 # from __future__ import annotations
 
 from typing import Optional, final
-from common.eventpattern import IEventPattern
+from controlsurfaces.eventpattern import IEventPattern
 from common.types import EventData
 from controlsurfaces import ControlShadow
 

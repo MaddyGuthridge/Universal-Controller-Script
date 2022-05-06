@@ -17,7 +17,7 @@ __all__ = [
     'MetronomeButton',
 ]
 
-from common.eventpattern import IEventPattern
+from .eventpattern import IEventPattern
 from controlsurfaces.valuestrategies import IValueStrategy
 from .button import Button
 

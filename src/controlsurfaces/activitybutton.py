@@ -16,7 +16,7 @@ __all__ = [
     'PauseActiveButton',
 ]
 
-from common.eventpattern.ieventpattern import IEventPattern
+from .eventpattern import IEventPattern
 from controlsurfaces.valuestrategies.ivaluestrategy import IValueStrategy
 from controlsurfaces import Button
 

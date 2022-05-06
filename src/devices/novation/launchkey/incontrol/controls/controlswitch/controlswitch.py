@@ -7,8 +7,12 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from common.eventpattern import ForwardedPattern
-from common.eventpattern import BasicPattern, NotePattern, IEventPattern
+from controlsurfaces.eventpattern import (
+    BasicPattern,
+    NotePattern,
+    IEventPattern,
+    ForwardedPattern
+)
 from common.types import Color
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import ControlSwitchButton

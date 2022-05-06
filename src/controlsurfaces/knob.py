@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 from .encoder import Encoder
-from common.eventpattern import IEventPattern
+from .eventpattern import IEventPattern
 from controlsurfaces.valuestrategies import IValueStrategy
 from . import ControlSurface
 
