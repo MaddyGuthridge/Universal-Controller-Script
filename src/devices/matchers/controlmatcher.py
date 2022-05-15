@@ -1,5 +1,5 @@
 """
-devices > control matcher
+devices > controlmatcher
 
 Defines the IControlMatcher interface for matching up controls, as well as a
 BasicControlMatcher for simple devices
@@ -39,11 +39,6 @@ class IControlMatcher:
     def getControls(self) -> list[ControlSurface]:
         """
         Returns a list of controls contained by the control matcher.
-
-        The group option can be used to filter by group if required
-
-        ### Args:
-        * `group` (`str`, optional): Group to filter by. Defaults to `None`.
 
         ### Returns:
         * `list[ControlSurface]`: list of control surfaces
