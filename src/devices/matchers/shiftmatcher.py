@@ -8,7 +8,6 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 from typing import Optional
-from abc import abstractmethod
 from common.types import EventData
 from controlsurfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
@@ -18,6 +17,14 @@ class ShiftMatcher(IControlMatcher):
     """
     Allows a control to be designated as a "shift" button, so that pressing
     it switches between two sub control matchers.
+
+    Note that this button is still matched normally, so its events can still be
+    used. If no action should be taken when pressing the button, it should be
+    registered as a NullEvent.
+
+    In order to modify the LED of the shift button, ControlSurfaces should
+    determine whether the button is pressed using the onValueChange callback.
+    This also implements the behaviour of the double pressed shift button.
     """
     def __init__(
         self,
@@ -48,6 +55,14 @@ class ShiftMatcher(IControlMatcher):
                 # Only disable if it wasn't a double press
                 if not self.__double:
                     self.__shifted = False
+                # If it was a double press, set the value such that the control
+                # is enabled (since the shift button is enabled)
+                # NOTE: This may cause flickering since it is set to 0.0
+                # earlier - if this is an issue some major refactoring might
+                # need to be done to determine how control surface update
+                # callbacks are called when that control is matched.
+                else:
+                    self.__shift.value = 1.0
             return control_event
         # Otherwise delegate to the required submatcher
         if self.__shifted:
@@ -55,7 +70,6 @@ class ShiftMatcher(IControlMatcher):
         else:
             return self.__disabled.matchEvent(event)
 
-    @abstractmethod
     def getControls(self) -> list[ControlSurface]:
         return (
             [self.__shift]

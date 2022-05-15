@@ -35,6 +35,11 @@ can be sure you're getting the most out of the script.
 * Direction buttons (including next/previous track buttons) change the
   selection.
 
+* Shift buttons may toggle between alternate functions for some buttons.
+  Consult your device's documentation for more info. Note that double pressing
+  a shift button will keep the shifted options enabled for standard
+  implementations of shift buttons.
+
 ## Macros
 
 * Metronome button toggles the metronome.
