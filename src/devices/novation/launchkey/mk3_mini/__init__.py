@@ -8,11 +8,7 @@ Authors:
 """
 
 __all__ = [
-    'lk_25_37',
-    'lk_49_61',
+    'mini',
 ]
 
-from . import (
-    lk_25_37,
-    lk_49_61,
-)
+from ..mk3_mini import mini

@@ -26,13 +26,12 @@ from devices.novation.launchkey.incontrol import (
 )
 from devices.novation.launchkey.incontrol.controls import (
     LkMk3PlayButton,
-    LkMk3RecordButton,
     LkKnobSet,
     LkMk3DrumPad,
     LkDrumPadMatcher,
     LkMk3ControlSwitchButton,
-    # LkMk3CaptureMidiButton,
 )
+from .shift import getShiftControls
 
 DEVICE_ID = "Novation.Launchkey.Mk3.Mini"
 
@@ -54,10 +53,12 @@ class LaunchkeyMiniMk3(Device):
         matcher.addSubMatcher(LkDrumPadMatcher(LkMk3DrumPad))
         matcher.addSubMatcher(LkKnobSet())
         matcher.addControl(LkMk3PlayButton())
-        matcher.addControl(LkMk3RecordButton())
         matcher.addControl(LkMk3ControlSwitchButton())
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
+
+        # Shift controls
+        matcher.addSubMatcher(getShiftControls())
 
         super().__init__(matcher)
 
