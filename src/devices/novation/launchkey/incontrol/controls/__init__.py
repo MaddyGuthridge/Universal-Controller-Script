@@ -6,6 +6,7 @@ Definitions for controls shared between Novation devices
 
 __all__ = [
     'ColorInControlSurface',
+    'GrayscaleInControlSurface',
     'LkDirectionNext',
     'LkDirectionPrevious',
     'LkFastForwardButton',
@@ -36,9 +37,13 @@ __all__ = [
     'LkMk3CaptureMidiButton',
     'LkQuantizeButton',
     'LkUndoRedoButton',
+    'Mk3DirectionLeft',
+    'Mk3DirectionRight',
+    'Mk3DirectionUp',
+    'Mk3DirectionDown',
 ]
 
-from .incontrolsurface import ColorInControlSurface
+from .incontrolsurface import ColorInControlSurface, GrayscaleInControlSurface
 from .transport import (
     LkDirectionNext,
     LkDirectionPrevious,
@@ -79,4 +84,10 @@ from .metronome import (
 from .controlswitch import (
     LkMk2ControlSwitchButton,
     LkMk3ControlSwitchButton,
+)
+from .navigation import (
+    Mk3DirectionLeft,
+    Mk3DirectionRight,
+    Mk3DirectionUp,
+    Mk3DirectionDown,
 )
