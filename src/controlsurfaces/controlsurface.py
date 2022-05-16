@@ -281,13 +281,22 @@ class ControlSurface:
         """
 
     @final
-    def doTick(self) -> None:
+    def doTick(self, thorough: bool) -> None:
         """
         Called when a tick happens
 
         This function is used to call the main tick method which is overridden
-        by child classes
+        by child classes.
+
+        ### Args:
+        * thorough (`bool`): Whether a full tick should be done.
         """
+        # If it's a thorough tick, force all the properties to update on the
+        # device
+        if thorough:
+            self.onColorChange(self.color)
+            self.onAnnotationChange(self.annotation)
+            self.onValueChange(self.value)
         self.tick()
         if self._got_update:
             self._needs_update = False
@@ -298,5 +307,5 @@ class ControlSurface:
         Called when a tick happens
 
         This can be overridden to do anything necessary to keep the control
-        functioning correctly
+        functioning correctly.
         """

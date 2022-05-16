@@ -196,9 +196,8 @@ class Device:
         This method forwards ticks onto other parts of the controller as well
         as to its own tick() method which is overridden by child classes
         """
-        for c in self._matcher.getControls():
-            # with ProfilerContext("Tick control"):
-            c.doTick()
+        self.tick()
+        self._matcher.tick(False)
 
     def tick(self) -> None:
         """

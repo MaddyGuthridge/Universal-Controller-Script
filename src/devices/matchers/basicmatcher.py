@@ -106,3 +106,12 @@ class BasicControlMatcher(IControlMatcher):
             for s in self._sub_matchers[p]:
                 controls += s.getControls()
         return controls
+
+    def tick(self, thorough: bool) -> None:
+        for priority in reversed(sorted(self._priorities)):
+            if priority in self._controls:
+                for c in self._controls[priority]:
+                    c.doTick(thorough)
+            if priority in self._sub_matchers:
+                for s in self._sub_matchers[priority]:
+                    s.tick(thorough)

@@ -84,3 +84,6 @@ class InControlMatcher(IControlMatcher):
             return []
         else:
             return [self._event]
+
+    def tick(self, thorough: bool) -> None:
+        return

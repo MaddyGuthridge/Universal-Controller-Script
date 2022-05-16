@@ -137,3 +137,6 @@ class JogMatcher(IControlMatcher):
 
     def getGroups(self) -> set[str]:
         return {"navigation"}
+
+    def tick(self, thorough: bool) -> None:
+        return

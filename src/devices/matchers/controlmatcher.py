@@ -45,3 +45,14 @@ class IControlMatcher:
         """
         raise NotImplementedError("This function should be implemented by "
                                   "child classes")
+
+    @abstractmethod
+    def tick(self, thorough: bool) -> None:
+        """Tick this control matcher, as well as any child control matchers
+
+        ### Args:
+        * thorough (`bool`): Whether a full tick should be done.
+        """
+        print(type(self))
+        raise NotImplementedError("This function should be implemented by "
+                                  "child classes")

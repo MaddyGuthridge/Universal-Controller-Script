@@ -76,3 +76,13 @@ class ShiftMatcher(IControlMatcher):
             + self.__enabled.getControls()
             + self.__disabled.getControls()
         )
+
+    def tick(self, thorough: bool) -> None:
+        # Tick the shift button
+        self.__shift.doTick(thorough)
+        # Tick whichever sub-matcher is active (but don't tick the non-active
+        # one or we might cause clashing colors)
+        if self.__shifted:
+            self.__enabled.tick(thorough)
+        else:
+            self.__disabled.tick(thorough)

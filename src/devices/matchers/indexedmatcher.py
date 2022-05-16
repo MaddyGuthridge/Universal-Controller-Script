@@ -49,3 +49,7 @@ class IndexedMatcher(IControlMatcher):
 
     def getControls(self) -> list[ControlSurface]:
         return self.__controls
+
+    def tick(self, thorough: bool) -> None:
+        for c in self.__controls:
+            c.doTick(thorough)
