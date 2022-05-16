@@ -15,7 +15,7 @@ from ...colors.standard import COLORS
 from ...colors.greyscale import COLORS as GRAYSCALE
 
 
-class Mk3DirectionUp(ColorInControlSurface, DirectionUp):
+class MiniMk3DirectionUp(ColorInControlSurface, DirectionUp):
     def __init__(self) -> None:
         ColorInControlSurface.__init__(
             self,
@@ -30,7 +30,7 @@ class Mk3DirectionUp(ColorInControlSurface, DirectionUp):
         )
 
 
-class Mk3DirectionDown(ColorInControlSurface, DirectionDown):
+class MiniMk3DirectionDown(ColorInControlSurface, DirectionDown):
     def __init__(self) -> None:
         ColorInControlSurface.__init__(
             self,
@@ -41,6 +41,36 @@ class Mk3DirectionDown(ColorInControlSurface, DirectionDown):
         DirectionDown.__init__(
             self,
             ForwardedPattern(2, BasicPattern(0xB0, 0x69, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
+        )
+
+
+class Mk3DirectionUp(ColorInControlSurface, DirectionUp):
+    def __init__(self) -> None:
+        ColorInControlSurface.__init__(
+            self,
+            0x0,
+            0x6A,
+            COLORS,
+        )
+        DirectionUp.__init__(
+            self,
+            ForwardedPattern(2, BasicPattern(0xB0, 0x6A, ...)),
+            ForwardedStrategy(ButtonData2Strategy())
+        )
+
+
+class Mk3DirectionDown(ColorInControlSurface, DirectionDown):
+    def __init__(self) -> None:
+        ColorInControlSurface.__init__(
+            self,
+            0x0,
+            0x6B,
+            COLORS,
+        )
+        DirectionDown.__init__(
+            self,
+            ForwardedPattern(2, BasicPattern(0xB0, 0x6B, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         )
 

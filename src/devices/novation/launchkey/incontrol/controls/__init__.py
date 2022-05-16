@@ -39,6 +39,8 @@ __all__ = [
     'LkUndoRedoButton',
     'Mk3DirectionLeft',
     'Mk3DirectionRight',
+    'MiniMk3DirectionUp',
+    'MiniMk3DirectionDown',
     'Mk3DirectionUp',
     'Mk3DirectionDown',
 ]
@@ -88,6 +90,8 @@ from .controlswitch import (
 from .navigation import (
     Mk3DirectionLeft,
     Mk3DirectionRight,
+    MiniMk3DirectionUp,
+    MiniMk3DirectionDown,
     Mk3DirectionUp,
     Mk3DirectionDown,
 )

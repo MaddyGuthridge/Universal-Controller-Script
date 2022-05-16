@@ -18,8 +18,8 @@ from devices.novation.launchkey.incontrol.controls import (
     LkMk3RecordButton,
     Mk3DirectionLeft,
     Mk3DirectionRight,
-    Mk3DirectionUp,
-    Mk3DirectionDown,
+    MiniMk3DirectionUp,
+    MiniMk3DirectionDown,
 )
 from ..incontrol.controls import LkMk3ControlSwitchButton
 
@@ -42,8 +42,8 @@ def getShiftControls() -> ShiftMatcher:
         ForwardedStrategy(ButtonData2Strategy()),
     ))
     shift_matcher.addControls([
-        Mk3DirectionUp(),
-        Mk3DirectionDown(),
+        MiniMk3DirectionUp(),
+        MiniMk3DirectionDown(),
         Mk3DirectionLeft(),
         Mk3DirectionRight(),
     ])
