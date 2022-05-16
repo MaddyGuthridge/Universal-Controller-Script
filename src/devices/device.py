@@ -10,6 +10,7 @@ Authors:
 # from __future__ import annotations
 
 from typing import Optional, final
+from common.util.abstractmethoderror import AbstractMethodError
 from controlsurfaces.eventpattern import IEventPattern
 from common.types import EventData
 from controlsurfaces import ControlShadow
@@ -91,8 +92,7 @@ class Device:
         ### Returns:
         * `Device`: instance of device object
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(cls)
 
     @abstractmethod
     def getId(self) -> str:
@@ -104,8 +104,7 @@ class Device:
         ### Returns:
         * `str`: device id
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(self)
 
     @abstractmethod
     def getDeviceNumber(self) -> int:
@@ -120,8 +119,7 @@ class Device:
               * `1`: Main device
               * other values: other device numbers.
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(self)
 
     @staticmethod
     @abstractmethod
@@ -135,8 +133,7 @@ class Device:
         * `IEventPattern`: pattern to match universal device enquiry, or None
           if can't be matched.
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError()
 
     @staticmethod
     @abstractmethod
@@ -154,8 +151,7 @@ class Device:
         ### Returns:
         * `bool`: whether there was a match
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError()
 
     @staticmethod
     @abstractmethod

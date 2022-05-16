@@ -5,6 +5,7 @@ Definition for a mapping strategy, which can be used to map a controls
 with little effort on the part of the plugin developer
 """
 
+from common.util.abstractmethoderror import AbstractMethodError
 from devices import DeviceShadow
 from abc import abstractmethod
 
@@ -17,5 +18,4 @@ class IMappingStrategy:
 
     @abstractmethod
     def apply(self, shadow: DeviceShadow) -> None:
-        raise NotImplementedError("This function should be implemented by "
-                                  "child classes")
+        raise AbstractMethodError(self)

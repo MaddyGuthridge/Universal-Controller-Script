@@ -12,6 +12,7 @@ Authors:
 
 from typing import TYPE_CHECKING
 from abc import abstractmethod
+from common.util.abstractmethoderror import AbstractMethodError
 
 if TYPE_CHECKING:
     from common.types import EventData
@@ -40,5 +41,4 @@ class IEventPattern:
         ### Returns:
         * `bool`: whether the event matches
         """
-        raise NotImplementedError("This method should be implemented by "
-                                  "child classes")
+        raise AbstractMethodError(self)

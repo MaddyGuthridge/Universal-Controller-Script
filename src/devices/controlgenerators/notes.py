@@ -48,6 +48,7 @@ class NoteMatcher(IControlMatcher):
     def tick(self, thorough: bool) -> None:
         return
 
+
 class NoteAfterTouchMatcher(IControlMatcher):
     """
     Defines a matcher for note after-touch events

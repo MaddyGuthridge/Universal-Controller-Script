@@ -10,6 +10,7 @@ Authors:
 from typing import Optional
 from abc import abstractmethod
 from common.types import EventData
+from common.util.abstractmethoderror import AbstractMethodError
 from controlsurfaces import ControlEvent, ControlSurface
 
 
@@ -32,8 +33,7 @@ class IControlMatcher:
         * `ControlMapping | None`: mapping to matched control, or None if there
           was no match
         """
-        raise NotImplementedError("This function should be implemented by "
-                                  "child classes")
+        raise AbstractMethodError(self)
 
     @abstractmethod
     def getControls(self) -> list[ControlSurface]:
@@ -43,8 +43,7 @@ class IControlMatcher:
         ### Returns:
         * `list[ControlSurface]`: list of control surfaces
         """
-        raise NotImplementedError("This function should be implemented by "
-                                  "child classes")
+        raise AbstractMethodError(self)
 
     @abstractmethod
     def tick(self, thorough: bool) -> None:
@@ -53,6 +52,4 @@ class IControlMatcher:
         ### Args:
         * thorough (`bool`): Whether a full tick should be done.
         """
-        print(type(self))
-        raise NotImplementedError("This function should be implemented by "
-                                  "child classes")
+        raise AbstractMethodError(self)

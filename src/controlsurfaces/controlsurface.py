@@ -12,13 +12,11 @@ Authors:
 from time import time
 from typing import Optional, final
 from abc import abstractmethod
-
 from common import getContext
-from .eventpattern import IEventPattern
+from common.util.abstractmethoderror import AbstractMethodError
 from common.types import EventData, Color
-
+from .eventpattern import IEventPattern
 from .valuestrategies import IValueStrategy
-
 from .controlmapping import ControlEvent, ControlMapping
 
 
@@ -42,8 +40,7 @@ class ControlSurface:
         ### Returns:
         * `list[type]`: control assignment priorities
         """
-        raise NotImplementedError("This function should be overridden in "
-                                  "child classes")
+        raise AbstractMethodError()
 
     @staticmethod
     def isPress(value: float) -> bool:

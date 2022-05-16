@@ -12,6 +12,7 @@ from typing import Any, Callable
 from typing_extensions import ParamSpec
 from abc import abstractmethod
 from common.types import EventData
+from common.util.abstractmethoderror import AbstractMethodError
 
 
 class IScriptState:
@@ -30,18 +31,14 @@ class IScriptState:
         """
         Initialise this state
         """
-        raise NotImplementedError(
-            "This method must be overridden by child classes"
-        )
+        raise AbstractMethodError(self)
 
     @abstractmethod
     def deinitialise(self) -> None:
         """
         Deinitialise this state
         """
-        raise NotImplementedError(
-            "This method must be overridden by child classes"
-        )
+        raise AbstractMethodError(self)
 
     @abstractmethod
     def processEvent(self, event: EventData) -> None:
@@ -50,18 +47,14 @@ class IScriptState:
         ### Args:
         * `event` (`event`): event to process
         """
-        raise NotImplementedError(
-            "This method must be overridden by child classes"
-        )
+        raise AbstractMethodError(self)
 
     @abstractmethod
     def tick(self) -> None:
         """
         Called frequently to allow any required updates to the controller
         """
-        raise NotImplementedError(
-            "This method must be overridden by child classes"
-        )
+        raise AbstractMethodError(self)
 
 
 class StateChangeException(Exception):

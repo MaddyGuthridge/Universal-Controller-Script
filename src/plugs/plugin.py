@@ -9,6 +9,7 @@ Authors:
 """
 
 from common import log, verbosity
+from common.util.abstractmethoderror import AbstractMethodError
 from common.util.apifixes import UnsafeIndex, WindowIndex, PluginIndex
 from controlsurfaces import ControlEvent
 from devices import DeviceShadow
@@ -72,8 +73,7 @@ class Plugin:
         NOTE: On release of Python 3.11, upgrade to `Self` type and remove
         redefinitions in abstract subclasses
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(cls)
 
     def processEvent(self, mapping: ControlEvent, index: UnsafeIndex) -> bool:
         """
@@ -111,8 +111,7 @@ class StandardPlugin(Plugin):
         ### Returns:
         * `tuple[str, ...]`: plugin names
         """
-        raise NotImplementedError("This method must be implemented by child "
-                                  "classes")
+        raise AbstractMethodError()
 
     @classmethod
     @abstractmethod
@@ -120,8 +119,7 @@ class StandardPlugin(Plugin):
         """
         Create and return an instance of this plugin
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(cls)
 
     @abstractmethod
     def tick(self, index: PluginIndex) -> None:
@@ -131,8 +129,7 @@ class StandardPlugin(Plugin):
         ### Args:
         * `index` (`PluginIndex`): index of plugin
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(self)
 
 
 class WindowPlugin(Plugin):
@@ -151,8 +148,7 @@ class WindowPlugin(Plugin):
         ### Returns:
         * `int`: window ID
         """
-        raise NotImplementedError("This method must be implemented by child "
-                                  "classes")
+        raise AbstractMethodError()
 
     @classmethod
     @abstractmethod
@@ -160,16 +156,14 @@ class WindowPlugin(Plugin):
         """
         Create and return an instance of this plugin
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(cls)
 
     @abstractmethod
     def tick(self) -> None:
         """
         Tick the plugin, to allow parameters to update if required
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(self)
 
 
 class SpecialPlugin(Plugin):
@@ -188,8 +182,7 @@ class SpecialPlugin(Plugin):
         ### Returns:
         * `bool`: whether the plugin should process the event
         """
-        raise NotImplementedError("This method must be implemented by child "
-                                  "classes")
+        raise AbstractMethodError()
 
     @classmethod
     @abstractmethod
@@ -197,13 +190,11 @@ class SpecialPlugin(Plugin):
         """
         Create and return an instance of this plugin
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(cls)
 
     @abstractmethod
     def tick(self) -> None:
         """
         Tick the plugin, to allow parameters to update if required
         """
-        raise NotImplementedError("This method must be overridden by child "
-                                  "classes")
+        raise AbstractMethodError(self)
