@@ -68,8 +68,8 @@ help = ConsoleCommand(
     f"List of commands (enter into the console to use it):\n"
     f" * help(): display this message\n"
     f" * log(): log a message\n"
-    f"    * log.recall(category): recall log entries from a category\n"
-    f"    * log.details(entry_number): print info about a log entry\n"
+    f"    * log.recall([opt] category): recall log entries from a category\n"
+    f"    * log.inspect(entry_number): print info about a log entry\n"
     f" * credits(): print credits for the script\n"
     f" * reset(): reset the script and reload modular components\n"
 )

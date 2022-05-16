@@ -10,6 +10,7 @@ __all__ = [
     'PedalStrategy',
     'WheelStrategy',
     'NoteStrategy',
+    'DirectionStrategy',
 ]
 
 from .mappingstrategy import IMappingStrategy
@@ -17,3 +18,4 @@ from .mappingstrategy import IMappingStrategy
 from .pedalstrategy import PedalStrategy
 from .wheelstrategy import WheelStrategy
 from .notestrategy import NoteStrategy
+from .directionstrategy import DirectionStrategy

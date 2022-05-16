@@ -17,11 +17,16 @@ from controlsurfaces import (
     MoveJogWheel,
     ShiftedJogWheel,
     StandardJogWheel,
-    JogWheel
+    JogWheel,
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
-from plugs.mappingstrategies import PedalStrategy, WheelStrategy, NoteStrategy
+from plugs.mappingstrategies import (
+    PedalStrategy,
+    WheelStrategy,
+    NoteStrategy,
+    DirectionStrategy,
+)
 
 
 class Defaults(SpecialPlugin):
@@ -47,7 +52,8 @@ class Defaults(SpecialPlugin):
         super().__init__(shadow, [
             PedalStrategy(raise_on_error=False),
             WheelStrategy(raise_on_error=False),
-            NoteStrategy()
+            NoteStrategy(),
+            DirectionStrategy(),
         ])
 
     @staticmethod

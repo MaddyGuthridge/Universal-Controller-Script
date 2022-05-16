@@ -50,12 +50,12 @@ class Mk3DirectionLeft(GrayscaleInControlSurface, DirectionLeft):
         GrayscaleInControlSurface.__init__(
             self,
             0xF,
-            0x66,
+            0x67,
             GRAYSCALE,
         )
         DirectionLeft.__init__(
             self,
-            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         )
 
@@ -65,11 +65,11 @@ class Mk3DirectionRight(GrayscaleInControlSurface, DirectionRight):
         GrayscaleInControlSurface.__init__(
             self,
             0xF,
-            0x67,
+            0x66,
             GRAYSCALE,
         )
         DirectionRight.__init__(
             self,
-            ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         )
