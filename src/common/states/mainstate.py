@@ -47,8 +47,6 @@ class MainState(DeviceState):
 
     @profilerDecoration("main.tick")
     def tick(self) -> None:
-        with ProfilerContext("Device tick"):
-            self._device.doTick()
 
         # Tick special plugins
         for p in common.ExtensionManager.getSpecialPlugins(self._device):

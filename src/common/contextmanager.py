@@ -126,8 +126,11 @@ class DeviceContextManager:
             return
         # Tick active plugin
         self.active.tick()
-        # The tick the current script state
+        # Tick the current script state
         self.state.tick()
+        # Tick the device if it's available
+        if (device := self._device) is not None:
+            device.doTick()
 
     def getTickNumber(self) -> int:
         """
