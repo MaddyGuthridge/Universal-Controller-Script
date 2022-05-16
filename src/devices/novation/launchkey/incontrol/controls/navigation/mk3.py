@@ -55,7 +55,7 @@ class Mk3DirectionUp(ColorInControlSurface, DirectionUp):
         )
         DirectionUp.__init__(
             self,
-            ForwardedPattern(2, BasicPattern(0xB0, 0x6A, ...)),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x6A, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         )
 
@@ -70,7 +70,7 @@ class Mk3DirectionDown(ColorInControlSurface, DirectionDown):
         )
         DirectionDown.__init__(
             self,
-            ForwardedPattern(2, BasicPattern(0xB0, 0x6B, ...)),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x6B, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         )
 
