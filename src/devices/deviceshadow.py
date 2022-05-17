@@ -52,9 +52,7 @@ StandardEventCallback = Union[
 EventCallback = StandardEventCallback
 
 if TYPE_CHECKING:
-    ArgGenerator: TypeAlias = list[tuple] \
-        | Callable[[list[ControlShadow]], Generator[tuple, None, None]] \
-        | ellipsis | None  # noqa: F821
+    ArgGenerator: TypeAlias = list[tuple] | Callable[[list[ControlShadow]], Generator[tuple, None, None]] | ellipsis | None  # noqa: F821
 else:
     ArgGenerator: TypeAlias = type
 
