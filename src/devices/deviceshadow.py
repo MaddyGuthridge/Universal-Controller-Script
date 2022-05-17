@@ -16,7 +16,9 @@ from controlsurfaces import ControlSurface
 from . import Device
 
 from controlsurfaces import (
+    IControlShadow,
     ControlShadow,
+    NullControlShadow,
     IControlHash,
     ControlEvent,
     ControlShadowEvent
@@ -476,7 +478,7 @@ class DeviceShadow:
         args: tuple = None,
         allow_substitution: bool = False,
         raise_on_failure: bool = True
-    ) -> Optional[ControlShadow]:
+    ) -> IControlShadow:
         """
         Finds the first control of a matching type and binds it to the given
         function.
@@ -498,9 +500,11 @@ class DeviceShadow:
           `raise_on_failure` is `True`)
 
         ### Returns
-        * `ControlSurface`: The control surface that was bound to, so that
+        * `ControlShadow`: The control surface that was bound to, so that
           properties of it can be set.
-        * `None`: if binding failed and `raise_on_failure` is `False`
+        * `NullControlShadow`: if binding failed and `raise_on_failure` is
+          `False`. This still allows dummy properties to be set, which can
+          simplify the creation of simple plugins.
         """
         try:
             match = self.getControlMatches(
@@ -512,7 +516,7 @@ class DeviceShadow:
             if raise_on_failure:
                 raise ValueError("No controls found to bind to")
             else:
-                return None
+                return NullControlShadow()
         self.bindControl(match, bind_to, args)
         return match
 

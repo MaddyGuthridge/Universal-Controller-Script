@@ -11,7 +11,9 @@ Authors:
 __all__ = [
     # Base types
     'ControlSurface',
+    'IControlShadow',
     'ControlShadow',
+    'NullControlShadow',
     # Control mappings
     'IControlHash',
     'ControlMapping',
@@ -167,7 +169,11 @@ from .controls import (
     NotifMsg,
 )
 
-from .controlshadow import ControlShadow
+from .controlshadow import (
+    IControlShadow,
+    ControlShadow,
+    NullControlShadow,
+)
 from .controlmapping import (
     IControlHash,
     ControlMapping,

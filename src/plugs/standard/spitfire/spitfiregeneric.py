@@ -16,18 +16,18 @@ from plugs import eventfilters, tickfilters
 # HELP WANTED: I don't own all of these libraries, so the naming may be
 # incorrect. If something doesn't work, please create a bug report.
 PRIMARY = [
-    'BBC Symphony Orchestra',
-    'LABS',
-    'Abbey Road One',
+    'BBC Symphony Orchestra',  # Working
+    'LABS',  # Working
+    'Abbey Road One',  # Working
     'Eric Whitacre Choir',
     'Hans Zimmer Strings'
 ]
 
 ORIGINALS = [
-    'Media Toolkit',
-    'Cinematic Percussion',
-    'Firewood Piano',
-    'Cinematic Soft Piano',
+    'Media Toolkit',  # Working
+    'Cinematic Percussion',  # Working
+    'Firewood Piano',  # Working
+    'Cinematic Soft Piano',  # Working
     'Cinematic Frozen Strings',
     'Jangle Box Piano',
     'Cinematic Pads',

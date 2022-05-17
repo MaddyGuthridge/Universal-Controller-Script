@@ -140,7 +140,7 @@ class Transport(SpecialPlugin):
     ) -> bool:
         # If there's no stop button, this should behave like a stop button
         # when playing
-        if self._stop is None and transport.isPlaying():
+        if not self._stop.isBound() and transport.isPlaying():
             transport.stop()
         else:
             transport.start()
@@ -256,55 +256,47 @@ class Transport(SpecialPlugin):
         """Color play and stop buttons"""
         # Playback on
         if transport.isPlaying():
-            if self._play is not None:
-                self._play.color = getBeatColor(off=GRAY)
-            if self._stop is not None:
-                self._stop.color = GRAY
+            self._play.color = getBeatColor(off=GRAY)
+            self._stop.color = GRAY
         # Playback off
         else:
-            if self._play is not None:
-                self._play.color = GRAY
-            if self._stop is not None:
-                self._stop.color = STOP_COLOR
+            self._play.color = GRAY
+            self._stop.color = STOP_COLOR
 
     def tickLoopMode(self):
         """Color loop mode button"""
-        if self._loop is not None:
-            self._loop.color = getPatSongCol()
+        self._loop.color = getPatSongCol()
 
     def tickRec(self):
         """Color record button"""
-        if self._rec is not None:
-            self._rec.color = REC_COLOR if transport.isRecording() else GRAY
+        self._rec.color = REC_COLOR if transport.isRecording() else GRAY
 
     def tickMetro(self):
         """Color metronome button"""
-        if self._metronome is not None:
-            if ui.isMetronomeEnabled():
-                if transport.isPlaying():
-                    self._metronome.color = getBeatColor(GRAY)
-                else:
-                    self._metronome.color = ON
+        if ui.isMetronomeEnabled():
+            if transport.isPlaying():
+                self._metronome.color = getBeatColor(GRAY)
             else:
-                self._metronome.color = GRAY
+                self._metronome.color = ON
+        else:
+            self._metronome.color = GRAY
 
     def tickHint(self):
         """Set hint message"""
-        if self._hint is not None:
-            self._hint.annotation = ui.getHintMsg()
+        self._hint.annotation = ui.getHintMsg()
 
     def tickFfRw(self):
         """Fast forward and rewind"""
-        if self._ff is not None:
-            if self._playback_ff_rw == FAST_FORWARDING:
-                self._ff.color = ON
-            else:
-                self._ff.color = GRAY
-        if self._rw is not None:
-            if self._playback_ff_rw == REWINDING:
-                self._rw.color = ON
-            else:
-                self._rw.color = GRAY
+        # Fast-forward
+        if self._playback_ff_rw == FAST_FORWARDING:
+            self._ff.color = ON
+        else:
+            self._ff.color = GRAY
+        # Rewind
+        if self._playback_ff_rw == REWINDING:
+            self._rw.color = ON
+        else:
+            self._rw.color = GRAY
 
 
 ExtensionManager.registerSpecialPlugin(Transport)

@@ -5,7 +5,7 @@ from plugs.eventfilters import filterButtonLift
 from common.types import Color
 
 from controlsurfaces import (
-    ControlShadow,
+    IControlShadow,
     DirectionNext,
     DirectionPrevious,
     DirectionLeft,
@@ -20,61 +20,51 @@ BOUND_COLOR = Color.fromInteger(0x888888)
 
 class DirectionStrategy(IMappingStrategy):
     def __init__(self) -> None:
-        self._controls: list[ControlShadow] = []
+        self._controls: list[IControlShadow] = []
 
     def apply(self, shadow: DeviceShadow):
         # TODO: Find nicer way to bind colors like this
-        if (x := shadow.bindMatch(
+        shadow.bindMatch(
             DirectionNext,
             self.next,
             raise_on_failure=False,
-        )) is not None:
-            self._controls.append(x)
+        ).color = BOUND_COLOR
 
-        if (x := shadow.bindMatch(
+        shadow.bindMatch(
             DirectionPrevious,
             self.previous,
             raise_on_failure=False,
-        )) is not None:
-            self._controls.append(x)
+        ).color = BOUND_COLOR
 
-        if (x := shadow.bindMatch(
+        shadow.bindMatch(
             DirectionRight,
             self.next,
             raise_on_failure=False,
-        )) is not None:
-            self._controls.append(x)
+        ).color = BOUND_COLOR
 
-        if (x := shadow.bindMatch(
+        shadow.bindMatch(
             DirectionLeft,
             self.previous,
             raise_on_failure=False,
-        )) is not None:
-            self._controls.append(x)
+        ).color = BOUND_COLOR
 
-        if (x := shadow.bindMatch(
+        shadow.bindMatch(
             DirectionDown,
             self.next,
             raise_on_failure=False,
-        )) is not None:
-            self._controls.append(x)
+        ).color = BOUND_COLOR
 
-        if (x := shadow.bindMatch(
+        shadow.bindMatch(
             DirectionUp,
             self.previous,
             raise_on_failure=False,
-        )) is not None:
-            self._controls.append(x)
+        ).color = BOUND_COLOR
 
-        if (x := shadow.bindMatch(
+        shadow.bindMatch(
             DirectionSelect,
             self.select,
             raise_on_failure=False,
-        )) is not None:
-            self._controls.append(x)
-
-        for x in self._controls:
-            x.color = BOUND_COLOR
+        ).color = BOUND_COLOR
 
     @filterButtonLift
     def next(self, control, index, *args, **kwargs):
