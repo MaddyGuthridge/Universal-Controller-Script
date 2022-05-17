@@ -37,22 +37,16 @@ class ParametricEq(StandardPlugin):
             Fader,
             self.levels,
             target_num=NUM_PARAMS,
-            allow_substitution=True,
-            raise_on_failure=False
         )
         self._frequencies = shadow.bindMatches(
             Knob,
             self.frequencies,
             target_num=NUM_PARAMS,
-            allow_substitution=True,
-            raise_on_failure=False
         )
         self._bandwidths = shadow.bindMatches(
             Encoder,
             self.bandwidths,
             target_num=NUM_PARAMS,
-            allow_substitution=True,
-            raise_on_failure=False
         )
         super().__init__(shadow, [])
 

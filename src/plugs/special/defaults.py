@@ -46,12 +46,11 @@ class Defaults(SpecialPlugin):
         shadow.bindMatches(
             JogWheel,
             self.jogWheel,
-            raise_on_failure=False,
             one_type=False,
         )
         super().__init__(shadow, [
-            PedalStrategy(raise_on_error=False),
-            WheelStrategy(raise_on_error=False),
+            PedalStrategy(),
+            WheelStrategy(),
             NoteStrategy(),
             DirectionStrategy(),
         ])

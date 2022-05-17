@@ -21,7 +21,7 @@ class Playlist(WindowPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(JogWheel, self.jogWheel, raise_on_failure=False)
+        shadow.bindMatches(JogWheel, self.jogWheel)
         super().__init__(shadow, [])
 
     @staticmethod

@@ -43,24 +43,20 @@ class Macro(SpecialPlugin):
         shadow.setMinimal(True)
         super().__init__(shadow, [])
         # Macro buttons
-        shadow.bindMatch(UndoButton, self.undo, raise_on_failure=False)
-        shadow.bindMatch(RedoButton, self.redo, raise_on_failure=False)
-        shadow.bindMatch(UndoRedoButton, self.undoRedo, raise_on_failure=False)
-        shadow.bindMatch(SaveButton, self.save, raise_on_failure=False)
-        shadow.bindMatch(QuantizeButton, self.quantize,
-                         raise_on_failure=False)
-        shadow.bindMatch(CaptureMidiButton, self.captureMidi,
-                         raise_on_failure=False)
+        shadow.bindMatch(UndoButton, self.undo)
+        shadow.bindMatch(RedoButton, self.redo)
+        shadow.bindMatch(UndoRedoButton, self.undoRedo)
+        shadow.bindMatch(SaveButton, self.save)
+        shadow.bindMatch(QuantizeButton, self.quantize)
+        shadow.bindMatch(CaptureMidiButton, self.captureMidi)
         shadow.bindMatches(
             SwitchActiveButton,
             self.switchActive,
-            raise_on_failure=False,
             one_type=False,
         )
         shadow.bindMatches(
             PauseActiveButton,
             self.pauseActive,
-            raise_on_failure=False,
             one_type=False,
         )
 

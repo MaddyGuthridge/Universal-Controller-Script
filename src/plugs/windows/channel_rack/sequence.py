@@ -18,7 +18,7 @@ class StepSequencer(WindowPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         self._drums = \
-            shadow.bindMatches(DrumPad, self.drumPads, raise_on_failure=False)
+            shadow.bindMatches(DrumPad, self.drumPads)
         super().__init__(shadow, [])
 
     @staticmethod

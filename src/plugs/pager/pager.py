@@ -29,8 +29,7 @@ class PluginPager:
         shadow.setTransparent(True)
         self.__shadow = shadow
         self.__controlSwitch = shadow.bindMatch(ControlSwitchButton,
-                                                self.controlSwitch,
-                                                raise_on_failure=False)
+                                                self.controlSwitch)
         self.__pages: list[Plugin] = []
         self.__page_colors: list[Color] = []
         self.__index: int = 0

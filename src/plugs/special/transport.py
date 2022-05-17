@@ -91,35 +91,17 @@ class Transport(SpecialPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
-        shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)
-        self._play = shadow.bindMatch(
-            PlayButton, self.playButton, raise_on_failure=False
-        )
-        self._stop = shadow.bindMatch(
-            StopButton, self.stopButton, raise_on_failure=False
-        )
-        self._rec = shadow.bindMatch(
-            RecordButton, self.recButton, raise_on_failure=False
-        )
-        self._loop = shadow.bindMatch(
-            LoopButton, self.loopButton, raise_on_failure=False
-        )
-        self._metronome = shadow.bindMatch(
-            MetronomeButton, self.metroButton, raise_on_failure=False
-        )
-        self._navigation = shadow.bindMatches(
-            NavigationButton, self.navigationButtons, raise_on_failure=False
-        )
-        self._hint = shadow.bindMatch(
-            HintMsg, self.nullEvent, raise_on_failure=False
-        )
-        self._ff = shadow.bindMatch(
-            FastForwardButton, self.fastForward, raise_on_failure=False
-        )
-        self._rw = shadow.bindMatch(
-            RewindButton, self.rewind, raise_on_failure=False
-        )
-        # Whether
+        shadow.bindMatches(NullEvent, self.nullEvent)
+        self._play = shadow.bindMatch(PlayButton, self.playButton)
+        self._stop = shadow.bindMatch(StopButton, self.stopButton)
+        self._rec = shadow.bindMatch(RecordButton, self.recButton)
+        self._loop = shadow.bindMatch(LoopButton, self.loopButton)
+        self._metronome = shadow.bindMatch(MetronomeButton, self.metroButton)
+        self._nav = shadow.bindMatches(NavigationButton, self.navButtons)
+        self._hint = shadow.bindMatch(HintMsg, self.nullEvent)
+        self._ff = shadow.bindMatch(FastForwardButton, self.fastForward)
+        self._rw = shadow.bindMatch(RewindButton, self.rewind)
+        # Whether we're fast forwarding or rewinding
         self._playback_ff_rw = 0
         super().__init__(shadow, [])
 
@@ -197,7 +179,7 @@ class Transport(SpecialPlugin):
         return True
 
     @filterButtonLift
-    def navigationButtons(
+    def navButtons(
         self,
         control: ControlShadowEvent,
         index: UnsafeIndex,

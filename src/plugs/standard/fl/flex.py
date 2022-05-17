@@ -24,8 +24,6 @@ class Flex(StandardPlugin):
             Fader,
             self.faders,
             target_num=NUM_FADERS,
-            allow_substitution=True,
-            raise_on_failure=False
         )
         super().__init__(shadow, [])
 

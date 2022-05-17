@@ -56,7 +56,7 @@ class Press(SpecialPlugin):
         ret: list[ControlShadow] = []
         while True:
             len_ret = len(ret)
-            ret += shadow.bindMatches(t, self.any, raise_on_failure=False)
+            ret += shadow.bindMatches(t, self.any)
             if len_ret == len(ret):
                 break
         return ret

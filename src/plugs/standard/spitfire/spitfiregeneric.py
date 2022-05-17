@@ -55,8 +55,6 @@ class SpitfireGeneric(StandardPlugin):
             self.faders,
             ...,
             target_num=2,
-            allow_substitution=True,
-            raise_on_failure=False,
         )
 
         if len(self._faders) == 2:

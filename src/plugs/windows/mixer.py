@@ -69,39 +69,30 @@ class Mixer(WindowPlugin):
         self._faders = shadow.bindMatches(
             Fader,
             self.fader,
-            raise_on_failure=False,
-            allow_substitution=True,
         )
         self._knobs = shadow.bindMatches(
             Knob,
             self.knob,
-            raise_on_failure=False,
-            allow_substitution=True,
         )
         self._buttons = shadow.bindMatches(
             GenericFaderButton,
             self.button,
-            raise_on_failure=False
         )
         self._mutes = shadow.bindMatches(
             MuteButton,
             self.mute,
-            raise_on_failure=False
         )
         self._solos = shadow.bindMatches(
             SoloButton,
             self.solo,
-            raise_on_failure=False
         )
         self._arms = shadow.bindMatches(
             ArmButton,
             self.arm,
-            raise_on_failure=False
         )
         self._selects = shadow.bindMatches(
             SelectButton,
             self.select,
-            raise_on_failure=False
         )
 
         # TODO: Bind master controls
