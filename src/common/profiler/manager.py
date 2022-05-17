@@ -79,12 +79,26 @@ class ProfilerManager:
             return ProfilerManager._getProfileName(n.parent) + "." + n.name
 
     def __init__(self, print_traces: bool) -> None:
+        """
+        Create a ProfilerManager
+
+        ### Args:
+        * `print_traces` (`bool`): whether to print the trace of which profiles
+          are entered and exited. This has a massive performance impact, but
+          can be helpful when debugging crashes in FL Studio's API.
+        """
         self._print = print_traces
+        # Current profiler node
         self._current: Optional[ProfileNode] = None
+        # Current depth of the profiler
         self._depth = 0
+        # Name of the longest category
         self._max_name = 0
+        # Total times from each profiler
         self._totals: dict[str, float] = {}
+        # Number of samples from each profiler
         self._number: dict[str, float] = {}
+        # Max times from each profiler
         self._maxes: dict[str, float] = {}
 
     def __repr__(self) -> str:
@@ -159,3 +173,21 @@ class ProfilerManager:
             )
         print()
         return NoneNoPrintout
+
+    def getTotals(self):
+        """
+        Return a dictionary with the total times for each category
+        """
+        return self._totals
+
+    def getNumbers(self):
+        """
+        Return a dictionary with the total times for each category
+        """
+        return self._number
+
+    def getMaxes(self):
+        """
+        Return a dictionary with the total times for each category
+        """
+        return self._maxes

@@ -66,6 +66,16 @@ class DeviceContextManager:
         self._dropped_ticks = 0
         self._device: Optional['Device'] = None
 
+    def enableProfiler(self, trace: bool = False) -> None:
+        """
+        Enable the performance profiler
+
+        ### Args:
+        * `trace` (`bool`, optional): Whether to print traces. Defaults to
+          `False`.
+        """
+        self.profiler = ProfilerManager(trace)
+
     @catchStateChangeException
     @profilerDecoration("initialise")
     def initialise(self, state: IScriptState) -> None:
