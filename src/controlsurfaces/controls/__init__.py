@@ -1,26 +1,15 @@
 """
-controlsurfaces
+controlsurfaces > controls
 
-Contains definitions for basic control surface types, which can be extended by
-controllers if necessary.
+Contains the definitions for all base classes for control surfaces used by the
+script
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Miguel Guthridge [HDSQ#2154]
 """
 
 __all__ = [
-    # Base types
     'ControlSurface',
-    'ControlShadow',
-    # Control mappings
-    'IControlHash',
-    'ControlMapping',
-    'ControlEvent',
-    'ControlShadowEvent',
-    # Other imports
-    'valuestrategies',
-    'eventpattern',
-    # Control surfaces
     'NullEvent',
     'Note',
     'ModWheel',
@@ -93,24 +82,29 @@ __all__ = [
     'NotifMsg',
 ]
 
-from .controls import (
-    ControlSurface,
-    NullEvent,
-    Note,
+from .controlsurface import ControlSurface
+from .nullevent import NullEvent
+from .note import Note
+from .wheels import (
     ModWheel,
     PitchWheel,
     StandardModWheel,
     StandardPitchWheel,
     Data2PitchWheel,
+)
+from .aftertouch import (
     AfterTouch,
     ChannelAfterTouch,
     NoteAfterTouch,
+)
+from .pedal import (
     Pedal,
     SustainPedal,
     SostenutoPedal,
     SoftPedal,
-    Button,
-    ControlSwitchButton,
+)
+from .button import Button, ControlSwitchButton
+from .transport import (
     TransportButton,
     PlayButton,
     StopButton,
@@ -119,6 +113,8 @@ from .controls import (
     FastForwardButton,
     RewindButton,
     MetronomeButton,
+)
+from .navigation import (
     NavigationControl,
     NavigationButton,
     DpadButtons,
@@ -130,12 +126,15 @@ from .controls import (
     NextPrevButton,
     DirectionNext,
     DirectionPrevious,
+)
+from .jog import (
     JogWheel,
     StandardJogWheel,
     ShiftedJogWheel,
     MoveJogWheel,
-    Fader,
-    MasterFader,
+)
+from .fader import Fader, MasterFader
+from .faderbutton import (
     FaderButton,
     GenericFaderButton,
     MasterGenericFaderButton,
@@ -147,10 +146,12 @@ from .controls import (
     MasterArmButton,
     SelectButton,
     MasterSelectButton,
-    Knob,
-    MasterKnob,
-    Encoder,
-    DrumPad,
+)
+from .knob import Knob, MasterKnob
+from .encoder import Encoder
+from .drumpad import DrumPad
+
+from .macrobutton import (
     MacroButton,
     SaveButton,
     UndoRedoButton,
@@ -158,22 +159,13 @@ from .controls import (
     RedoButton,
     QuantizeButton,
     CaptureMidiButton,
+)
+from .activitybutton import (
     SwitchActiveButton,
     SwitchActivePluginButton,
     SwitchActiveWindowButton,
     SwitchActiveToggleButton,
     PauseActiveButton,
-    HintMsg,
-    NotifMsg,
 )
-
-from .controlshadow import ControlShadow
-from .controlmapping import (
-    IControlHash,
-    ControlMapping,
-    ControlEvent,
-    ControlShadowEvent
-)
-
-from . import valuestrategies
-from . import eventpattern
+from .hintmsg import HintMsg
+from .notifmsg import NotifMsg
