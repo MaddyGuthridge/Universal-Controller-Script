@@ -60,7 +60,7 @@ class DeviceContextManager:
             self.profiler: Optional[ProfilerManager] = ProfilerManager(trace)
         else:
             self.profiler = None
-        # Time the device last ticked at
+        # Time the script last ticked at
         self._last_tick = time_ns()
         self._ticks = 0
         self._dropped_ticks = 0
@@ -140,9 +140,6 @@ class DeviceContextManager:
         self.active.tick()
         # Tick the current script state
         self.state.tick()
-        # Tick the device if it's available
-        if (device := self._device) is not None:
-            device.doTick()
 
     def getTickNumber(self) -> int:
         """

@@ -93,6 +93,9 @@ class MainState(DeviceState):
                 with ProfilerContext(f"Apply {type(p)}"):
                     p.apply(thorough=True)
 
+        # Tick the device
+        self._device.doTick()
+
     @profilerDecoration("main.processEvent")
     def processEvent(self, event: EventData) -> None:
         with ProfilerContext("Match event"):

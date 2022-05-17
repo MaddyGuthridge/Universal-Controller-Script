@@ -9,10 +9,11 @@ running smoothly. The following steps are taken.
   long since the last tick, this current tick is skipped to prevent FL
   Studio from behaving badly.
 * The active plugins are updated
-* The current state is ticked. This is usually the main state.
+* The current state is ticked. This is usually the main state. In the main
+  state:
     * Special plugins are ticked
     * The current plugin is ticked
     * Final special plugins are ticked
-* The device is ticked
-    * Control matchers are ticked
-        * Control surfaces are ticked
+    * The device is ticked
+        * Control matchers are ticked
+            * Control surfaces are ticked
