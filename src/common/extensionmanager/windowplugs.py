@@ -36,7 +36,7 @@ class WindowPluginCollection:
 
     def get(
         self,
-        id: WindowIndex,
+        id: 'WindowIndex',
         device: 'Device'
     ) -> Optional['WindowPlugin']:
         """Get an instance of the plugin matching this window index
