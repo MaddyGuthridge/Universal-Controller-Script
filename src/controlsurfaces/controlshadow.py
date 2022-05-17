@@ -121,7 +121,10 @@ class ControlShadow(IControlShadow):
     def value(self, newVal: float) -> None:
         if self._value != newVal:
             if not (0 <= newVal <= 1):
-                raise ValueError("Value must be within range 0-1")
+                raise ValueError(
+                    f"Value must be within range 0-1 ({newVal}) @ "
+                    f"{self}"
+                )
             self._value = newVal
             self._changed = True
 

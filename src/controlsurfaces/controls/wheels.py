@@ -44,7 +44,8 @@ class StandardModWheel(ModWheel):
 
 class PitchValueStrategy(IValueStrategy):
     """
-    Value strategy for standard pitch bends (using 14 bits of information)
+    Value strategy for standard pitch bends (using 14 bits of information,
+    0 - 16384, zero at 8192)
     """
 
     def getValueFromEvent(self, event: EventData, value: float) -> float:
@@ -52,7 +53,7 @@ class PitchValueStrategy(IValueStrategy):
         Zero value = 8192
         """
         assert isEventStandard(event)
-        return event.data1 + (event.data2 << 7)
+        return (event.data1 + (event.data2 << 7)) / 16383
 
     def getChannelFromEvent(self, event: EventData) -> int:
         assert isEventStandard(event)
