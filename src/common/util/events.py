@@ -128,6 +128,20 @@ def _getForwardedNameEndIdx(event: EventData) -> int:
     return event.sysex.index(b'\0')
 
 
+def getEventForwardedTo(event: EventData) -> str:
+    """
+    Returns the name of the device that this event is targeting
+
+    ### Args:
+    * `event` (`EventData`): event
+
+    ### Returns:
+    * `str`: device name
+    """
+    assert isEventSysex(event)
+    return event.sysex[2:_getForwardedNameEndIdx(event)].decode()
+
+
 def isEventForwardedHere(event: EventData) -> bool:
     """
     Returns whether an event was forwarded from the Universal Event Forwarder
@@ -141,14 +155,27 @@ def isEventForwardedHere(event: EventData) -> bool:
     """
     if not isEventForwarded(event):
         return False
-    assert isEventSysex(event)
 
     if (
-        event.sysex[2:_getForwardedNameEndIdx(event)].decode()
+        getEventForwardedTo(event)
         != getDeviceId()
     ):
         return False
     return True
+
+
+def getEventDeviceNum(event: EventData) -> int:
+    """
+    Returns the device number that a forwarded event is targeting or from
+
+    ### Args:
+    * `event` (`EventData`): event
+
+    ### Returns:
+    * `int`: device number
+    """
+    assert isEventSysex(event)
+    return event.sysex[_getForwardedNameEndIdx(event) + 1]
 
 
 def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
@@ -175,8 +202,7 @@ def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
     if not isEventForwardedHere(event):
         return False
 
-    assert isEventSysex(event)
-    if device_num != event.sysex[_getForwardedNameEndIdx(event) + 1]:
+    if device_num != getEventDeviceNum(event):
         return False
 
     return True
@@ -287,8 +313,10 @@ def eventToString(event: EventData) -> str:
     else:
         assert isEventSysex(event)
         if isEventForwarded(event):
+            dev = getEventForwardedTo(event)
+            num = getEventDeviceNum(event)
             decoded = eventToString(decodeForwardedEvent(event))
-            suffix = f" (Likely from forwarded event: {decoded})"
+            suffix = f" (Likely from forwarded from {dev}@{num}: {decoded})"
         else:
             suffix = ""
         return bytesToString(event.sysex) + suffix
