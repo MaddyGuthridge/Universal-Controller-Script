@@ -312,11 +312,9 @@ def eventToString(event: EventData) -> str:
         )
     else:
         assert isEventSysex(event)
-        if isEventForwarded(event):
-            dev = getEventForwardedTo(event)
-            num = getEventDeviceNum(event)
-            decoded = eventToString(decodeForwardedEvent(event))
-            suffix = f" (Likely from forwarded from {dev}@{num}: {decoded})"
-        else:
-            suffix = ""
-        return bytesToString(event.sysex) + suffix
+        if not isEventForwarded(event):
+            return bytesToString(event.sysex)
+        dev = getEventForwardedTo(event)
+        num = getEventDeviceNum(event)
+        decoded = eventToString(decodeForwardedEvent(event))
+        return f"{dev}@{num} => {decoded})"
