@@ -8,7 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from typing import TYPE_CHECKING, Any, Callable, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union, TypeAlias
 from common.util.apifixes import UnsafeIndex
 
 from common.util.dicttools import lowestValueGrEqTarget, greatestKey
@@ -49,6 +49,13 @@ StandardEventCallback = Union[
 ]
 
 EventCallback = StandardEventCallback
+
+if TYPE_CHECKING:
+    ArgGenerator: TypeAlias = list[tuple] \
+        | Callable[[list[ControlShadow]], Generator[tuple, None, None]] \
+        | 'ellipsis' | None
+else:
+    ArgGenerator: TypeAlias = type
 
 
 class DeviceShadow:
@@ -219,7 +226,7 @@ class DeviceShadow:
     def getControlMatches(
         self,
         control: type[ControlSurface],
-        allow_substitution: bool = False,
+        allow_substitution: bool = True,
         target_num: int = None,
         trim: bool = True,
         exact: bool = True,
@@ -233,7 +240,7 @@ class DeviceShadow:
         * `control` (`type[ControlSurface]`): Type of control to try to match.
         * `allow_substitution` (`bool`, optional): Whether substitutable
           controls should be allowed to be used if a better number of them are
-          available. Defaults to `False`.
+          available. Defaults to `True`.
         * `target_num` (`int`, optional): Number of matches to look for, to
           ensure we don't waste controls that can support more space. If not
           provided, the maximum sized group will be given, and the `trim` and
@@ -331,7 +338,7 @@ class DeviceShadow:
     def getNumControlMatches(
         self,
         control: type[ControlSurface],
-        allow_substitution: bool = False,
+        allow_substitution: bool = True,
         one_type: bool = True,
     ) -> int:
         """
@@ -345,7 +352,7 @@ class DeviceShadow:
         * `control` (`type`): Type of control to match
         * `allow_substitution` (`bool`, optional): Whether substitutable
           controls should be allowed to be used if a better number of them are
-          available. Defaults to `False`.
+          available. Defaults to `True`.
         * `one_type` (`bool`, optional): Whether the matches should be
           restricted so that they can only be from one subclass. This helps
           prevent mixing of different control groups if a controller has
@@ -476,8 +483,8 @@ class DeviceShadow:
         control: type[ControlSurface],
         bind_to: EventCallback,
         args: tuple = None,
-        allow_substitution: bool = False,
-        raise_on_failure: bool = True
+        allow_substitution: bool = True,
+        raise_on_failure: bool = False,
     ) -> IControlShadow:
         """
         Finds the first control of a matching type and binds it to the given
@@ -489,11 +496,11 @@ class DeviceShadow:
         * `args` (`tuple`, optional): arguments to give to the callback
           function. Defaults to `None` (no arguments).
         * `allow_substitution` (`bool`, optional): whether the control can be
-          substituted for a similar control. Defaults to `False`.
+          substituted for a similar control. Defaults to `True`.
         * `raise_on_failure` (`bool`, optional): whether failure to assign the
           control should result in a `ValueError` being raised. When this is
-          `False`, `None` will be returned instead or a control surface.
-          Defaults to `True`.
+          `False`, a NullControlShadow will be returned instead of a control
+          shadow. Defaults to `False`.
 
         ### Raises:
         * `ValueError`: No controls were found to bind to (when
@@ -524,13 +531,12 @@ class DeviceShadow:
         self,
         control: type[ControlSurface],
         bind_to: EventCallback,
-        args_iter_gen: 'list[tuple] | Callable[[list[ControlShadow]], Generator[tuple, None, None]] | ellipsis | None'  # noqa: F821,E501
-        = None,
-        allow_substitution: bool = False,
+        args_iter_gen: ArgGenerator = None,
+        allow_substitution: bool = True,
         target_num: int = None,
         trim: bool = True,
         exact: bool = True,
-        raise_on_failure: bool = True,
+        raise_on_failure: bool = False,
         one_type: bool = True,
     ) -> list[ControlShadow]:
         """
@@ -555,6 +561,8 @@ class DeviceShadow:
                   over in order to generate tuples of arguments for each
                   control. Note that if the number of matches isn't guaranteed,
                   a generator should be used to get callback arguments.
+        * `allow_substitution` (`bool`, optional): whether the control can be
+          substituted for a similar control. Defaults to `True`.
         * `target_num` (`int`, optional): Number of matches to look for, to
           ensure we don't waste controls that can support more space. If not
           provided, the maximum sized group will be used. Note that fewer
@@ -573,7 +581,7 @@ class DeviceShadow:
           Defaults to `True`.
         * `raise_on_failure` (`bool`, optional): whether failure to assign the
           control should result in a `ValueError` being raised. When this is
-          `False`, an empty list will be returned instead. Defaults to `True`.
+          `False`, an empty list will be returned instead. Defaults to `False`.
         * `one_type` (`bool`, optional): Whether the matches should be
           restricted so that they can only be from one subclass. This helps
           prevent mixing of different control groups if a controller has
