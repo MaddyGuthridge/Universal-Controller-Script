@@ -36,3 +36,9 @@ from .contextmanager import (
 )
 
 from .extensionmanager import ExtensionManager
+
+# Import devices and plugins
+import devices
+import plugs
+del devices
+del plugs
