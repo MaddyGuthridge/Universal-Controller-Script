@@ -91,4 +91,4 @@ class Defaults(SpecialPlugin):
         return True
 
 
-ExtensionManager.registerSpecialPlugin(Defaults)
+ExtensionManager.special.register(Defaults)

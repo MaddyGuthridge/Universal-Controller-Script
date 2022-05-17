@@ -59,4 +59,4 @@ class Flex(StandardPlugin):
         return True
 
 
-ExtensionManager.registerPlugin(Flex)
+ExtensionManager.plugins.register(Flex)

@@ -116,4 +116,4 @@ class ParametricEq(StandardPlugin):
         return True
 
 
-ExtensionManager.registerPlugin(ParametricEq)
+ExtensionManager.plugins.register(ParametricEq)

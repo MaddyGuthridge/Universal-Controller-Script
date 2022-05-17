@@ -281,4 +281,4 @@ class Transport(SpecialPlugin):
             self._rw.color = GRAY
 
 
-ExtensionManager.registerSpecialPlugin(Transport)
+ExtensionManager.special.register(Transport)

@@ -28,4 +28,4 @@ class ChannelRack(PluginPager, WindowPlugin):
         return cls(shadow)
 
 
-ExtensionManager.registerWindowPlugin(ChannelRack)
+ExtensionManager.windows.register(ChannelRack)

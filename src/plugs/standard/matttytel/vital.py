@@ -48,4 +48,4 @@ class Vital(StandardPlugin):
         return True
 
 
-ExtensionManager.registerPlugin(Vital)
+ExtensionManager.plugins.register(Vital)

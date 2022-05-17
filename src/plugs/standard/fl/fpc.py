@@ -144,4 +144,4 @@ class FPC(StandardPlugin):
         return True
 
 
-ExtensionManager.registerPlugin(FPC)
+ExtensionManager.plugins.register(FPC)

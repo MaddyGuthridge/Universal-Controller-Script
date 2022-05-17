@@ -49,7 +49,7 @@ class MainState(DeviceState):
     def tick(self) -> None:
 
         # Tick special plugins
-        for p in common.ExtensionManager.getSpecialPlugins(self._device):
+        for p in common.ExtensionManager.special.get(self._device):
             if p.shouldBeActive():
                 with ProfilerContext(f"Tick {type(p)}"):
                     p.tick()
@@ -67,7 +67,7 @@ class MainState(DeviceState):
                 except TypeError:
                     # Plugin not valid
                     plug_id = ""
-                plug = common.ExtensionManager.getPluginById(
+                plug = common.ExtensionManager.plugins.get(
                     plug_id, self._device
                 )
                 if plug is not None:
@@ -76,7 +76,7 @@ class MainState(DeviceState):
                     with ProfilerContext(f"Apply {type(plug)}"):
                         plug.apply(thorough=changed)
             else:
-                window = common.ExtensionManager.getWindowById(
+                window = common.ExtensionManager.windows.get(
                     plug_idx, self._device
                 )
                 if window is not None:
@@ -86,7 +86,7 @@ class MainState(DeviceState):
                         window.apply(thorough=changed)
 
         # Tick final special plugins
-        for p in common.ExtensionManager.getFinalSpecialPlugins(self._device):
+        for p in common.ExtensionManager.final.get(self._device):
             if p.shouldBeActive():
                 with ProfilerContext(f"Tick {type(p)}"):
                     p.tick()
@@ -128,7 +128,7 @@ class MainState(DeviceState):
                 except TypeError:
                     # Plugin not valid
                     plug_id = ""
-                plug = common.ExtensionManager.getPluginById(
+                plug = common.ExtensionManager.plugins.get(
                     plug_id, self._device
                 )
                 if plug is not None:
@@ -137,7 +137,7 @@ class MainState(DeviceState):
                             event.handled = True
                             return
             else:
-                window = common.ExtensionManager.getWindowById(
+                window = common.ExtensionManager.windows.get(
                     plug_idx, self._device
                 )
                 if window is not None:
@@ -148,8 +148,8 @@ class MainState(DeviceState):
 
         # Get special plugins
         for p in (
-            common.ExtensionManager.getSpecialPlugins(self._device)
-            + common.ExtensionManager.getFinalSpecialPlugins(self._device)
+            common.ExtensionManager.special.get(self._device)
+            + common.ExtensionManager.final.get(self._device)
         ):
             if p.shouldBeActive():
                 with ProfilerContext(f"Process {type(p)}"):

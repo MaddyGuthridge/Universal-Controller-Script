@@ -307,4 +307,4 @@ class Mixer(WindowPlugin):
         return True
 
 
-ExtensionManager.registerWindowPlugin(Mixer)
+ExtensionManager.windows.register(Mixer)

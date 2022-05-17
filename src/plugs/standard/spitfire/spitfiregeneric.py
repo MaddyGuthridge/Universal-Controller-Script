@@ -153,4 +153,4 @@ class SpitfireGeneric(StandardPlugin):
         return True
 
 
-ExtensionManager.registerPlugin(SpitfireGeneric)
+ExtensionManager.plugins.register(SpitfireGeneric)

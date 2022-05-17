@@ -71,4 +71,4 @@ class Playlist(WindowPlugin):
         return True
 
 
-ExtensionManager.registerWindowPlugin(Playlist)
+ExtensionManager.windows.register(Playlist)
