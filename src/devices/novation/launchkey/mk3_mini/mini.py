@@ -11,13 +11,12 @@ from typing import Optional
 
 import device
 
-from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
+from controlsurfaces.eventpatterns import BasicPattern
 from common.extensionmanager import ExtensionManager
 from common.types import EventData
 from controlsurfaces import (
     StandardModWheel,
     StandardPitchWheel,
-    NullEvent
 )
 from devices import BasicControlMatcher, Device
 from devices.controlgenerators import NoteMatcher
@@ -58,12 +57,6 @@ class LaunchkeyMiniMk3(Device):
 
         # Shift controls
         matcher.addSubMatcher(getShiftControls())
-
-        # Other random event
-        matcher.addControl(
-            NullEvent(ForwardedPattern(2, BasicPattern(0xB0, (0x73, 0x75), 0)))
-        )
-
         super().__init__(matcher)
 
     def initialise(self) -> None:
