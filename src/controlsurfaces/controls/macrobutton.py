@@ -17,7 +17,7 @@ __all__ = [
     'CaptureMidiButton',
 ]
 
-from controlsurfaces import Button
+from .button import Button
 
 
 class MacroButton(Button):

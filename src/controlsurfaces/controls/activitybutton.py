@@ -18,7 +18,7 @@ __all__ = [
 
 from ..eventpatterns import IEventPattern
 from controlsurfaces.valuestrategies.ivaluestrategy import IValueStrategy
-from controlsurfaces import Button
+from .button import Button
 
 
 class ActivityButton(Button):
