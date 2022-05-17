@@ -164,7 +164,6 @@ class WaitingForDevice(IScriptState):
                     verbosity.INFO,
                     eventToString(event)
                 )
-                event.handled = True
                 common.getContext().setState(self._to.create(dev))
             except DeviceRecogniseError:
                 log(

@@ -13,16 +13,18 @@ __all__ = [
     'NoteStrategy',
     'Data2Strategy',
     'Data1Strategy',
+    'TwosComplimentDeltaStrategy',
     'ButtonData2Strategy',
     'ButtonSinglePressStrategy',
     'ForwardedStrategy',
     'ForwardedUnionStrategy',
-    'NullEventStrategy'
+    'NullEventStrategy',
 ]
 
 from .ivaluestrategy import IValueStrategy
 from .notestrategy import NoteStrategy
 from .datastrategy import Data2Strategy, Data1Strategy
+from .twoscomplimentdelta import TwosComplimentDeltaStrategy
 from .buttondata2strategy import ButtonData2Strategy
 from .buttonsinglepressstrategy import ButtonSinglePressStrategy
 from .forwardedstrategy import ForwardedStrategy, ForwardedUnionStrategy
