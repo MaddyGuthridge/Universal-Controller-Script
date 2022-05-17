@@ -1,4 +1,4 @@
-from tests.helpers import floatApproxEq
+
 from common.types import EventData
 from controlsurfaces.valuestrategies import NoteStrategy
 
