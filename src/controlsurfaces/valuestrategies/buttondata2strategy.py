@@ -18,14 +18,8 @@ class ButtonData2Strategy(IValueStrategy):
     Usable for most basic button event types
     """
 
-    def getValueFromEvent(self, event: EventData) -> bool:
-        return event.data2 != 0
+    def getValueFromEvent(self, event: EventData, value: float) -> float:
+        return 1.0 if event.data2 != 0 else 0.0
 
     def getChannelFromEvent(self, event: EventData) -> int:
         return -1
-
-    def getValueFromFloat(self, f: float) -> bool:
-        return f != 0.0
-
-    def getFloatFromValue(self, value: bool) -> float:
-        return 1.0 if value else 0.0

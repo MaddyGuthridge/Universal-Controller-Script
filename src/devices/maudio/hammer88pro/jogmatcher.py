@@ -37,7 +37,7 @@ class JogValueStrategy(IValueStrategy):
     Value strategy for getting data out of the Hammer 88 Pro jog wheel
     """
 
-    def getValueFromEvent(self, event: EventData):
+    def getValueFromEvent(self, event: EventData, value: float) -> float:
         # Prev
         if event.data2 == 63:
             return consts.ENCODER_PREV
@@ -53,12 +53,6 @@ class JogValueStrategy(IValueStrategy):
 
     def getChannelFromEvent(self, event: EventData) -> int:
         return -1
-
-    def getValueFromFloat(self, f: float):
-        return f
-
-    def getFloatFromValue(self, value) -> float:
-        return value
 
 
 class JogMatcher(IControlMatcher):
@@ -110,7 +104,7 @@ class JogMatcher(IControlMatcher):
 
         # If it's a press or release
         if self._jog_press_pattern.matchEvent(event):
-            if self._value_strat.getValueFromEvent(event) == 0.0:
+            if self._value_strat.getValueFromEvent(event, 0.0) == 0.0:
                 self._pressed = True
                 return ControlEvent(self._null, 0.0, -1, False)
             else:

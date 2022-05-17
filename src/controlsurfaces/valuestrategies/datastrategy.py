@@ -27,18 +27,12 @@ class DataStrategy(IValueStrategy):
         """
         self._prop = prop
 
-    def getValueFromEvent(self, event: EventData) -> int:
-        return getattr(event, self._prop)
+    def getValueFromEvent(self, event: EventData, value: float) -> float:
+        return getattr(event, self._prop) / 127
 
     def getChannelFromEvent(self, event: EventData) -> int:
         assert isEventStandard(event)
         return event.status & 0xF
-
-    def getValueFromFloat(self, f: float) -> int:
-        return int(f * 127)
-
-    def getFloatFromValue(self, value: int) -> float:
-        return value / 127
 
 
 class Data2Strategy(DataStrategy):

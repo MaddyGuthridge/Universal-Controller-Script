@@ -16,14 +16,8 @@ class ButtonSinglePressStrategy(IValueStrategy):
     event, and not a release event
     """
 
-    def getValueFromEvent(self, event: EventData) -> bool:
-        return True
+    def getValueFromEvent(self, event: EventData, value: float) -> float:
+        return 1.0
 
     def getChannelFromEvent(self, event: EventData) -> int:
         return -1
-
-    def getValueFromFloat(self, f: float) -> bool:
-        return True
-
-    def getFloatFromValue(self, value: bool) -> float:
-        return 1.0

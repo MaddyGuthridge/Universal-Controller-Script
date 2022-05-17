@@ -47,7 +47,7 @@ class PitchValueStrategy(IValueStrategy):
     Value strategy for standard pitch bends (using 14 bits of information)
     """
 
-    def getValueFromEvent(self, event: EventData) -> int:
+    def getValueFromEvent(self, event: EventData, value: float) -> float:
         """Returns a 14-bit int (0 - 16384)
         Zero value = 8192
         """
@@ -57,12 +57,6 @@ class PitchValueStrategy(IValueStrategy):
     def getChannelFromEvent(self, event: EventData) -> int:
         assert isEventStandard(event)
         return event.status & 0xF
-
-    def getFloatFromValue(self, value: int) -> float:
-        return value / 16384
-
-    def getValueFromFloat(self, f: float) -> int:
-        return int(f * 16384)
 
 
 class PitchWheel(ControlSurface):

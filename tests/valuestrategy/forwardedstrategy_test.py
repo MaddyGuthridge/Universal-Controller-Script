@@ -2,21 +2,17 @@
 from controlsurfaces.valuestrategies import ForwardedStrategy, Data2Strategy
 from common.types import EventData
 from common.util.events import encodeForwardedEvent
-from tests.helpers import floatApproxEq
 from tests.helpers.devices import DummyDevice, DummyDeviceContext
 
 
 def test_forward_value():
     s = ForwardedStrategy(Data2Strategy())
     with DummyDeviceContext(2, DummyDevice):
-        e = EventData(encodeForwardedEvent(EventData(0, 0, 0)))
+        e1 = EventData(encodeForwardedEvent(EventData(0, 0, 0)))
+        e2 = EventData(encodeForwardedEvent(EventData(0, 0, 64)))
     with DummyDeviceContext(1, DummyDevice):
-        assert s.getFloatFromValue(s.getValueFromEvent(e)) == 0.0
-
-
-def test_float_conversion():
-    s = ForwardedStrategy(Data2Strategy())
-    assert floatApproxEq(0.5, s.getFloatFromValue(s.getValueFromFloat(0.5)))
+        assert s.getValueFromEvent(e1, 1.0) == 0.0
+        assert s.getValueFromEvent(e2, 1.0) == 64/127
 
 
 def test_channel():

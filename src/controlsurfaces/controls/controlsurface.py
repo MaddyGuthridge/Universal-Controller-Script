@@ -84,7 +84,7 @@ class ControlSurface:
         self._pattern = event_pattern
         self._color = Color()
         self._annotation = ""
-        self._value = value_strategy.getValueFromFloat(0.0)
+        self._value = 0.0
         self._value_strategy = value_strategy
         self._coord = coordinate
         self._needs_update = False
@@ -129,7 +129,8 @@ class ControlSurface:
         * `Optional[ControlEvent]`: control mapping, if the event maps
         """
         if self._pattern.matchEvent(event):
-            self._value = self._value_strategy.getValueFromEvent(event)
+            self._value = self._value_strategy.getValueFromEvent(
+                event, self._value)
             channel = self._value_strategy.getChannelFromEvent(event)
             self._needs_update = True
             self._got_update = False
@@ -199,16 +200,15 @@ class ControlSurface:
         set is determined by the functions _getValue() and _setValue()
         respectively.
         """
-        return self._value_strategy.getFloatFromValue(self._value)
+        return self._value
 
     @value.setter
-    def value(self, v: float) -> None:
+    def value(self, val: float) -> None:
         # Ensure value is within bounds
-        if not (0 <= v <= 1):
+        if not (0 <= val <= 1):
             raise ValueError(
                 "Value for control must be between 0 and 1"
             )
-        val = self._value_strategy.getValueFromFloat(v)
         if self._value != val:
             self._value = val
             self._needs_update = True

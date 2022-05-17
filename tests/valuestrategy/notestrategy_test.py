@@ -5,22 +5,14 @@ from controlsurfaces.valuestrategies import NoteStrategy
 
 def test_value_note_on():
     s = NoteStrategy()
-    val = s.getValueFromEvent(EventData(0x9F, 0, 0x7F))
-    assert s.getFloatFromValue(val) == 1.0
+    assert s.getValueFromEvent(EventData(0x9F, 0, 0x7F), 0.5) == 1.0
+    assert s.getValueFromEvent(EventData(0x9F, 0, 64), 0.5) == 64/127
 
 
 def test_value_note_off():
     s = NoteStrategy()
-    val = s.getValueFromEvent(EventData(0x9F, 0, 0))
-    assert s.getFloatFromValue(val) == 0.0
-
-    val = s.getValueFromEvent(EventData(0x8F, 0, 0x7F))
-    assert s.getFloatFromValue(val) == 0.0
-
-
-def test_float_conversion():
-    s = NoteStrategy()
-    assert floatApproxEq(0.5, s.getFloatFromValue(s.getValueFromFloat(0.5)))
+    assert s.getValueFromEvent(EventData(0x9F, 0, 0), 0.5) == 0.0
+    assert s.getValueFromEvent(EventData(0x8F, 0, 0x7F), 0.5) == 0.0
 
 
 def test_channel():

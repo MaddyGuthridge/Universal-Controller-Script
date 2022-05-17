@@ -1,17 +1,12 @@
-from tests.helpers import floatApproxEq
+
 from common.types import EventData
 from controlsurfaces.valuestrategies import Data1Strategy
 
 
 def test_min_value_event():
     s = Data1Strategy()
-    val = s.getValueFromEvent(EventData(0, 0, 0))
-    assert s.getFloatFromValue(val) == 0.0
-
-
-def test_float_conversion():
-    s = Data1Strategy()
-    assert floatApproxEq(0.5, s.getFloatFromValue(s.getValueFromFloat(0.5)))
+    assert s.getValueFromEvent(EventData(0, 0, 0), 1.0) == 0.0
+    assert s.getValueFromEvent(EventData(0, 64, 0), 1.0) == 64/127
 
 
 def test_channel():

@@ -8,14 +8,10 @@ Authors:
 """
 
 from abc import abstractmethod
-from typing import Generic, TypeVar
-
 from common.types import EventData
 
-T = TypeVar("T")
 
-
-class IValueStrategy(Generic[T]):
+class IValueStrategy:
     """
     Represents a strategy for getting a value from an event and storing it.
 
@@ -23,19 +19,16 @@ class IValueStrategy(Generic[T]):
     relatively simple event types.
     """
     @abstractmethod
-    def getValueFromEvent(self, event: EventData) -> T:
+    def getValueFromEvent(self, event: EventData, value: float) -> float:
         """
-        Returns a value for internal use given a MIDI event.
-
-        This value is only used by the strategy, and therefore can be of any
-        reasonable type, as long as that type can be converted to a float
-        value.
+        Returns a value given a MIDI event and the current value.
 
         ### Args:
         * `event` (`eventData`): event to get value from
+        * `value` (`float`): current value, for use with relative controllers
 
         ### Returns:
-        * `T`: any type representing the internal value of the event
+        * `float`: value
         """
         raise NotImplementedError("This function needs to be overridden by "
                                   "child classes")
@@ -50,35 +43,6 @@ class IValueStrategy(Generic[T]):
 
         ### Returns:
         * `int`: channel number or `-1` for no channel
-        """
-        raise NotImplementedError("This function needs to be overridden by "
-                                  "child classes")
-
-    @abstractmethod
-    def getValueFromFloat(self, f: float) -> T:
-        """
-        Convert a float between 0-1 to the internal value used by this
-        strategy.
-
-        ### Args:
-        * `f` (`float`): A floating point value between 0-1
-
-        ### Returns:
-        * `T`: any type representing the internal value of the event
-        """
-        raise NotImplementedError("This function needs to be overridden by "
-                                  "child classes")
-
-    @abstractmethod
-    def getFloatFromValue(self, value: T) -> float:
-        """
-        Convert an internal value into a floating point value between 0-1
-
-        ### Args:
-        * `value` (`T`): the type representing the internal value of the event
-
-        ### Returns:
-        * `float`: A floating point value between 0-1
         """
         raise NotImplementedError("This function needs to be overridden by "
                                   "child classes")
