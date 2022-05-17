@@ -8,7 +8,8 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from typing import TYPE_CHECKING, Any, Callable, Optional, Union, TypeAlias
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
+from typing_extensions import TypeAlias
 from common.util.apifixes import UnsafeIndex
 
 from common.util.dicttools import lowestValueGrEqTarget, greatestKey
