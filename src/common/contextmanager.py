@@ -99,9 +99,11 @@ class DeviceContextManager:
         * `event` (`event`): event to process
         """
         # Filter out events that shouldn't be forwarded here
-        if isEventForwarded(event) and not isEventForwardedHere(event):
-            event.handled = True
-            return
+        if isEventForwarded(event):
+            # If device is none, ignore all forwarded messages
+            if self._device is None or not isEventForwardedHere(event):
+                event.handled = True
+                return
         if self.state is None:
             raise MissingContextException("State not set")
         self.state.processEvent(event)
