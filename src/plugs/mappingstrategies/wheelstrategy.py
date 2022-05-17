@@ -26,14 +26,14 @@ class WheelStrategy(IMappingStrategy):
     Maps mod and pitch wheels to the current plugin
     """
 
-    def __init__(self, raise_on_error: bool = True) -> None:
+    def __init__(self, raise_on_error: bool = False) -> None:
         """
         Create a WheelStrategy for binding mod and pitch wheel events
 
         ### Args:
         * `raise_on_error` (`bool`, optional): Whether an error should be
           raised if the plugin doesn't support CC parameters. Defaults to
-          `True`.
+          `False`.
         """
         self._raise = raise_on_error
 
