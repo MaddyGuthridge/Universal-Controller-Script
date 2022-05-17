@@ -28,11 +28,13 @@ from tests.helpers.devices import DummyDevice
         (Knob, 0),          # Device has no knobs
     ],
 )
-def test_get_num_matches(control: type[ControlSurface], amount: int):
-    """Make sure we find all the matches for different control types"""
+def test_get_num_matches_no_subs(control: type[ControlSurface], amount: int):
+    """Make sure we find all the matches for different control types
+    with substitution disabled
+    """
     s = DeviceShadow(DummyDevice())
 
-    assert s.getNumControlMatches(control) == amount
+    assert s.getNumControlMatches(control, allow_substitution=False) == amount
 
 
 @pytest.mark.parametrize(
@@ -46,12 +48,11 @@ def test_get_num_matches(control: type[ControlSurface], amount: int):
 )
 def test_get_num_matches_subs(control: type[ControlSurface], amount: int):
     """
-    Make sure we find all the matches for different control types, but with
-    substitution enabled
+    Make sure we find all the matches for different control types
     """
     s = DeviceShadow(DummyDevice())
 
-    assert s.getNumControlMatches(control, allow_substitution=True) == amount
+    assert s.getNumControlMatches(control) == amount
 
 
 def test_get_matches_target():
