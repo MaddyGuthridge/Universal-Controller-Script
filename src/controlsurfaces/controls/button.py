@@ -6,7 +6,7 @@ Defines a button control surface
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from .eventpattern import IEventPattern
+from ..eventpatterns import IEventPattern
 from controlsurfaces.valuestrategies import IValueStrategy
 from .controlsurface import ControlSurface
 

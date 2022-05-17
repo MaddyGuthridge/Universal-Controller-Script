@@ -11,7 +11,7 @@ from typing import Optional
 
 import device
 
-from controlsurfaces.eventpattern import BasicPattern
+from controlsurfaces.eventpatterns import BasicPattern
 from common.extensionmanager import ExtensionManager
 from common.types import EventData
 from controlsurfaces import (

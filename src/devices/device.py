@@ -11,7 +11,7 @@ Authors:
 
 from typing import Optional, final
 from common.util.abstractmethoderror import AbstractMethodError
-from controlsurfaces.eventpattern import IEventPattern
+from controlsurfaces.eventpatterns import IEventPattern
 from common.types import EventData
 from controlsurfaces import ControlShadow
 

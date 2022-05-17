@@ -19,7 +19,7 @@ __all__ = [
     'ControlShadowEvent',
     # Other imports
     'valuestrategies',
-    'eventpattern',
+    'eventpatterns',
     # Control surfaces
     'NullEvent',
     'Note',
@@ -176,4 +176,4 @@ from .controlmapping import (
 )
 
 from . import valuestrategies
-from . import eventpattern
+from . import eventpatterns

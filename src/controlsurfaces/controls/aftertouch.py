@@ -7,9 +7,9 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from .eventpattern import BasicPattern, fromNibbles, IEventPattern
+from ..eventpatterns import BasicPattern, fromNibbles, IEventPattern
 from . import ControlSurface
-from .valuestrategies import IValueStrategy, Data2Strategy, Data1Strategy
+from ..valuestrategies import IValueStrategy, Data2Strategy, Data1Strategy
 
 
 class AfterTouch(ControlSurface):

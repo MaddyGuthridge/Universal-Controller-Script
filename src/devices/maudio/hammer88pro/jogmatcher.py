@@ -9,7 +9,7 @@ Authors:
 
 from typing import Optional
 from common.types import EventData
-from controlsurfaces.eventpattern import (
+from controlsurfaces.eventpatterns import (
     BasicPattern,
     UnionPattern,
     ForwardedUnionPattern,

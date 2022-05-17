@@ -9,7 +9,7 @@ import plugins
 from typing import Any
 from common.consts import PARAM_CC_START
 from common.util.apifixes import PluginIndex, isPluginVst
-from controlsurfaces.pedal import (
+from controlsurfaces.controls.pedal import (
     Pedal,
     SustainPedal,
     SostenutoPedal,

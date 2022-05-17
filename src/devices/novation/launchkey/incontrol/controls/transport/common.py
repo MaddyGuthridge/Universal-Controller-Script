@@ -4,7 +4,7 @@ devices > novation > incontrol > controls > transport > common
 Definitions for transport controls shared between Launchkey devices
 """
 
-from controlsurfaces.eventpattern import BasicPattern, ForwardedPattern
+from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
 from controlsurfaces import (
     DirectionNext,
     DirectionPrevious,

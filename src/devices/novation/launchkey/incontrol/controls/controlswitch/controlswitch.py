@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from controlsurfaces.eventpattern import (
+from controlsurfaces.eventpatterns import (
     BasicPattern,
     NotePattern,
     IEventPattern,

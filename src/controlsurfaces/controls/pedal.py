@@ -16,9 +16,9 @@ __all__ = [
     'SOFT'
 ]
 
-from .eventpattern import BasicPattern, IEventPattern
+from ..eventpatterns import BasicPattern, IEventPattern
 from . import ControlSurface
-from .valuestrategies import ButtonData2Strategy
+from ..valuestrategies import ButtonData2Strategy
 
 
 class Pedal(ControlSurface):

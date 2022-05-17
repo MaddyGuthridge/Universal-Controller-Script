@@ -21,7 +21,7 @@ __all__ = [
     'DirectionPrevious',
 ]
 
-from .eventpattern import IEventPattern
+from ..eventpatterns import IEventPattern
 from controlsurfaces.valuestrategies import IValueStrategy
 from . import ControlSurface
 from . import Button

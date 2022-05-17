@@ -2,7 +2,7 @@
 from typing import Optional
 from controlsurfaces import ControlSurface, ControlEvent, NullEvent
 from devices.matchers import IControlMatcher
-from controlsurfaces.eventpattern import BasicPattern, ForwardedPattern
+from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
 from common.types import EventData
 from common.util.events import forwardEvent
 

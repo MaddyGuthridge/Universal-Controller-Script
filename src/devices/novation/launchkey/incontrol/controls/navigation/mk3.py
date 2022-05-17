@@ -1,5 +1,5 @@
 
-from controlsurfaces.eventpattern import BasicPattern, ForwardedPattern
+from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
 from controlsurfaces.valuestrategies import (
     ButtonData2Strategy,
     ForwardedStrategy

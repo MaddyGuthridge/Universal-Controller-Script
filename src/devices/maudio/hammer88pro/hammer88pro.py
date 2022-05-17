@@ -12,7 +12,7 @@ from typing import Optional
 import device
 
 from common import getContext
-from controlsurfaces.eventpattern import (
+from controlsurfaces.eventpatterns import (
     BasicPattern,
     ForwardedPattern,
     ForwardedUnionPattern,

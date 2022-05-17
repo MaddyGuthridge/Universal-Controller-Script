@@ -4,7 +4,7 @@ devices > novation > incontrol > controls > transport > mk3
 Definitions for transport controls used by Launchkey Mk3 Launchkey devices
 """
 
-from controlsurfaces.eventpattern import BasicPattern, ForwardedPattern
+from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
 from controlsurfaces import (
     LoopButton,
     StopButton,

@@ -13,7 +13,7 @@ Authors:
 
 from typing import Optional
 from common.extensionmanager import ExtensionManager
-from controlsurfaces.eventpattern import IEventPattern, BasicPattern
+from controlsurfaces.eventpatterns import IEventPattern, BasicPattern
 from common.types import EventData
 from controlsurfaces.valuestrategies import ButtonData2Strategy, Data2Strategy
 from devices import Device

@@ -15,9 +15,9 @@ from abc import abstractmethod
 from common import getContext
 from common.util.abstractmethoderror import AbstractMethodError
 from common.types import EventData, Color
-from .eventpattern import IEventPattern
-from .valuestrategies import IValueStrategy
-from .controlmapping import ControlEvent, ControlMapping
+from ..eventpatterns import IEventPattern
+from ..valuestrategies import IValueStrategy
+from ..controlmapping import ControlEvent, ControlMapping
 
 
 class ControlSurface:

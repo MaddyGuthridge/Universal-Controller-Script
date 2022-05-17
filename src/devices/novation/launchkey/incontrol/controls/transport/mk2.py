@@ -5,7 +5,7 @@ Definitions for transport controls used by Launchkey Mk2 Launchkey devices
 """
 
 
-from controlsurfaces.eventpattern import BasicPattern, ForwardedPattern
+from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
 from controlsurfaces import (
     LoopButton,
     StopButton,

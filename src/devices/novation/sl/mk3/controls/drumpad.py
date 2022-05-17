@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from controlsurfaces.eventpattern import ForwardedPattern, NotePattern
+from controlsurfaces.eventpatterns import ForwardedPattern, NotePattern
 from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
 from controlsurfaces import DrumPad
 from . import SlColorSurface

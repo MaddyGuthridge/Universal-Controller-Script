@@ -6,9 +6,9 @@ Contains the definition of the Note class, which represents note events.
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from .eventpattern import NotePattern
+from ..eventpatterns import NotePattern
 from . import ControlSurface
-from .valuestrategies import NoteStrategy
+from ..valuestrategies import NoteStrategy
 
 
 class Note(ControlSurface):

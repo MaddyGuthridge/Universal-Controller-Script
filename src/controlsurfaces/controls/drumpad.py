@@ -6,7 +6,7 @@ Defines a drum pad control surface
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
-from .eventpattern.ieventpattern import IEventPattern
+from ..eventpatterns import IEventPattern
 from controlsurfaces.valuestrategies.ivaluestrategy import IValueStrategy
 from . import ControlSurface
 

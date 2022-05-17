@@ -7,8 +7,8 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from . import ControlSurface, consts
-from . import NavigationControl
+from . import ControlSurface, NavigationControl
+from .. import consts
 
 
 class JogWheel(NavigationControl):

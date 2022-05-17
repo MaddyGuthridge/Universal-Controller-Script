@@ -4,7 +4,7 @@ tests > eventpattern > test_basicpattern
 Tests for basic event pattern matching
 """
 
-from controlsurfaces.eventpattern import BasicPattern
+from controlsurfaces.eventpatterns import BasicPattern
 from common.types import EventData
 
 

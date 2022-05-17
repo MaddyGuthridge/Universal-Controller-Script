@@ -5,7 +5,7 @@ Helper code for testing with devices
 """
 from typing import Optional
 from common.contextmanager import getContext, unsafeResetContext
-from controlsurfaces.eventpattern import IEventPattern, BasicPattern
+from controlsurfaces.eventpatterns import IEventPattern, BasicPattern
 from common.types.eventdata import EventData
 from devices import Device, BasicControlMatcher
 from devices.controlgenerators import NoteMatcher

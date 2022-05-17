@@ -4,7 +4,7 @@ devices > novation > sl > mk3 > controls > transport
 Definitions for transport controls shared between Launchkey devices
 """
 
-from controlsurfaces.eventpattern import BasicPattern, ForwardedPattern
+from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
 from controlsurfaces import (
     DirectionNext,
     DirectionPrevious,

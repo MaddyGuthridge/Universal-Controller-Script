@@ -21,7 +21,7 @@ __all__ = [
     'MasterSelectButton',
 ]
 
-from .eventpattern.ieventpattern import IEventPattern
+from ..eventpatterns.ieventpattern import IEventPattern
 from controlsurfaces.valuestrategies.ivaluestrategy import IValueStrategy
 from . import Button
 

@@ -8,7 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from controlsurfaces.eventpattern import BasicPattern, fromNibbles
+from controlsurfaces.eventpatterns import BasicPattern, fromNibbles
 from controlsurfaces import PitchWheel
 from controlsurfaces.valuestrategies import Data2Strategy
 

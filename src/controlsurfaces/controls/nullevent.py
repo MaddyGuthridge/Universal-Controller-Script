@@ -9,7 +9,7 @@ Authors:
 """
 from typing import Optional
 
-from .eventpattern import IEventPattern
+from ..eventpatterns import IEventPattern
 from controlsurfaces.valuestrategies import NullEventStrategy, IValueStrategy
 from . import ControlSurface
 

@@ -7,10 +7,10 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from .eventpattern import IEventPattern, BasicPattern, fromNibbles
+from ..eventpatterns import IEventPattern, BasicPattern, fromNibbles
 from common.types.eventdata import EventData, isEventStandard
 from . import ControlSurface
-from .valuestrategies import Data2Strategy, IValueStrategy
+from ..valuestrategies import Data2Strategy, IValueStrategy
 
 __all__ = [
     'ModWheel',

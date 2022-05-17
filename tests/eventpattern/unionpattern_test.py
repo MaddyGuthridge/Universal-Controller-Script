@@ -6,7 +6,7 @@ Tests for union pattern matching
 
 import pytest
 
-from controlsurfaces.eventpattern import BasicPattern, UnionPattern
+from controlsurfaces.eventpatterns import BasicPattern, UnionPattern
 from common.types import EventData
 
 

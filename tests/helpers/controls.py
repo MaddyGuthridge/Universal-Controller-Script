@@ -3,7 +3,7 @@ tests > helpers > controls
 
 Helper code for testing with control surfaces
 """
-from controlsurfaces.eventpattern import BasicPattern
+from controlsurfaces.eventpatterns import BasicPattern
 from controlsurfaces.valuestrategies import Data2Strategy
 
 from controlsurfaces import ControlSurface
