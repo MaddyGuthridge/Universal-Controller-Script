@@ -78,7 +78,7 @@ class PluginPager:
             self.nextPage()
         return True
 
-    def tick(self, *args, **kwargs) -> None:
+    def tick(self, index: UnsafeIndex) -> None:
         """Secret override of the tick method for the Plugin class
         Since different types of plugins take different arguments for the
         method, we need to use generic args and kwargs.
@@ -92,7 +92,10 @@ class PluginPager:
 
         # Now tick the page
         # Ignore type since this function does exist for all subclasses
-        self.__pages[self.__index].tick(*args, **kwargs)  # type: ignore
+        self.__pages[self.__index].tick(index)
+
+        # Tick the main one last so that it overrides any other controls
+        self.__shadow.tick(index)
 
     def apply(self, thorough: bool) -> None:
         """Secret override of the apply method for the Plugin class

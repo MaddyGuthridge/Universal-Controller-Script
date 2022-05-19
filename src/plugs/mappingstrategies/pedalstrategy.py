@@ -47,7 +47,7 @@ class PedalStrategy(IMappingStrategy):
 
         # TODO: Use argument generators as strategies to the strategies?
         # Could save even more repeated code
-        def argument_generator(shadows: list[ControlShadow]):
+        def gen(shadows: list[ControlShadow]):
             for s in shadows:
                 yield (type(s.getControl()), )
 
@@ -57,7 +57,7 @@ class PedalStrategy(IMappingStrategy):
         shadow.bindMatches(
             Pedal,
             self.pedalCallback,
-            argument_generator,
+            args_generator=gen,
             raise_on_failure=False,
             one_type=False,
         )

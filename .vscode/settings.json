@@ -26,6 +26,7 @@
 
     // Spell checker
     "cSpell.words": [
+        "abstractmethoderror",
         "apifixes",
         "Appassionata",
         "buttondatastrat",
@@ -40,6 +41,7 @@
         "deinitialised",
         "deviceconfigs",
         "deviceshadow",
+        "devstate",
         "dicttools",
         "docstrings",
         "Dpad",
@@ -59,6 +61,7 @@
         "Kontrol",
         "Korg",
         "launchkey",
+        "mappingstrategies",
         "mappingstrategy",
         "matttytel",
         "Maudio",

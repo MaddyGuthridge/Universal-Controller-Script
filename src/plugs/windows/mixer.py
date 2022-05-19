@@ -145,7 +145,7 @@ class Mixer(WindowPlugin):
             self._selection = list(range(first, first+self._len))
             ui.miDisplayRect(first, first+self._len-1, 2000)
 
-    def tick(self):
+    def tick(self, *args):
         self.updateSelected()
 
     def jogWheel(

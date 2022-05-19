@@ -32,9 +32,6 @@ class Playlist(WindowPlugin):
     def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
         return cls(shadow)
 
-    def tick(self):
-        pass
-
     def jogWheel(
         self,
         control: ControlShadowEvent,

@@ -68,9 +68,6 @@ class Macro(SpecialPlugin):
     def shouldBeActive() -> bool:
         return True
 
-    def tick(self):
-        pass
-
     @filterButtonLift
     def undo(
         self,

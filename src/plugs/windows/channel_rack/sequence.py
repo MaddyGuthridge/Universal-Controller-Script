@@ -167,7 +167,7 @@ class StepSequencer(WindowPlugin):
         self.showGrid()
         return True
 
-    def tick(self):
+    def tick(self, *args):
         """Set colours and annotations for omni preview"""
         # Row should apply to the offset of the selected channel
         # or if there aren't enough selections, the next selections along

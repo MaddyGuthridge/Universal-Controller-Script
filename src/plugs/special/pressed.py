@@ -94,7 +94,7 @@ class Press(SpecialPlugin):
     ) -> bool:
         return False
 
-    def tick(self):
+    def tick(self, *args):
         self.tickVelocities()
         self.tickButtons()
         self.tickOthers()

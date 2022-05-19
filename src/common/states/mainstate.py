@@ -47,19 +47,22 @@ class MainState(DeviceState):
 
     @profilerDecoration("main.tick")
     def tick(self) -> None:
+        # Get the currently active plugin
+        with ProfilerContext("getActive"):
+            plug_idx = common.getContext().active.getActive()
+            changed = common.getContext().active.hasChanged()
 
         # Tick special plugins
         for p in common.ExtensionManager.special.get(self._device):
             if p.shouldBeActive():
                 with ProfilerContext(f"Tick {type(p)}"):
-                    p.tick()
+                    p.doTick(plug_idx)
                 with ProfilerContext(f"Apply {type(p)}"):
+                    # Special plugins should always be thoroughly applied
+                    # TODO: Find out why
                     p.apply(thorough=True)
 
         # Tick active standard plugin or window
-        with ProfilerContext("getActive"):
-            plug_idx = common.getContext().active.getActive()
-            changed = common.getContext().active.hasChanged()
         if plug_idx is not None:
             if isinstance(plug_idx, tuple):
                 try:
@@ -72,7 +75,7 @@ class MainState(DeviceState):
                 )
                 if plug is not None:
                     with ProfilerContext(f"Tick {type(plug)}"):
-                        plug.tick(plug_idx)
+                        plug.doTick(plug_idx)
                     with ProfilerContext(f"Apply {type(plug)}"):
                         plug.apply(thorough=changed)
             else:
@@ -81,7 +84,7 @@ class MainState(DeviceState):
                 )
                 if window is not None:
                     with ProfilerContext(f"Tick {type(window)}"):
-                        window.tick()
+                        window.doTick(plug_idx)
                     with ProfilerContext(f"Apply {type(window)}"):
                         window.apply(thorough=changed)
 
@@ -89,7 +92,7 @@ class MainState(DeviceState):
         for p in common.ExtensionManager.final.get(self._device):
             if p.shouldBeActive():
                 with ProfilerContext(f"Tick {type(p)}"):
-                    p.tick()
+                    p.doTick(plug_idx)
                 with ProfilerContext(f"Apply {type(p)}"):
                     p.apply(thorough=True)
 

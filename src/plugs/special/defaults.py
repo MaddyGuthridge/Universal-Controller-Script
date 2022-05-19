@@ -10,7 +10,6 @@ Authors:
 from typing import Any
 import ui
 from common.extensionmanager import ExtensionManager
-from common.util.apifixes import UnsafeIndex
 from controlsurfaces import consts
 from controlsurfaces import ControlShadowEvent
 from controlsurfaces import (
@@ -63,13 +62,9 @@ class Defaults(SpecialPlugin):
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         return cls(shadow)
 
-    def tick(self):
-        pass
-
     def jogWheel(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         if control.value == consts.ENCODER_NEXT:

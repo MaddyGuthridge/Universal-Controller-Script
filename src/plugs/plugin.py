@@ -8,9 +8,10 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+from typing import final
 from common import log, verbosity
 from common.util.abstractmethoderror import AbstractMethodError
-from common.util.apifixes import UnsafeIndex, WindowIndex, PluginIndex
+from common.util.apifixes import UnsafeIndex, WindowIndex
 from controlsurfaces import ControlEvent
 from devices import DeviceShadow
 from plugs.mappingstrategies import IMappingStrategy
@@ -94,6 +95,33 @@ class Plugin:
             f"Processing event at {type(self)}", verbosity=verbosity.EVENT)
         return self._shadow.processEvent(mapping, index)
 
+    @final
+    def doTick(self, index: UnsafeIndex) -> None:
+        """
+        Tick the plugin, to allow parameters to update if required.
+
+        This the internal tick function, which calls the standard tick()
+        function.
+
+        ### Args:
+        * `index` (`UnsafeIndex`): index of active plugin or window
+        """
+        # Tick the overall plugin
+        self.tick(index)
+        # Then tick the device shadow
+        self._shadow.tick(index)
+
+    def tick(self, index: UnsafeIndex) -> None:
+        """
+        Tick the plugin, to allow parameters to update if required.
+
+        If any actions need to be taken during this time, the plugin should
+        override this function
+
+        ### Args:
+        * `index` (`UnsafeIndex`): index of active plugin or window
+        """
+
 
 class StandardPlugin(Plugin):
     """
@@ -120,16 +148,6 @@ class StandardPlugin(Plugin):
         Create and return an instance of this plugin
         """
         raise AbstractMethodError(cls)
-
-    @abstractmethod
-    def tick(self, index: PluginIndex) -> None:
-        """
-        Tick the plugin, to allow parameters to update if required
-
-        ### Args:
-        * `index` (`PluginIndex`): index of plugin
-        """
-        raise AbstractMethodError(self)
 
 
 class WindowPlugin(Plugin):
@@ -158,13 +176,6 @@ class WindowPlugin(Plugin):
         """
         raise AbstractMethodError(cls)
 
-    @abstractmethod
-    def tick(self) -> None:
-        """
-        Tick the plugin, to allow parameters to update if required
-        """
-        raise AbstractMethodError(self)
-
 
 class SpecialPlugin(Plugin):
     """
@@ -191,10 +202,3 @@ class SpecialPlugin(Plugin):
         Create and return an instance of this plugin
         """
         raise AbstractMethodError(cls)
-
-    @abstractmethod
-    def tick(self) -> None:
-        """
-        Tick the plugin, to allow parameters to update if required
-        """
-        raise AbstractMethodError(self)

@@ -14,7 +14,6 @@ from typing import Any
 
 from common.extensionmanager import ExtensionManager
 from common.types import Color
-from common.util.apifixes import UnsafeIndex
 from controlsurfaces import (
     ControlShadowEvent,
     NullEvent,
@@ -94,8 +93,10 @@ class Transport(SpecialPlugin):
         shadow.bindMatches(NullEvent, self.nullEvent)
         self._play = shadow.bindMatch(PlayButton, self.playButton)
         self._stop = shadow.bindMatch(StopButton, self.stopButton)
-        self._rec = shadow.bindMatch(RecordButton, self.recButton)
-        self._loop = shadow.bindMatch(LoopButton, self.loopButton)
+        self._rec = shadow.bindMatch(
+            RecordButton, self.recButton, self.tickRec)
+        self._loop = shadow.bindMatch(
+            LoopButton, self.loopButton, self.tickLoop)
         self._metronome = shadow.bindMatch(MetronomeButton, self.metroButton)
         self._nav = shadow.bindMatches(NavigationButton, self.navButtons)
         self._hint = shadow.bindMatch(HintMsg, self.nullEvent)
@@ -114,12 +115,7 @@ class Transport(SpecialPlugin):
         return True
 
     @filterButtonLift
-    def playButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    def playButton(self, *args: Any) -> bool:
         # If there's no stop button, this should behave like a stop button
         # when playing
         if not self._stop.isBound() and transport.isPlaying():
@@ -129,62 +125,32 @@ class Transport(SpecialPlugin):
         return True
 
     @filterButtonLift
-    def stopButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    def stopButton(self, *args: Any) -> bool:
         transport.stop()
         return True
 
     @filterButtonLift
-    def recButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    def recButton(self, *args: Any) -> bool:
         transport.record()
         return True
 
     @filterButtonLift
-    def loopButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    def loopButton(self, *args: Any) -> bool:
         transport.setLoopMode()
         return True
 
     @filterButtonLift
-    def metroButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    def metroButton(self, *args: Any) -> bool:
         transport.globalTransport(110, 1)
         return True
 
-    def nullEvent(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    def nullEvent(self, *args: Any) -> bool:
         """Handle NullEvents for which no action should be taken
         """
         return True
 
     @filterButtonLift
-    def navButtons(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    def navButtons(self, control: ControlShadowEvent, *args: Any) -> bool:
         c_type = type(control.getControl())
         if c_type == DirectionUp:
             ui.up()
@@ -204,32 +170,21 @@ class Transport(SpecialPlugin):
             return False
         return True
 
-    def fastForward(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any,
-    ) -> bool:
+    def fastForward(self, control: ControlShadowEvent, *args: Any,) -> bool:
         val = control.value != 0
         transport.fastForward(2 if val else 0)
         self._playback_ff_rw = FAST_FORWARDING if val else 0
         return True
 
-    def rewind(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any,
-    ) -> bool:
+    def rewind(self, control: ControlShadowEvent, *args: Any,) -> bool:
         val = control.value != 0
         transport.rewind(2 if val else 0)
         self._playback_ff_rw = REWINDING if val else 0
         return True
 
-    def tick(self):
-        self.tickLoopMode()
+    def tick(self, *args):
+        # self.tickLoopMode()
         self.tickPlayback()
-        self.tickRec()
         self.tickMetro()
         self.tickHint()
         self.tickFfRw()
@@ -245,11 +200,11 @@ class Transport(SpecialPlugin):
             self._play.color = GRAY
             self._stop.color = STOP_COLOR
 
-    def tickLoopMode(self):
+    def tickLoop(self, *args):
         """Color loop mode button"""
         self._loop.color = getPatSongCol()
 
-    def tickRec(self):
+    def tickRec(self, *args):
         """Color record button"""
         self._rec.color = REC_COLOR if transport.isRecording() else GRAY
 
