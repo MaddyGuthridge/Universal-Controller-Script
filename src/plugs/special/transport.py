@@ -34,6 +34,7 @@ from controlsurfaces import (
     MetronomeButton,
     HintMsg,
 )
+from controlsurfaces.controlshadow import ControlShadow
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 from plugs.eventfilters import filterButtonLift
@@ -91,17 +92,17 @@ class Transport(SpecialPlugin):
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
         shadow.bindMatches(NullEvent, self.nullEvent)
-        self._play = shadow.bindMatch(PlayButton, self.playButton)
-        self._stop = shadow.bindMatch(StopButton, self.stopButton)
-        self._rec = shadow.bindMatch(
-            RecordButton, self.recButton, self.tickRec)
-        self._loop = shadow.bindMatch(
-            LoopButton, self.loopButton, self.tickLoop)
-        self._metronome = shadow.bindMatch(MetronomeButton, self.metroButton)
-        self._nav = shadow.bindMatches(NavigationButton, self.navButtons)
-        self._hint = shadow.bindMatch(HintMsg, self.nullEvent)
-        self._ff = shadow.bindMatch(FastForwardButton, self.fastForward)
-        self._rw = shadow.bindMatch(RewindButton, self.rewind)
+        shadow.bindMatch(PlayButton, self.playButton, self.tickPlay)
+        # Need to be able to determine whether the stop button is assigned
+        self._stop = shadow.bindMatch(StopButton, self.stopButton,
+                                      self.tickStop)
+        shadow.bindMatch(RecordButton, self.recButton, self.tickRec)
+        shadow.bindMatch(LoopButton, self.loopButton, self.tickLoop)
+        shadow.bindMatch(MetronomeButton, self.metroButton, self.tickMetro)
+        shadow.bindMatch(HintMsg, self.nullEvent, self.tickHint)
+        shadow.bindMatch(FastForwardButton, self.fastForward, self.tickFf)
+        shadow.bindMatch(RewindButton, self.rewind, self.tickRw)
+        shadow.bindMatches(NavigationButton, self.navButtons)
         # Whether we're fast forwarding or rewinding
         self._playback_ff_rw = 0
         super().__init__(shadow, [])
@@ -182,58 +183,53 @@ class Transport(SpecialPlugin):
         self._playback_ff_rw = REWINDING if val else 0
         return True
 
-    def tick(self, *args):
-        # self.tickLoopMode()
-        self.tickPlayback()
-        self.tickMetro()
-        self.tickHint()
-        self.tickFfRw()
-
-    def tickPlayback(self):
-        """Color play and stop buttons"""
-        # Playback on
+    def tickPlay(self, control: ControlShadow, *args):
         if transport.isPlaying():
-            self._play.color = getBeatColor(off=GRAY)
-            self._stop.color = GRAY
-        # Playback off
+            control.color = getBeatColor(off=GRAY)
         else:
-            self._play.color = GRAY
-            self._stop.color = STOP_COLOR
+            control.color = GRAY
 
-    def tickLoop(self, *args):
+    def tickStop(self, control: ControlShadow, *args):
+        if transport.isPlaying():
+            control.color = GRAY
+        else:
+            control.color = STOP_COLOR
+
+    def tickLoop(self, control: ControlShadow, *args):
         """Color loop mode button"""
-        self._loop.color = getPatSongCol()
+        control.color = getPatSongCol()
 
-    def tickRec(self, *args):
+    def tickRec(self, control: ControlShadow, *args):
         """Color record button"""
-        self._rec.color = REC_COLOR if transport.isRecording() else GRAY
+        control.color = REC_COLOR if transport.isRecording() else GRAY
 
-    def tickMetro(self):
+    def tickMetro(self, control: ControlShadow, *args):
         """Color metronome button"""
         if ui.isMetronomeEnabled():
             if transport.isPlaying():
-                self._metronome.color = getBeatColor(GRAY)
+                control.color = getBeatColor(GRAY)
             else:
-                self._metronome.color = ON
+                control.color = ON
         else:
-            self._metronome.color = GRAY
+            control.color = GRAY
 
-    def tickHint(self):
+    def tickHint(self, control: ControlShadow, *args):
         """Set hint message"""
-        self._hint.annotation = ui.getHintMsg()
+        control.annotation = ui.getHintMsg()
 
-    def tickFfRw(self):
-        """Fast forward and rewind"""
-        # Fast-forward
+    def tickFf(self, control: ControlShadow, *args):
+        """Fast forward"""
         if self._playback_ff_rw == FAST_FORWARDING:
-            self._ff.color = ON
+            control.color = ON
         else:
-            self._ff.color = GRAY
-        # Rewind
+            control.color = GRAY
+
+    def tickRw(self, control: ControlShadow, *args):
+        """Rewind"""
         if self._playback_ff_rw == REWINDING:
-            self._rw.color = ON
+            control.color = ON
         else:
-            self._rw.color = GRAY
+            control.color = GRAY
 
 
 ExtensionManager.special.register(Transport)

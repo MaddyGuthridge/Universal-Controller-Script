@@ -36,6 +36,7 @@
         "classmethod",
         "colors",
         "controlmatcher",
+        "controlshadow",
         "controlsurfaces",
         "deinitialise",
         "deinitialised",
