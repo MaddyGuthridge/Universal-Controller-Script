@@ -163,6 +163,64 @@ class ControlShadow(IControlShadow):
         """
         return self._control.coordinate
 
+    def colorize(self, newColor: Color) -> 'ControlShadow':
+        """
+        Add a color to this control shadow
+
+        This function differs from the color property, as it can be used in a
+        "pipeline" fashion to apply multiple properties to a control quickly
+        and easily.
+
+        ### Args:
+        * `newColor` (`Color`): new color to assign
+
+        ### Returns:
+        * `Self`: the same control, so that the pipeline can be continued
+
+        ### Example usage
+
+        This is best used when binding controls to quickly apply properties to
+        the control.
+
+        ```py
+        # Bind to a play button, set its color to black, and label it "control"
+        shadow.bindControl(PlayButton) \\
+            .colorize(Color()) \\
+            .annotate("Control")
+        ```
+        """
+        self.color = newColor
+        return self
+
+    def annotate(self, newAnnotation: str) -> 'ControlShadow':
+        """
+        Add an annotation to this control shadow
+
+        This function differs from the annotation property, as it can be used
+        in a"pipeline" fashion to apply multiple properties to a control
+        quickly and easily.
+
+        ### Args:
+        * `newAnnotation` (`str`): new annotation to assign
+
+        ### Returns:
+        * `Self`: the same control, so that the pipeline can be continued
+
+        ### Example usage
+
+        This is best used when binding controls to quickly apply properties to
+        the control.
+
+        ```py
+        # Bind to a play button, set its color to pink, and label it "control"
+        shadow.bindControl(PlayButton) \\
+            .colorize(Color.fromRgb(255, 0, 255)) \\
+            .annotate("Control")
+        ```
+        """
+        self.annotation = newAnnotation
+        return self
+
     def apply(self, thorough: bool, transparent: bool) -> None:
         """
         Apply the configuration of the control shadow to the control it

@@ -19,8 +19,7 @@ class Vital(StandardPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(
-            Fader, self.faders, ..., target_num=4)
+        shadow.bindMatches(Fader, self.faders, target_num=4)
         super().__init__(shadow, [])
 
     @classmethod

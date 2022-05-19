@@ -43,6 +43,7 @@ ORIGINALS = ['Originals - '+ele for ele in ORIGINALS]
 
 SUPPORTED_PLUGINS = tuple(PRIMARY + ORIGINALS)
 
+BOUND_COLOR = Color.fromRgb(127, 127, 127)
 
 class SpitfireGeneric(StandardPlugin):
     """
@@ -59,10 +60,12 @@ class SpitfireGeneric(StandardPlugin):
 
         if len(self._faders) == 2:
             # Set annotation and colors once (since they won't change)
-            self._faders[0].annotation = "Expression"
-            self._faders[0].color = Color.fromRgb(127, 127, 127)
-            self._faders[1].annotation = "Dynamics"
-            self._faders[1].color = Color.fromRgb(127, 127, 127)
+            self._faders[0] \
+                .annotate("Expression") \
+                .colorize(BOUND_COLOR)
+            self._faders[1] \
+                .annotate("Dynamics") \
+                .colorize(BOUND_COLOR)
 
         # Drum pads
         # Bind a different callback depending on drum pad size
