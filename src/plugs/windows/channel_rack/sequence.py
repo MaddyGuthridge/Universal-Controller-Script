@@ -192,12 +192,7 @@ class StepSequencer(WindowPlugin):
                 false_color = LEAD_BEAT_COLOR
 
             c = Color.fromInteger(channels.getChannelColor(ch_idx))
-            old = control.color
             if channels.getGridBit(ch_idx, col):
                 control.color = c
-                if c != old:
-                    print(c, control.getControl().getColorInt())
             else:
                 control.color = false_color
-                if false_color != old:
-                    print(c, control.getControl().getColorInt())
