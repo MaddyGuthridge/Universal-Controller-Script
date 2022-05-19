@@ -13,13 +13,13 @@ from common.types.color import Color
 COLORS = {
     #                 0xRRGGBB
     Color.fromInteger(0x000000):   0,  # Off
-    Color.fromInteger(0x5C656A):   1,  # Grey (default FL Colour)
-    Color.fromInteger(0x8F8F8F):   2,
+    Color.fromInteger(0x222222):   1,
+    Color.fromInteger(0x5C656A):   2,  # Grey (default FL Colour)
     Color.fromInteger(0xFFFFFF):   3,  # White
     Color.fromInteger(0xFF6658):   4,
     Color.fromInteger(0xFF2900):   5,  # Red
     Color.fromInteger(0x6E0A00):   6,
-    Color.fromInteger(0x220100):   7,  # Dark dull red
+    Color.fromInteger(0x614F51):   7,  # Dark dull red
     Color.fromInteger(0xFFC875):   8,  # Light orange
     Color.fromInteger(0xFF6D00):   9,
     Color.fromInteger(0x6E2900):  10,
@@ -67,11 +67,11 @@ COLORS = {
     Color.fromInteger(0xFF6DFF):  52,
     Color.fromInteger(0xFF40FF):  53,  # Pink
     Color.fromInteger(0xDD61DD):  54,
-    Color.fromInteger(0x220221):  55,
+    Color.fromInteger(0x660263):  55,
     Color.fromInteger(0xFF6796):  56,
     Color.fromInteger(0xFF2C64):  57,
     Color.fromInteger(0x6E0C23):  58,
-    Color.fromInteger(0x2D0214):  59,  # Dark red
+    Color.fromInteger(0x4D0214):  59,  # Dark red
     Color.fromInteger(0xFF3300):  60,
     Color.fromInteger(0xAD4800):  61,
     Color.fromInteger(0x8E6300):  62,  # Brown
@@ -124,7 +124,7 @@ COLORS = {
     Color.fromInteger(0xFFE400): 109,  # Light yellow
     Color.fromInteger(0xA7E300): 110,
     Color.fromInteger(0x6FBE00): 111,  # Dull green
-    Color.fromInteger(0x242540): 112,
+    Color.fromInteger(0x340040): 112,
     Color.fromInteger(0xE2FA66): 113,
     Color.fromInteger(0x84F9C5): 114,
     Color.fromInteger(0xA7ABFF): 115,  # Light lilac

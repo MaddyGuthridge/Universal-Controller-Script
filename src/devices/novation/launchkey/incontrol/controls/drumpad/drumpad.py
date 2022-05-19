@@ -20,7 +20,7 @@ from devices.matchers import (
 
 class LkDrumPad(ColorInControlSurface, DrumPad):
     """
-    Custom drum pad implementation used by Lunchkey series controllers
+    Custom drum pad implementation used by Launchkey series controllers
     to provide RGB functionality
     """
     def __init__(

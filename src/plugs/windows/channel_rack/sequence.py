@@ -23,7 +23,7 @@ SCROLL_MULTIPLIER = 4
 
 DISABLED_COLOR = Color()
 LEAD_BEAT_COLOR = Color.fromInteger(0x333333)
-BACK_BEAT_COLOR = Color.fromInteger(0x442222)
+BACK_BEAT_COLOR = Color.fromInteger(0x332233)
 
 
 class StepSequencer(WindowPlugin):
@@ -192,7 +192,12 @@ class StepSequencer(WindowPlugin):
                 false_color = LEAD_BEAT_COLOR
 
             c = Color.fromInteger(channels.getChannelColor(ch_idx))
+            old = control.color
             if channels.getGridBit(ch_idx, col):
                 control.color = c
+                if c != old:
+                    print(c, control.getControl().getColorInt())
             else:
                 control.color = false_color
+                if false_color != old:
+                    print(c, control.getControl().getColorInt())

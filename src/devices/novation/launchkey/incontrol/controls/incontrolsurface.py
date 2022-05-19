@@ -40,6 +40,9 @@ class InControlSurface:
             self.updateColor()
         self.__ticker_timer += 1
 
+    def getColorInt(self):
+        return self.__color
+
 
 class ColorInControlSurface(InControlSurface):
     """Forwarder to manage sending color events to Launchkey controls
