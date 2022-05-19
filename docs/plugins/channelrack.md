@@ -14,8 +14,8 @@ Up/down navigation controls modify the selected channels.
   channels that are affected is controlled by the selection in the channel rack
   window.
 
-* Next/previous buttons affect the horizontal range of grid bits the drum pads
-  will modify.
+* Next/previous/left/right buttons affect the horizontal range of grid bits
+  that the drum pads will modify.
 
 ## Omni preview
 
