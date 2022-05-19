@@ -44,11 +44,17 @@ matcher using `matcher.addSubMatcher()`.
 In order for users of your device to have the optimal experience, you should
 consider implementing as many of the following control surfaces as possible.
 
-* `PauseActiveButton`
+* `ControlSwitchButton` to switch between modes in a plugin (eg step sequencer
+  to omni preview in the channel rack).
+
+* `PauseActiveButton` to pause updating the active plugin.
+
 * `SwitchActiveButton` if your device uses a split control system (where
-  windows are controlled separately to plugins)
-* Basic transport buttons
-* At least one way to interact with plugins (faders, knobs or encoders)
+  windows are controlled separately to plugins).
+
+* Basic transport buttons (play, stop, etc).
+
+* At least one way to interact with plugins (faders, knobs or encoders).
 
 Obviously if your controller doesn't have these features as hardware, you can
 still use the script as a simple way to get compatibility with basic transport

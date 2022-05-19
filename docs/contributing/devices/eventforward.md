@@ -54,8 +54,8 @@ working with forwarded events. Refer to their docstrings for full information.
 * `isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool`
   * Returns whether an event has been forwarded, is targeting this device ID,
     and was forwarded from a forwarder device with number `device_num`, or was
-    forwarded from the primary device targeting the forwarder device with number
-    `device_num`.
+    forwarded from the primary device targeting the forwarder device with
+    number `device_num`.
 * `encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes`
   * Encode an event for forwarding.
 * `decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData`
@@ -74,8 +74,8 @@ The following structure is used for packaging forwarded events.
   exclusive ID.
 
 * `[device id]` An ASCII-encoded string containing the device identifier,
-  returned by the `Device.getId()` method. This is used to filter events so that
-  devices only receive events from their own device.
+  returned by the `Device.getId()` method. This is used to filter events so
+  that devices only receive events from their own device.
 
 * `0x00` Null terminator, to determine the end point of the device ID.
 

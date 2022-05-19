@@ -35,8 +35,10 @@
         "Cimbalom",
         "classmethod",
         "colors",
+        "controlevent",
         "controlmatcher",
         "controlshadow",
+        "controlsurface",
         "controlsurfaces",
         "deinitialise",
         "deinitialised",
@@ -50,7 +52,9 @@
         "drumpad",
         "eventfilter",
         "eventfilters",
+        "eventforward",
         "eventpattern",
+        "eventpatterns",
         "extensionmanager",
         "flmidimsg",
         "hintmsg",
@@ -87,6 +91,7 @@
         "tickfilters",
         "Tytel",
         "Univ",
+        "valuestrategies",
         "valuestrategy"
     ],
 }

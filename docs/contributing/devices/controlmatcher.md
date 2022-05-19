@@ -1,6 +1,8 @@
 
 # Control Matchers
 
+Import from `devices.matchers`
+
 Control matchers are used to maintain a set of control surfaces, which can
 be matched with incoming events.
 
@@ -41,7 +43,7 @@ matcher.
 
 ### Methods to Implement
 * `matchEvent(self, event: eventData) -> Optional[ControlEvent]`: Given an
-  event, return a [`ControlEvent`](controlevent.md) mapped to the matched
+  event, return a [`ControlEvent`](../controlevent.md) mapped to the matched
   control, or `None` if there were no matches.
 * `getControls(self) -> list[ControlSurface]`: Return a list of
   the controls managed by this control matcher.

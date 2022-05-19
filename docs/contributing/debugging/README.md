@@ -1,4 +1,4 @@
 
 # Debugging
 
-* [Performance analysis](performance.md)
+* [Performance analysis and stack tracing](profiling.md)

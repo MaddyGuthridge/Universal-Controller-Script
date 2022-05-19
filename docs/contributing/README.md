@@ -18,3 +18,5 @@
 
 * [Debugging](debugging/README.md): information on how to troubleshoot the
   script if it is behaving badly.
+
+* [Index](index.md): all the pages in the contributor documentation.

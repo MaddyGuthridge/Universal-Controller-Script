@@ -3,7 +3,7 @@
 
 Control surfaces represent a control on a device. The are instantiated during
 the construction of `Device` objects, and are indirectly mapped to by plugins,
-via the [`ControlShadow`](controlshadow.md) type.
+via the [`ControlShadow`](../plugins/controlshadow.md) type.
 
 ## List of Control Surfaces
 
@@ -92,10 +92,25 @@ child class to the control surface it most accurately represents, and then
 implement any required functions.
 
 ### Methods to Implement if Required
-* `onColorChange(self)`: Called when the color of the control has changed
-* `onAnnotationChange(self)`: Called when the annotation of the control has
-  changed.
-* `onValueChange(self)`: Called when the value of the control has changed.
-* `tick(self)`: Called when a tick happens.
-* `isPress(self) -> bool`: Should return whether a particular value is a press,
-  used to detect double presses
+* `onColorChange(self, new: Color)`: Called when the color of the control has
+  changed. This can be used to send MIDI events to manage LEDs on the control
+  surface.
+
+* `onAnnotationChange(self, new: str)`: Called when the annotation of the
+  control has changed. This can be used to send MIDI events to manage a screen
+  associated with the control.
+
+* `onValueChange(self, new: float)`: Called when the value of the control has
+  changed. This can be used to send MIDI events to manage a motorized control,
+  or update LEDs that represent the control's value.
+
+* `tick(self)`: Called when a tick happens. This should be used to send any
+  events required to keep the control functioning. For example, if your
+  controller is prone to losing LED colors randomly (like the Novation
+  Launchkey Mk2 Series), it can send out a color update every few ticks. Note
+  that these events should be limited to reduce slowness.
+
+* `@staticmethod isPress(value: float) -> bool`: Should return whether a
+  particular value is equivalent to a button press (as opposed to a lift), used
+  to detect double presses. By default this is implemented for most control
+  surfaces, but can be overridden if needed.

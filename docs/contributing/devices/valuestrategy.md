@@ -1,7 +1,7 @@
 
 # Value Strategies
 
-Import from `controlsurfaces.valuestrategy`
+Import from `controlsurfaces.valuestrategies`
 
 Value strategies are used to get the value from an event and convert it to a
 floating point value for use within the rest of the script.
@@ -14,14 +14,12 @@ Note that value strategies should be stateless.
 
 ### Functions to Implement
 
-* `getValueFromEvent(self, event: eventData) -> T`: Returns a value for internal
-  use with this strategy, given a MIDI event.
+* `getValueFromEvent(self, event: eventData, value: float) -> float`: Returns
+  a floating point value given an event. If needed, the previous value is
+  provided to calculate relative values.
+
 * `getChannelFromEvent(self, event: EventData) -> int`: Returns the channel
   that the event is associated with, or -1 for no channel.
-* `getValueFromFloat(self, f: float) -> T`: Returns a value for internal use
-  with this strategy, given a float between 0 and 1.
-* `getFloatFromValue(self, value: T) -> float`: Returns a float between 0 and 1
-  given the internal value of this strategy.
 
 ## `Data2Strategy`
 
@@ -32,6 +30,10 @@ this strategy.
 
 Gets the value from the data1 value of the event. This is used by some events
 such as channel aftertouch which don't give a data2 value.
+
+## `TwosComplimentDeltaStrategy`
+
+A relative strategy used by some encoders.
 
 ## `ButtonData2Strategy`
 

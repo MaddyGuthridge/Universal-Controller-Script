@@ -1,5 +1,10 @@
 
-# Performance Profiling
+# Profiling
+
+The script contains a simple profiler which can trace the execution path and
+monitor performance of the script.
+
+## Performance Monitoring
 
 Sometimes, certain script behaviour may cause performance issues. To help
 analyse these issues, a simple performance profiler is included.
@@ -30,7 +35,7 @@ performance of the script:
 
 As can be seen, profiling is categorised into a hierarchy, separated by dots.
 
-## Adding profiling to your code
+### Adding profiling to your code
 
 Profiling is simple to add to your code. Import the required code from
 the `common` module.
@@ -44,3 +49,10 @@ Both of these require the name of the context to profile as an argument.
 
 By default, event recognition and processing, as well as ticking and applying is
 profiled for all plugins and devices.
+
+## Stack Tracing
+
+The profiler system can also be used to get stack traces if FL Studio crashes
+or freezes due to the script's behaviour. To enable tracing of profiler
+contexts, enabled `"debug.exec_tracing"` in your `config.py`. Note that this
+causes a massive amount of terminal output, so should be used sparingly.

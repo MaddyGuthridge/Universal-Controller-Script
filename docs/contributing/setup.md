@@ -58,18 +58,3 @@ most code editors.
     will start up, print the welcome message then exit.
 
 11. Get familiar with the project's [style guidelines](style.md)
-
-## Contributing Docs
-* [Style guide](style.md)
-* [Plugins](plugins.md)
-* [Devices](devices.md)
-* [Control surfaces](controlsurface.md)
-* [Control matchers](controlmatcher.md)
-* [Control events](controlevent.md)
-* [Device shadows](deviceshadow.md)
-* [Control shadows](controlshadow.md)
-* [Event filters](eventfilter.md)
-* [Event patterns](eventpattern.md)
-* [Mapping strategies](mappingstrategy.md)
-* [Value strategies](valuestrategy.md)
-* [Performance profiling](performance.md)
