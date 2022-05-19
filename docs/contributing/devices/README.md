@@ -58,25 +58,35 @@ script take advantage of that fact.
 ## Methods to Implement
 * `@classmethod create(cls, event: Optional[eventData]) -> Device`: Create an
   instance of this device.
+
 * `@staticmethod getId() -> str`: Returns the ID of the device
-  (`"Manufacturer.Model.Mark.Variant"`).
+  (`"Manufacturer.Model.Revision.Variant"`). This is used to encode
+  [forwarded events](eventforward.md), as well as to assist with bug reporting.
+
 * `@staticmethod getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]`:
   Returns an event pattern used to match the device's response to a universal
-  device enquiry.
+  device enquiry. Refer to the manual page on
+  [device detection](detection.md#2-universal-device-enquiry).
+
 * `@staticmethod matchDeviceName(name: str) -> bool`: Given a device name,
-  return whether it matches this device.
+  return whether it matches this device. Refer to the manual page on
+  [device detection](detection.md#3-name-matching).
+
 * `@staticmethod getDrumPadSize() -> int, int`: Return the size of the drum
-  pad grid in terms of rows, cols.
+  pad grid in terms of rows, cols. Devices without drum pads should return
+  `(0, 0)`.
 
 ## Methods to Implement if Required
 * `initialise(self)`: Called when the device is initialised.
+
 * `deinitialise(self)`: Called when the device is deinitialised.
+
 * `tick(self)`: Called when the script ticks.
 
 ## Example Device Definition
 
 ```py
-class MyControl(Device):
+class MyController(Device):
     """
     An example controller for the documentation
     """
@@ -139,5 +149,10 @@ class MyControl(Device):
 
     @staticmethod
     def matchDeviceName(name: str) -> bool:
+        # Since we're providing a universal enquiry response pattern, we don't
+        # need to bother implementing this as all devices should be matched
+        # correctly from the pattern.
+        # In non-standard devices, this function can be used as a backup
+        # system, by using an expression such as the following:
         return name == "My Controller"
 ```
