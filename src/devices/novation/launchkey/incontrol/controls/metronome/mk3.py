@@ -1,6 +1,6 @@
 
 from .metronome import LkMetronomeButton
-from ...colors.standard import COLORS
+from ...colors.mk3 import COLORS
 
 
 class LkMk3MetronomeButton(LkMetronomeButton):

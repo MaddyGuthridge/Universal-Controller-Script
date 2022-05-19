@@ -11,7 +11,7 @@ from controlsurfaces import (
     DirectionRight,
 )
 from .. import ColorInControlSurface, GrayscaleInControlSurface
-from ...colors.standard import COLORS
+from ...colors.mk3 import COLORS
 from ...colors.greyscale import COLORS as GRAYSCALE
 
 

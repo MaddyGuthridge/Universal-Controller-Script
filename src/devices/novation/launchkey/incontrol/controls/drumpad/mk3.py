@@ -1,6 +1,6 @@
 
 from .drumpad import LkDrumPad
-from ...colors.standard import COLORS
+from ...colors.mk3 import COLORS
 
 DRUM_PADS = [
     [0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67],

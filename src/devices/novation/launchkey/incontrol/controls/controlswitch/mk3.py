@@ -1,6 +1,6 @@
 
 from .controlswitch import LkControlSwitchButton
-from ...colors.standard import COLORS
+from ...colors.mk3 import COLORS
 
 
 class LkMk3ControlSwitchButton(LkControlSwitchButton):
