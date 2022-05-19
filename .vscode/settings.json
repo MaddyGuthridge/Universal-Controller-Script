@@ -27,11 +27,13 @@
     // Spell checker
     "cSpell.words": [
         "apifixes",
+        "Appassionata",
         "buttondatastrat",
         "capsys",
         "channelrack",
         "Cimbalom",
         "classmethod",
+        "colors",
         "controlmatcher",
         "controlsurfaces",
         "deinitialise",
@@ -41,6 +43,7 @@
         "dicttools",
         "docstrings",
         "Dpad",
+        "Drumline",
         "eventfilter",
         "eventfilters",
         "eventpattern",

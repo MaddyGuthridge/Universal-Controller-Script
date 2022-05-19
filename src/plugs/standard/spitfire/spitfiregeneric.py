@@ -15,12 +15,20 @@ from plugs import eventfilters, tickfilters
 # Generate list of supported plugins
 # HELP WANTED: I don't own all of these libraries, so the naming may be
 # incorrect. If something doesn't work, please create a bug report.
+# This is also far from an exhaustive list of all the available plugins, so
+# if any you use are missing, let me know!
 PRIMARY = [
     'BBC Symphony Orchestra',  # Working
     'LABS',  # Working
     'Abbey Road One',  # Working
     'Eric Whitacre Choir',
-    'Hans Zimmer Strings'
+    'Hans Zimmer Strings',
+    'Abbey Road Two',
+    'Appassionata Strings',
+    'Polaris',
+    'Heirloom',
+    'Hammers',
+    'Fink Signatures',
 ]
 
 ORIGINALS = [
@@ -38,8 +46,9 @@ ORIGINALS = [
     'Epic Strings',
     'Epic Brass & Woodwinds',
     'Felt Piano',
+    'Intimate Grand Piano',
 ]
-ORIGINALS = ['Originals - '+ele for ele in ORIGINALS]
+ORIGINALS = ['Originals - ' + ele for ele in ORIGINALS]
 
 SUPPORTED_PLUGINS = tuple(PRIMARY + ORIGINALS)
 
@@ -55,7 +64,6 @@ class SpitfireGeneric(StandardPlugin):
         self._faders = shadow.bindMatches(
             Fader,
             self.faders,
-            ...,
             target_num=2,
         )
 
