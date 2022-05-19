@@ -44,6 +44,7 @@
         "eventfilter",
         "eventfilters",
         "eventpattern",
+        "extensionmanager",
         "flmidimsg",
         "hintmsg",
         "hissy",
@@ -65,6 +66,7 @@
         "notifmsg",
         "Novation",
         "playhead",
+        "plugins",
         "pmeflags",
         "Rect",
         "RRGGBB",
@@ -74,6 +76,7 @@
         "staticmethod",
         "strat",
         "sysex",
+        "tickfilters",
         "Tytel",
         "Univ",
         "valuestrategy"

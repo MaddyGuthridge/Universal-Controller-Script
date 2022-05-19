@@ -45,6 +45,7 @@ SUPPORTED_PLUGINS = tuple(PRIMARY + ORIGINALS)
 
 BOUND_COLOR = Color.fromRgb(127, 127, 127)
 
+
 class SpitfireGeneric(StandardPlugin):
     """
     Used to interact with Spitfire Audio plugins, mapping faders to parameters
