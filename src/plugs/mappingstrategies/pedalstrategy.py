@@ -18,7 +18,7 @@ from controlsurfaces.controls.pedal import (
     SOSTENUTO,
     SOFT,
 )
-from controlsurfaces import ControlShadowEvent, ControlShadow
+from controlsurfaces import ControlShadowEvent, ControlShadowList
 from devices import DeviceShadow
 from plugs.eventfilters import toPluginIndex
 from . import IMappingStrategy
@@ -47,7 +47,7 @@ class PedalStrategy(IMappingStrategy):
 
         # TODO: Use argument generators as strategies to the strategies?
         # Could save even more repeated code
-        def gen(shadows: list[ControlShadow]):
+        def gen(shadows: ControlShadowList):
             for s in shadows:
                 yield (type(s.getControl()), )
 

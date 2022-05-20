@@ -14,6 +14,7 @@ __all__ = [
     'IControlShadow',
     'ControlShadow',
     'NullControlShadow',
+    'ControlShadowList',
     # Control mappings
     'IControlHash',
     'ControlMapping',
@@ -173,6 +174,7 @@ from .controlshadow import (
     IControlShadow,
     ControlShadow,
     NullControlShadow,
+    ControlShadowList,
 )
 from .controlmapping import (
     IControlHash,

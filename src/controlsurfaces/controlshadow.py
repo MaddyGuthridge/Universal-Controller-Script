@@ -8,7 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterator, overload
 from typing_extensions import TypeGuard
 from common.types import Color
 from .controlmapping import ControlMapping
@@ -299,3 +299,51 @@ class NullControlShadow(IControlShadow):
     @annotation.setter
     def annotation(self, newAnnotation: str) -> None:
         pass
+
+
+class ControlShadowList:
+    """
+    A list of control shadows
+    """
+    def __init__(self, controls: list[ControlShadow]) -> None:
+        """Create a list of controls"""
+        self.controls = controls
+
+    def colorize(self, new: 'Color | list[Color]') -> 'ControlShadowList':
+        """Set the colors of each control"""
+        if isinstance(new, Color):
+            for c in self.controls:
+                c.color = new
+        else:
+            for control, color in zip(self.controls, new):
+                control.color = color
+        return self
+
+    def annotate(self, new: 'str | list[str]') -> 'ControlShadowList':
+        """Set the annotations of each control"""
+        if isinstance(new, str):
+            for c in self.controls:
+                c.annotation = new
+        else:
+            for control, annotation in zip(self.controls, new):
+                control.annotation = annotation
+        return self
+
+    def __iter__(self) -> Iterator:
+        return iter(self.controls)
+
+    def __len__(self) -> int:
+        return len(self.controls)
+
+    @overload
+    def __getitem__(self, index: slice) -> 'ControlShadowList':
+        ...
+
+    @overload
+    def __getitem__(self, index: int) -> 'ControlShadow':
+        ...
+
+    def __getitem__(self, index):
+        if isinstance(index, slice):
+            return ControlShadowList(self.controls[index])
+        return self.controls[index]

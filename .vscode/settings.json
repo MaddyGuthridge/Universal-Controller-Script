@@ -36,6 +36,7 @@
         "classmethod",
         "colors",
         "controlevent",
+        "controlmapping",
         "controlmatcher",
         "controlshadow",
         "controlsurface",

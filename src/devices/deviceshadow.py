@@ -22,7 +22,8 @@ from controlsurfaces import (
     NullControlShadow,
     IControlHash,
     ControlEvent,
-    ControlShadowEvent
+    ControlShadowEvent,
+    ControlShadowList,
 )
 
 if TYPE_CHECKING:
@@ -69,7 +70,7 @@ TickCallback = Union[
 if TYPE_CHECKING:
     ArgGenerator: TypeAlias = Union[
         list[tuple],
-        Callable[[list[ControlShadow]], Generator[tuple, None, None]],
+        Callable[[ControlShadowList], Generator[tuple, None, None]],
         ellipsis,  # noqa: F821
         None
     ]
@@ -251,7 +252,7 @@ class DeviceShadow:
         exact: bool = True,
         raise_on_zero: bool = False,
         one_type: bool = True,
-    ) -> list[ControlShadow]:
+    ) -> ControlShadowList:
         """
         Returns a list of matching controls.
 
@@ -294,7 +295,7 @@ class DeviceShadow:
           True)
 
         ### Returns:
-        * `list[ControlShadow]`: List of matches
+        * `ControlShadowList`: List of matches
         """
 
         # Determine what lambda to use depending on if we are allowing control
@@ -338,21 +339,21 @@ class DeviceShadow:
 
         # If we have no target, ignore exact and trim parameters
         if target_num is None:
-            return ret
+            return ControlShadowList(ret)
 
         if exact:
             if len(ret) < target_num:
                 raise ValueError("Not enough matching controls found")
             elif trim:
-                return ret[:target_num]
+                return ControlShadowList(ret[:target_num])
             else:
                 if len(ret) > target_num:
                     raise ValueError("Too many matching controls found. "
                                      "Ensure you are using the trim flag "
                                      "correctly.")
-                return ret
+                return ControlShadowList(ret)
         else:
-            return ret
+            return ControlShadowList(ret)
 
     def getNumControlMatches(
         self,
@@ -430,7 +431,7 @@ class DeviceShadow:
 
     def bindControls(
         self,
-        controls: list[ControlShadow],
+        controls: ControlShadowList,
         on_event: EventCallback,
         on_tick: TickCallback = None,
         args_iterable: 'Optional[Iterable[tuple[Any, ...]] | ellipsis]'  # noqa: F821,E501
@@ -569,7 +570,7 @@ class DeviceShadow:
         exact: bool = True,
         raise_on_failure: bool = False,
         one_type: bool = True,
-    ) -> list[ControlShadow]:
+    ) -> ControlShadowList:
         """
         Finds all controls of a matching type and binds them to the given
         function.
@@ -652,7 +653,7 @@ class DeviceShadow:
             if raise_on_failure:
                 raise ValueError(f"Error binding controls {control}") from e
             else:
-                return []
+                return ControlShadowList([])
 
         # Check for generator functions
         if not isinstance(args_generator, (list, type(...), type(None))):
