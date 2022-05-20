@@ -25,7 +25,7 @@ from .value_strategy import IValueStrategy
 from .note_strategy import NoteStrategy
 from .data_strategy import Data2Strategy, Data1Strategy
 from .twos_compliment_delta import TwosComplimentDeltaStrategy
-from .buttondata2strategy import ButtonData2Strategy
+from .button_data2_strategy import ButtonData2Strategy
 from .button_single_press_strategy import ButtonSinglePressStrategy
 from .forwarded_strategy import ForwardedStrategy, ForwardedUnionStrategy
 from .null_strategy import NullEventStrategy
