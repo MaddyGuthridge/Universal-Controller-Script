@@ -15,13 +15,13 @@ __all__ = [
     'WaitingForDevice',
 ]
 
-from .scriptstate import (
+from .script_state import (
     IScriptState,
     catchStateChangeException,
     StateChangeException,
 )
-from .devstate import DeviceState
-from .mainstate import MainState
-from .forwardstate import ForwardState
-from .notrecognised import DeviceNotRecognised
-from .devicedetect import WaitingForDevice
+from .dev_state import DeviceState
+from .main_state import MainState
+from .forward_state import ForwardState
+from .not_recognised import DeviceNotRecognised
+from .device_detect import WaitingForDevice

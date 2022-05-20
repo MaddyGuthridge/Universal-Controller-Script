@@ -1,4 +1,11 @@
+"""
+common > extensionmanager > devices
 
+Contains the definition for the DeviceCollection class
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 from typing import TYPE_CHECKING
 from common.exceptions import DeviceRecogniseError
 from common.types import EventData
@@ -9,6 +16,8 @@ if TYPE_CHECKING:
 
 
 class DeviceCollection:
+    """Collection of devices registered to the script
+    """
     def __init__(self) -> None:
         self.__devices: list[type['Device']] = []
 

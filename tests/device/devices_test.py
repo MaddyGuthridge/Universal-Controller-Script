@@ -10,7 +10,7 @@ from common import ExtensionManager
 
 @pytest.mark.parametrize(
     'dev',
-    ExtensionManager.getAllDevices()
+    ExtensionManager.devices.all()
 )
 def test_create(dev):
     dev.create(None)

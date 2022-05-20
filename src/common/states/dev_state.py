@@ -1,4 +1,12 @@
+"""
+common > states > dev_state
 
+Contains the abstract DeviceState base class, for script states that require
+a device to be detected in order to run properly.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 from abc import abstractmethod
 from . import IScriptState
 from typing import TYPE_CHECKING

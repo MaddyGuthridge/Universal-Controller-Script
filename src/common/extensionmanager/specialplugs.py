@@ -1,6 +1,13 @@
+"""
+common > extensionmanager > specialplugs
+
+Contains the definition for the SpecialPluginCollection class
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from typing import TYPE_CHECKING
-
 
 if TYPE_CHECKING:
     from plugs import SpecialPlugin
@@ -8,6 +15,8 @@ if TYPE_CHECKING:
 
 
 class SpecialPluginCollection:
+    """Collection of special plugins registered to the script.
+    """
     def __init__(self) -> None:
         self.__types: list[type['SpecialPlugin']] = []
         self.__instantiated: dict[type['SpecialPlugin'], 'SpecialPlugin'] = {}

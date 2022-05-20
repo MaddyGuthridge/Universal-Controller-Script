@@ -1,4 +1,8 @@
+"""
+common > states > not_recognised
 
+The state for when the script failed to recognise the connected device.
+"""
 import ui
 from common import log, verbosity, consts
 from common.types import EventData

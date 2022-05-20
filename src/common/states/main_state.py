@@ -3,6 +3,9 @@ common > mainstate
 
 Represents the script in its main state, where the device is recognised and
 behaving as expected.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 import plugins
@@ -13,7 +16,7 @@ from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
 from common.types import EventData
 from common.util.events import eventToString
-from .devstate import DeviceState
+from .dev_state import DeviceState
 
 if TYPE_CHECKING:
     from devices import Device

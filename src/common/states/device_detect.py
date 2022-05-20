@@ -1,5 +1,5 @@
 """
-common > devicedetect
+common > device_detect
 
 Contains the definition for the device detection state of the script, as well
 as the device not recognised state of the script.

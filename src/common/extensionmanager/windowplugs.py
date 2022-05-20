@@ -1,6 +1,13 @@
+"""
+common > extensionmanager > windowplugs
+
+Contains the definition for the WindowPluginCollection class
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from typing import TYPE_CHECKING, Optional
-
 
 if TYPE_CHECKING:
     from plugs import WindowPlugin
@@ -9,6 +16,8 @@ if TYPE_CHECKING:
 
 
 class WindowPluginCollection:
+    """Collection of window plugins registered to the script
+    """
     def __init__(self) -> None:
         self.__mappings: dict[WindowIndex, type['WindowPlugin']] = {}
         self.__instantiated: dict[WindowIndex, 'WindowPlugin'] = {}

@@ -2,6 +2,9 @@
 common > profiler > manager
 
 Contains the profiler manager
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 from typing import Optional
@@ -16,7 +19,8 @@ class ProfileNode:
     """
     A node in the profiler
 
-    Manages our position in the profile
+    Manages our position in the profile by allowing us to build a stack of
+    profiler nodes.
     """
     def __init__(self, parent: Optional['ProfileNode'], name: str):
         """
@@ -69,7 +73,10 @@ class ProfileNode:
 
 class ProfilerManager:
     """
-    Class for managing profiles
+    Class for managing profiles.
+
+    It is called upon by profiler context managers in order to manage
+    profiling.
     """
     @staticmethod
     def _getProfileName(n: ProfileNode) -> str:

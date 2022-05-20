@@ -3,6 +3,9 @@ common > forwardstate
 
 Represents the forwarder script in its main state, where the device is
 recognised and behaving as expected. Events are forwarded to the main script.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 from typing import TYPE_CHECKING
@@ -20,7 +23,7 @@ from common.util.events import (
     isEventForwarded,
     isEventForwardedHereFrom
 )
-from .devstate import DeviceState
+from .dev_state import DeviceState
 
 if TYPE_CHECKING:
     from devices import Device

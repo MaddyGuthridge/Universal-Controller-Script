@@ -12,7 +12,7 @@ __all__ = [
     'log'
 ]
 
-from .logitem import LogItem
+from .log_item import LogItem
 from .verbosity import Verbosity, DEFAULT, ERROR, NOTE
 
 from ..util.misc import NoneNoPrintout

@@ -1,8 +1,8 @@
 """
 common > extensionmanager
 
-Contains the static class for registering extensions to the script,
-including device and plugin definitions.
+Contains the static class for registering extensions to the script, including
+device and plugin definitions.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]

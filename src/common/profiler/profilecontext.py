@@ -2,6 +2,9 @@
 common > profiler > profilecontext
 
 Context manager definition for profiler
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
 import common

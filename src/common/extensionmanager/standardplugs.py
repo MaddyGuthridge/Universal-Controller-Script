@@ -1,6 +1,13 @@
+"""
+common > extensionmanager > standardplugs
+
+Contains the definition for the StandardPluginCollection class
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+"""
 
 from typing import TYPE_CHECKING, Optional
-
 
 if TYPE_CHECKING:
     from plugs import StandardPlugin
@@ -8,6 +15,8 @@ if TYPE_CHECKING:
 
 
 class StandardPluginCollection:
+    """Collection of standard plugins registered to the script
+    """
     def __init__(self) -> None:
         self.__mappings: dict[str, type['StandardPlugin']] = {}
         self.__instantiated: dict[str, 'StandardPlugin'] = {}
