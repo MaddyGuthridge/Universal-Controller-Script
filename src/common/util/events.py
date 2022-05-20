@@ -7,7 +7,7 @@ Contains useful functions for operating on events.
 from typing import TYPE_CHECKING
 import common
 import device
-from common.types.eventdata import EventData, isEventStandard, isEventSysex
+from common.types.event_data import EventData, isEventStandard, isEventSysex
 from common.exceptions import (
     EventEncodeError,
     EventInspectError,

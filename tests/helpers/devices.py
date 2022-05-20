@@ -4,13 +4,13 @@ tests > helpers > devices
 Helper code for testing with devices
 """
 from typing import Optional
-from common.contextmanager import getContext, unsafeResetContext
-from controlsurfaces.eventpatterns import IEventPattern, BasicPattern
-from common.types.eventdata import EventData
+from common.context_manager import getContext, unsafeResetContext
+from control_surfaces.event_patterns import IEventPattern, BasicPattern
+from common.types.event_data import EventData
 from devices import Device, BasicControlMatcher
-from devices.controlgenerators import NoteMatcher
-from controlsurfaces import Fader, PlayButton, LoopButton, ControlSurface
-from controlsurfaces.valuestrategies import Data2Strategy, ButtonData2Strategy
+from devices.control_generators import NoteMatcher
+from control_surfaces import Fader, PlayButton, LoopButton, ControlSurface
+from control_surfaces.value_strategies import Data2Strategy, ButtonData2Strategy
 
 __all__ = [
     'DummyDevice',

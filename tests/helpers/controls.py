@@ -3,10 +3,10 @@ tests > helpers > controls
 
 Helper code for testing with control surfaces
 """
-from controlsurfaces.eventpatterns import BasicPattern
-from controlsurfaces.valuestrategies import Data2Strategy
+from control_surfaces.event_patterns import BasicPattern
+from control_surfaces.value_strategies import Data2Strategy
 
-from controlsurfaces import ControlSurface
+from control_surfaces import ControlSurface
 
 
 class SimpleControl(ControlSurface):

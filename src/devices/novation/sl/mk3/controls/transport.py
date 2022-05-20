@@ -4,8 +4,8 @@ devices > novation > sl > mk3 > controls > transport
 Definitions for transport controls shared between Launchkey devices
 """
 
-from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
-from controlsurfaces import (
+from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
+from control_surfaces import (
     DirectionNext,
     DirectionPrevious,
     FastForwardButton,
@@ -15,11 +15,11 @@ from controlsurfaces import (
     RewindButton,
     StopButton,
 )
-from controlsurfaces.valuestrategies import (
+from control_surfaces.value_strategies import (
     ButtonData2Strategy,
     ForwardedStrategy,
 )
-from .slcolorsurface import SlColorSurface
+from .sl_color_surface import SlColorSurface
 
 __all__ = [
     'SlDirectionNext',

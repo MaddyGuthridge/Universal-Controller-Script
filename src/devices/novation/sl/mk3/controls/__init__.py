@@ -6,7 +6,7 @@ __all__ = [
     'SlNotifMsg',
 ]
 
-from .slcolorsurface import SlColorSurface
-from .drumpad import SlDrumPadMatcher
+from .sl_color_surface import SlColorSurface
+from .drum_pad import SlDrumPadMatcher
 from .fader import SlFaderSet
-from .notifmsg import SlNotifMsg
+from .notif_msg import SlNotifMsg

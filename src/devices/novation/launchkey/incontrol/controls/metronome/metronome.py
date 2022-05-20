@@ -7,11 +7,11 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from controlsurfaces.eventpatterns import ForwardedPattern,  NotePattern
+from control_surfaces.event_patterns import ForwardedPattern,  NotePattern
 from common.types import Color
-from controlsurfaces.valuestrategies import NoteStrategy, ForwardedStrategy
-from controlsurfaces import MetronomeButton
-from ..incontrolsurface import ColorInControlSurface
+from control_surfaces.value_strategies import NoteStrategy, ForwardedStrategy
+from control_surfaces import MetronomeButton
+from ..incontrol_surface import ColorInControlSurface
 
 
 class LkMetronomeButton(ColorInControlSurface, MetronomeButton):

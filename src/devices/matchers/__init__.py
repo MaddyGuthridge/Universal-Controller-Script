@@ -11,7 +11,7 @@ __all__ = [
     'ShiftMatcher',
 ]
 
-from .controlmatcher import IControlMatcher
-from .basicmatcher import BasicControlMatcher
-from .indexedmatcher import IndexedMatcher
-from .shiftmatcher import ShiftMatcher
+from .control_matcher import IControlMatcher
+from .basic_matcher import BasicControlMatcher
+from .indexed_matcher import IndexedMatcher
+from .shift_matcher import ShiftMatcher

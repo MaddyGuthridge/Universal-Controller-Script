@@ -2,9 +2,9 @@
 __all__ = [
     'fl',
     'spitfire',
-    'matttytel',
+    'matt_tytel',
 ]
 
 from . import fl
 from . import spitfire
-from . import matttytel
+from . import matt_tytel

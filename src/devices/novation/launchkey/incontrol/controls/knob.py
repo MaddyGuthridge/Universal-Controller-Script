@@ -4,9 +4,9 @@ devices > novation > incontrol > controls > knob
 Definitions for knob controls shared between Launchkey devices
 """
 
-from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
-from controlsurfaces import Knob
-from controlsurfaces.valuestrategies import (
+from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
+from control_surfaces import Knob
+from control_surfaces.value_strategies import (
     Data2Strategy,
     ForwardedStrategy,
 )

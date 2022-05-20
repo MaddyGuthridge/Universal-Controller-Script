@@ -1,4 +1,4 @@
 
-__all__ = ['nanokontrol']
+__all__ = ['nano_kontrol']
 
-from . import nanokontrol
+from . import nano_kontrol

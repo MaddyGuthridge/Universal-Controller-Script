@@ -4,11 +4,11 @@ import ui
 import playlist
 import transport
 import general
-from common.extensionmanager import ExtensionManager
-from common.util.apifixes import UnsafeIndex, getSelectedPlaylistTrack
-from controlsurfaces import consts
-from controlsurfaces import ControlShadowEvent
-from controlsurfaces import MoveJogWheel, StandardJogWheel, JogWheel
+from common.extension_manager import ExtensionManager
+from common.util.api_fixes import UnsafeIndex, getSelectedPlaylistTrack
+from control_surfaces import consts
+from control_surfaces import ControlShadowEvent
+from control_surfaces import MoveJogWheel, StandardJogWheel, JogWheel
 from devices import DeviceShadow
 from plugs import WindowPlugin
 

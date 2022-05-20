@@ -1,12 +1,12 @@
 
 from typing import Any
 from common.types import Color
-from common.util.apifixes import UnsafeIndex
-from controlsurfaces import ControlEvent, ControlSwitchButton
-from controlsurfaces.controlmapping import ControlShadowEvent
+from common.util.api_fixes import UnsafeIndex
+from control_surfaces import ControlEvent, ControlSwitchButton
+from control_surfaces.control_mapping import ControlShadowEvent
 from devices import DeviceShadow
 from plugs import Plugin
-from plugs.eventfilters.filters import filterButtonLift
+from plugs.event_filters.filters import filterButtonLift
 
 
 class PluginPager:

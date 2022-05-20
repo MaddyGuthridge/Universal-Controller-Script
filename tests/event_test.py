@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge
 """
 
-from common.types.eventdata import (
+from common.types.event_data import (
     EventData,
     isEventStandard,
     isEventSysex

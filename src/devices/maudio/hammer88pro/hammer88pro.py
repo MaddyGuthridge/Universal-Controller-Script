@@ -12,17 +12,17 @@ from typing import Optional
 import device
 
 from common import getContext
-from controlsurfaces.eventpatterns import (
+from control_surfaces.event_patterns import (
     BasicPattern,
     ForwardedPattern,
     ForwardedUnionPattern,
     NotePattern,
 )
-from common.extensionmanager import ExtensionManager
+from common.extension_manager import ExtensionManager
 from common.types import EventData
 from devices import Device, BasicControlMatcher
-from devices.controlgenerators import NoteMatcher, PedalMatcher
-from controlsurfaces import (
+from devices.control_generators import NoteMatcher, PedalMatcher
+from control_surfaces import (
     NullEvent,
     Fader,
     MasterFader,
@@ -45,7 +45,7 @@ from controlsurfaces import (
     ArmButton,
     SelectButton,
 )
-from controlsurfaces.valuestrategies import (
+from control_surfaces.value_strategies import (
     ForwardedStrategy,
     ForwardedUnionStrategy,
     ButtonData2Strategy,
@@ -53,8 +53,8 @@ from controlsurfaces.valuestrategies import (
     NoteStrategy,
 )
 
-from .hammerpitch import HammerPitchWheel
-from .jogmatcher import JogMatcher
+from .hammer_pitch import HammerPitchWheel
+from .jog_matcher import JogMatcher
 
 
 class Hammer88Pro(Device):

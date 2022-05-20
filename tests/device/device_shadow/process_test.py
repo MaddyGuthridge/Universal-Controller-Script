@@ -6,7 +6,7 @@ Tests to ensure device shadows bind controls correctly
 
 # import pytest
 # from common.types import EventData
-from controlsurfaces import (
+from control_surfaces import (
     ControlEvent,
     PlayButton,
 )

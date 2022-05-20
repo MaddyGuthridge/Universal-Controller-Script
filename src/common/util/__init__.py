@@ -8,13 +8,13 @@ Authors:
 """
 
 __all__ = [
-    'dicttools',
-    'hotreload',
-    'consolehelpers',
-    'apifixes'
+    'dict_tools',
+    'hot_reload',
+    'console_helpers',
+    'api_fixes'
 ]
 
-from . import dicttools
-from . import hotreload
-from . import consolehelpers
-from . import apifixes
+from . import dict_tools
+from . import hot_reload
+from . import console_helpers
+from . import api_fixes

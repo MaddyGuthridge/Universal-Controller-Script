@@ -16,7 +16,7 @@ __all__ = [
     'PluginPager',
 ]
 
-from .mappingstrategies import (
+from .mapping_strategies import (
     IMappingStrategy,
     NoteStrategy,
     PedalStrategy,

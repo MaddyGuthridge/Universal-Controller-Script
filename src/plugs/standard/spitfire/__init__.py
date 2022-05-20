@@ -1,6 +1,6 @@
 
 __all__ = [
-    'spitfiregeneric'
+    'spitfire_generic'
 ]
 
-from . import spitfiregeneric
+from . import spitfire_generic

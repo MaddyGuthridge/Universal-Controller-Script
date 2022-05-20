@@ -15,7 +15,7 @@ import device
 import common
 from common.logger import log
 from common.types import EventData
-from common.types.eventdata import isEventStandard, isEventSysex
+from common.types.event_data import isEventStandard, isEventSysex
 from common.util.events import (
     decodeForwardedEvent,
     eventToString,

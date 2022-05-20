@@ -10,9 +10,9 @@ Authors:
 from typing import Any
 from time import time
 from common.types import Color
-from common.extensionmanager import ExtensionManager
-from common.util.apifixes import UnsafeIndex
-from controlsurfaces import (
+from common.extension_manager import ExtensionManager
+from common.util.api_fixes import UnsafeIndex
+from control_surfaces import (
     DrumPad,
     Button,
     Note,
@@ -23,7 +23,7 @@ from controlsurfaces import (
     PitchWheel,
     ControlSurface,
 )
-from controlsurfaces import ControlShadow, ControlShadowEvent
+from control_surfaces import ControlShadow, ControlShadowEvent
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 

@@ -5,7 +5,7 @@ Tests to ensure device shadows bind controls correctly
 """
 
 from common.types import EventData
-from controlsurfaces import Note, PlayButton, Fader
+from control_surfaces import Note, PlayButton, Fader
 from tests.helpers.devices import DummyDevice
 
 

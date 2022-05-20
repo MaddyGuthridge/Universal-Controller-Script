@@ -4,12 +4,12 @@ devices > novation > launchkey > mk3_mini > shift
 Definition for shifted controls for Launchkey Mini Mk3
 """
 
-from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
-from controlsurfaces.valuestrategies import (
+from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
+from control_surfaces.value_strategies import (
     ButtonData2Strategy,
     ForwardedStrategy,
 )
-from controlsurfaces import (
+from control_surfaces import (
     NullEvent,
     CaptureMidiButton,
 )

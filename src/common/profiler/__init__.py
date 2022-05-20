@@ -10,5 +10,5 @@ __all__ = [
     'ProfilerManager',
 ]
 
-from .profilecontext import ProfilerContext, profilerDecoration
+from .profiler_context import ProfilerContext, profilerDecoration
 from .manager import ProfilerManager

@@ -4,20 +4,20 @@ devices > novation > incontrol > controls > transport > mk3
 Definitions for transport controls used by Launchkey Mk3 Launchkey devices
 """
 
-from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
-from controlsurfaces import (
+from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
+from control_surfaces import (
     LoopButton,
     StopButton,
     PlayButton,
     RecordButton,
     CaptureMidiButton,
 )
-from controlsurfaces.valuestrategies import (
+from control_surfaces.value_strategies import (
     ButtonData2Strategy,
     ForwardedStrategy,
 )
-from ..incontrolsurface import GrayscaleInControlSurface
-from ...colors.greyscale import COLORS
+from ..incontrol_surface import GrayscaleInControlSurface
+from ...colors.grayscale import COLORS
 
 __all__ = [
     'LkMk3LoopButton',

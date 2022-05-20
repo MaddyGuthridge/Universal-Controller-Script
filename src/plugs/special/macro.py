@@ -12,10 +12,10 @@ import general
 import transport
 from typing import Any
 
-from common.extensionmanager import ExtensionManager
+from common.extension_manager import ExtensionManager
 from common import getContext
-from common.util.apifixes import UnsafeIndex
-from controlsurfaces import (
+from common.util.api_fixes import UnsafeIndex
+from control_surfaces import (
     ControlShadowEvent,
     UndoButton,
     RedoButton,
@@ -31,7 +31,7 @@ from controlsurfaces import (
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
-from plugs.eventfilters import filterButtonLift
+from plugs.event_filters import filterButtonLift
 
 
 class Macro(SpecialPlugin):

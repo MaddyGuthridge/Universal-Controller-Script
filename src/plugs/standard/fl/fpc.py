@@ -3,13 +3,13 @@ import plugins
 import channels
 from typing import Any
 from common.types import Color
-from common.extensionmanager import ExtensionManager
-from common.util.apifixes import GeneratorIndex
-from controlsurfaces import DrumPad, Note
-from controlsurfaces import ControlShadowEvent
+from common.extension_manager import ExtensionManager
+from common.util.api_fixes import GeneratorIndex
+from control_surfaces import DrumPad, Note
+from control_surfaces import ControlShadowEvent
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs import eventfilters, tickfilters
+from plugs import event_filters, tick_filters
 
 
 class FPC(StandardPlugin):
@@ -45,7 +45,7 @@ class FPC(StandardPlugin):
     def getPlugIds() -> tuple[str, ...]:
         return ("FPC",)
 
-    @tickfilters.toGeneratorIndex
+    @tick_filters.toGeneratorIndex
     def tick(self, index: GeneratorIndex):
         for p in self._pads:
             p.color = Color.fromInteger(
@@ -86,7 +86,7 @@ class FPC(StandardPlugin):
             note = note >> 16
         channels.midiNoteOn(ch_idx, note, int(control.value*127))
 
-    @eventfilters.toGeneratorIndex
+    @event_filters.toGeneratorIndex
     def drumPad4x8(
         self,
         control: ControlShadowEvent,
@@ -100,7 +100,7 @@ class FPC(StandardPlugin):
         self.triggerPad(self._coordToIndex(row, col), control, *index)
         return True
 
-    @eventfilters.toGeneratorIndex
+    @event_filters.toGeneratorIndex
     def drumPad4x4(
         self,
         control: ControlShadowEvent,
@@ -114,7 +114,7 @@ class FPC(StandardPlugin):
         self.triggerPad(self._coordToIndex(row, col), control, *index)
         return True
 
-    @eventfilters.toGeneratorIndex
+    @event_filters.toGeneratorIndex
     def drumPad2x8(
         self,
         control: ControlShadowEvent,
@@ -128,7 +128,7 @@ class FPC(StandardPlugin):
         self.triggerPad(self._coordToIndex(row, col), control, *index)
         return True
 
-    @eventfilters.toGeneratorIndex
+    @event_filters.toGeneratorIndex
     def noteEvent(
         self,
         control: ControlShadowEvent,

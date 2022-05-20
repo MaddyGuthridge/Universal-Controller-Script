@@ -4,11 +4,11 @@ devices > novation > sl > mk3 > fader
 Definitions for fader controls used by the SL Mk3 device
 """
 
-from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
-from controlsurfaces import (
+from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
+from control_surfaces import (
     Fader,
 )
-from controlsurfaces.valuestrategies import (
+from control_surfaces.value_strategies import (
     Data2Strategy,
     ForwardedStrategy,
 )
@@ -16,7 +16,7 @@ from devices.matchers import (
     BasicControlMatcher,
     IndexedMatcher
 )
-from .slcolorsurface import SlColorSurface
+from .sl_color_surface import SlColorSurface
 
 __all__ = [
     'SlFader',

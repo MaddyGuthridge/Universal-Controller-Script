@@ -20,7 +20,7 @@ import fl_typing
 # Get context, and context reset wrapper
 from common import getContext, catchContextResetException, getVersionString
 # Function to allow user to reset context
-from common.contextmanager import unsafeResetContext as reset
+from common.context_manager import unsafeResetContext as reset
 # Import constants and logger
 from common import consts, log, verbosity, ExtensionManager
 # Import verbosities
@@ -31,7 +31,7 @@ from common.util.events import eventToString
 from common.states import WaitingForDevice, MainState
 
 # Import console helpers
-from common.util.consolehelpers import *
+from common.util.console_helpers import *
 
 
 class OverallDevice:

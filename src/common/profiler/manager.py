@@ -10,7 +10,7 @@ Authors:
 from typing import Optional
 import time
 
-from common.util.consolehelpers import NoneNoPrintout
+from common.util.console_helpers import NoneNoPrintout
 
 MAX_NAME = 48
 

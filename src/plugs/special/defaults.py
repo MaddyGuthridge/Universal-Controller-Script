@@ -9,10 +9,10 @@ Authors:
 
 from typing import Any
 import ui
-from common.extensionmanager import ExtensionManager
-from controlsurfaces import consts
-from controlsurfaces import ControlShadowEvent
-from controlsurfaces import (
+from common.extension_manager import ExtensionManager
+from control_surfaces import consts
+from control_surfaces import ControlShadowEvent
+from control_surfaces import (
     MoveJogWheel,
     ShiftedJogWheel,
     StandardJogWheel,
@@ -20,7 +20,7 @@ from controlsurfaces import (
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
-from plugs.mappingstrategies import (
+from plugs.mapping_strategies import (
     PedalStrategy,
     WheelStrategy,
     NoteStrategy,

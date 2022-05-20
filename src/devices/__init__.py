@@ -17,7 +17,7 @@ __all__ = [
 
 from .matchers import IControlMatcher, BasicControlMatcher
 from .device import Device
-from .deviceshadow import DeviceShadow, EventCallback
+from .device_shadow import DeviceShadow, EventCallback
 
 # Device manufacturers
 from . import (

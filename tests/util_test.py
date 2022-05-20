@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au]
 """
 
-from common.util.dicttools import (
+from common.util.dict_tools import (
     recursiveMergeDictionaries,
     expandDictShorthand
 )

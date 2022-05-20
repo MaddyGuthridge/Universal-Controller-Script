@@ -2,7 +2,7 @@
 __all__ = [
     'fpc',
     'flex',
-    'parametriceq',
+    'parametric_eq',
     'transistor_bass',
     'harmless',
 ]
@@ -10,7 +10,7 @@ __all__ = [
 from . import (
     fpc,
     flex,
-    parametriceq,
+    parametric_eq,
     transistor_bass,
     harmless,
 )

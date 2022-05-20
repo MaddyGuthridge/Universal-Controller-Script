@@ -19,8 +19,8 @@ Authors:
 import fl_typing
 
 from common import consts
-from common.contextmanager import catchContextResetException
-from common.extensionmanager import ExtensionManager
+from common.context_manager import catchContextResetException
+from common.extension_manager import ExtensionManager
 from common.states import WaitingForDevice, ForwardState
 
 from common import log, verbosity

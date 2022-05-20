@@ -14,9 +14,9 @@ __all__ = [
 
 from typing import Any
 
-from .util import dicttools, hotreload
+from .util import dict_tools, hot_reload
 
-from . import defaultconfig as d
+from . import default_config as d
 
 
 class Settings:
@@ -33,9 +33,9 @@ class Settings:
         Initialise and load the script's settings
         """
 
-        c = hotreload.getTemporaryModule('config')
-        config = dicttools.expandDictShorthand(c.CONFIG)
-        self._settings_dict = dicttools.recursiveMergeDictionaries(
+        c = hot_reload.getTemporaryModule('config')
+        config = dict_tools.expandDictShorthand(c.CONFIG)
+        self._settings_dict = dict_tools.recursiveMergeDictionaries(
             d.CONFIG, config)
 
     @staticmethod

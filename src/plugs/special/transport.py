@@ -12,9 +12,9 @@ import ui
 
 from typing import Any
 
-from common.extensionmanager import ExtensionManager
+from common.extension_manager import ExtensionManager
 from common.types import Color
-from controlsurfaces import (
+from control_surfaces import (
     ControlShadowEvent,
     NullEvent,
     PlayButton,
@@ -34,10 +34,10 @@ from controlsurfaces import (
     MetronomeButton,
     HintMsg,
 )
-from controlsurfaces.controlshadow import ControlShadow
+from control_surfaces.control_shadow import ControlShadow
 from devices import DeviceShadow
 from plugs import SpecialPlugin
-from plugs.eventfilters import filterButtonLift
+from plugs.event_filters import filterButtonLift
 
 # Constants
 FAST_FORWARDING = 1

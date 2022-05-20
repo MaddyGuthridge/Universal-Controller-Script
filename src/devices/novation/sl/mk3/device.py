@@ -11,15 +11,15 @@ from typing import Optional
 
 import device
 
-from controlsurfaces.eventpatterns import BasicPattern
-from common.extensionmanager import ExtensionManager
+from control_surfaces.event_patterns import BasicPattern
+from common.extension_manager import ExtensionManager
 from common.types import EventData
-from controlsurfaces import (
+from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
 )
 from devices import BasicControlMatcher, Device
-from devices.controlgenerators import NoteMatcher
+from devices.control_generators import NoteMatcher
 # from devices.novation.incontrol import (
 #     InControl,
 #     InControlMatcher,

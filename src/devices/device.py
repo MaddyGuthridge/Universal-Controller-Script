@@ -10,12 +10,12 @@ Authors:
 # from __future__ import annotations
 
 from typing import Optional, final
-from common.util.abstractmethoderror import AbstractMethodError
-from controlsurfaces.eventpatterns import IEventPattern
+from common.util.abstract_method_error import AbstractMethodError
+from control_surfaces.event_patterns import IEventPattern
 from common.types import EventData
-from controlsurfaces import ControlShadow
+from control_surfaces import ControlShadow
 
-from controlsurfaces import ControlEvent
+from control_surfaces import ControlEvent
 from devices import IControlMatcher
 from abc import abstractmethod
 

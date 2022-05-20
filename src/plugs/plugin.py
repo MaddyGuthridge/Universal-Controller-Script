@@ -10,11 +10,11 @@ Authors:
 
 from typing import final
 from common import log, verbosity
-from common.util.abstractmethoderror import AbstractMethodError
-from common.util.apifixes import UnsafeIndex, WindowIndex
-from controlsurfaces import ControlEvent
+from common.util.abstract_method_error import AbstractMethodError
+from common.util.api_fixes import UnsafeIndex, WindowIndex
+from control_surfaces import ControlEvent
 from devices import DeviceShadow
-from plugs.mappingstrategies import IMappingStrategy
+from plugs.mapping_strategies import IMappingStrategy
 from abc import abstractmethod
 
 

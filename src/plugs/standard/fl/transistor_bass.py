@@ -1,9 +1,9 @@
 
 from common.types import Color
-from common.extensionmanager import ExtensionManager
+from common.extension_manager import ExtensionManager
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.mappingstrategies import SimpleFaders
+from plugs.mapping_strategies import SimpleFaders
 
 PARAMS = [0, 1, 2, 4, 5, 6, 7, 8]
 

@@ -1,10 +1,10 @@
 
-from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
-from controlsurfaces.valuestrategies import (
+from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
+from control_surfaces.value_strategies import (
     ButtonData2Strategy,
     ForwardedStrategy
 )
-from controlsurfaces import (
+from control_surfaces import (
     DirectionUp,
     DirectionDown,
     DirectionLeft,
@@ -12,7 +12,7 @@ from controlsurfaces import (
 )
 from .. import ColorInControlSurface, GrayscaleInControlSurface
 from ...colors.mk3 import COLORS
-from ...colors.greyscale import COLORS as GRAYSCALE
+from ...colors.grayscale import COLORS as GRAYSCALE
 
 
 class MiniMk3DirectionUp(ColorInControlSurface, DirectionUp):

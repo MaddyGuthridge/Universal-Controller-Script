@@ -45,7 +45,7 @@ __all__ = [
     'Mk3DirectionDown',
 ]
 
-from .incontrolsurface import ColorInControlSurface, GrayscaleInControlSurface
+from .incontrol_surface import ColorInControlSurface, GrayscaleInControlSurface
 from .transport import (
     LkDirectionNext,
     LkDirectionPrevious,
@@ -63,7 +63,7 @@ from .transport import (
     LkQuantizeButton,
     LkUndoRedoButton,
 )
-from .drumpad import (
+from .drum_pad import (
     LkMk2DrumPad,
     LkMk3DrumPad,
     LkDrumPadMatcher,
@@ -83,7 +83,7 @@ from .metronome import (
     LkMk2MetronomeButton,
     LkMk3MetronomeButton,
 )
-from .controlswitch import (
+from .control_switch import (
     LkMk2ControlSwitchButton,
     LkMk3ControlSwitchButton,
 )

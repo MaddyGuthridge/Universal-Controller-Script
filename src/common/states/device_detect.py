@@ -16,7 +16,7 @@ import common
 from common.consts import UNIVERSAL_DEVICE_ENQUIRY
 from common.exceptions import DeviceRecogniseError
 from common import log, verbosity
-from common.types.eventdata import isEventSysex, EventData
+from common.types.event_data import isEventSysex, EventData
 from common.util.events import eventToString
 
 from . import IScriptState, DeviceNotRecognised, DeviceState

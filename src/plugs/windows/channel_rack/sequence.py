@@ -2,9 +2,9 @@ from typing import Any
 import channels
 import ui
 from common.types.color import Color
-from common.util.apifixes import UnsafeIndex
-from controlsurfaces import ControlShadowEvent
-from controlsurfaces import (
+from common.util.api_fixes import UnsafeIndex
+from control_surfaces import ControlShadowEvent
+from control_surfaces import (
     DrumPad,
     DirectionLeft,
     DirectionRight,
@@ -15,7 +15,7 @@ from controlsurfaces import (
 )
 from devices import DeviceShadow
 from plugs import WindowPlugin
-from plugs.eventfilters import filterButtonLift
+from plugs.event_filters import filterButtonLift
 from .helpers import INDEX
 
 # How many steps should be scrolled each time

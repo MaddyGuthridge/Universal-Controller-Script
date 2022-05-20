@@ -4,15 +4,15 @@ import ui
 import mixer
 from common import getContext
 from common.types import Color
-from common.extensionmanager import ExtensionManager
-from common.util.apifixes import (
+from common.extension_manager import ExtensionManager
+from common.util.api_fixes import (
     UnsafeIndex,
     getSelectedMixerTracks,
 )
 from common.util.snap import snap
-from controlsurfaces import consts
-from controlsurfaces import ControlShadowEvent
-from controlsurfaces import (  # noqa: F401
+from control_surfaces import consts
+from control_surfaces import ControlShadowEvent
+from control_surfaces import (  # noqa: F401
     JogWheel,
     StandardJogWheel,
     Fader,
@@ -26,7 +26,7 @@ from controlsurfaces import (  # noqa: F401
     SelectButton,
 )
 from devices import DeviceShadow
-from plugs.eventfilters import filterButtonLift
+from plugs.event_filters import filterButtonLift
 from plugs import WindowPlugin
 
 INDEX = 0

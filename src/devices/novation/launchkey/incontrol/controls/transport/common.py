@@ -4,8 +4,8 @@ devices > novation > incontrol > controls > transport > common
 Definitions for transport controls shared between Launchkey devices
 """
 
-from controlsurfaces.eventpatterns import BasicPattern, ForwardedPattern
-from controlsurfaces import (
+from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
+from control_surfaces import (
     DirectionNext,
     DirectionPrevious,
     FastForwardButton,
@@ -13,7 +13,7 @@ from controlsurfaces import (
     QuantizeButton,
     UndoRedoButton,
 )
-from controlsurfaces.valuestrategies import (
+from control_surfaces.value_strategies import (
     ButtonData2Strategy,
     ForwardedStrategy,
 )

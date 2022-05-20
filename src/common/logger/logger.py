@@ -67,7 +67,7 @@ class Log:
         import common
         try:
             context = common.getContext()
-        except common.contextmanager.MissingContextException:
+        except common.context_manager.MissingContextException:
             verbosity = DEFAULT
         else:
             if verbosity is None:
@@ -108,7 +108,7 @@ class Log:
             verbosity = common.getContext().settings.get(
                 "logger.critical_verbosity"
             )
-        except common.contextmanager.MissingContextException:
+        except common.context_manager.MissingContextException:
             verbosity = ERROR
         return item.verbosity <= verbosity
 
@@ -257,7 +257,7 @@ class Log:
             discarded = common.getContext().settings.get(
                 "logger.discard_verbosity"
             )
-        except common.contextmanager.MissingContextException:
+        except common.context_manager.MissingContextException:
             discarded = NOTE
         if verbosity > discarded:
             return

@@ -1,7 +1,7 @@
 import channels
 
-from common.contextmanager import getContext
-from controlsurfaces import ControlShadow, DrumPad
+from common.context_manager import getContext
+from control_surfaces import ControlShadow, DrumPad
 
 INDEX = 1
 
