@@ -18,7 +18,7 @@ INCONTROL_MATCH = ForwardedPattern(
 INCONTROL_ENABLE = EventData(0x9F, 0x0C, 0x7F)
 INCONTROL_DISABLE = EventData(0x9F, 0x0C, 0x00)
 
-# Patterns for recognising and managing InControl buttons
+# Patterns for recognizing and managing InControl buttons
 FADERS_BUTTON = ForwardedPattern(2, BasicPattern(0x9F, 0x0E, 0x00))
 FADERS_RESPONSE = EventData(0x9F, 0x0E, 0x7F)
 KNOBS_BUTTON = ForwardedPattern(2, BasicPattern(0x9F, 0x0D, 0x00))

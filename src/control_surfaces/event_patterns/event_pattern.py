@@ -1,5 +1,5 @@
 """
-common > eventpattern > ieventpattern
+common > event_pattern > event_pattern
 
 Contains the definition for IEventPattern, the interface that all event
 patterns must inherit from.

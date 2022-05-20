@@ -1,7 +1,7 @@
 """
-common > eventpattern > basicpattern
+common > event_pattern > basic_pattern
 
-Contains a basic pattern for recognising MIDI events.
+Contains a basic pattern for recognizing MIDI events.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]

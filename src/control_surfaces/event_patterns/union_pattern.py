@@ -1,5 +1,5 @@
 """
-common > eventpattern > unionpattern
+common > event_pattern > union_pattern
 
 Contains the definition for the union type event pattern, which allows events
 to be detected if they match any of a number of patterns.

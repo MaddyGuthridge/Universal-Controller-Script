@@ -80,7 +80,7 @@ class ControlShadow(IControlShadow):
         """
         Create an event object
 
-        This should be called when recognising an event
+        This should be called when recognizing an event
 
         ### Args:
         * `control` (`ControlSurface`): control associated with this event

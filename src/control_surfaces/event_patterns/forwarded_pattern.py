@@ -1,5 +1,5 @@
 """
-common > eventpattern > forwardedpattern
+common > event_pattern > forwarded_pattern
 
 Contains the definition for the ForwardedPattern class
 
@@ -22,8 +22,7 @@ class ForwardedPattern(IEventPattern):
     pattern.
 
     This allows events to all be processed on the same script, which massively
-    simplifies things. Refer to device_eventforward.py for a reference on
-    how the event is stored.
+    simplifies things. Refer to docs/contributing/devices/event_forward.md
     """
 
     def __init__(self, device_num: int, pattern: IEventPattern) -> None:

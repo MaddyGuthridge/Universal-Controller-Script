@@ -18,7 +18,8 @@ __all__ = [
     'ForwardedPattern',
     'ForwardedUnionPattern',
     'NullPattern',
-    'NotePattern'
+    'NotePattern',
+    'fulfil',
 ]
 
 from .byte_match import ByteMatch, fromNibbles
@@ -28,3 +29,4 @@ from .basic_pattern import BasicPattern
 from .forwarded_pattern import ForwardedPattern, ForwardedUnionPattern
 from .null_pattern import NullPattern
 from .note_pattern import NotePattern
+from .fulfil import fulfil

@@ -72,7 +72,7 @@ class ControlSurface:
         Create a ControlSurface
 
         ### Args:
-        * `event_pattern` (`IEventPattern`): pattern to use when recognising
+        * `event_pattern` (`IEventPattern`): pattern to use when recognizing
           the event
         * `value_strategy` (`IValueStrategy`): strategy for getting values from
           events

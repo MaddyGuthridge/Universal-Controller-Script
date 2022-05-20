@@ -1,5 +1,5 @@
 """
-common > eventpattern > notepattern
+common > event_pattern > note_pattern
 
 Contains the definition for the NotePattern class
 

@@ -1,5 +1,5 @@
 """
-common > eventpattern > bytematch
+common > event_pattern > byte_match
 
 Contains the definition for the byte-match type expression, as well as helper
 functions for creating event patterns.
