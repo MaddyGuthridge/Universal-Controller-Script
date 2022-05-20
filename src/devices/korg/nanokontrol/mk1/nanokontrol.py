@@ -128,4 +128,4 @@ class NanoKontrol(Device):
         return "Korg.NanoKontrol.Mk1"
 
 
-ExtensionManager.registerDevice(NanoKontrol)
+ExtensionManager.devices.register(NanoKontrol)

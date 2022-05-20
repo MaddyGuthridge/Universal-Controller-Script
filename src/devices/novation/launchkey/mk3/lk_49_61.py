@@ -133,4 +133,4 @@ class LaunchkeyMk3_49_61(Device):
 
 
 # Register devices
-ExtensionManager.registerDevice(LaunchkeyMk3_49_61)
+ExtensionManager.devices.register(LaunchkeyMk3_49_61)

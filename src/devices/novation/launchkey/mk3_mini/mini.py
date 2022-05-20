@@ -106,4 +106,4 @@ class LaunchkeyMiniMk3(Device):
 
 
 # Register devices
-ExtensionManager.registerDevice(LaunchkeyMiniMk3)
+ExtensionManager.devices.register(LaunchkeyMiniMk3)

@@ -161,4 +161,6 @@ class MyController(Device):
         # In non-standard devices, this function can be used as a backup
         # system, by using an expression such as the following:
         return name == "My Controller"
+
+ExtensionManager.devices.register(MyController)
 ```

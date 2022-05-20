@@ -8,10 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from typing import TYPE_CHECKING, Optional, overload
-
-from common.exceptions import DeviceRecogniseError
-from common.types.eventdata import EventData
+from typing import TYPE_CHECKING
 from common.util.consolehelpers import printReturn
 
 if TYPE_CHECKING:
@@ -21,6 +18,7 @@ if TYPE_CHECKING:
 from .standardplugs import StandardPluginCollection
 from .specialplugs import SpecialPluginCollection
 from .windowplugs import WindowPluginCollection
+from .devices import DeviceCollection
 
 
 # TODO: Clean up this awfulness - so much repeated code
@@ -47,104 +45,13 @@ class ExtensionManager:
     # Final special plugins
     final = SpecialPluginCollection()
 
-    _devices: list[type['Device']] = []
+    # Devices
+    devices = DeviceCollection()
 
     def __init__(self) -> None:
         raise TypeError(
             "ExtensionManager is a static class and cannot be instantiated."
         )
-
-    @classmethod
-    def registerDevice(cls, device: type['Device']) -> None:
-        """
-        Register a device type
-
-        This should be called after defining the class object for a device, so
-        that the class can be instantiated if the device is recognised.
-
-        ### Args:
-        * `device` (`type`, extends `device`): class to register
-
-        ### Example Usage
-        ```py
-        # Create a device
-        class MyDevice(Device):
-            ...
-        # Register it
-        ExtensionManager.registerDevice(MyDevice)
-        ```
-        """
-        cls._devices.append(device)
-
-    @overload
-    @classmethod
-    def getDevice(cls, arg: EventData) -> 'Device':
-        ...
-
-    @overload
-    @classmethod
-    def getDevice(cls, arg: str) -> 'Device':
-        ...
-
-    @classmethod
-    def getDevice(cls, arg: 'EventData | str') -> 'Device':
-        """
-        Returns a new instance of a device, given a universal device enquiry
-        response or a device identifier (as a fallback)
-
-        ### Args:
-        * `arg` (``eventData | str`): event to match with devices
-
-        ### Raises:
-        * `ValueError`: Device not recognised
-
-        ### Returns:
-        * `Device`: device object instance
-        """
-        # Device name
-        if isinstance(arg, str):
-            for device in cls._devices:
-                if device.matchDeviceName(arg):
-                    # If it matches the pattern, then we found the right device
-                    # create an instance and return it
-                    return device.create(None)
-        # Sysex event
-        # elif isinstance(arg, eventData):
-        # Can't runtime type check for MIDI events
-        else:
-            for device in cls._devices:
-                pattern = device.getUniversalEnquiryResponsePattern()
-                if pattern is None:
-                    pass
-                elif pattern.matchEvent(arg):
-                    # If it matches the pattern, then we found the right device
-                    # create an instance and return it
-                    return device.create(arg)
-        raise DeviceRecogniseError("Device not recognised")
-
-    @classmethod
-    def getDeviceById(cls, id: str) -> 'Device':
-        """
-        Returns a new instance of a device, given a device ID, which should
-        match a return value of Device.getId()
-
-        ### Raises:
-        * `ValueError`: Device not found
-
-        ### Returns:
-        * `Device`: matching device
-        """
-        for device in cls._devices:
-            if device.__name__ == id:
-                return device.create(None)
-        raise DeviceRecogniseError(f"Device with ID {id} not found")
-
-    @classmethod
-    def getAllDevices(cls) -> list[type['Device']]:
-        """
-        Returns a list of all devices that have been registered
-        """
-        return cls._devices
 
     @classmethod
     def resetPlugins(cls) -> None:
@@ -173,7 +80,7 @@ class ExtensionManager:
             return f" ({len(obj)} instantiated)" if len(obj) else ""
 
         # Number of devices
-        n_dev = f"{len(cls._devices)} device{plural(cls._devices)}"
+        n_dev = f"{len(cls.devices)} device{plural(cls.devices)}"
         # Number of plugins
         n_plug = f"{len(cls.plugins)} plugin{plural(cls.plugins)}"
         # Number of instantiated plugins
@@ -213,11 +120,8 @@ class ExtensionManager:
         def plural(obj) -> str:
             return 's' if len(obj) != 1 else ''
 
-        def instantiated(obj) -> str:
-            return f" ({len(obj)} instantiated)" if len(obj) else ""
-
         # Number of devices
-        n_dev = f"{len(cls._devices)} device{plural(cls._devices)}"
+        n_dev = f"{len(cls.devices)} device{plural(cls.devices)}"
         # Number of plugins
         n_plug = (
             len(cls.plugins) + len(cls.windows)
@@ -232,38 +136,6 @@ class ExtensionManager:
             f"{n_dev} devices, "
             f"{n_plug} plugins ({n_inst} instantiated)"
         )
-
-    @classmethod
-    def _formatPlugin(cls, plug: Optional['Plugin']) -> str:
-        """
-        Format info about a plugin instance
-
-        ### Args:
-        * `plug` (`Optional[Plugin]`): plugin instance or None
-
-        ### Returns:
-        * `str`: formatted info
-        """
-        if plug is None:
-            return "(Not instantiated)"
-        else:
-            return repr(plug)
-
-    @classmethod
-    def _inspectDevice(cls, dev: type['Device']) -> str:
-        """
-        Returns info about a device
-
-        ### Args:
-        * `dev` (`type[Device]`): device to inspect
-
-        ### Returns:
-        * `str`: device info
-        """
-        if dev in cls._devices:
-            return f"{dev} (registered)"
-        else:
-            return f"{dev} (not registered)"
 
     @classmethod
     @printReturn
@@ -284,7 +156,7 @@ class ExtensionManager:
         if isinstance(ext, str):
             return cls.plugins.inspect(ext)
         elif issubclass(ext, devices.Device):
-            return cls._inspectDevice(ext)
+            return cls.devices.inspect(ext)
         elif issubclass(ext, plugs.StandardPlugin):
             return cls.plugins.inspect(ext)
         elif issubclass(ext, plugs.WindowPlugin):

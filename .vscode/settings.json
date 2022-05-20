@@ -35,7 +35,9 @@
         "Cimbalom",
         "classmethod",
         "colors",
+        "consolehelpers",
         "controlevent",
+        "controlgenerators",
         "controlmapping",
         "controlmatcher",
         "controlshadow",
@@ -52,6 +54,7 @@
         "Dpad",
         "Drumline",
         "drumpad",
+        "eventdata",
         "eventfilter",
         "eventfilters",
         "eventforward",
@@ -91,6 +94,8 @@
         "slcolorsurface",
         "sorta",
         "Sostenuto",
+        "specialplugs",
+        "standardplugs",
         "staticmethod",
         "strat",
         "sysex",
@@ -99,6 +104,7 @@
         "Univ",
         "valuestrategies",
         "valuestrategy",
-        "wheelstrategy"
+        "wheelstrategy",
+        "windowplugs"
     ],
 }

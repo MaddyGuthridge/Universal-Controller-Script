@@ -172,5 +172,5 @@ class LaunchkeyMk2_25(LaunchkeyMk2):
 
 
 # Register devices
-ExtensionManager.registerDevice(LaunchkeyMk2_49_61)
-ExtensionManager.registerDevice(LaunchkeyMk2_25)
+ExtensionManager.devices.register(LaunchkeyMk2_49_61)
+ExtensionManager.devices.register(LaunchkeyMk2_25)

@@ -122,4 +122,4 @@ class SlMk3(Device):
 
 
 # Register devices
-ExtensionManager.registerDevice(SlMk3)
+ExtensionManager.devices.register(SlMk3)

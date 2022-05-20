@@ -235,4 +235,4 @@ class Hammer88Pro(Device):
             raise TypeError("Couldn't find a mapping for device name") from e
 
 
-ExtensionManager.registerDevice(Hammer88Pro)
+ExtensionManager.devices.register(Hammer88Pro)

@@ -55,7 +55,7 @@ class WaitingForDevice(IScriptState):
         for name, id in name_associations:
             if name == device_name:
                 try:
-                    dev = common.ExtensionManager.getDeviceById(id)
+                    dev = common.ExtensionManager.devices.getById(id)
                     log(
                         LOG_CAT,
                         f"Recognised device via device name associations: "
@@ -85,7 +85,7 @@ class WaitingForDevice(IScriptState):
         """
         name = device.getName()
         try:
-            dev = common.ExtensionManager.getDevice(name)
+            dev = common.ExtensionManager.devices.get(name)
             log(
                 LOG_CAT,
                 f"Recognised device via fallback: {dev.getId()}",
@@ -157,7 +157,7 @@ class WaitingForDevice(IScriptState):
         # Ignore all events unless they are Sysex
         if isEventSysex(event):
             try:
-                dev = common.ExtensionManager.getDevice(event)
+                dev = common.ExtensionManager.devices.get(event)
                 log(
                     LOG_CAT,
                     f"Recognised device via sysex: {dev.getId()}",

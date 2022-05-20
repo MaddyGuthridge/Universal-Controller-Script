@@ -125,4 +125,4 @@ class LaunchkeyMk3_25_37(Device):
 
 
 # Register devices
-ExtensionManager.registerDevice(LaunchkeyMk3_25_37)
+ExtensionManager.devices.register(LaunchkeyMk3_25_37)
