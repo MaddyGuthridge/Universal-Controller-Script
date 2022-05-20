@@ -1,24 +1,25 @@
-"""
-plugs > standard > matttytel > vital
-"""
 
-from common.extensionmanager import ExtensionManager
 from common.types import Color
+from common.extensionmanager import ExtensionManager
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs.mappingstrategies import SimpleFaders
 
-MACRO_START = 211
-VITAL_COLOR = Color.fromInteger(0xAA88FF)
+PARAMS = [0, 1, 2, 4, 5, 6, 7, 8]
+
+COLOR = Color.fromInteger(0x455765)
 
 
-class Vital(StandardPlugin):
+class TransistorBass(StandardPlugin):
     """
-    Used to interact with Matt Tytel's Vital plugin, mapping macros to faders
+    Used to interact with the Transistor Bass plugin
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        faders = SimpleFaders([MACRO_START + i for i in range(4)], VITAL_COLOR)
+        faders = SimpleFaders(
+            PARAMS,
+            colors=COLOR,
+        )
         super().__init__(shadow, [faders])
 
     @classmethod
@@ -27,7 +28,7 @@ class Vital(StandardPlugin):
 
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
-        return ("Vital",)
+        return ("Transistor Bass",)
 
 
-ExtensionManager.plugins.register(Vital)
+ExtensionManager.plugins.register(TransistorBass)
