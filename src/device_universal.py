@@ -56,7 +56,7 @@ class OverallDevice:
         log("bootstrap.initialize", "Load success", verbosity.INFO)
         print(consts.ASCII_HEADER_ART)
         print(f"Universal Controller Script: v{getVersionString()}")
-        print(ExtensionManager.getInfo())
+        print(ExtensionManager.getBasicInfo())
         print("Type `help` for help using the script\n")
 
 

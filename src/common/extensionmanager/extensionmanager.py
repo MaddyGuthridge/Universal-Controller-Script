@@ -160,8 +160,8 @@ class ExtensionManager:
     @classmethod
     def getInfo(cls) -> str:
         """
-        Returns basic info about the devices and plugins registered with the
-        extension manager
+        Returns more detailed info about the devices and plugins registered
+        with the extension manager
 
         ### Returns:
         * `str`: info
@@ -199,6 +199,38 @@ class ExtensionManager:
             f"{n_wind}{ni_wind}, "
             f"{ns_plug}{nis_plug}, "
             f"{nfs_plug}{nifs_plug}"
+        )
+
+    @classmethod
+    def getBasicInfo(cls) -> str:
+        """
+        Returns basic info about the devices and plugins registered with the
+        extension manager
+
+        ### Returns:
+        * `str`: info
+        """
+        def plural(obj) -> str:
+            return 's' if len(obj) != 1 else ''
+
+        def instantiated(obj) -> str:
+            return f" ({len(obj)} instantiated)" if len(obj) else ""
+
+        # Number of devices
+        n_dev = f"{len(cls._devices)} device{plural(cls._devices)}"
+        # Number of plugins
+        n_plug = (
+            len(cls.plugins) + len(cls.windows)
+            + len(cls.special) + len(cls.final)
+        )
+        # Number of instantiated plugins
+        n_inst = (
+            len(cls.plugins.instantiated()) + len(cls.windows.instantiated())
+            + len(cls.special.instantiated()) + len(cls.final.instantiated())
+        )
+        return (
+            f"{n_dev} devices, "
+            f"{n_plug} plugins ({n_inst} instantiated)"
         )
 
     @classmethod

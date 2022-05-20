@@ -45,7 +45,6 @@ class OverallDevice:
         log("bootstrap.initialize", "Load success", verbosity.INFO)
         print(consts.ASCII_HEADER_ART)
         print(f"Universal Event Forwarder: v{getVersionString()}")
-        print(ExtensionManager.getInfo())
 
 dev = OverallDevice()
 
