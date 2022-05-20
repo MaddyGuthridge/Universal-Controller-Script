@@ -100,9 +100,21 @@ a reference to the same control so that they can be used in a pipeline pattern.
 
 ```py
 # Bind a play button, set its color to black, then annotate it as "My control"
-c = shadow.bindMatch(PlayButton, ...).colorize(Color()).annotate("My control")
+shadow.bindMatch(PlayButton, ...).colorize(Color()).annotate("My control")
 
-# c is still the same ControlShadow object
+
+```
+
+If binding multiple controls, the same functions can be used to apply
+properties to each control.
+
+```py
+# Bind 4 faders
+shadow.bindMatches(Fader, self.faders, target_num=4) \
+    # Set each color to gray
+    .colorize(Color.fromInteger(0x222222)) \
+    # Set the annotations to Macros 1 through 4
+    .annotate([f"Macro {i+1}" for i in range(4)])
 ```
 
 If no matches are found for the requested control type, a dummy control is

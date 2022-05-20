@@ -3,6 +3,7 @@ from typing import Any
 
 import plugins
 from common.extensionmanager import ExtensionManager
+from common.types.color import Color
 from common.util.apifixes import GeneratorIndex
 from controlsurfaces import ControlShadowEvent
 from controlsurfaces import Fader
@@ -19,7 +20,9 @@ class Vital(StandardPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(Fader, self.faders, target_num=4)
+        shadow.bindMatches(Fader, self.faders, target_num=4) \
+            .annotate([f"Macro {i+1}" for i in range(4)]) \
+            .colorize(Color.fromInteger(0x222222))
         super().__init__(shadow, [])
 
     @classmethod
@@ -39,7 +42,6 @@ class Vital(StandardPlugin):
         self,
         control: ControlShadowEvent,
         index: GeneratorIndex,
-        idx: int,
         *args: Any
     ) -> bool:
         plugins.setParamValue(control.value, MACRO_START +
