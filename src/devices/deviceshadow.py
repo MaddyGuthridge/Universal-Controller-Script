@@ -69,13 +69,13 @@ TickCallback = Union[
 
 if TYPE_CHECKING:
     ArgGenerator: TypeAlias = Union[
-        list[tuple],
+        list[Any],
         Callable[[ControlShadowList], Generator[tuple, None, None]],
         ellipsis,  # noqa: F821
         None
     ]
 else:
-    ArgGenerator: TypeAlias = type
+    ArgGenerator: TypeAlias = Any
 
 
 class DeviceShadow:
@@ -459,6 +459,11 @@ class DeviceShadow:
                   argument tuples will need to be at least of the same length
                   as the list of controls to bind. Any excess arguments will be
                   ignored.
+                * `list[Any]`: each control will be associated with the a
+                  single argument at that index. Note that the list of argument
+                  tuples will need to be at least of the same length as the
+                  list of controls to bind. Any excess arguments will be
+                  ignored.
                 * `Generator[tuple, None, None]`: the generator will be
                   iterated over in order to generate tuples of arguments for
                   each control. Note that this refers to a generator object,
@@ -470,8 +475,8 @@ class DeviceShadow:
         """
         # If ellipsis given for args iterable, generate index numbers
         if args_iterable is Ellipsis:
-            args_iter: 'Iterable[tuple[Any, ...]]' = (
-                (i,) for i in range(len(controls)))
+            args_iter: 'Iterable[tuple[Any, ...]]' \
+                = ((i,) for i in range(len(controls)))
         # If args iterable is None, use empty args
         elif args_iterable is None:
             args_iter = (tuple() for _ in range(len(controls)))
@@ -496,6 +501,13 @@ class DeviceShadow:
                 if TYPE_CHECKING:
                     assert isinstance(args_iterable, Generator)
                 args_iter = args_iterable
+
+        # If it's a list of non-tuples
+        if isinstance(args_iter, list) and len(args_iter):
+            if not isinstance(args_iter[0], tuple):
+                # Convert it to a list of tuples
+                for i in range(len(args_iter)):
+                    args_iter[i] = (args_iter[i], )
 
         # Ensure all controls are assignable
         if not all(c in self._free_controls for c in controls):
@@ -586,10 +598,15 @@ class DeviceShadow:
                 * `...`: indices of the controls (ie the first control in
                   the list will cause the callback to be given the argument
                   `0`).
-                * `list[tuple]`: each control will be associated with the tuple
-                  of arguments with the same index. Note that the list of
-                  argument tuples will need to be at least of the same length
-                  as the list of controls to bind. Any excess arguments will be
+                * `list[tuple[Any, ...]]`: each control will be associated with
+                  the tuple of arguments with the same index. Note that the
+                  list of argument tuples will need to be at least of the same
+                  length as the list of controls to bind. Any excess arguments
+                  will be ignored.
+                * `list[Any]`: each control will be associated with the a
+                  single argument at that index. Note that the list of argument
+                  tuples will need to be at least of the same length as the
+                  list of controls to bind. Any excess arguments will be
                   ignored.
                 * `GeneratorFunction (list[ControlShadow]) -> Generator ->
                   tuple`: the generator will be iterated
