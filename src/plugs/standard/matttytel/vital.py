@@ -1,15 +1,11 @@
+"""
+plugs > standard > matttytel > vital
+"""
 
-from typing import Any
-
-import plugins
 from common.extensionmanager import ExtensionManager
-from common.types.color import Color
-from common.util.apifixes import GeneratorIndex
-from controlsurfaces import ControlShadowEvent
-from controlsurfaces import Fader
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs import eventfilters, tickfilters
+from plugs.mappingstrategies import SimpleFaders
 
 MACRO_START = 211
 
@@ -20,10 +16,8 @@ class Vital(StandardPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(Fader, self.faders, target_num=4) \
-            .annotate([f"Macro {i+1}" for i in range(4)]) \
-            .colorize(Color.fromInteger(0x222222))
-        super().__init__(shadow, [])
+        faders = SimpleFaders([MACRO_START + i for i in range(4)])
+        super().__init__(shadow, [faders])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
@@ -32,21 +26,6 @@ class Vital(StandardPlugin):
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
         return ("Vital",)
-
-    @tickfilters.toGeneratorIndex
-    def tick(self, index: GeneratorIndex):
-        pass
-
-    @eventfilters.toGeneratorIndex
-    def faders(
-        self,
-        control: ControlShadowEvent,
-        index: GeneratorIndex,
-        *args: Any
-    ) -> bool:
-        plugins.setParamValue(control.value, MACRO_START +
-                              control.getShadow().coordinate[1], *index)
-        return True
 
 
 ExtensionManager.plugins.register(Vital)
