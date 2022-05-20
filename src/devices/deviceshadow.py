@@ -475,11 +475,10 @@ class DeviceShadow:
         """
         # If ellipsis given for args iterable, generate index numbers
         if args_iterable is Ellipsis:
-            args_iter: 'Iterable[tuple[Any, ...]]' \
-                = ((i,) for i in range(len(controls)))
+            args_iter: list[tuple] = [(i,) for i in range(len(controls))]
         # If args iterable is None, use empty args
         elif args_iterable is None:
-            args_iter = (tuple() for _ in range(len(controls)))
+            args_iter = [tuple() for _ in range(len(controls))]
         # Otherwise, check length
         else:
             try:
@@ -494,13 +493,15 @@ class DeviceShadow:
                     assert not isinstance(
                         args_iterable, ellipsis  # noqa: F821
                     )
-                args_iter = (a for a in args_iterable)
+                args_iter = [a for a in args_iterable]
             except TypeError:
                 # Iterable doesn't support len, assume it's infinite (ie a
                 # generator)
                 if TYPE_CHECKING:
                     assert isinstance(args_iterable, Generator)
-                args_iter = args_iterable
+                args_iter = [
+                    a for _, a in zip(range(len(controls)), args_iterable)
+                ]
 
         # If it's a list of non-tuples
         if isinstance(args_iter, list) and len(args_iter):
