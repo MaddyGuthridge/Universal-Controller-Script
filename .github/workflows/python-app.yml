@@ -80,4 +80,4 @@ jobs:
     - name: Test script load
       run: |
         python src/device_universal.py
-        python src/device_eventforward.py
+        python src/device_event_forward.py
