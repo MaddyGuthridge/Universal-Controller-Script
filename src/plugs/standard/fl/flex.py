@@ -1,17 +1,14 @@
 
-import plugins
-from typing import Any
 from common.types import Color
 from common.extensionmanager import ExtensionManager
-from common.util.apifixes import GeneratorIndex
-from controlsurfaces import Fader
-from controlsurfaces import ControlShadowEvent
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs import eventfilters, tickfilters
+from plugs.mappingstrategies import SimpleFaders
 
 FADER_START = 10
 NUM_FADERS = 8
+
+FLEX_COLOR = Color.fromRgb(255, 140, 0)
 
 
 class Flex(StandardPlugin):
@@ -20,43 +17,20 @@ class Flex(StandardPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        self._faders = shadow.bindMatches(
-            Fader,
-            self.faders,
-            target_num=NUM_FADERS,
+        # TODO: Grey out faders when they're not used
+        faders = SimpleFaders(
+            [FADER_START + i for i in range(NUM_FADERS)],
+            colors=FLEX_COLOR,
         )
-        super().__init__(shadow, [])
+        super().__init__(shadow, [faders])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
 
-    @tickfilters.toGeneratorIndex
-    def tick(self, index: GeneratorIndex):
-        if len(self._faders):
-            for f, i in zip(
-                self._faders, range(FADER_START, FADER_START+NUM_FADERS)
-            ):
-                annotation = plugins.getParamName(i, *index)
-                active = annotation != "Not Used"
-                f.annotation = annotation if active else ""
-                f.color = Color.fromRgb(255, 140, 0) if active else Color()
-                f.value = plugins.getParamValue(i, *index)
-
     @staticmethod
     def getPlugIds() -> tuple[str, ...]:
         return ("FLEX",)
-
-    @eventfilters.toGeneratorIndex
-    def faders(
-        self,
-        control: ControlShadowEvent,
-        index: GeneratorIndex,
-        *args: Any
-    ) -> bool:
-        plugins.setParamValue(control.value, FADER_START +
-                              control.getShadow().coordinate[1], *index)
-        return True
 
 
 ExtensionManager.plugins.register(Flex)
