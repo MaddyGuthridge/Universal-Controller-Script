@@ -1,8 +1,9 @@
 """
-common > types > eventdata
+common > types > event_data
 
 Contains a shadow of the FL Studio MIDI Event Data type, to use with type
-annotations so that we can get those sweet, sweet autocompletions.
+annotations so that we can get those sweet, sweet auto-completions, and a bit
+of type safety.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -55,7 +56,7 @@ class WriteIgnored(Generic[PropType]):
 
 # Define substitute type if we're type-checking
 # if TYPE_CHECKING:
-# Nope nevermind, turns out that it's impossible to access that class during
+# Nope never mind, turns out that it's impossible to access that class during
 # runtime unless you have a reference object for it.
 
 

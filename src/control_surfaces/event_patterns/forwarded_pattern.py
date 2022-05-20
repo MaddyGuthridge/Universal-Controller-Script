@@ -28,7 +28,7 @@ class ForwardedPattern(IEventPattern):
 
     def __init__(self, device_num: int, pattern: IEventPattern) -> None:
         """
-        Create a ForwardedPattern recogniser. This is used to pattern match
+        Create a ForwardedPattern recognizer. This is used to pattern match
         with events that were forwarded from the Universal Event Forwarder.
 
         ### Args:
@@ -57,10 +57,10 @@ class ForwardedUnionPattern(IEventPattern):
 
     def __init__(self, device_num: int, pattern: IEventPattern) -> None:
         """
-        Create a ForwardedUnionPattern recogniser
+        Create a ForwardedUnionPattern recognizer
 
         ### Args:
-        * `device_num` (`int`): device number to recognise
+        * `device_num` (`int`): device number to recognize
         * `pattern` (`IEventPattern`): pattern to match
         """
         self._pattern = UnionPattern(pattern, ForwardedPattern(

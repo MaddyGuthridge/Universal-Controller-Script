@@ -37,11 +37,11 @@ from common.util.console_helpers import *
 class OverallDevice:
     @catchContextResetException
     def onInit(self) -> None:
-        getContext().initialise(WaitingForDevice(MainState))
+        getContext().initialize(WaitingForDevice(MainState))
 
     @catchContextResetException
     def onDeinit(self) -> None:
-        getContext().deinitialise()
+        getContext().deinitialize()
 
     @catchContextResetException
     def onMidiIn(self, event) -> None:

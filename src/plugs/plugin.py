@@ -61,7 +61,7 @@ class Plugin:
         """
         Apply the current state of this plugin to the device
 
-        Ordinarily, you shouldn't need to override this behaviour.
+        Ordinarily, you shouldn't need to override this behavior.
         """
         self._shadow.apply(thorough)
 
@@ -82,7 +82,7 @@ class Plugin:
 
         By default this forwards the event to the device shadow to allow
         associated callbacks to be called correctly. Generally, you won't want
-        to override this behaviour.
+        to override this behavior.
 
         ### Args:
         * `mapping` (`ControlEvent`): event to process

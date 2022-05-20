@@ -20,10 +20,10 @@ The script is comprised of a small number of main components.
 
 ## Initialisation
 
-The script's behaviour is controlled by using a state machine, which is managed
+The script's behavior is controlled by using a state machine, which is managed
 by the script context manager (which can be accessed by calling
 `common.getContext()` from anywhere in the script). The transitions between
-these states allow the script to initialise itself.
+these states allow the script to initialize itself.
 
 Initially, the script starts in the "waiting for device" state. In this state,
 it uses various methods to attempt to identify the device. For more
@@ -38,7 +38,7 @@ In this state, plugins are allowed to interface with the device.
 
 ### Event Processing
 
-Upon receiving any MIDI event, the device is used to recognise the event and
+Upon receiving any MIDI event, the device is used to recognize the event and
 return its mapping as a `ControlEvent`, which contains a reference to the
 control surface that was matched, as well as the value and the channel of the
 event.

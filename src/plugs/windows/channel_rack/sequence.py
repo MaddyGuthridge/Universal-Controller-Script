@@ -58,11 +58,11 @@ class StepSequencer(WindowPlugin):
         """
         Returns the rows which should be used by the channel rack
 
-        ## Actual behaviour:
+        ## Actual behavior:
 
         Channels from the first selection onwards
 
-        ## Preferred behaviour:
+        ## Preferred behavior:
 
         Initially this is selected channels, but if we run out of those, it's
         all channels after the last selection
@@ -168,7 +168,7 @@ class StepSequencer(WindowPlugin):
         return True
 
     def tick(self, *args):
-        """Set colours and annotations for omni preview"""
+        """Set colors and annotations for omni-preview"""
         # Row should apply to the offset of the selected channel
         # or if there aren't enough selections, the next selections along
         selections = self.getChannelRows()

@@ -1,7 +1,7 @@
 """
-common > states > not_recognised
+common > states > not_recognized
 
-The state for when the script failed to recognise the connected device.
+The state for when the script failed to recognize the connected device.
 """
 import ui
 from common import log, verbosity, consts
@@ -10,27 +10,27 @@ from common.util.events import eventToString
 from . import IScriptState
 
 
-class DeviceNotRecognised(IScriptState):
+class DeviceNotRecognized(IScriptState):
     """
-    State for when device isn't recognised
+    State for when device isn't recognized
     """
 
-    def initialise(self) -> None:
+    def initialize(self) -> None:
         log(
             "bootstrap.device.type_detect",
-            "Failed to recognise device",
+            "Failed to recognize device",
             verbosity.ERROR,
-            "The device was unable to be recognised. This usually means that "
+            "The device was unable to be recognized. This usually means that "
             "there is no definition available for your device. You could "
             "help by contributing a device definition. Visit the GitHub page "
             "for details: " + consts.WEBSITE)
-        ui.setHintMsg("Failed to recognise device")
+        ui.setHintMsg("Failed to recognize device")
 
-    def deinitialise(self) -> None:
+    def deinitialize(self) -> None:
         pass
 
     def tick(self) -> None:
-        ui.setHintMsg("Failed to recognise device")
+        ui.setHintMsg("Failed to recognize device")
 
     def processEvent(self, event: EventData) -> None:
         log(

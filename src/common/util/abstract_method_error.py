@@ -1,5 +1,5 @@
 """
-common > util > abstractmethoderror
+common > util > abstract_method_error
 
 Contains the definition for an AbstractMethodError which can be used as a way
 to quickly raise an exception when an abstract method of an interface should

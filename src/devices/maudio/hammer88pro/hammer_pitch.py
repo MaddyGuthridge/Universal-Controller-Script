@@ -2,7 +2,7 @@
 devices > maudio > hammer88pro > hammerpitch
 
 Contains the definition for the Hammer 88 Pro's pitch wheel, since its
-behaviour is weird
+behavior is weird
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -15,7 +15,7 @@ from control_surfaces.value_strategies import Data2Strategy
 
 class HammerPitchWheel(PitchWheel):
     """
-    Implementation of the pitch wheel on the Hammer 88 Pro since its behaviour
+    Implementation of the pitch wheel on the Hammer 88 Pro since its behavior
     is weird
     """
 

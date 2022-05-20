@@ -1,5 +1,5 @@
 """
-devices > deviceshadow
+devices > device_shadow
 
 Contains the DeviceShadow class, representing a shadow of the device which can
 be manipulated without modifying the original device.

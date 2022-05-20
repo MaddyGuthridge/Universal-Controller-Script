@@ -7,7 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 from typing import TYPE_CHECKING
-from common.exceptions import DeviceRecogniseError
+from common.exceptions import DeviceRecognizeError
 from common.types import EventData
 
 
@@ -51,7 +51,7 @@ class DeviceCollection:
         * `arg` (``eventData | str`): event to match with devices
 
         ### Raises:
-        * `ValueError`: Device not recognised
+        * `ValueError`: Device not recognized
 
         ### Returns:
         * `Device`: device object instance
@@ -75,7 +75,7 @@ class DeviceCollection:
                     # If it matches the pattern, then we found the right device
                     # create an instance and return it
                     return device.create(arg)
-        raise DeviceRecogniseError("Device not recognised")
+        raise DeviceRecognizeError("Device not recognized")
 
     def getById(self, id: str) -> 'Device':
         """
@@ -93,7 +93,7 @@ class DeviceCollection:
         for device in self.__devices:
             if device.__name__ == id:
                 return device.create(None)
-        raise DeviceRecogniseError(f"Device with ID {id} not found")
+        raise DeviceRecognizeError(f"Device with ID {id} not found")
 
     def all(self) -> list[type['Device']]:
         return list(self.__devices)

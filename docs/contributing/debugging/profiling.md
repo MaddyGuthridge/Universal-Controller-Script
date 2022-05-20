@@ -6,7 +6,7 @@ monitor performance of the script.
 
 ## Performance Monitoring
 
-Sometimes, certain script behaviour may cause performance issues. To help
+Sometimes, certain script behavior may cause performance issues. To help
 analyse these issues, a simple performance profiler is included.
 
 To get profiling info, enter the following into the script's output window:
@@ -53,6 +53,6 @@ profiled for all plugins and devices.
 ## Stack Tracing
 
 The profiler system can also be used to get stack traces if FL Studio crashes
-or freezes due to the script's behaviour. To enable tracing of profiler
+or freezes due to the script's behavior. To enable tracing of profiler
 contexts, enabled `"debug.exec_tracing"` in your `config.py`. Note that this
 causes a massive amount of terminal output, so should be used sparingly.

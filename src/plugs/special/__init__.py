@@ -2,7 +2,7 @@
 plugs > special
 
 Contains the definitions for special plugins, which are used to manage global
-behaviours such as transport, macros, and fallback processing.
+behaviors such as transport, macros, and fallback processing.
 """
 
 __all__ = [

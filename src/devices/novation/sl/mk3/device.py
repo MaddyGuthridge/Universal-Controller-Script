@@ -75,10 +75,10 @@ class SlMk3(Device):
 
         super().__init__(matcher)
 
-#     def initialise(self) -> None:
+#     def initialize(self) -> None:
 #         self._incontrol.enable()
 #
-#     def deinitialise(self) -> None:
+#     def deinitialize(self) -> None:
 #         self._incontrol.enable()
 
     @staticmethod

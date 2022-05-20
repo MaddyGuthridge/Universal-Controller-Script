@@ -48,12 +48,12 @@ class DeviceContextManager:
     """
 
     def __init__(self) -> None:
-        """Initialise the context manager, including reloading any required
+        """Initialize the context manager, including reloading any required
         modules
         """
         self.settings = Settings()
         self.active = ActivityState()
-        # Set the state of the script to wait for the device to be recognised
+        # Set the state of the script to wait for the device to be recognized
         self.state: Optional[IScriptState] = None
         if self.settings.get("debug.profiling"):
             trace = self.settings.get("debug.exec_tracing")
@@ -77,26 +77,26 @@ class DeviceContextManager:
         self.profiler = ProfilerManager(trace)
 
     @catchStateChangeException
-    @profilerDecoration("initialise")
-    def initialise(self, state: IScriptState) -> None:
-        """Initialise the controller associated with this context manager.
+    @profilerDecoration("initialize")
+    def initialize(self, state: IScriptState) -> None:
+        """Initialize the controller associated with this context manager.
 
         ### Args:
-        * `state` (`IScriptState`): state to initialise with
+        * `state` (`IScriptState`): state to initialize with
         """
         self.state = state
-        state.initialise()
+        state.initialize()
 
     @catchStateChangeException
-    @profilerDecoration("deinitialise")
-    def deinitialise(self) -> None:
-        """Deinitialise the controller when FL Studio closes or begins a render
+    @profilerDecoration("deinitialize")
+    def deinitialize(self) -> None:
+        """Deinitialize the controller when FL Studio closes or begins a render
         """
         if self._device is not None:
-            self._device.deinitialise()
+            self._device.deinitialize()
             self._device = None
         if self.state is not None:
-            self.state.deinitialise()
+            self.state.deinitialize()
             self.state = None
 
     @catchUnsafeOperation
@@ -177,12 +177,12 @@ class DeviceContextManager:
         * `StateChangeException`: state changed successfully
         """
         self.state = new_state
-        new_state.initialise()
+        new_state.initialize()
         raise StateChangeException("State changed")
 
     def registerDevice(self, dev: 'Device'):
         """
-        Register a recognised device
+        Register a recognized device
 
         ### Args:
         * `dev` (`Device`): device number
@@ -191,7 +191,7 @@ class DeviceContextManager:
 
     def getDevice(self) -> 'Device':
         """
-        Return a reference to the recognised device
+        Return a reference to the recognized device
 
         This is used so that forwarded events can be encoded correctly
 
@@ -207,9 +207,9 @@ class DeviceContextManager:
 
     def getDeviceId(self) -> str:
         """
-        Return the type of device that's been recognised
+        Return the type of device that's been recognized
 
-        This can be used to ensure that devices are recognised correctly
+        This can be used to ensure that devices are recognized correctly
 
         ### Returns:
         * `str`: device type
@@ -217,7 +217,7 @@ class DeviceContextManager:
         if self._device is not None:
             return self._device.getId()
         else:
-            return 'Device not recognised'
+            return 'Device not recognized'
 
 
 class ContextResetException(Exception):
@@ -229,7 +229,7 @@ class ContextResetException(Exception):
 
 class MissingContextException(Exception):
     """
-    Raised when the context hasn't been initialised yet
+    Raised when the context hasn't been initialized yet
     """
 
 
@@ -264,13 +264,13 @@ def getContext() -> DeviceContextManager:
 
     ### Raises:
     * `Exception`: when the context is `None`, indicating that it wasn't
-      initialised
+      initialized
 
     ### Returns:
     * `DeviceContextManager`: context
     """
     if _context is None:
-        raise Exception("Context isn't initialised")
+        raise Exception("Context isn't initialized")
 
     return _context
 
@@ -302,7 +302,7 @@ def unsafeResetContext(reason: str = "none") -> None:
 
     WARNING: Calling this inside the main components of the script is a very
     bad idea, as your code will interact with a context it isn't prepared for,
-    leading to undefined behaviour. This should only ever be called by the user
+    leading to undefined behavior. This should only ever be called by the user
     through the console.
 
     ### Args:
@@ -313,7 +313,7 @@ def unsafeResetContext(reason: str = "none") -> None:
 
 def _initContext() -> None:
     """
-    Initialises the context manager for the script
+    Initializes the context manager for the script
     """
     global _context
     _context = DeviceContextManager()

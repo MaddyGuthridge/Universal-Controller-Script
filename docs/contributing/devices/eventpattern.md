@@ -3,7 +3,7 @@
 
 Import from `controlsurfaces.eventpatterns`
 
-Event patterns are used to recognise events from their MIDI data. The most
+Event patterns are used to recognize events from their MIDI data. The most
 common type is the `BasicPattern` which can be used to detect a variety of event
 types.
 
@@ -16,14 +16,14 @@ match your needs, you can make a custom pattern by implementing this.
   whether that event matches with the pattern.
 
 ## `BasicPattern`
-A basic event pattern that can recognise most events.
+A basic event pattern that can recognize most events.
 
 ## `ForwardedPattern`
-A pattern used to recognise events that were forwarded from other devices. Its
-constructor should be given another event pattern to recognise from.
+A pattern used to recognize events that were forwarded from other devices. Its
+constructor should be given another event pattern to recognize from.
 
 ## `UnionPattern`
-A pattern used to recognise events from the union of multiple patterns. Its
+A pattern used to recognize events from the union of multiple patterns. Its
 constructor should be given other event patterns to match from.
 
 ## `ForwardedUnionPattern`
@@ -33,4 +33,4 @@ pattern. Equivalent to
 
 ## `NullPattern`
 A pattern that won't match with anything. This can be used to instantiate
-controls when they are being recognised through other code.
+controls when they are being recognized through other code.

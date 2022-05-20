@@ -55,9 +55,9 @@ class Device:
 
     ## Optional methods
 
-    * `initialise(self)`: Called when we initialise the device
+    * `initialize(self)`: Called when we initialize the device
 
-    * `deinitialise(self)`: Called when we deinitialise the device
+    * `deinitialize(self)`: Called when we deinitialize the device
 
     * `tick(self)`: Called frequently to allow for
       devices to perform any required actions.
@@ -82,11 +82,11 @@ class Device:
         """
         Create an instance of this device
 
-        This method is called when a device is recognised and should return an
+        This method is called when a device is recognized and should return an
         instance of that particular device.
 
         ### Args:
-        * `event` (`eventData`, optional): event used to recognise device, or
+        * `event` (`eventData`, optional): event used to recognize device, or
           None if not applicable (eg when using deviceId)
 
         ### Returns:
@@ -125,7 +125,7 @@ class Device:
     @abstractmethod
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
         """
-        Returns the event pattern from which a device can be recognised so that
+        Returns the event pattern from which a device can be recognized so that
         its representation can be loaded, or None, if this device can't be
         matched using this pattern.
 
@@ -167,15 +167,15 @@ class Device:
         """
         return 0, 0
 
-    def initialise(self) -> None:
+    def initialize(self) -> None:
         """
-        Called when the device is first recognised, and when FL Studio allows
+        Called when the device is first recognized, and when FL Studio allows
         communication.
 
         Can be overridden by child classes.
         """
 
-    def deinitialise(self) -> None:
+    def deinitialize(self) -> None:
         """
         Called when FL Studio is going to start blocking communication, such
         as when a render is going to begin, or when exiting.

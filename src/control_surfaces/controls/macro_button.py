@@ -40,7 +40,7 @@ class UndoRedoButton(MacroButton):
     command.
 
     If there is nothing to redo, this will trigger an undo. Otherwise, it will
-    trigger a redo (much like the default Ctrl+Z behaviour in FL Studio).
+    trigger a redo (much like the default Ctrl+Z behavior in FL Studio).
     """
 
 

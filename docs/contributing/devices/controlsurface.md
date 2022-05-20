@@ -85,7 +85,7 @@ surface types will make it harder to assign controls easily within plugins.
 ## Extending Existing Control Surfaces
 
 By default, the provided control surfaces don't provide any advanced
-functionality such as colour or annotation support. If a control on your device
+functionality such as color or annotation support. If a control on your device
 supports this, or requires logic that doesn't work well with the parent class
 (such as the M-Audio Hammer 88 Pro's pitch wheel), it should implement it in a
 child class to the control surface it most accurately represents, and then

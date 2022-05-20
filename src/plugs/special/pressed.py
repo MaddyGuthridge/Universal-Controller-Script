@@ -43,7 +43,7 @@ def fadeOverTime(control: ControlSurface) -> float:
 
 class Press(SpecialPlugin):
     """
-    Used to add colours to each control surface when it is pressed or recently
+    Used to add colors to each control surface when it is pressed or recently
     tweaked.
     """
 

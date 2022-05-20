@@ -40,7 +40,7 @@ CONFIG = {
     },
     # Settings used during script initialisation
     "bootstrap": {
-        # Whether to skip sending sysex messages when attempting to recognise
+        # Whether to skip sending sysex messages when attempting to recognize
         # devices... may improve startup time for some devices
         "skip_enquiry": False,
         # Whether sending the device enquiry message should be delayed

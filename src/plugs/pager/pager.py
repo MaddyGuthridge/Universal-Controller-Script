@@ -12,7 +12,7 @@ from plugs.event_filters.filters import filterButtonLift
 class PluginPager:
     """
     A class that facilitates creating multiple pages for plugins, each with
-    different behaviour.
+    different behavior.
 
     To implement a PluginPager, you should use multiple inheritance, with this
     being the first class to inherit from.

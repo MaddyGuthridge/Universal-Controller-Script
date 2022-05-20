@@ -24,7 +24,7 @@ class ShiftMatcher(IControlMatcher):
 
     In order to modify the LED of the shift button, ControlSurfaces should
     determine whether the button is pressed using the onValueChange callback.
-    This also implements the behaviour of the double pressed shift button.
+    This also implements the behavior of the double pressed shift button.
     """
     def __init__(
         self,

@@ -1,7 +1,7 @@
 """
 common
 
-Contains common functions and code required to initialise and manage the
+Contains common functions and code required to initialize and manage the
 script.
 
 Authors:

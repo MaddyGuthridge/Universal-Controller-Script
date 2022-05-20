@@ -8,14 +8,26 @@ are guidelines in place for code style.
 ## Code Style
 
 * Indentation: 4 spaces
+
+* Cases:
+    * Modules: `snake_case`
+    * Variables and properties: `snake_case`
+    * Constants: `SCREAMING_SNAKE_CASE`
+    * Functions: `camelCase`
+    * Classes: `PascalCase`
+
 * Typing: where it is reasonable, type hints should always be included on
   function definitions. The project should remain compliant with MyPy.
+
 * Modules, classes and functions should be documented with docstring. If you use
   VS Code, a configuration for the Python Docstring Generator extension is
   provided which should be used automatically. For reference, this file is
   provided in `resources/docstring_template.mustache`. Functions that are
   documented by a parent class shouldn't be documented again.
-* Spell checking your code is recommended.
+
+* Spell checking your code is recommended. Your language should be set to
+  En-US.
+
 * You should list yourself as the author of any module you work on, including
   your name, email (preferably the same as the one associated with your git
   activity), and Discord username (if you have one). If your code is user-facing

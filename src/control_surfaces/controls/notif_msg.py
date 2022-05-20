@@ -19,7 +19,7 @@ class NotifMsg(ControlSurface):
     messages to the device.
 
     This differs from a hint message as it should only be used to show the user
-    information that they need to know (usually to do with the behaviour of
+    information that they need to know (usually to do with the behavior of
     their device), whereas a hint message is whatever happens to be displaying
     in FL Studio's hint panel.
     """

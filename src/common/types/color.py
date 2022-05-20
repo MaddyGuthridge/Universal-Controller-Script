@@ -160,7 +160,7 @@ class Color:
 #         Create an identical copy of this color object
 #
 #         ### Returns:
-#         * `Color`: colour object copy
+#         * `Color`: color object copy
 #         """
 #         c = Color()
 #         c.integer = self.integer
@@ -239,7 +239,7 @@ class Color:
           LEDs. Defaults to True for non-black colors.
 
         ### Returns:
-        * `Color`: colour
+        * `Color`: color
         """
         c = Color()
 
@@ -276,7 +276,7 @@ class Color:
           LEDs. Defaults to True for non-black colors.
 
         ### Returns:
-        * `Color`: colour
+        * `Color`: color
         """
         c = Color()
 
@@ -399,7 +399,7 @@ class Color:
     @property
     def integer(self) -> int:
         """
-        Represents the colour as a 3-byte integer comprised of red green and
+        Represents the color as a 3-byte integer comprised of red green and
         blue values.
 
         The value takes the form 0xRRGGBB. This is useful for interacting with
@@ -417,7 +417,7 @@ class Color:
     @property
     def hsv(self) -> tuple[float, float, float]:
         """
-        Represents the colour as a tuple of floats representing hue,
+        Represents the color as a tuple of floats representing hue,
         saturation, and value
 
         NOTE: Under the hood, values are still stored as RGB - conversions are

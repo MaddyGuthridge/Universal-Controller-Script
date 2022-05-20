@@ -105,6 +105,6 @@ class PedalStrategy(IMappingStrategy):
         elif t_ped is SoftPedal:
             plugins.setParamValue(control.value, PARAM_CC_START + SOFT, *index)
         else:
-            raise NotImplementedError("Pedal type not recognised")
+            raise NotImplementedError("Pedal type not recognized")
 
         return True

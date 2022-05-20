@@ -1,5 +1,5 @@
 """
-common > util > apifixes
+common > util > api_fixes
 
 Contains wrapper code for FL Studio API functions which are just too awful to
 be called directly.

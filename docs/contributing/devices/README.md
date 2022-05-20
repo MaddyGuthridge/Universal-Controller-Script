@@ -9,7 +9,7 @@ the Novation Launchkey Mk2 series of devices is found in the
 Generally, devices are created by defining
 [control surfaces](controlsurface.md) that the device supports, then adding
 those controls to a [control matcher](controlmatcher.md), before calling the
-parent device class to initialise it with that control matcher.
+parent device class to initialize it with that control matcher.
 
 ## Defining a Control Surface
 
@@ -18,7 +18,7 @@ class. Most of these types are quite self-explanatory, for example `StopButton`
 represents a stop button.
 
 When a control is instantiated, it is usually given an
-[event pattern](eventpattern.md) used to recognise matching events, and a
+[event pattern](eventpattern.md) used to recognize matching events, and a
 [value strategy](valuestrategy.md) used to extract a value from the event.
 
 For some devices, more fine-grained control may be necessary to take full
@@ -83,9 +83,9 @@ script take advantage of that fact.
   `(0, 0)`.
 
 ## Methods to Implement if Required
-* `initialise(self)`: Called when the device is initialised.
+* `initialize(self)`: Called when the device is initialized.
 
-* `deinitialise(self)`: Called when the device is deinitialised.
+* `deinitialize(self)`: Called when the device is deinitialized.
 
 * `tick(self)`: Called when the script ticks.
 

@@ -58,7 +58,7 @@ class FPC(StandardPlugin):
         for idx in range(32):
             # Get the note number
             note = plugins.getPadInfo(*index, -1, 1, idx)
-            # Get the colour
+            # Get the color
             color = plugins.getPadInfo(*index, -1, 2, idx)
             # get the annotation
             annotation = plugins.getName(*index, -1, 2, note)

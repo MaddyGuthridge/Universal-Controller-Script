@@ -1,8 +1,8 @@
 """
-common > forwardstate
+common > forward_state
 
 Represents the forwarder script in its main state, where the device is
-recognised and behaving as expected. Events are forwarded to the main script.
+recognized and behaving as expected. Events are forwarded to the main script.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -56,7 +56,7 @@ def outputForwarded(event: EventData):
 class ForwardState(DeviceState):
     """
     Represents the main state of the forwarder script, where the device is
-    recognised and forwarding events.
+    recognized and forwarding events.
     """
 
     def __init__(self, device: 'Device') -> None:
@@ -73,10 +73,10 @@ class ForwardState(DeviceState):
     def create(cls, device: 'Device') -> 'DeviceState':
         return cls(device)
 
-    def initialise(self) -> None:
+    def initialize(self) -> None:
         pass
 
-    def deinitialise(self) -> None:
+    def deinitialize(self) -> None:
         pass
 
     def tick(self) -> None:

@@ -1,5 +1,5 @@
 """
-plugs > eventfilters > index
+plugs > event_filters > index
 
 Contains filters for filtering by plugin and window indexes
 """

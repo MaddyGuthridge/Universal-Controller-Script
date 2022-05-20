@@ -1,5 +1,5 @@
 """
-plugs > eventfilters > filters
+plugs > event_filters > filters
 
 Decorators to filter out events based on the type of event
 """

@@ -2,7 +2,7 @@
 # url=https://forum.image-line.com/viewtopic.php?f=1994&t=274277
 # receiveFrom=Universal Controller
 """
-device_eventforward
+device_event_forward
 
 This script packages events into a format where they can be distinguished
 and forwards the event on to the main controller. It can be used to link
@@ -30,7 +30,7 @@ from common.consts import getVersionString
 class OverallDevice:
     @catchContextResetException
     def onInit(self) -> None:
-        getContext().initialise(WaitingForDevice(ForwardState))
+        getContext().initialize(WaitingForDevice(ForwardState))
 
     @catchContextResetException
     def onMidiIn(self, event) -> None:

@@ -2,7 +2,7 @@
 config.py
 
 Stores any user-modified parts of the configuration for the script, allowing
-for customisation of the script's behaviour. Any settings found here will
+for customization of the script's behavior. Any settings found here will
 override those found in the default configuration.
 
 Authors:

@@ -14,7 +14,7 @@ be filtered and ignored unless they match the target device.
 In order for a device to accept input from multiple ports, it must implement the
 following functionality:
 
-* Must be able to recognise the device from every port (if it sends a different
+* Must be able to recognize the device from every port (if it sends a different
   universal device enquiry on different ports, this must be noted).
 
 * Must be able to determine the device number for each device. Device numbers
@@ -35,7 +35,7 @@ following functionality:
       but if there is demand, I will create one.
     * Determined based on the universal device enquiry response. The event data
       for this response will be given to your device object's `create()`
-      classmethod, if the device was recognised through the universal device
+      classmethod, if the device was recognized through the universal device
       enquiry. Note that device recognition through a universal device enquiry
       may not be guaranteed.
     * If you find any other strategies, please contribute them to this

@@ -230,13 +230,13 @@ class ControlShadow(IControlShadow):
         ### Args:
         * `thorough` (`bool`): whether we should always apply the values,
           regardless of whether they changed or not
-        * `transparent` (`bool`): whether we should only set colours, and treat
+        * `transparent` (`bool`): whether we should only set colors, and treat
           black as transparent
         """
-        # If our device shadow is transparent, we should only set the colour
+        # If our device shadow is transparent, we should only set the color
         if transparent:
             if self.color != Color():
-                # IDEA: Superimpose the added colour
+                # IDEA: Superimpose the added color
                 # Requires smarter updating of plugins and stuff
                 self._control.color = self.color
                 self._changed = False

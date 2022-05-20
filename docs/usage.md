@@ -15,7 +15,7 @@ can be sure you're getting the most out of the script.
 * Aftertouch is sent to the selected plugin if the plugin is a VST.
 
 * Pedals are sent to the selected plugin if the plugin is a VST. Otherwise,
-  the hold pedal increases note length (the default behaviour in FL).
+  the hold pedal increases note length (the default behavior in FL).
 
 ## Transport Controls
 

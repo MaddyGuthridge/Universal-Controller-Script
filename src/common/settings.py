@@ -30,7 +30,7 @@ class Settings:
 
     def __init__(self) -> None:
         """
-        Initialise and load the script's settings
+        Initialize and load the script's settings
         """
 
         c = hot_reload.getTemporaryModule('config')

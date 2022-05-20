@@ -2,7 +2,7 @@
 common > device_detect
 
 Contains the definition for the device detection state of the script, as well
-as the device not recognised state of the script.
+as the device not recognized state of the script.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -14,19 +14,19 @@ import device
 
 import common
 from common.consts import UNIVERSAL_DEVICE_ENQUIRY
-from common.exceptions import DeviceRecogniseError
+from common.exceptions import DeviceRecognizeError
 from common import log, verbosity
 from common.types.event_data import isEventSysex, EventData
 from common.util.events import eventToString
 
-from . import IScriptState, DeviceNotRecognised, DeviceState
+from . import IScriptState, DeviceNotRecognized, DeviceState
 
 LOG_CAT = "bootstrap.device.type_detect"
 
 
 class WaitingForDevice(IScriptState):
     """
-    State for when we're trying to recognise a device
+    State for when we're trying to recognize a device
     """
     def __init__(self, switch_to: type[DeviceState]) -> None:
         """
@@ -34,7 +34,7 @@ class WaitingForDevice(IScriptState):
 
         ### Args:
         * `switch_to` (`IScriptState`): state to switch to when the device is
-          recognised
+          recognized
         """
         self._init_time: Optional[float] = None
         self._sent_enquiry = False
@@ -58,12 +58,12 @@ class WaitingForDevice(IScriptState):
                     dev = common.ExtensionManager.devices.getById(id)
                     log(
                         LOG_CAT,
-                        f"Recognised device via device name associations: "
+                        f"Recognized device via device name associations: "
                         f"{dev.getId()}",
                         verbosity.INFO
                     )
                     common.getContext().setState(self._to.create(dev))
-                except DeviceRecogniseError:
+                except DeviceRecognizeError:
                     log(
                         "bootstrap.device.type_detect",
                         f"The device mapping '{name}' -> '{id}' didn't match "
@@ -88,17 +88,17 @@ class WaitingForDevice(IScriptState):
             dev = common.ExtensionManager.devices.get(name)
             log(
                 LOG_CAT,
-                f"Recognised device via fallback: {dev.getId()}",
+                f"Recognized device via fallback: {dev.getId()}",
                 verbosity.INFO
             )
             common.getContext().setState(self._to.create(dev))
-        except DeviceRecogniseError:
+        except DeviceRecognizeError:
             log(
                 LOG_CAT,
-                "Failed to recognise device via fallback method",
+                "Failed to recognize device via fallback method",
                 verbosity.WARNING
             )
-            common.getContext().setState(DeviceNotRecognised())
+            common.getContext().setState(DeviceNotRecognized())
 
     def sendEnquiry(self) -> None:
         self._sent_enquiry = True
@@ -114,7 +114,7 @@ class WaitingForDevice(IScriptState):
             device.midiOutSysex(UNIVERSAL_DEVICE_ENQUIRY)
             log(LOG_CAT, "Sent universal device enquiry", verbosity.INFO)
 
-    def initialise(self) -> None:
+    def initialize(self) -> None:
         self._init_time = time.time()
         # Check if there's an association between the device name and a device
         # If so, a StateChangeException will be raised so this function will
@@ -128,7 +128,7 @@ class WaitingForDevice(IScriptState):
         if not common.getContext().settings.get("bootstrap.delay_enquiry"):
             self.sendEnquiry()
 
-    def deinitialise(self) -> None:
+    def deinitialize(self) -> None:
         pass
 
     def tick(self) -> None:
@@ -160,15 +160,15 @@ class WaitingForDevice(IScriptState):
                 dev = common.ExtensionManager.devices.get(event)
                 log(
                     LOG_CAT,
-                    f"Recognised device via sysex: {dev.getId()}",
+                    f"Recognized device via sysex: {dev.getId()}",
                     verbosity.INFO,
                     eventToString(event)
                 )
                 common.getContext().setState(self._to.create(dev))
-            except DeviceRecogniseError:
+            except DeviceRecognizeError:
                 log(
                     LOG_CAT,
-                    "Failed to recognise device via sysex, using fallback "
+                    "Failed to recognize device via sysex, using fallback "
                     "method",
                     verbosity.WARNING,
                     eventToString(event)

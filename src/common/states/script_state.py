@@ -1,5 +1,5 @@
 """
-common > scriptstate
+common > script_state
 
 Contains the IScriptState interface, which contains a state used by the
 script's context manager.
@@ -21,22 +21,22 @@ class IScriptState:
 
     This interface is implemented by various classes to allow the script to
     switch between states. For example:
-    * Waiting to recognise device
+    * Waiting to recognize device
     * Main state (processing events and stuff)
     * Error state (something went horribly wrong)
     """
 
     @abstractmethod
-    def initialise(self) -> None:
+    def initialize(self) -> None:
         """
-        Initialise this state
+        Initialize this state
         """
         raise AbstractMethodError(self)
 
     @abstractmethod
-    def deinitialise(self) -> None:
+    def deinitialize(self) -> None:
         """
-        Deinitialise this state
+        Deinitialize this state
         """
         raise AbstractMethodError(self)
 

@@ -51,7 +51,7 @@ class OmniPreview(WindowPlugin):
         return True
 
     def tick(self, *args):
-        """Set colours and annotations for omni preview"""
+        """Set colors and annotations for omni preview"""
         for drum in self._drums:
             index = coordToIndex(drum)
             if index == -1:

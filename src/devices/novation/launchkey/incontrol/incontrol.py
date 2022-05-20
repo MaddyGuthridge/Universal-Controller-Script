@@ -44,7 +44,7 @@ class InControl:
     def handleButtons(self, event: EventData):
         """Handle presses of the InControl buttons, so that users don't
         accidentally disable InControl mode, which will lead to broken
-        behaviour.
+        behavior.
         """
         if FADERS_BUTTON.matchEvent(event):
             forwardEvent(FADERS_RESPONSE, 2)
@@ -55,7 +55,7 @@ class InControl:
             self.refreshDrumPads()
 
     def refreshDrumPads(self):
-        """Refresh drum pads on startup so that their colours don't break
+        """Refresh drum pads on startup so that their colors don't break
         """
         for control in self._matcher.getControls():
             if isinstance(control, LkDrumPad):

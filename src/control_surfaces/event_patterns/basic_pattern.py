@@ -18,7 +18,7 @@ class BasicPattern(IEventPattern):
     Represents a pattern to match with MIDI events.
 
     This allows developers to define a complex pattern to match with events,
-    so that MIDI events from a controller can be recognised and paired with the
+    so that MIDI events from a controller can be recognized and paired with the
     matching ControlSurface.
     """
 
@@ -55,14 +55,14 @@ class BasicPattern(IEventPattern):
 
         ### Example Usage
 
-        * `EventPattern(0x7F, 0x03, ...)`: Recognise an event, where the status
+        * `EventPattern(0x7F, 0x03, ...)`: Recognize an event, where the status
           is 127, data1 is 3, and data2 is any value
 
-        * `EventPattern((0x90, 0x80), 0x04, range(10, 20))`: Recognise an
+        * `EventPattern((0x90, 0x80), 0x04, range(10, 20))`: Recognize an
           event, where the status is either 128 or 144, data1 is 4, and data2
           is any value between 10 and 20
 
-        * `EventPattern([0x30, 0x40, range(0, 20, 2), ...])`: Recognise a
+        * `EventPattern([0x30, 0x40, range(0, 20, 2), ...])`: Recognize a
           sysex event, where the first byte is 48, the second is 64, the third
           is an even number less than 20, and the 4th is any value.
         """

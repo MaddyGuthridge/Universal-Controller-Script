@@ -161,7 +161,7 @@ def test_distance():
 
 
 def test_distance_wrap():
-    """Test that colour distances allow the wrapping of hue values,
+    """Test that color distances allow the wrapping of hue values,
     such that h=10deg is closer to 350deg than 180deg
     """
     c1 = Color.fromHsv(10, 1, 1)

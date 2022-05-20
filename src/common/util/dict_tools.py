@@ -1,5 +1,5 @@
 """
-common > util > dicttools
+common > util > dict_tools
 
 Contains utility functions used within the rest of the code
 

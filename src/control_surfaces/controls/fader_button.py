@@ -54,14 +54,14 @@ class AbstractGenericFaderButton(FaderButton):
 class GenericFaderButton(AbstractGenericFaderButton):
     """
     Represents a generic multi-purpose fader button: plugins should
-    intelligently map the behaviour to required controls.
+    intelligently map the behavior to required controls.
     """
 
 
 class MasterGenericFaderButton(AbstractGenericFaderButton):
     """
     Represents a master generic multi-purpose fader button: plugins should
-    intelligently map the behaviour to required controls.
+    intelligently map the behavior to required controls.
     """
 
     def __init__(

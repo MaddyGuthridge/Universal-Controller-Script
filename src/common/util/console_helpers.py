@@ -1,5 +1,5 @@
 """
-common > util > consolehelpers
+common > util > console_helpers
 
 Contains helper functions for interacting with the script through the
 console, which may assist in debugging, or using the script with a controller

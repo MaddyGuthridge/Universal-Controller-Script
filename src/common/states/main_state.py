@@ -1,7 +1,7 @@
 """
-common > mainstate
+common > main_state
 
-Represents the script in its main state, where the device is recognised and
+Represents the script in its main state, where the device is recognized and
 behaving as expected.
 
 Authors:
@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 
 class MainState(DeviceState):
     """
-    Represents the main state of the script, where the device is recognised
+    Represents the main state of the script, where the device is recognized
     and behaving as expected.
     """
 
@@ -42,10 +42,10 @@ class MainState(DeviceState):
     def create(cls, device: 'Device') -> 'DeviceState':
         return cls(device)
 
-    def initialise(self) -> None:
-        self._device.initialise()
+    def initialize(self) -> None:
+        self._device.initialize()
 
-    def deinitialise(self) -> None:
+    def deinitialize(self) -> None:
         pass
 
     @profilerDecoration("main.tick")
@@ -110,7 +110,7 @@ class MainState(DeviceState):
             event.handled = True
             log(
                 "device.event.in",
-                f"Failed to recognise event: {eventToString(event)}",
+                f"Failed to recognize event: {eventToString(event)}",
                 verbosity.CRITICAL,
                 "This usually means that the device hasn't been configured "
                 "correctly. Please contact the device's maintainer."
@@ -124,7 +124,7 @@ class MainState(DeviceState):
         else:
             log(
                 "device.event.in",
-                f"Recognised event: {mapping.getControl()}",
+                f"Recognized event: {mapping.getControl()}",
                 verbosity.EVENT,
                 detailed_msg=eventToString(event)
             )

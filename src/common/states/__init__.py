@@ -11,7 +11,7 @@ __all__ = [
     'DeviceState',
     'MainState',
     'ForwardState',
-    'DeviceNotRecognised',
+    'DeviceNotRecognized',
     'WaitingForDevice',
 ]
 
@@ -23,5 +23,5 @@ from .script_state import (
 from .dev_state import DeviceState
 from .main_state import MainState
 from .forward_state import ForwardState
-from .not_recognised import DeviceNotRecognised
+from .not_recognized import DeviceNotRecognized
 from .device_detect import WaitingForDevice
