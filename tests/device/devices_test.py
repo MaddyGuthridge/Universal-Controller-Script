@@ -17,13 +17,13 @@ def test_create(dev):
 
 
 def test_getId():
-    for dev in ExtensionManager.getAllDevices():
+    for dev in ExtensionManager.devices.all():
         d = dev.create(None)
         # It should have dots in it somewhere
         assert "." in d.getId()
 
 
 def test_getUniversalEnquiryResponsePattern():
-    for dev in ExtensionManager.getAllDevices():
+    for dev in ExtensionManager.devices.all():
         d = dev.create(None)
         d.getUniversalEnquiryResponsePattern()

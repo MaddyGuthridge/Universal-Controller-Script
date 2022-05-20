@@ -10,7 +10,10 @@ from common.types.event_data import EventData
 from devices import Device, BasicControlMatcher
 from devices.control_generators import NoteMatcher
 from control_surfaces import Fader, PlayButton, LoopButton, ControlSurface
-from control_surfaces.value_strategies import Data2Strategy, ButtonData2Strategy
+from control_surfaces.value_strategies import (
+    Data2Strategy,
+    ButtonData2Strategy,
+)
 
 __all__ = [
     'DummyDevice',

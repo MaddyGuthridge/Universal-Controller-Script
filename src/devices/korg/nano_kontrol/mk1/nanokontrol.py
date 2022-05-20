@@ -15,7 +15,10 @@ from typing import Optional
 from common.extension_manager import ExtensionManager
 from control_surfaces.event_patterns import IEventPattern, BasicPattern
 from common.types import EventData
-from control_surfaces.value_strategies import ButtonData2Strategy, Data2Strategy
+from control_surfaces.value_strategies import (
+    ButtonData2Strategy,
+    Data2Strategy,
+)
 from devices import Device
 from devices.matchers import BasicControlMatcher
 from control_surfaces import (

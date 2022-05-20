@@ -17,8 +17,11 @@ from common.util.api_fixes import (
     EffectIndex,
     WindowIndex,
 )
-from common.util.api_fixes import getFocusedPluginIndex, getFocusedWindowIndex,\
-    reset_generator_active
+from common.util.api_fixes import (
+    getFocusedPluginIndex,
+    getFocusedWindowIndex,
+    reset_generator_active,
+)
 
 
 class ActivityState:
