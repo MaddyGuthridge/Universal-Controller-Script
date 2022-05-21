@@ -7,7 +7,6 @@ import pytest
 from common.types import EventData
 from tests.helpers.devices import DummyDeviceContext
 from control_surfaces.event_patterns import (
-    fulfil,
     IEventPattern,
     BasicPattern,
     ForwardedPattern,
@@ -19,23 +18,23 @@ from control_surfaces.event_patterns import (
 
 
 def test_basic():
-    assert fulfil(BasicPattern(1, 2, 3)) == EventData(1, 2, 3)
+    assert BasicPattern(1, 2, 3).fulfil() == EventData(1, 2, 3)
 
 
 def test_range():
     r = range(10, 20)
-    e = fulfil(BasicPattern(1, 2, r))
+    e = BasicPattern(1, 2, r).fulfil()
     assert e.data2 in r
 
 
 def test_tuple():
     t = 2, 7, 3, 19, 49
-    e = fulfil(BasicPattern(1, 2, t))
+    e = BasicPattern(1, 2, t).fulfil()
     assert e.data2 in t
 
 
 def test_ellipsis():
-    e = fulfil(BasicPattern(1, 2, ...))
+    e = BasicPattern(1, 2, ...).fulfil()
     assert e.data2 in range(128)
 
 
@@ -53,10 +52,10 @@ def test_ellipsis():
 )
 def test_others(pattern: IEventPattern):
     with DummyDeviceContext():
-        assert pattern.matchEvent(fulfil(pattern))
+        assert pattern.matchEvent(pattern.fulfil())
 
 
 def test_no_fulfillment():
     """Null patterns are impossible to fulfil"""
     with pytest.raises(TypeError):
-        fulfil(NullPattern())
+        NullPattern().fulfil()
