@@ -8,6 +8,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
+import random
 from common.types import EventData
 from .event_pattern import IEventPattern
 
@@ -33,3 +34,6 @@ class UnionPattern(IEventPattern):
 
     def matchEvent(self, event: 'EventData') -> bool:
         return any(p.matchEvent(event) for p in self._patterns)
+
+    def fulfil(self) -> 'EventData':
+        return random.choice(self._patterns).fulfil()

@@ -1,5 +1,5 @@
 """
-common > event_pattern > event_pattern
+control_surfaces > event_patterns > event_pattern
 
 Contains the definition for IEventPattern, the interface that all event
 patterns must inherit from.
@@ -40,5 +40,19 @@ class IEventPattern:
 
         ### Returns:
         * `bool`: whether the event matches
+        """
+        raise AbstractMethodError(self)
+
+    @abstractmethod
+    def fulfil(self) -> 'EventData':
+        """
+        Create and return an EventData object which will match with this
+        pattern. The return value should be randomly generated.
+
+        ## Raises:
+        * `TypeError`: unable to fulfil a pattern
+
+        ### Returns:
+        * `EventData`: event that matches the strategy
         """
         raise AbstractMethodError(self)

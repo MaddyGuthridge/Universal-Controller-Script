@@ -7,7 +7,11 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
 """
 
-from common.util.events import decodeForwardedEvent, isEventForwardedHereFrom
+from common.util.events import (
+    decodeForwardedEvent,
+    encodeForwardedEvent,
+    isEventForwardedHereFrom,
+)
 from . import IEventPattern, UnionPattern
 
 from common.types import EventData
@@ -48,6 +52,10 @@ class ForwardedPattern(IEventPattern):
         # print(eventToString(eventFromForwarded(event, null+2)))
         return self._pattern.matchEvent(decodeForwardedEvent(event))
 
+    def fulfil(self) -> 'EventData':
+        num = self._device_num
+        return EventData(encodeForwardedEvent(self._pattern.fulfil(), num))
+
 
 class ForwardedUnionPattern(IEventPattern):
     """
@@ -68,3 +76,6 @@ class ForwardedUnionPattern(IEventPattern):
 
     def matchEvent(self, event: 'EventData') -> bool:
         return self._pattern.matchEvent(event)
+
+    def fulfil(self) -> 'EventData':
+        return self._pattern.fulfil()

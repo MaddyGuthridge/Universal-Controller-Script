@@ -9,6 +9,7 @@ Authors:
 """
 
 from typing import TYPE_CHECKING, Union
+import random
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
@@ -22,6 +23,7 @@ def fromNibbles(upper: ByteMatch, lower: ByteMatch) -> tuple:
 
     ### Args:
     * `upper` (`ByteMatch`): upper nibble
+
     * `lower` (`ByteMatch`): lower nibble
 
     ### Returns:
@@ -46,3 +48,18 @@ def fromNibbles(upper: ByteMatch, lower: ByteMatch) -> tuple:
         for j in lo:
             ret.append((i << 4) + j)
     return (*ret,)
+
+
+def fulfilByte(b: ByteMatch) -> int:
+    """Return an `int` (byte) that matches the given specification
+    """
+    if isinstance(b, int):
+        return b
+    elif isinstance(b, range):
+        return random.randrange(b.start, b.stop, b.step)
+    elif isinstance(b, tuple):
+        return random.choice(b)
+    elif b is Ellipsis:
+        return random.randrange(0, 128)
+    else:
+        raise TypeError()

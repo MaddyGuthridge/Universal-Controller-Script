@@ -1,5 +1,5 @@
 """
-common > eventpattern
+control_surfaces > event_patterns
 
 Contains code for pattern matching with MIDI events, including IEventPattern,
 a simple way to match events, and IEventPattern, and interface from which
@@ -12,6 +12,7 @@ Authors:
 __all__ = [
     'ByteMatch',
     'fromNibbles',
+    'fulfilByte',
     'IEventPattern',
     'UnionPattern',
     'BasicPattern',
@@ -19,14 +20,12 @@ __all__ = [
     'ForwardedUnionPattern',
     'NullPattern',
     'NotePattern',
-    'fulfil',
 ]
 
-from .byte_match import ByteMatch, fromNibbles
+from .byte_match import ByteMatch, fromNibbles, fulfilByte
 from .event_pattern import IEventPattern
 from .union_pattern import UnionPattern
 from .basic_pattern import BasicPattern
 from .forwarded_pattern import ForwardedPattern, ForwardedUnionPattern
 from .null_pattern import NullPattern
 from .note_pattern import NotePattern
-from .fulfil import fulfil

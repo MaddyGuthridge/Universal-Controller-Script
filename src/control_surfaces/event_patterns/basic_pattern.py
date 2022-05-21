@@ -1,5 +1,5 @@
 """
-common > event_pattern > basic_pattern
+control_surfaces > event_patterns > basic_pattern
 
 Contains a basic pattern for recognizing MIDI events.
 
@@ -10,7 +10,7 @@ Authors:
 from typing import TYPE_CHECKING, Any, Callable, Optional
 
 from common.types.event_data import EventData, isEventStandard, isEventSysex
-from . import ByteMatch, IEventPattern
+from . import ByteMatch, IEventPattern, fulfilByte
 
 
 class BasicPattern(IEventPattern):
@@ -100,7 +100,7 @@ class BasicPattern(IEventPattern):
             if not all(map(typeCheck, [status_sysex, data1, data2])):
                 raise TypeError(
                     "Incorrect types for event data. Refer to object "
-                    "docmentation."
+                    "documentation."
                 )
 
             # Store the data
@@ -111,6 +111,16 @@ class BasicPattern(IEventPattern):
             self.status = status_sysex
             self.data1 = data1
             self.data2 = data2
+
+    def fulfil(self) -> 'EventData':
+        if self.sysex_event:
+            return EventData(bytes([fulfilByte(b) for b in self.sysex]))
+        else:
+            return EventData(
+                fulfilByte(self.status),
+                fulfilByte(self.data1),
+                fulfilByte(self.data2),
+            )
 
     def matchEvent(self, event: 'EventData') -> bool:
         """

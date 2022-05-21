@@ -23,3 +23,6 @@ class NullPattern(IEventPattern):
 
     def matchEvent(self, event: 'EventData') -> bool:
         return False
+
+    def fulfil(self) -> 'EventData':
+        raise TypeError("Unable to fulfil a NullPattern")
