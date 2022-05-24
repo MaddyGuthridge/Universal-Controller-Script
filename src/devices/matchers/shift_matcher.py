@@ -1,5 +1,5 @@
 """
-devices > shiftmatcher
+devices > shift_matcher
 
 Defines a ShiftMatcher interface for matching different events depending on
 whether a shift button is active or not.
@@ -90,6 +90,8 @@ class ShiftMatcher(IControlMatcher):
         if self.__changed:
             thorough = True
             self.__changed = False
+        # Colorize the shift button
+        self.__shift.color = ENABLED if self.__shifted else DISABLED
         # Tick the shift button
         self.__shift.doTick(thorough)
         # Tick whichever sub-matcher is active (but don't tick the non-active
