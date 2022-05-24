@@ -87,8 +87,15 @@ class ControlSurface:
         self._value = 0.0
         self._value_strategy = value_strategy
         self._coord = coordinate
+
+        # Attributes to make our pressed thing work better
         self._needs_update = False
         self._got_update = False
+
+        # Whether we need to call the onUpdate... methods
+        self._color_changed: bool = True
+        self._annotation_changed: bool = True
+        self._value_changed: bool = True
 
         # The time that this control was pressed last
         self._press = 0.0
@@ -171,7 +178,7 @@ class ControlSurface:
         self._got_update = True
         if self._color != c:
             self._color = c
-            self.onColorChange(c)
+            self._color_changed = True
 
     @property
     def annotation(self) -> str:
@@ -187,7 +194,7 @@ class ControlSurface:
     def annotation(self, a: str):
         if self._annotation != a:
             self._annotation = a
-            self.onAnnotationChange(a)
+            self._annotation_changed = True
 
     @property
     def value(self) -> float:
@@ -213,7 +220,7 @@ class ControlSurface:
             self._value = val
             self._needs_update = True
             self._got_update = False
-            self.onValueChange(self.value)
+            self._value_changed = True
 
     @property
     def needs_update(self) -> bool:
@@ -290,9 +297,12 @@ class ControlSurface:
         """
         # If it's a thorough tick, force all the properties to update on the
         # device
-        if thorough:
+        # Otherwise, only update them if they need it
+        if thorough or self._color_changed:
             self.onColorChange(self.color)
+        if thorough or self._annotation_changed:
             self.onAnnotationChange(self.annotation)
+        if thorough or self._value_changed:
             self.onValueChange(self.value)
         self.tick()
         if self._got_update:
