@@ -30,6 +30,7 @@ from plugs.event_filters import filterButtonLift
 from plugs import WindowPlugin
 
 INDEX = 0
+COLOR_DISABLED = Color.fromGrayscale(0.3, False)
 
 
 def snapFaders(value: float) -> float:
@@ -147,6 +148,7 @@ class Mixer(WindowPlugin):
 
     def tick(self, *args):
         self.updateSelected()
+        self.updateColors()
 
     def jogWheel(
         self,
@@ -209,25 +211,25 @@ class Mixer(WindowPlugin):
                 if mixer.isTrackEnabled(i):
                     self._buttons[n].color = c
                 else:
-                    self._buttons[n].color = c.fadeBlack()
+                    self._buttons[n].color = COLOR_DISABLED
             # Mute buttons
             if len(self._mutes) > n:
                 if mixer.isTrackMuted(i):
-                    self._mutes[n].color = c
+                    self._mutes[n].color = COLOR_DISABLED
                 else:
-                    self._mutes[n].color = c.fadeBlack()
+                    self._mutes[n].color = c
             # Solo buttons
             if len(self._solos) > n:
                 if mixer.isTrackSolo(i):
                     self._solos[n].color = c
                 else:
-                    self._solos[n].color = c.fadeBlack()
+                    self._solos[n].color = COLOR_DISABLED
             # Select buttons
             if len(self._selects) > n:
-                if mixer.isTrackMuted(i):
+                if mixer.isTrackSelected(i):
                     self._selects[n].color = c
                 else:
-                    self._selects[n].color = c.fadeBlack()
+                    self._selects[n].color = COLOR_DISABLED
 
     def knob(
         self,

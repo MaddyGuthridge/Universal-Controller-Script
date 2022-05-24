@@ -309,6 +309,9 @@ class ControlShadowList:
         """Create a list of controls"""
         self.controls = controls
 
+    def __repr__(self) -> str:
+        return f"ControlShadowList([{self.controls}])"
+
     def colorize(self, new: 'Color | list[Color]') -> 'ControlShadowList':
         """Set the colors of each control"""
         if isinstance(new, Color):
