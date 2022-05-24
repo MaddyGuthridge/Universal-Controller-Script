@@ -8,9 +8,12 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 from typing import Optional
-from common.types import EventData
+from common.types import EventData, Color
 from control_surfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
+
+ENABLED = Color.fromGrayscale(1.0)
+DISABLED = Color.fromGrayscale(0.3, False)
 
 
 class ShiftMatcher(IControlMatcher):
@@ -34,13 +37,15 @@ class ShiftMatcher(IControlMatcher):
     ) -> None:
         # Shift button
         self.__shift = shift
-        # Submatchers
+        # Sub-matchers
         self.__disabled = disabled
         self.__enabled = enabled
         # Whether we're currently in the shift menu
         self.__shifted = False
         # Whether the previous press was a double press
         self.__double = False
+        # Whether we need to do a thorough tick
+        self.__changed = True
         super().__init__()
 
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
@@ -51,10 +56,14 @@ class ShiftMatcher(IControlMatcher):
                 # Update double press
                 self.__double = control_event.double
                 self.__shifted = True
+                self.__changed = True
+                self.__shift.color = ENABLED
             else:
                 # Only disable if it wasn't a double press
                 if not self.__double:
                     self.__shifted = False
+                    self.__changed = True
+                    self.__shift.color = DISABLED
                 # If it was a double press, set the value such that the control
                 # is enabled (since the shift button is enabled)
                 # NOTE: This may cause flickering since it is set to 0.0
@@ -64,7 +73,7 @@ class ShiftMatcher(IControlMatcher):
                 else:
                     self.__shift.value = 1.0
             return control_event
-        # Otherwise delegate to the required submatcher
+        # Otherwise delegate to the required sub-matcher
         if self.__shifted:
             return self.__enabled.matchEvent(event)
         else:
@@ -78,6 +87,9 @@ class ShiftMatcher(IControlMatcher):
         )
 
     def tick(self, thorough: bool) -> None:
+        if self.__changed:
+            thorough = True
+            self.__changed = False
         # Tick the shift button
         self.__shift.doTick(thorough)
         # Tick whichever sub-matcher is active (but don't tick the non-active

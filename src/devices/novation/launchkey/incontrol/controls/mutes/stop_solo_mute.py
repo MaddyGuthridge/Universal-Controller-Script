@@ -23,12 +23,17 @@ class StopSoloMuteButton(ColorInControlSurface, NullEvent):
             0x0,
             0x69,
             COLORS,
+            event_num=0xB
         )
         NullEvent.__init__(
             self,
             ForwardedPattern(2, BasicPattern(0xB0, 0x69, ...)),
             ForwardedStrategy(ButtonData2Strategy())
         )
+
+    @staticmethod
+    def isPress(value: float) -> bool:
+        return value != 0.0
 
 
 def getMk3SmallMuteControls() -> ShiftMatcher:

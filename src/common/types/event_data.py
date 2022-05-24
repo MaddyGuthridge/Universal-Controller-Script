@@ -121,6 +121,7 @@ class EventData:
         from common.util.events import eventToString
         return eventToString(self)
 
+
 class _StandardEventData(EventData):
     """
     A type narrowed event data object

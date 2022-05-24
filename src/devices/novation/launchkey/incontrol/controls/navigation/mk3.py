@@ -22,6 +22,7 @@ class MiniMk3DirectionUp(ColorInControlSurface, DirectionUp):
             0x0,
             0x68,
             COLORS,
+            event_num=0xB,
         )
         DirectionUp.__init__(
             self,
@@ -37,6 +38,7 @@ class MiniMk3DirectionDown(ColorInControlSurface, DirectionDown):
             0x0,
             0x69,
             COLORS,
+            event_num=0xB,
         )
         DirectionDown.__init__(
             self,
