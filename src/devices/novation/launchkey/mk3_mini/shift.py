@@ -15,13 +15,14 @@ from control_surfaces import (
 )
 from devices.matchers import ShiftMatcher, BasicControlMatcher
 from devices.novation.launchkey.incontrol.controls import (
+    LkMk3ControlSwitchButton,
     LkMk3RecordButton,
     Mk3DirectionLeft,
     Mk3DirectionRight,
     MiniMk3DirectionUp,
     MiniMk3DirectionDown,
+    getMiniMuteControls
 )
-from ..incontrol.controls import LkMk3ControlSwitchButton
 
 
 def getShiftControls() -> ShiftMatcher:
@@ -34,6 +35,7 @@ def getShiftControls() -> ShiftMatcher:
     non_shift_matcher = BasicControlMatcher()
     non_shift_matcher.addControl(LkMk3RecordButton())
     non_shift_matcher.addControl(LkMk3ControlSwitchButton())
+    non_shift_matcher.addSubMatcher(getMiniMuteControls())
 
     # Shifted events
     shift_matcher = BasicControlMatcher()

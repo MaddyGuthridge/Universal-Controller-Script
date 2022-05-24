@@ -9,8 +9,10 @@ __all__ = [
     'LkDrumPadMatcher',
     'LkMk2DrumPad',
     'LkMk3DrumPad',
+    'LkMk3DrumPadMute',
+    'LkMk3DrumPadSolo',
 ]
 
 from .drum_pad import LkDrumPad, LkDrumPadMatcher
 from .mk2 import LkMk2DrumPad
-from .mk3 import LkMk3DrumPad
+from .mk3 import LkMk3DrumPad, LkMk3DrumPadMute, LkMk3DrumPadSolo

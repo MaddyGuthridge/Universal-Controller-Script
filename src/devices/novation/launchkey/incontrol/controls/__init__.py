@@ -43,6 +43,10 @@ __all__ = [
     'MiniMk3DirectionDown',
     'Mk3DirectionUp',
     'Mk3DirectionDown',
+    'StopSoloMuteButton',
+    'LkMk3DrumPadMute',
+    'LkMk3DrumPadSolo',
+    'getMiniMuteControls',
 ]
 
 from .incontrol_surface import ColorInControlSurface, GrayscaleInControlSurface
@@ -67,6 +71,8 @@ from .drum_pad import (
     LkMk2DrumPad,
     LkMk3DrumPad,
     LkDrumPadMatcher,
+    LkMk3DrumPadMute,
+    LkMk3DrumPadSolo,
 )
 from .fader import (
     LkFader,
@@ -94,4 +100,8 @@ from .navigation import (
     MiniMk3DirectionDown,
     Mk3DirectionUp,
     Mk3DirectionDown,
+)
+from .mutes import (
+    StopSoloMuteButton,
+    getMiniMuteControls,
 )

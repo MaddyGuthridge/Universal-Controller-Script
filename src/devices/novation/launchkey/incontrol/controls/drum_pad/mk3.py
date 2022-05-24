@@ -1,5 +1,5 @@
 
-from .drum_pad import LkDrumPad
+from .drum_pad import LkDrumPad, LkDrumPadMute, LkDrumPadSolo
 from ...colors.mk3 import COLORS
 
 DRUM_PADS = [
@@ -20,4 +20,32 @@ class LkMk3DrumPad(LkDrumPad):
 
     @classmethod
     def create(cls, row: int, col: int) -> 'LkMk3DrumPad':
-        return LkMk3DrumPad(row, col)
+        return cls(row, col)
+
+
+class LkMk3DrumPadMute(LkDrumPadMute):
+    def __init__(self, row: int, col: int) -> None:
+        super().__init__(
+            (row, col),
+            0x0,
+            DRUM_PADS[row][col],
+            COLORS,
+        )
+
+    @classmethod
+    def create(cls, row: int, col: int) -> 'LkMk3DrumPadMute':
+        return cls(row, col)
+
+
+class LkMk3DrumPadSolo(LkDrumPadSolo):
+    def __init__(self, row: int, col: int) -> None:
+        super().__init__(
+            (row, col),
+            0x0,
+            DRUM_PADS[row][col],
+            COLORS,
+        )
+
+    @classmethod
+    def create(cls, row: int, col: int) -> 'LkMk3DrumPadSolo':
+        return cls(row, col)
