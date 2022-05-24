@@ -117,6 +117,9 @@ class EventData:
         else:
             return NotImplemented
 
+    def __repr__(self) -> str:
+        from common.util.events import eventToString
+        return eventToString(self)
 
 class _StandardEventData(EventData):
     """
