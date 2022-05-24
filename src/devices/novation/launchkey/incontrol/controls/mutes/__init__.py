@@ -1,7 +1,7 @@
 
 __all__ = [
     'StopSoloMuteButton',
-    'getMiniMuteControls',
+    'getMk3SmallMuteControls',
 ]
 
-from .stop_solo_mute import StopSoloMuteButton, getMiniMuteControls
+from .stop_solo_mute import StopSoloMuteButton, getMk3SmallMuteControls

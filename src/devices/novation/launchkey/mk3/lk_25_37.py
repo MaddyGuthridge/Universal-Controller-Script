@@ -30,8 +30,6 @@ from devices.novation.launchkey.incontrol.controls import (
     LkMk3LoopButton,
     LkMk3RecordButton,
     LkKnobSet,
-    LkMk3DrumPad,
-    LkDrumPadMatcher,
     LkDirectionNext,
     LkDirectionPrevious,
     LkMk3ControlSwitchButton,
@@ -40,6 +38,7 @@ from devices.novation.launchkey.incontrol.controls import (
     Mk3DirectionDown,
     Mk3DirectionLeft,
     Mk3DirectionRight,
+    getMk3SmallMuteControls
 )
 
 DEVICE_ID = "Novation.Launchkey.Mk3.25-37"
@@ -59,7 +58,7 @@ class LaunchkeyMk3_25_37(Device):
         # Notes
         matcher.addSubMatcher(NoteMatcher())
 
-        matcher.addSubMatcher(LkDrumPadMatcher(LkMk3DrumPad))
+        matcher.addSubMatcher(getMk3SmallMuteControls())
         matcher.addSubMatcher(LkKnobSet())
         matcher.addControl(LkMk3StopButton())
         matcher.addControl(LkMk3PlayButton())

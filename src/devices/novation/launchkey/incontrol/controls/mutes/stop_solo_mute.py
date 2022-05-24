@@ -31,7 +31,7 @@ class StopSoloMuteButton(ColorInControlSurface, NullEvent):
         )
 
 
-def getMiniMuteControls() -> ShiftMatcher:
+def getMk3SmallMuteControls() -> ShiftMatcher:
     stop_mute_solo = StopSoloMuteButton()
     # Stop/solo/mute button not pressed
     non_shift_matcher = LkDrumPadMatcher(LkMk3DrumPad)
