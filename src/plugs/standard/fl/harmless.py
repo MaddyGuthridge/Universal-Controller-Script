@@ -3,7 +3,12 @@ from common.types import Color
 from common.extension_manager import ExtensionManager
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.mapping_strategies import SimpleFaders
+from plugs.mapping_strategies import (
+    SimpleFaders,
+    PedalStrategy,
+    WheelStrategy,
+    NoteStrategy,
+)
 
 PARAMS = [
     31,  # Pluck
@@ -29,7 +34,12 @@ class Harmless(StandardPlugin):
             PARAMS,
             colors=COLOR,
         )
-        super().__init__(shadow, [faders])
+        super().__init__(shadow, [
+            faders,
+            PedalStrategy(),
+            WheelStrategy(),
+            NoteStrategy(),
+        ])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':

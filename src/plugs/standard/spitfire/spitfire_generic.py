@@ -11,6 +11,11 @@ from control_surfaces import Fader, DrumPad
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs import event_filters, tick_filters
+from plugs.mapping_strategies import (
+    PedalStrategy,
+    WheelStrategy,
+    NoteStrategy,
+)
 
 # Generate list of supported plugins
 # HELP WANTED: I don't own all of these libraries, so the naming may be
@@ -92,7 +97,11 @@ class SpitfireGeneric(StandardPlugin):
             self._pads = shadow.bindMatches(DrumPad, self.drumPad2x8)
             self._coordToIndex = lambda r, c: c + 4 * r + 4 * (c >= 4)
 
-        super().__init__(shadow, [])
+        super().__init__(shadow, [
+            PedalStrategy(),
+            WheelStrategy(),
+            NoteStrategy(),
+        ])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':

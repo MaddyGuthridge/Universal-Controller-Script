@@ -9,19 +9,23 @@ Authors:
 
 from common.extension_manager import ExtensionManager
 from devices import DeviceShadow
-from plugs import SpecialPlugin
+from plugs import StandardPlugin
 from plugs.mapping_strategies import (
     PedalStrategy,
     WheelStrategy,
     NoteStrategy,
     DirectionStrategy,
+    JogStrategy
 )
 
 
-class Defaults(SpecialPlugin):
+class Defaults(StandardPlugin):
     """
-    Used to provide logical default mappings for plugins, so that devlopers
-    of plugin mappings don't need to make so many manual assignments.
+    Used to provide logical default mappings for plugins where a definition
+    hasn't been created.
+
+    If you create a plugin definition, these behaviors won't be implemented
+    by default, so you'll need to include the strategies used here.
 
     Handles:
     * Pedals
@@ -31,21 +35,21 @@ class Defaults(SpecialPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.setMinimal(True)
         super().__init__(shadow, [
             PedalStrategy(),
             WheelStrategy(),
             NoteStrategy(),
             DirectionStrategy(),
+            JogStrategy(),
         ])
 
     @staticmethod
-    def shouldBeActive() -> bool:
-        return True
+    def getPlugIds() -> tuple[str, ...]:
+        return tuple()
 
     @classmethod
-    def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
+    def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
 
 
-ExtensionManager.special.register(Defaults)
+ExtensionManager.plugins.register(Defaults)

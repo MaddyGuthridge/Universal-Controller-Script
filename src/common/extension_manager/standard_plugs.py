@@ -20,6 +20,8 @@ class StandardPluginCollection:
     def __init__(self) -> None:
         self.__mappings: dict[str, type['StandardPlugin']] = {}
         self.__instantiated: dict[str, 'StandardPlugin'] = {}
+        self.__fallback: Optional[type['StandardPlugin']] = None
+        self.__fallback_inst: Optional['StandardPlugin'] = None
 
     def register(self, plug: type['StandardPlugin']) -> None:
         """
@@ -43,6 +45,18 @@ class StandardPluginCollection:
         for plug_id in plug.getPlugIds():
             self.__mappings[plug_id] = plug
 
+    def registerFallback(self, plug: type['StandardPlugin']) -> None:
+        """
+        Register a plugin to be used as a fallback when the default bindings
+        fail
+
+        If a matching plugin isn't found, the fallback plugin is returned.
+
+        ### Args:
+        * `plug` (`type[StandardPlugin]`): plugin to register
+        """
+        self.__fallback = plug
+
     def get(self, id: str, device: 'Device') -> Optional['StandardPlugin']:
         """Get an instance of the plugin matching this plugin id
         """
@@ -57,15 +71,17 @@ class StandardPluginCollection:
             return self.__instantiated[id]
         # Plugin doesn't exist
         else:
-            # log(
-            #     "extensions.manager",
-            #     f"No plugins associated with plugin ID '{id}'",
-            #     verbosity=verbosity.NOTE
-            # )
-            return None
+            if self.__fallback_inst is None:
+                if self.__fallback is None:
+                    return None
+                else:
+                    self.__fallback_inst \
+                        = self.__fallback.create(DeviceShadow(device))
+            return self.__fallback_inst
 
     def reset(self) -> None:
         self.__instantiated = {}
+        self.__fallback_inst = None
 
     def all(self) -> list[type['StandardPlugin']]:
         return list(self.__mappings.values())

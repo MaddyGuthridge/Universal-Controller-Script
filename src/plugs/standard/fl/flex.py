@@ -3,7 +3,12 @@ from common.types import Color
 from common.extension_manager import ExtensionManager
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.mapping_strategies import SimpleFaders
+from plugs.mapping_strategies import (
+    SimpleFaders,
+    PedalStrategy,
+    WheelStrategy,
+    NoteStrategy,
+)
 
 FADER_START = 10
 NUM_FADERS = 8
@@ -22,7 +27,12 @@ class Flex(StandardPlugin):
             [FADER_START + i for i in range(NUM_FADERS)],
             colors=FLEX_COLOR,
         )
-        super().__init__(shadow, [faders])
+        super().__init__(shadow, [
+            faders,
+            PedalStrategy(),
+            WheelStrategy(),
+            NoteStrategy(),
+        ])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
