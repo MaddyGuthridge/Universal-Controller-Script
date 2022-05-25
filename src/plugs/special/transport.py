@@ -38,6 +38,7 @@ from control_surfaces.control_shadow import ControlShadow
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 from plugs.event_filters import filterButtonLift
+from plugs.mapping_strategies import DirectionStrategy, JogStrategy
 
 # Constants
 FAST_FORWARDING = 1
@@ -105,7 +106,10 @@ class Transport(SpecialPlugin):
         shadow.bindMatches(NavigationButton, self.navButtons)
         # Whether we're fast forwarding or rewinding
         self._playback_ff_rw = 0
-        super().__init__(shadow, [])
+        super().__init__(shadow, [
+            DirectionStrategy(),
+            JogStrategy(),
+        ])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':

@@ -79,6 +79,11 @@ class StandardPluginCollection:
                         = self.__fallback.create(DeviceShadow(device))
             return self.__fallback_inst
 
+    def getFallback(self) -> Optional['StandardPlugin']:
+        """Return the fallback plugin if registered
+        """
+        return self.__fallback_inst
+
     def reset(self) -> None:
         self.__instantiated = {}
         self.__fallback_inst = None

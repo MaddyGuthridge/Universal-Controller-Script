@@ -1,5 +1,5 @@
 """
-plugs > standard > matttytel > vital
+plugs > standard > matt_tytel > vital
 """
 
 from common.extension_manager import ExtensionManager

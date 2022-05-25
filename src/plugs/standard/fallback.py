@@ -14,8 +14,6 @@ from plugs.mapping_strategies import (
     PedalStrategy,
     WheelStrategy,
     NoteStrategy,
-    DirectionStrategy,
-    JogStrategy
 )
 
 
@@ -31,7 +29,6 @@ class Defaults(StandardPlugin):
     * Pedals
     * Mod and pitch wheels
     * Notes
-    * Jog wheels
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
@@ -39,8 +36,6 @@ class Defaults(StandardPlugin):
             PedalStrategy(),
             WheelStrategy(),
             NoteStrategy(),
-            DirectionStrategy(),
-            JogStrategy(),
         ])
 
     @staticmethod
@@ -52,4 +47,4 @@ class Defaults(StandardPlugin):
         return cls(shadow)
 
 
-ExtensionManager.plugins.register(Defaults)
+ExtensionManager.plugins.registerFallback(Defaults)
