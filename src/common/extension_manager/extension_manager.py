@@ -121,20 +121,14 @@ class ExtensionManager:
             return 's' if len(obj) != 1 else ''
 
         # Number of devices
-        n_dev = f"{len(cls.devices)} device{plural(cls.devices)}"
+        n_dev = len(cls.devices)
         # Number of plugins
         n_plug = (
             len(cls.plugins) + len(cls.windows)
             + len(cls.special) + len(cls.final)
         )
-        # Number of instantiated plugins
-        n_inst = (
-            len(cls.plugins.instantiated()) + len(cls.windows.instantiated())
-            + len(cls.special.instantiated()) + len(cls.final.instantiated())
-        )
         return (
-            f"{n_dev} devices, "
-            f"{n_plug} plugins ({n_inst} instantiated)"
+            f"{n_dev} devices, {n_plug} plugins"
         )
 
     @classmethod
