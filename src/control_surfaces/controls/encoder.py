@@ -1,5 +1,5 @@
 """
-controlsurfaces > encoder
+control_surfaces > encoder
 
 Defines encoder control surfaces
 
@@ -18,14 +18,15 @@ class Encoder(ControlSurface):
     parameters. Compared to endless jog wheels, they should be mapped to plugin
     parameters, rather than navigation.
 
-    NOTE: Encoders use the ENCODER values found in controlsurfaces.consts.
-    TODO: Create a function for getting from an encoder value to a constant
-    value.
+    The values of encoders are calculated using the existing value of the
+    control. This means that a value strategy with support for relative
+    values should be used.
     """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         from .knob import Knob
-        return (Knob,)
+        from .fader import Fader
+        return (Knob, Fader)
 
     def __init__(
         self,

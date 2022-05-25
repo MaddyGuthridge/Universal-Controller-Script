@@ -7,6 +7,7 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 from .knob import Knob, MasterKnob
+from .encoder import Encoder
 from ..event_patterns.event_pattern import IEventPattern
 from ..value_strategies.value_strategy import IValueStrategy
 from . import ControlSurface
@@ -27,7 +28,7 @@ class Fader(GenericFader):
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
         # Fader controls should be assigned to knobs if faders aren't available
-        return (Knob, )
+        return (Knob, Encoder)
 
     def __init__(
         self,
