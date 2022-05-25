@@ -11,6 +11,7 @@ __all__ = [
     'WheelStrategy',
     'NoteStrategy',
     'DirectionStrategy',
+    'JogStrategy',
     'SimpleFaders',
 ]
 
@@ -20,4 +21,5 @@ from .pedal_strategy import PedalStrategy
 from .wheel_strategy import WheelStrategy
 from .note_strategy import NoteStrategy
 from .direction_strategy import DirectionStrategy
+from .jog_strategy import JogStrategy
 from .simple_faders import SimpleFaders
