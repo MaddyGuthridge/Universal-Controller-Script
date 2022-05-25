@@ -5,9 +5,6 @@ from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs.mapping_strategies import (
     SimpleFaders,
-    PedalStrategy,
-    WheelStrategy,
-    NoteStrategy,
 )
 
 PARAMS = [0, 1, 2, 4, 5, 6, 7, 8]
@@ -27,9 +24,6 @@ class TransistorBass(StandardPlugin):
         )
         super().__init__(shadow, [
             faders,
-            PedalStrategy(),
-            WheelStrategy(),
-            NoteStrategy(),
         ])
 
     @classmethod

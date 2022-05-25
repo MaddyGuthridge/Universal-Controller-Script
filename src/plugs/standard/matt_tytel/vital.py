@@ -8,9 +8,6 @@ from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs.mapping_strategies import (
     SimpleFaders,
-    PedalStrategy,
-    WheelStrategy,
-    NoteStrategy,
 )
 
 MACRO_START = 211
@@ -26,9 +23,6 @@ class Vital(StandardPlugin):
         faders = SimpleFaders([MACRO_START + i for i in range(4)], VITAL_COLOR)
         super().__init__(shadow, [
             faders,
-            PedalStrategy(),
-            WheelStrategy(),
-            NoteStrategy(),
         ])
 
     @classmethod

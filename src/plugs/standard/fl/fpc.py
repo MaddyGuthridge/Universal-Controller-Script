@@ -10,11 +10,6 @@ from control_surfaces import ControlShadowEvent
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs import event_filters, tick_filters
-from plugs.mapping_strategies import (
-    PedalStrategy,
-    WheelStrategy,
-    NoteStrategy,
-)
 
 
 class FPC(StandardPlugin):
@@ -41,9 +36,6 @@ class FPC(StandardPlugin):
         self._notes = shadow.bindMatches(Note, self.noteEvent)
 
         super().__init__(shadow, [
-            PedalStrategy(),
-            WheelStrategy(),
-            NoteStrategy(),
         ])
 
     @classmethod

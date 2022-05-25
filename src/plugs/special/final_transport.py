@@ -11,7 +11,13 @@ Authors:
 from common.extension_manager import ExtensionManager
 from devices import DeviceShadow
 from plugs import SpecialPlugin
-from plugs.mapping_strategies import DirectionStrategy, JogStrategy
+from plugs.mapping_strategies import (
+    DirectionStrategy,
+    JogStrategy,
+    NoteStrategy,
+    WheelStrategy,
+    PedalStrategy,
+)
 
 
 class FallbackTransport(SpecialPlugin):
@@ -25,6 +31,9 @@ class FallbackTransport(SpecialPlugin):
         super().__init__(shadow, [
             DirectionStrategy(),
             JogStrategy(),
+            NoteStrategy(),
+            WheelStrategy(),
+            PedalStrategy(),
         ])
 
     @classmethod
