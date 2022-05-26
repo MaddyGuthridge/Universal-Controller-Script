@@ -157,20 +157,6 @@ def isPluginVst(index: PluginIndex) -> bool:
         return False
 
 
-def getSelectedPlaylistTrack() -> int:
-    """
-    Returns the index of the first currently selected playlist track, or `1` if
-    no tracks are currently selected
-
-    ### Returns:
-    * `int`: selected track
-    """
-    for i in range(1, playlist.trackCount()):
-        if playlist.isTrackSelected(i):
-            return i
-    return 1
-
-
 def catchUnsafeOperation(func):
     """
     Decorator to prevent exceptions due to unsafe operations
@@ -253,6 +239,9 @@ def getSelectedChannels(global_mode: bool) -> list[int]:
     """
     Returns a list of the selected channels on the channel rack
 
+    ### Args:
+    * `bool`: whether to check channels outside of the current group
+
     ### Returns:
     * `list[int]`: list of selected channels (using global indexes)
     """
@@ -263,4 +252,32 @@ def getSelectedChannels(global_mode: bool) -> list[int]:
             if global_mode:
                 ch = channels.getChannelIndex(ch)
             selections.append(ch)
+    return selections
+
+
+def getFirstPlaylistSelection() -> int:
+    """
+    Returns the index of the first currently selected playlist track, or `1` if
+    no tracks are currently selected
+
+    ### Returns:
+    * `int`: selected track
+    """
+    for i in range(1, playlist.trackCount()):
+        if playlist.isTrackSelected(i):
+            return i
+    return 1
+
+
+def getSelectedPlaylistTracks() -> list[int]:
+    """
+    Returns a list of the selected tracks on the playlist
+
+    ### Returns:
+    * `list[int]`: list of selected track
+    """
+    selections: list[int] = []
+    for i in range(1, playlist.trackCount() + 1):
+        if playlist.isTrackSelected(i):
+            selections.append(i)
     return selections

@@ -4,15 +4,33 @@ import ui
 import playlist
 import transport
 import general
+from common import getContext
 from common.extension_manager import ExtensionManager
-from common.util.api_fixes import UnsafeIndex, getSelectedPlaylistTrack
+from common.util.api_fixes import (
+    UnsafeIndex,
+    getFirstPlaylistSelection,
+)
 from control_surfaces import consts
 from control_surfaces import ControlShadowEvent
 from control_surfaces import MoveJogWheel, StandardJogWheel, JogWheel
 from devices import DeviceShadow
 from plugs import WindowPlugin
+from plugs.mapping_strategies import MuteSoloStrategy
 
 INDEX = 2
+
+
+def getNumDrumCols() -> int:
+    """Returns the number of columns that the are supported by the controller
+    """
+    return getContext().getDevice().getDrumPadSize()[1]
+
+
+def getSelection(i: int):
+    selection = getFirstPlaylistSelection()
+    if i >= getNumDrumCols():
+        raise IndexError()
+    return selection + i
 
 
 class Playlist(WindowPlugin):
@@ -22,7 +40,15 @@ class Playlist(WindowPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.bindMatches(JogWheel, self.jogWheel)
-        super().__init__(shadow, [])
+        mute_solo = MuteSoloStrategy(
+            getSelection,
+            playlist.muteTrack,
+            playlist.isTrackMuted,
+            playlist.soloTrack,
+            playlist.isTrackSolo,
+            playlist.getTrackColor,
+        )
+        super().__init__(shadow, [mute_solo])
 
     @staticmethod
     def getWindowId() -> int:
@@ -50,7 +76,7 @@ class Playlist(WindowPlugin):
 
         if isinstance(control.getControl(), MoveJogWheel):
             # Scroll through tracks
-            track = getSelectedPlaylistTrack() + increment
+            track = getFirstPlaylistSelection() + increment
             if track <= 0:
                 track = 1
             elif track >= 500:
