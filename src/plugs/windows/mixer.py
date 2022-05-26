@@ -27,6 +27,7 @@ from control_surfaces import (  # noqa: F401
 )
 from devices import DeviceShadow
 from plugs.event_filters import filterButtonLift
+from plugs.mapping_strategies import MuteSoloStrategy
 from plugs import WindowPlugin
 
 INDEX = 0
@@ -60,7 +61,6 @@ class Mixer(WindowPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        super().__init__(shadow, [])
 
         # Bind jog wheel
         self._jog = shadow.bindMatches(
@@ -75,18 +75,6 @@ class Mixer(WindowPlugin):
             Knob,
             self.knob,
         )
-        self._buttons = shadow.bindMatches(
-            GenericFaderButton,
-            self.button,
-        )
-        self._mutes = shadow.bindMatches(
-            MuteButton,
-            self.mute,
-        )
-        self._solos = shadow.bindMatches(
-            SoloButton,
-            self.solo,
-        )
         self._arms = shadow.bindMatches(
             ArmButton,
             self.arm,
@@ -96,12 +84,23 @@ class Mixer(WindowPlugin):
             self.select,
         )
 
+        # Create bindings for mute, solo and generic buttons
+        mutes_solos = MuteSoloStrategy(
+            lambda i: self._selection[i],
+            mixer.muteTrack,
+            mixer.isTrackMuted,
+            mixer.soloTrack,
+            mixer.isTrackSolo,
+            mixer.getTrackColor,
+        )
+
         # TODO: Bind master controls
 
         # List of mapped channels
         self._selection: list[int] = []
         # Length of mapped channels
         self._len = max(map(len, [self._faders, self._knobs]))
+        super().__init__(shadow, [mutes_solos])
 
     @staticmethod
     def getWindowId() -> int:
@@ -206,24 +205,6 @@ class Mixer(WindowPlugin):
                 self._faders[n].color = c
             if len(self._knobs) > n:
                 self._knobs[n].color = c
-            # Generic fader buttons
-            if len(self._buttons) > n:
-                if mixer.isTrackEnabled(i):
-                    self._buttons[n].color = c
-                else:
-                    self._buttons[n].color = COLOR_DISABLED
-            # Mute buttons
-            if len(self._mutes) > n:
-                if mixer.isTrackMuted(i):
-                    self._mutes[n].color = COLOR_DISABLED
-                else:
-                    self._mutes[n].color = c
-            # Solo buttons
-            if len(self._solos) > n:
-                if mixer.isTrackSolo(i):
-                    self._solos[n].color = c
-                else:
-                    self._solos[n].color = COLOR_DISABLED
             # Select buttons
             if len(self._selects) > n:
                 if mixer.isTrackSelected(i):
@@ -241,30 +222,6 @@ class Mixer(WindowPlugin):
         index = self._selection[control.getControl().coordinate[1]]
         mixer.setTrackPan(index, snapKnobs(control.value))
 
-        return True
-
-    @filterButtonLift
-    def mute(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
-        """Mute track"""
-        index = self._selection[control.getControl().coordinate[1]]
-        mixer.muteTrack(index)
-        return True
-
-    @filterButtonLift
-    def solo(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
-        """Solo track"""
-        index = self._selection[control.getControl().coordinate[1]]
-        mixer.soloTrack(index)
         return True
 
     @filterButtonLift
@@ -289,23 +246,6 @@ class Mixer(WindowPlugin):
         """Select track"""
         index = self._selection[control.getControl().coordinate[1]]
         mixer.selectTrack(index)
-        return True
-
-    @filterButtonLift
-    def button(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
-        """Generic fader buttons"""
-        index = self._selection[control.getControl().coordinate[1]]
-
-        if control.double or mixer.isTrackSolo(index):
-            mixer.soloTrack(index)
-        else:
-            mixer.muteTrack(index)
-
         return True
 
 
