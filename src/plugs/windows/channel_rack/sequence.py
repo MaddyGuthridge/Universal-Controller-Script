@@ -16,7 +16,7 @@ from control_surfaces import (
 from devices import DeviceShadow
 from plugs import WindowPlugin
 from plugs.event_filters import filterButtonLift
-from .helpers import INDEX
+from .helpers import INDEX, getChannelRows
 
 # How many steps should be scrolled each time
 SCROLL_MULTIPLIER = 4
@@ -54,41 +54,6 @@ class StepSequencer(WindowPlugin):
     def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
         return cls(shadow)
 
-    def getChannelRows(self):
-        """
-        Returns the rows which should be used by the channel rack
-
-        ## Actual behavior:
-
-        Channels from the first selection onwards
-
-        ## Preferred behavior:
-
-        Initially this is selected channels, but if we run out of those, it's
-        all channels after the last selection
-
-        This isn't implemented as there is no way to multi-select on the
-        channel rack
-        """
-        s = channels.selectedChannel(0)
-        ret = []
-        for i in range(s, channels.channelCount(True)):
-            ret.append(i)
-        return ret[:self._height]
-
-        # s = getSelectedChannels(global_mode=False)
-        # if s == []:
-        #     s = [0]
-        # num_ch = channels.channelCount(True)
-        # height = self._height - len(s)
-        # ch_select = s[-1] + 1
-        # for _ in range(height):
-        #     if ch_select >= num_ch:
-        #         break
-        #     s.append(ch_select)
-        #     ch_select += 1
-        # return s[:self._height]
-
     def drumPads(
         self,
         control: ControlShadowEvent,
@@ -101,7 +66,7 @@ class StepSequencer(WindowPlugin):
             return True
         # Row should apply to the offset of the selected channel
         # or if there aren't enough selections, the next selections along
-        selections = self.getChannelRows()
+        selections = getChannelRows()
 
         row, col = control.getControl().coordinate
 
@@ -123,7 +88,7 @@ class StepSequencer(WindowPlugin):
         col = self._scroll * SCROLL_MULTIPLIER
 
         # FIXME: This might get an index error on controllers with no drum pads
-        row = self.getChannelRows()[0]
+        row = getChannelRows()[0]
 
         ui.crDisplayRect(
             col,
@@ -171,7 +136,7 @@ class StepSequencer(WindowPlugin):
         """Set colors and annotations for omni-preview"""
         # Row should apply to the offset of the selected channel
         # or if there aren't enough selections, the next selections along
-        selections = self.getChannelRows()
+        selections = getChannelRows()
 
         for control in self._drums:
             row, col = control.getControl().coordinate
