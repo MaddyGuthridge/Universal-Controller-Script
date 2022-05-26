@@ -48,4 +48,10 @@ class ModX(ModXY):
 class ModY(ModXY):
     """
     ModY control
+
+    Can also be substituted with a mod wheel
     """
+    @staticmethod
+    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
+        from .wheels import ModWheel
+        return super(ModY, ModY).getControlAssignmentPriorities() + (ModWheel,)
