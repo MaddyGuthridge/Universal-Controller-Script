@@ -60,31 +60,31 @@ class OverallDevice:
         print("Type `help` for help using the script\n")
 
 
-device = OverallDevice()
+dev = OverallDevice()
 
 
 def OnInit():
-    device.onInit()
+    dev.onInit()
 
 
 def OnDeInit():
-    device.onDeinit()
+    dev.onDeinit()
 
 
 def OnMidiIn(event):
-    device.onMidiIn(event)
+    dev.onMidiIn(event)
 
 
 def OnIdle():
-    device.onIdle()
+    dev.onIdle()
 
 
 def OnRefresh(flags: int):
-    device.onIdle()
+    dev.onIdle()
 
 
 def bootstrap():
-    device.bootstrap()
+    dev.bootstrap()
 
 
 if __name__ == "__main__":
