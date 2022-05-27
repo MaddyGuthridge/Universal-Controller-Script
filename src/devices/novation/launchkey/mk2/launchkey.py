@@ -39,7 +39,7 @@ from devices.novation.launchkey.incontrol.controls import (
     LkRewindButton,
     LkMk2RecordButton,
     LkMk2LoopButton,
-    LkFaderSet,
+    LkMk2FaderSet,
 )
 
 ID_PREFIX = "Novation.Launchkey.Mk2"
@@ -106,7 +106,7 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
 
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
-        matcher.addSubMatcher(LkFaderSet())
+        matcher.addSubMatcher(LkMk2FaderSet())
         super().__init__(matcher)
 
     @classmethod
