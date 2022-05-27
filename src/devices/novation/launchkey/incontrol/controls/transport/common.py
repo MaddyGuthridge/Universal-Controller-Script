@@ -6,8 +6,6 @@ Definitions for transport controls shared between Launchkey devices
 
 from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
 from control_surfaces import (
-    DirectionNext,
-    DirectionPrevious,
     FastForwardButton,
     RewindButton,
     QuantizeButton,
@@ -19,29 +17,11 @@ from control_surfaces.value_strategies import (
 )
 
 __all__ = [
-    'LkDirectionNext',
-    'LkDirectionPrevious',
     'LkFastForwardButton',
     'LkRewindButton',
     'LkQuantizeButton',
     'LkUndoRedoButton',
 ]
-
-
-class LkDirectionNext(DirectionNext):
-    def __init__(self) -> None:
-        super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-
-
-class LkDirectionPrevious(DirectionPrevious):
-    def __init__(self) -> None:
-        super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
 
 
 class LkRewindButton(RewindButton):

@@ -1,7 +1,5 @@
 
 __all__ = [
-    'LkDirectionNext',
-    'LkDirectionPrevious',
     'LkFastForwardButton',
     'LkPlayButton',
     'LkRecordButton',
@@ -20,8 +18,6 @@ __all__ = [
 ]
 
 from .common import (
-    LkDirectionNext,
-    LkDirectionPrevious,
     LkFastForwardButton,
     LkRewindButton,
     LkQuantizeButton,

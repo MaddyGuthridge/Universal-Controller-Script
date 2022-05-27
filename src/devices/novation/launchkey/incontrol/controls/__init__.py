@@ -7,8 +7,8 @@ Definitions for controls shared between Novation devices
 __all__ = [
     'ColorInControlSurface',
     'GrayscaleInControlSurface',
-    'LkDirectionNext',
-    'LkDirectionPrevious',
+    'LkMk2DirectionNext',
+    'LkMk2DirectionPrevious',
     'LkFastForwardButton',
     'LkMk2LoopButton',
     'LkMk3LoopButton',
@@ -51,8 +51,6 @@ __all__ = [
 
 from .incontrol_surface import ColorInControlSurface, GrayscaleInControlSurface
 from .transport import (
-    LkDirectionNext,
-    LkDirectionPrevious,
     LkFastForwardButton,
     LkRewindButton,
     LkMk2LoopButton,
@@ -94,6 +92,8 @@ from .control_switch import (
     LkMk3ControlSwitchButton,
 )
 from .navigation import (
+    LkMk2DirectionNext,
+    LkMk2DirectionPrevious,
     Mk3DirectionLeft,
     Mk3DirectionRight,
     MiniMk3DirectionUp,
