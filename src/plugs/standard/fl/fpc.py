@@ -46,7 +46,7 @@ class FPC(StandardPlugin):
     def getPlugIds(cls) -> tuple[str, ...]:
         return ("FPC",)
 
-    @tick_filters.toGeneratorIndex
+    @tick_filters.toGeneratorIndex()
     def tick(self, index: GeneratorIndex):
         for p in self._pads:
             p.color = Color.fromInteger(
@@ -87,7 +87,7 @@ class FPC(StandardPlugin):
             note = note >> 16
         channels.midiNoteOn(ch_idx, note, int(control.value*127))
 
-    @event_filters.toGeneratorIndex
+    @event_filters.toGeneratorIndex()
     def drumPad4x8(
         self,
         control: ControlShadowEvent,
@@ -101,7 +101,7 @@ class FPC(StandardPlugin):
         self.triggerPad(self._coordToIndex(row, col), control, *index)
         return True
 
-    @event_filters.toGeneratorIndex
+    @event_filters.toGeneratorIndex()
     def drumPad4x4(
         self,
         control: ControlShadowEvent,
@@ -115,7 +115,7 @@ class FPC(StandardPlugin):
         self.triggerPad(self._coordToIndex(row, col), control, *index)
         return True
 
-    @event_filters.toGeneratorIndex
+    @event_filters.toGeneratorIndex()
     def drumPad2x8(
         self,
         control: ControlShadowEvent,
@@ -129,7 +129,7 @@ class FPC(StandardPlugin):
         self.triggerPad(self._coordToIndex(row, col), control, *index)
         return True
 
-    @event_filters.toGeneratorIndex
+    @event_filters.toGeneratorIndex()
     def noteEvent(
         self,
         control: ControlShadowEvent,

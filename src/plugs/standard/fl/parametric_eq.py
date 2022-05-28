@@ -54,7 +54,7 @@ class ParametricEq(StandardPlugin):
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
 
-    @tick_filters.toEffectIndex
+    @tick_filters.toEffectIndex()
     def tick(self, index: GeneratorIndex):
         if len(self._levels):
             for color, (f, i) in enumerate(
@@ -82,7 +82,7 @@ class ParametricEq(StandardPlugin):
     def getPlugIds(cls) -> tuple[str, ...]:
         return ("Fruity parametric EQ 2",)
 
-    @event_filters.toEffectIndex
+    @event_filters.toEffectIndex()
     def levels(
         self,
         control: ControlShadowEvent,
@@ -93,7 +93,7 @@ class ParametricEq(StandardPlugin):
                               control.getShadow().coordinate[1], *index)
         return True
 
-    @event_filters.toEffectIndex
+    @event_filters.toEffectIndex()
     def frequencies(
         self,
         control: ControlShadowEvent,
@@ -104,7 +104,7 @@ class ParametricEq(StandardPlugin):
                               control.getShadow().coordinate[1], *index)
         return True
 
-    @event_filters.toEffectIndex
+    @event_filters.toEffectIndex()
     def bandwidths(
         self,
         control: ControlShadowEvent,

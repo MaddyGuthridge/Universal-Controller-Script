@@ -224,7 +224,7 @@ class Mixer(WindowPlugin):
 
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def arm(
         self,
         control: ControlShadowEvent,
@@ -236,7 +236,7 @@ class Mixer(WindowPlugin):
         mixer.armTrack(index)
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def select(
         self,
         control: ControlShadowEvent,

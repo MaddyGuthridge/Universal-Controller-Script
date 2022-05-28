@@ -48,7 +48,7 @@ class SimpleFaders(IMappingStrategy):
             args_generator=self._parameters,
         ).colorize(self._colors)
 
-    @toPluginIndex
+    @toPluginIndex()
     def eFaders(
         self,
         control: ControlShadowEvent,
@@ -60,7 +60,7 @@ class SimpleFaders(IMappingStrategy):
         plugins.setParamValue(control.value, param_index, *index)
         return True
 
-    @toPluginIndex
+    @toPluginIndex()
     def tFaders(
         self,
         control: ControlShadow,

@@ -62,7 +62,7 @@ class PedalStrategy(IMappingStrategy):
             one_type=False,
         )
 
-    @toPluginIndex
+    @toPluginIndex()
     def pedalCallback(
         self,
         control: ControlShadowEvent,

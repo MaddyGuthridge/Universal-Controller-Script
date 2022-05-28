@@ -119,7 +119,7 @@ class Transport(SpecialPlugin):
     def shouldBeActive(cls) -> bool:
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def playButton(self, *args: Any) -> bool:
         # If there's no stop button, this should behave like a stop button
         # when playing
@@ -129,22 +129,22 @@ class Transport(SpecialPlugin):
             transport.start()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def stopButton(self, *args: Any) -> bool:
         transport.stop()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def recButton(self, *args: Any) -> bool:
         transport.record()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def loopButton(self, *args: Any) -> bool:
         transport.setLoopMode()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def metroButton(self, *args: Any) -> bool:
         transport.globalTransport(110, 1)
         return True
@@ -154,7 +154,7 @@ class Transport(SpecialPlugin):
         """
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def navButtons(self, control: ControlShadowEvent, *args: Any) -> bool:
         c_type = type(control.getControl())
         if c_type == DirectionUp:

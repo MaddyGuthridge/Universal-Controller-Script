@@ -102,13 +102,13 @@ class SpitfireGeneric(StandardPlugin):
     def getPlugIds(cls) -> tuple[str, ...]:
         return SUPPORTED_PLUGINS
 
-    @tick_filters.toGeneratorIndex
+    @tick_filters.toGeneratorIndex()
     def tick(self, index: GeneratorIndex):
         # self._faders[0].value = plugins.getParamValue(0, *index)
         # self._faders[1].value = plugins.getParamValue(1, *index)
         pass
 
-    @event_filters.toGeneratorIndex
+    @event_filters.toGeneratorIndex()
     def faders(
         self,
         control: ControlShadowEvent,
@@ -119,7 +119,7 @@ class SpitfireGeneric(StandardPlugin):
             control.value, control.getShadow().coordinate[1], *index)
         return True
 
-    @event_filters.toGeneratorIndex
+    @event_filters.toGeneratorIndex()
     def drumPad4x8(
         self,
         control: ControlShadowEvent,
@@ -134,7 +134,7 @@ class SpitfireGeneric(StandardPlugin):
             row, col), int(control.value * 127))
         return True
 
-    @event_filters.toGeneratorIndex
+    @event_filters.toGeneratorIndex()
     def drumPad4x4(
         self,
         control: ControlShadowEvent,
@@ -149,7 +149,7 @@ class SpitfireGeneric(StandardPlugin):
             row, col), int(control.value * 127))
         return True
 
-    @event_filters.toGeneratorIndex
+    @event_filters.toGeneratorIndex()
     def drumPad2x8(
         self,
         control: ControlShadowEvent,

@@ -98,21 +98,21 @@ class StepSequencer(WindowPlugin):
             1000,
         )
 
-    @filterButtonLift
+    @filterButtonLift()
     def left(self, *args) -> bool:
         """Scroll left"""
         self._scroll = max(self._scroll - 1, 0)
         self.showGrid()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def right(self, *args) -> bool:
         """Scroll right"""
         self._scroll += 1
         self.showGrid()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def up(self, *args) -> bool:
         """Scroll up"""
         new = channels.selectedChannel() - 1
@@ -122,7 +122,7 @@ class StepSequencer(WindowPlugin):
         self.showGrid()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def down(self, *args) -> bool:
         """Scroll down"""
         new = channels.selectedChannel() + 1

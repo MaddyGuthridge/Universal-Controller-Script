@@ -66,17 +66,17 @@ class DirectionStrategy(IMappingStrategy):
             raise_on_failure=False,
         ).color = BOUND_COLOR
 
-    @filterButtonLift
+    @filterButtonLift()
     def next(self, control, index, *args, **kwargs):
         ui.next()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def previous(self, control, index, *args, **kwargs):
         ui.previous()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def select(self, control, index, *args, **kwargs):
         # BUG: Will just echo enter - improve this
         ui.enter()

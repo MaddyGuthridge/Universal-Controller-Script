@@ -106,7 +106,7 @@ class MuteSoloStrategy(IMappingStrategy):
             args_generator=...
         )
 
-    @filterButtonLift
+    @filterButtonLift()
     def eGeneric(
         self,
         control: ControlShadowEvent,
@@ -143,7 +143,7 @@ class MuteSoloStrategy(IMappingStrategy):
             control.color = Color.fromInteger(self.color(track))
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def eMute(
         self,
         control: ControlShadowEvent,
@@ -177,7 +177,7 @@ class MuteSoloStrategy(IMappingStrategy):
             control.color = COLOR_DISABLED
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def eSolo(
         self,
         control: ControlShadowEvent,

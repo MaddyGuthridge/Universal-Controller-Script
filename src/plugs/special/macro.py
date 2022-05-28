@@ -68,7 +68,7 @@ class Macro(SpecialPlugin):
     def shouldBeActive(cls) -> bool:
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def undo(
         self,
         control: ControlShadowEvent,
@@ -78,7 +78,7 @@ class Macro(SpecialPlugin):
         general.undoUp()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def redo(
         self,
         control: ControlShadowEvent,
@@ -88,7 +88,7 @@ class Macro(SpecialPlugin):
         general.undoDown()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def undoRedo(
         self,
         control: ControlShadowEvent,
@@ -98,7 +98,7 @@ class Macro(SpecialPlugin):
         general.undo()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def save(
         self,
         control: ControlShadowEvent,
@@ -108,7 +108,7 @@ class Macro(SpecialPlugin):
         transport.globalTransport(92, 1)
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def quantize(
         self,
         control: ControlShadowEvent,
@@ -118,7 +118,7 @@ class Macro(SpecialPlugin):
         channels.quickQuantize(channels.selectedChannel())
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def switchActive(
         self,
         control: ControlShadowEvent,
@@ -135,7 +135,7 @@ class Macro(SpecialPlugin):
             getContext().active.toggleWindowsPlugins()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def pauseActive(
         self,
         control: ControlShadowEvent,
@@ -147,7 +147,7 @@ class Macro(SpecialPlugin):
         getContext().active.playPause()
         return True
 
-    @filterButtonLift
+    @filterButtonLift()
     def captureMidi(
         self,
         control: ControlShadowEvent,

@@ -34,7 +34,7 @@ class ModXYStrategy(IMappingStrategy):
         shadow.bindMatch(ModX, self.event, self.tick, (self._x,))
         shadow.bindMatch(ModY, self.event, self.tick, (self._y,))
 
-    @toPluginIndex
+    @toPluginIndex()
     def event(
         self,
         control: ControlShadowEvent,
@@ -45,7 +45,7 @@ class ModXYStrategy(IMappingStrategy):
         plugins.setParamValue(control.value, param_index, *index)
         return True
 
-    @toPluginIndex
+    @toPluginIndex()
     def tick(
         self,
         control: ControlShadow,

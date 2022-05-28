@@ -66,7 +66,7 @@ class PluginPager:
         # Process the event in the required page
         return self.__pages[self.__index].processEvent(mapping, index)
 
-    @filterButtonLift
+    @filterButtonLift()
     def controlSwitch(
         self,
         control: ControlShadowEvent,

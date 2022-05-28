@@ -58,7 +58,7 @@ class WheelStrategy(IMappingStrategy):
             raise_on_failure=False
         )
 
-    @toPluginIndex
+    @toPluginIndex()
     def modCallback(
         self,
         control: ControlShadowEvent,
@@ -95,7 +95,7 @@ class WheelStrategy(IMappingStrategy):
 
         return True
 
-    @toPluginIndex
+    @toPluginIndex()
     def pitchCallback(
         self,
         control: ControlShadowEvent,
