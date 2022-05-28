@@ -190,6 +190,14 @@ def test_closest():
     assert c.closest(options) == options[-1]
 
 
+def test_closest_no_values():
+    c = Color()
+    with pytest.raises(ValueError):
+        c.closest([])
+    with pytest.raises(ValueError):
+        c.closestGrayscale([])
+
+
 def test_grayscale():
     c = Color.fromGrayscale(0.5)
     assert c.grayscale == 0.5
