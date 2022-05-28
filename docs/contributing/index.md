@@ -17,7 +17,7 @@
 
 * [Device shadows](plugins/device_shadow.md)
 
-* [Event filters](plugins/event_filter.md)
+* [Filters](plugins/filters.md)
 
 * [Event forwarding](devices/event_forward.md)
 

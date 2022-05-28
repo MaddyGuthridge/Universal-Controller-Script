@@ -17,7 +17,7 @@ When a plugin is created, it should bind callback functions to a
 private copy of the device that is being mapped to. This can either be done
 manually, or with [mapping strategies](mapping_strategy.md), given as arguments
 to the `super` constructor. Callbacks can be decorated using
-[event filters](event_filter.md) to filter out unwanted events.
+[event filters](filters.md) to filter out unwanted events.
 
 ### Design Ideals for Plugin Interfaces
 
@@ -63,7 +63,8 @@ match the following criteria:
 The following methods only need to be implemented if necessary.
 
 * `tick(self, index: UnsafeIndex) -> None`: Perform any actions required to
-  update the plugin.
+  update the plugin. Note that the index can be filtered as required using
+  [tick filters](filters.md).
 
 ## Control Binding
 
