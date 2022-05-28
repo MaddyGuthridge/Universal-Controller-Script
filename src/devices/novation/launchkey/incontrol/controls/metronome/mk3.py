@@ -1,16 +1,18 @@
 
-from .metronome import LkMetronomeButton
-from ...colors.mk3 import COLORS
+from control_surfaces import MetronomeButton
+from control_surfaces.event_patterns import ForwardedPattern, BasicPattern
+from control_surfaces.value_strategies import (
+    ForwardedStrategy,
+    ButtonData2Strategy,
+)
 
 
-class LkMk3MetronomeButton(LkMetronomeButton):
+class LkMk3MetronomeButton(MetronomeButton):
 
     def __init__(
         self,
     ) -> None:
         super().__init__(
-            0,
-            0x4C,
-            COLORS,
-            0xB
+            ForwardedPattern(2, BasicPattern(0xBF, 0x4C, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
         )

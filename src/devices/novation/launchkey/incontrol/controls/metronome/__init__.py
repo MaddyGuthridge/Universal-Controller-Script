@@ -5,6 +5,5 @@ __all__ = [
     'LkMk3MetronomeButton',
 ]
 
-from .metronome import LkMetronomeButton
 from .mk2 import LkMk2MetronomeButton
 from .mk3 import LkMk3MetronomeButton
