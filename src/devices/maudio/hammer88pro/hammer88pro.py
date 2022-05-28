@@ -7,8 +7,6 @@ Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 """
 
-from typing import Optional
-
 import device
 
 from common import getContext
