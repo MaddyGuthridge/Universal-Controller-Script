@@ -64,6 +64,7 @@ class LkMk3FaderButton(ColorInControlSurface, GenericFaderButton):
             0,
             FB_START + index,
             COLORS,
+            event_num=0xB
         )
 
 
