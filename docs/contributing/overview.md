@@ -18,7 +18,7 @@ The script is comprised of a small number of main components.
 
 * The common module, which serves as an interface between devices and plugins.
 
-## Initialisation
+## Initialization
 
 The script's behavior is controlled by using a state machine, which is managed
 by the script context manager (which can be accessed by calling

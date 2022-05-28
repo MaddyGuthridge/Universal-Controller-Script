@@ -13,11 +13,11 @@ interact with FL Studio Windows, as well as generator and effect plugins.
 ## Creating a Plugin
 
 When a plugin is created, it should bind callback functions to a
-[`DeviceShadow`](deviceshadow.md) object, that represents the plugin's own
+[`DeviceShadow`](device_shadow.md) object, that represents the plugin's own
 private copy of the device that is being mapped to. This can either be done
-manually, or with [mapping strategies](mappingstrategy.md), given as arguments
+manually, or with [mapping strategies](mapping_strategy.md), given as arguments
 to the `super` constructor. Callbacks can be decorated using
-[event filters](eventfilter.md) to filter out unwanted events.
+[event filters](event_filter.md) to filter out unwanted events.
 
 ### Design Ideals for Plugin Interfaces
 
@@ -132,7 +132,7 @@ else:
 ```
 
 Control bindings can be made in more advanced ways too. Refer to the manual
-page on [device shadows](deviceshadow.md).
+page on [device shadows](device_shadow.md).
 
 ## Example Plugin
 

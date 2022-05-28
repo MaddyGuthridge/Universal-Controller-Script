@@ -1,7 +1,7 @@
 
 # Event Filters
 
-Import from `plugs.eventfilters`
+Import from `plugs.event_filters`
 
 Event filters are decorators that filter out events that shouldn't be processed
 by a callback function. They provide a simple way to ensure type safety, and

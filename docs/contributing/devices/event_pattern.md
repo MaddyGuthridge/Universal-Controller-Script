@@ -1,7 +1,7 @@
 
 # Event Patterns
 
-Import from `controlsurfaces.eventpatterns`
+Import from `control_surfaces.event_patterns`
 
 Event patterns are used to recognize events from their MIDI data. The most
 common type is the `BasicPattern` which can be used to detect a variety of event

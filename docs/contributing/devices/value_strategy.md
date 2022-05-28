@@ -1,7 +1,7 @@
 
 # Value Strategies
 
-Import from `controlsurfaces.valuestrategies`
+Import from `control_surfaces.value_strategies`
 
 Value strategies are used to get the value from an event and convert it to a
 floating point value for use within the rest of the script.
@@ -29,7 +29,7 @@ this strategy.
 ## `Data1Strategy`
 
 Gets the value from the data1 value of the event. This is used by some events
-such as channel aftertouch which don't give a data2 value.
+such as channel after-touch which don't give a data2 value.
 
 ## `TwosComplimentDeltaStrategy`
 

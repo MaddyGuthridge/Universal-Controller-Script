@@ -3,11 +3,11 @@
 
 Control surfaces represent a control on a device. The are instantiated during
 the construction of `Device` objects, and are indirectly mapped to by plugins,
-via the [`ControlShadow`](../plugins/controlshadow.md) type.
+via the [`ControlShadow`](../plugins/control_shadow.md) type.
 
 ## List of Control Surfaces
 
-This is all the control surfaces defined in the `controlsurfaces` module.
+This is all the control surfaces defined in the `control_surfaces` module.
 Classes labelled with `*` have a `Master` variant, which represents that
 control surface, but specifically for the master channel.
 
@@ -18,7 +18,7 @@ control surface, but specifically for the master channel.
     * `StandardPitchWheel`: a pitch wheel that behaves in the standard way
     * `Data2PitchWheel`: a pitch wheel that only sends pitch data in the
       `data2` byte of the event.
-* `AfterTouch`: Represents aftertouch events
+* `AfterTouch`: Represents after-touch events
     * `ChannelAfterTouch`
     * `NoteAfterTouch`
 * `Pedal`: Represents a foot pedal

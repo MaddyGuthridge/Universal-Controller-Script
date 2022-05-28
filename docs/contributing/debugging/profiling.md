@@ -7,7 +7,7 @@ monitor performance of the script.
 ## Performance Monitoring
 
 Sometimes, certain script behavior may cause performance issues. To help
-analyse these issues, a simple performance profiler is included.
+analyze these issues, a simple performance profiler is included.
 
 To get profiling info, enter the following into the script's output window:
 `getContext().profiler.inspect()`
@@ -33,7 +33,7 @@ performance of the script:
  tick                                                   |     1419.92000 |     188 |    7.55277 |   24.98580
 ```
 
-As can be seen, profiling is categorised into a hierarchy, separated by dots.
+As can be seen, profiling is categorized into a hierarchy, separated by dots.
 
 ### Adding profiling to your code
 

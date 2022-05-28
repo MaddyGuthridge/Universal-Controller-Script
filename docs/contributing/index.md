@@ -1,13 +1,13 @@
 
 # Contributing Index
 
-* [Control events](plugins/controlevent.md)
+* [Control events](plugins/control_event.md)
 
-* [Control matchers](devices/controlmatcher.md)
+* [Control matchers](devices/control_matcher.md)
 
-* [Control shadows](plugins/controlshadow.md)
+* [Control shadows](plugins/control_shadow.md)
 
-* [Control surfaces](devices/controlsurface.md)
+* [Control surfaces](devices/control_surface.md)
 
 * [Debugging](debugging/README.md)
 
@@ -15,15 +15,15 @@
 
 * [Device detection](devices/detection.md)
 
-* [Device shadows](plugins/deviceshadow.md)
+* [Device shadows](plugins/device_shadow.md)
 
-* [Event filters](plugins/eventfilter.md)
+* [Event filters](plugins/event_filter.md)
 
-* [Event forwarding](devices/eventforward.md)
+* [Event forwarding](devices/event_forward.md)
 
-* [Event patterns](devices/eventpattern.md)
+* [Event patterns](devices/event_pattern.md)
 
-* [Mapping strategies](plugins/mappingstrategy.md)
+* [Mapping strategies](plugins/mapping_strategy.md)
 
 * [Overview](overview.md)
 
@@ -35,4 +35,4 @@
 
 * [Style guide](style.md)
 
-* [Value strategies](devices/valuestrategy.md)
+* [Value strategies](devices/value_strategy.md)

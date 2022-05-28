@@ -7,8 +7,8 @@ the Novation Launchkey Mk2 series of devices is found in the
 `devices/novation/launchkey/mk2` directory.
 
 Generally, devices are created by defining
-[control surfaces](controlsurface.md) that the device supports, then adding
-those controls to a [control matcher](controlmatcher.md), before calling the
+[control surfaces](control_surface.md) that the device supports, then adding
+those controls to a [control matcher](control_matcher.md), before calling the
 parent device class to initialize it with that control matcher.
 
 ## Defining a Control Surface
@@ -18,25 +18,25 @@ class. Most of these types are quite self-explanatory, for example `StopButton`
 represents a stop button.
 
 When a control is instantiated, it is usually given an
-[event pattern](eventpattern.md) used to recognize matching events, and a
-[value strategy](valuestrategy.md) used to extract a value from the event.
+[event pattern](event_pattern.md) used to recognize matching events, and a
+[value strategy](value_strategy.md) used to extract a value from the event.
 
 For some devices, more fine-grained control may be necessary to take full
 advantage of the device's capabilities. In cases like this, you can create a
 subclass that inherits from a control surface within the package where you
 are creating your device, then instantiate that instead. Refer to
-[the documentation](controlsurface.md#extending-existing-control-surfaces).
+[the documentation](control_surface.md#extending-existing-control-surfaces).
 
 ### Control Generators
 
 Some control surfaces, such as notes, need to be generated in bulk for most
 controllers. For cases like these, control generators are available to simplify
-the creation process. They can be found under `devices.controlgenerators`.
+the creation process. They can be found under `devices.control_generators`.
 These are all types of control matcher and can be added to a standard control
 matcher using `matcher.addSubMatcher()`.
 
 * `NoteMatcher`: sub matcher for note events
-* `NoteAfterTouchMatcher`: sub matcher for per-note aftertouch
+* `NoteAfterTouchMatcher`: sub matcher for per-note after-touch
 * `PedalMatcher`: sub matcher for pedals
 
 ## Control Surfaces to Implement
@@ -62,12 +62,13 @@ controls, but if your device does have complex hardware, you should let the
 script take advantage of that fact.
 
 ## Methods to Implement
-* `@classmethod create(cls, event: Optional[eventData]) -> Device`: Create an
-  instance of this device.
+* `@classmethod create(cls, event: EventData = None, id: str = None) -> Device`:
+  Create an instance of this device. The event or ID should be used to ensure
+  that the device is created with the correct ID.
 
 * `getId(self) -> str`: Returns the ID of the detected device
   (`"Manufacturer.Model.Revision.Variant"`). This is used to encode
-  [forwarded events](eventforward.md), as well as to assist with bug reporting.
+  [forwarded events](event_forward.md), as well as to assist with bug reporting.
 
 * `@classmethod getSupportedIds(cls) -> tuple[str, ...]`: Return all the device
   IDs that are supported by this device definition.
@@ -124,7 +125,7 @@ class MyController(Device):
         # Add a standard pitch wheel
         matcher.addControl(StandardPitchWheel())
 
-        # Finally finish the initialisation
+        # Finally finish the initialization
         super().__init__(matcher)
 
     @staticmethod

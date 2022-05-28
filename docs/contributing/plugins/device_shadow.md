@@ -6,7 +6,7 @@ device's state. It allows the plugin to manipulate the device without impacting
 the state of other plugins.
 
 See also:
-* [Control shadow](controlshadow.md)
+* [Control shadow](control_shadow.md)
 
 ## Methods
 
