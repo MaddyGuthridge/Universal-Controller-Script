@@ -21,8 +21,8 @@ class OmniPreview(WindowPlugin):
             shadow.bindMatches(DrumPad, self.drumPads)
         super().__init__(shadow, [])
 
-    @staticmethod
-    def getWindowId() -> int:
+    @classmethod
+    def getWindowId(cls) -> int:
         return INDEX
 
     @classmethod

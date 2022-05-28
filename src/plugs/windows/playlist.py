@@ -50,8 +50,8 @@ class Playlist(WindowPlugin):
         )
         super().__init__(shadow, [mute_solo])
 
-    @staticmethod
-    def getWindowId() -> int:
+    @classmethod
+    def getWindowId(cls) -> int:
         return INDEX
 
     @classmethod

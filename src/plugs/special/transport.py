@@ -115,8 +115,8 @@ class Transport(SpecialPlugin):
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         return cls(shadow)
 
-    @staticmethod
-    def shouldBeActive() -> bool:
+    @classmethod
+    def shouldBeActive(cls) -> bool:
         return True
 
     @filterButtonLift

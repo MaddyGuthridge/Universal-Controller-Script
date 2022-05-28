@@ -44,18 +44,18 @@ match the following criteria:
 
 ### Standard Plugins
 
-* `@staticmethod getPlugIds() -> tuple[str, ...]`: Returns a tuple of the
+* `@classmethod getPlugIds(cls) -> tuple[str, ...]`: Returns a tuple of the
   plugin IDs to associate this plugin with. Only for plugins of type
   `StandardPlugin`.
 
 ### Window Plugins
 
-* `@staticmethod getWindowId() -> int`: Returns the ID of the window to
+* `@classmethod getWindowId(cls) -> int`: Returns the ID of the window to
   associate this plugin with. Only for plugins of type `WindowPlugin`
 
 ### Special Plugins
 
-* `@staticmethod shouldBeActive() -> bool`: Returns whether this plugin should
+* `@classmethod shouldBeActive(cls) -> bool`: Returns whether this plugin should
   be active. Only for plugins of type `SpecialPlugin`.
 
 ### Optional Methods
@@ -158,8 +158,8 @@ class MyPlugin(StandardPlugin):
         # Create an instance of the plugin
         return cls(shadow)
 
-    @staticmethod
-    def getPlugIds() -> tuple[str, ...]:
+    @classmethod
+    def getPlugIds(cls) -> tuple[str, ...]:
         # This plugin should map to plugins named MyPlugin
         return ("MyPlugin",)
 

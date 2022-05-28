@@ -38,8 +38,8 @@ class Defaults(StandardPlugin):
             NoteStrategy(),
         ])
 
-    @staticmethod
-    def getPlugIds() -> tuple[str, ...]:
+    @classmethod
+    def getPlugIds(cls) -> tuple[str, ...]:
         return tuple()
 
     @classmethod

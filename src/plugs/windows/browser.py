@@ -16,8 +16,8 @@ class Browser(WindowPlugin):
     def __init__(self, shadow: DeviceShadow) -> None:
         super().__init__(shadow, [])
 
-    @staticmethod
-    def getWindowId() -> int:
+    @classmethod
+    def getWindowId(cls) -> int:
         return INDEX
 
     @classmethod

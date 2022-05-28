@@ -28,8 +28,8 @@ class ChannelRack(PluginPager, WindowPlugin):
         )
         WindowPlugin.__init__(self, shadow, [mute_solo])
 
-    @staticmethod
-    def getWindowId() -> int:
+    @classmethod
+    def getWindowId(cls) -> int:
         return INDEX
 
     @classmethod

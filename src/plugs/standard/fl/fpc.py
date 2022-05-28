@@ -42,8 +42,8 @@ class FPC(StandardPlugin):
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
 
-    @staticmethod
-    def getPlugIds() -> tuple[str, ...]:
+    @classmethod
+    def getPlugIds(cls) -> tuple[str, ...]:
         return ("FPC",)
 
     @tick_filters.toGeneratorIndex

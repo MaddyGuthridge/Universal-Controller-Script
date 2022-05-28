@@ -102,8 +102,8 @@ class Mixer(WindowPlugin):
         self._len = max(map(len, [self._faders, self._knobs]))
         super().__init__(shadow, [mutes_solos])
 
-    @staticmethod
-    def getWindowId() -> int:
+    @classmethod
+    def getWindowId(cls) -> int:
         return INDEX
 
     @classmethod

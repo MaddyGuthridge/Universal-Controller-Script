@@ -46,8 +46,8 @@ class StepSequencer(WindowPlugin):
         self._down = shadow.bindMatch(DirectionDown, self.down)
         super().__init__(shadow, [])
 
-    @staticmethod
-    def getWindowId() -> int:
+    @classmethod
+    def getWindowId(cls) -> int:
         return INDEX
 
     @classmethod

@@ -32,8 +32,8 @@ class Flex(StandardPlugin):
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
 
-    @staticmethod
-    def getPlugIds() -> tuple[str, ...]:
+    @classmethod
+    def getPlugIds(cls) -> tuple[str, ...]:
         return ("FLEX",)
 
 

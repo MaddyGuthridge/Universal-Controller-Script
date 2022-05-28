@@ -78,8 +78,8 @@ class ParametricEq(StandardPlugin):
                 f.color = COLORS[color]
                 f.value = plugins.getParamValue(i, *index)
 
-    @staticmethod
-    def getPlugIds() -> tuple[str, ...]:
+    @classmethod
+    def getPlugIds(cls) -> tuple[str, ...]:
         return ("Fruity parametric EQ 2",)
 
     @event_filters.toEffectIndex

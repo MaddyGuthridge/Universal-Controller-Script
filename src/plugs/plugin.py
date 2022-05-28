@@ -128,9 +128,9 @@ class StandardPlugin(Plugin):
     Standard plugins, representing VST or FL generators and effects
     """
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def getPlugIds() -> tuple[str, ...]:
+    def getPlugIds(cls) -> tuple[str, ...]:
         """
         Returns the names of the plugins this class should be associated with.
 
@@ -155,9 +155,9 @@ class WindowPlugin(Plugin):
     Window plugins, representing FL Studio windows
     """
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def getWindowId() -> WindowIndex:
+    def getWindowId(cls) -> WindowIndex:
         """
         Returns the ID of the window this class should be associated with.
 
@@ -182,9 +182,9 @@ class SpecialPlugin(Plugin):
     Special plugins, representing other plugins
     """
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def shouldBeActive() -> bool:
+    def shouldBeActive(cls) -> bool:
         """
         Returns whether this plugin should be used to process the event
 

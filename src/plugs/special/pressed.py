@@ -78,8 +78,8 @@ class Press(SpecialPlugin):
         )
         super().__init__(shadow, [])
 
-    @staticmethod
-    def shouldBeActive() -> bool:
+    @classmethod
+    def shouldBeActive(cls) -> bool:
         return True
 
     @classmethod
