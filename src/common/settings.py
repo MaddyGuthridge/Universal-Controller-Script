@@ -55,6 +55,23 @@ class Settings:
         else:
             return Settings._recursiveGet(keys[1:], settings[keys[0]])
 
+    @staticmethod
+    def _recursiveSet(keys: list[str], settings: dict, value: Any) -> None:
+        """
+        Recursive function for setting settings value
+
+        ### Args:
+        * `keys` (`list[str]`): list of keys
+        * `settings` (`dict`): settings dictionary to search
+        * `value` (`Any`): value to set
+        """
+        if len(keys) == 1:
+            if keys[0] not in settings:
+                raise KeyError(keys[0])
+            settings[keys[0]] = value
+        else:
+            Settings._recursiveSet(keys[1:], settings[keys[0]], value)
+
     def get(self, key: str) -> Any:
         """
         Get an entry in the settings
@@ -66,10 +83,34 @@ class Settings:
         * `KeyError`: Unable to find settings
 
         ### Returns:
-        * any: Value
+        * `Any`: Value
         """
         try:
             return Settings._recursiveGet(key.split('.'), self._settings_dict)
+        except KeyError as e:
+            raise KeyError(
+                f"Unable to find setting at '{key}'. Failed for key {e}"
+            ) from None
+        except IndexError:
+            raise KeyError(f"Unable to find setting at '{key}'") from None
+
+    def set(self, key: str, value: Any) -> None:
+        """
+        Set an entry in the settings
+
+        ### Args:
+        * `key` (`str`): key to access settings from
+        * `value` (`Any`): value to set
+
+        ### Raises:
+        * `KeyError`: Unable to find settings
+        """
+        try:
+            return Settings._recursiveSet(
+                key.split('.'),
+                self._settings_dict,
+                value
+            )
         except KeyError as e:
             raise KeyError(
                 f"Unable to find setting at '{key}'. Failed for key {e}"

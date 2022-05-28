@@ -1,5 +1,5 @@
 """
-common > defaultconfig
+common > default_config
 
 Stores the default configuration for the script. The user configuration will
 override any existing settings here.
@@ -38,13 +38,13 @@ CONFIG = {
         # MIDI API. Requires profiling to be enabled.
         "exec_tracing": False
     },
-    # Settings used during script initialisation
+    # Settings used during script initialization
     "bootstrap": {
         # Whether to skip sending sysex messages when attempting to recognize
         # devices... may improve startup time for some devices
         "skip_enquiry": False,
         # Whether sending the device enquiry message should be delayed
-        # until after initialisation (workaround for a bug in FL 20.9.1)
+        # until after initialization (workaround for a bug in FL 20.9.1)
         "delay_enquiry": True,
         # How long to wait until the fallback device recognition method is
         # used.
