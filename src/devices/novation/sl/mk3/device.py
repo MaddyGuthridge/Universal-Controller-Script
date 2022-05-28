@@ -83,7 +83,7 @@ class SlMk3(Device):
         return 2 if'2' in device.getName() else 1
 
     @classmethod
-    def create(cls, event: Optional[EventData]) -> Device:
+    def create(cls, event: EventData = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:

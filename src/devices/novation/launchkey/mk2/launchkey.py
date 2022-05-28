@@ -110,7 +110,7 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
         super().__init__(matcher)
 
     @classmethod
-    def create(cls, event: Optional[EventData]) -> Device:
+    def create(cls, event: EventData = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:
@@ -150,7 +150,7 @@ class LaunchkeyMk2_25(LaunchkeyMk2):
         super().__init__(BasicControlMatcher())
 
     @classmethod
-    def create(cls, event: Optional[EventData]) -> Device:
+    def create(cls, event: EventData = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:

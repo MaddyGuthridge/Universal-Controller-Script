@@ -91,8 +91,8 @@ class DeviceCollection:
         * `Device`: matching device
         """
         for device in self.__devices:
-            if device.__name__ == id:
-                return device.create(None)
+            if id in device.getSupportedIds():
+                return device.create(id=id)
         raise DeviceRecognizeError(f"Device with ID {id} not found")
 
     def all(self) -> list[type['Device']]:

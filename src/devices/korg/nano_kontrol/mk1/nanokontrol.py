@@ -113,7 +113,7 @@ class NanoKontrol(Device):
         ])
 
     @classmethod
-    def create(cls, event: Optional[EventData]) -> 'Device':
+    def create(cls, event: EventData = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:

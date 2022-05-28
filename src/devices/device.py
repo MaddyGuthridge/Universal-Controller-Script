@@ -78,7 +78,7 @@ class Device:
 
     @classmethod
     @abstractmethod
-    def create(cls, event: Optional[EventData]) -> 'Device':
+    def create(cls, event: EventData = None, id: str = None) -> 'Device':
         """
         Create an instance of this device
 
@@ -87,7 +87,9 @@ class Device:
 
         ### Args:
         * `event` (`eventData`, optional): event used to recognize device, or
-          None if not applicable (eg when using deviceId)
+          None if not applicable (eg when using deviceId). Defaults to None.
+
+        * `id` (`str`, optional): ID used to map to the device.
 
         ### Returns:
         * `Device`: instance of device object

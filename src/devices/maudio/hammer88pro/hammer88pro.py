@@ -192,7 +192,7 @@ class Hammer88Pro(Device):
         return 2, 8
 
     @classmethod
-    def create(cls, event: Optional[EventData]) -> Device:
+    def create(cls, event: EventData = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:
