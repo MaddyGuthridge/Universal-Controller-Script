@@ -107,7 +107,7 @@ class LaunchkeyMk3_49_61(Device):
             return DEVICE_ID_61
         if '88' in device.getName():
             return DEVICE_ID_88
-        raise ValueError()
+        return DEVICE_ID_49
 
     @classmethod
     def getSupportedIds(cls) -> tuple[str, ...]:
