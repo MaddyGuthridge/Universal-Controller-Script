@@ -94,10 +94,22 @@ class Device:
         """
         raise AbstractMethodError(cls)
 
+    @classmethod
+    @abstractmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        """
+        Returns the IDs of all devices that can be handled by this device
+        definition
+
+        ### Returns:
+        * `tuple[str]`: all supported device IDs
+        """
+        raise AbstractMethodError(cls)
+
     @abstractmethod
     def getId(self) -> str:
         """
-        Returns the id of the device, in the form:
+        Returns the id of the recognized device, in the form:
 
         "Manufacturer.Model.Mark.Variant"
 
@@ -106,38 +118,39 @@ class Device:
         """
         raise AbstractMethodError(self)
 
-    @abstractmethod
     def getDeviceNumber(self) -> int:
         """
         Returns the number of a device
 
         This is used by devices to help with forwarding events to the main
-        script
+        script.
+
+        By default this returns 1.
 
         ### Returns:
         * `int`: device number
               * `1`: Main device
               * other values: other device numbers.
         """
-        raise AbstractMethodError(self)
+        return 1
 
-    @staticmethod
-    @abstractmethod
-    def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
+    @classmethod
+    def getUniversalEnquiryResponsePattern(cls) -> Optional[IEventPattern]:
         """
         Returns the event pattern from which a device can be recognized so that
         its representation can be loaded, or None, if this device can't be
         matched using this pattern.
 
+        By default this returns None
+
         ### Returns:
         * `IEventPattern`: pattern to match universal device enquiry, or None
           if can't be matched.
         """
-        raise AbstractMethodError()
+        return None
 
-    @staticmethod
-    @abstractmethod
-    def matchDeviceName(name: str) -> bool:
+    @classmethod
+    def matchDeviceName(cls, name: str) -> bool:
         """
         Returns whether this device matches the name given, where the name is
         the return value of `device.getName()`.
@@ -145,17 +158,18 @@ class Device:
         This is used as a fallback for  matching the device if no universal
         device enquiry response is given.
 
+        By default, this won't match anything
+
         ### Args:
         * `name` (`str`): name of the device
 
         ### Returns:
         * `bool`: whether there was a match
         """
-        raise AbstractMethodError()
+        return False
 
-    @staticmethod
-    @abstractmethod
-    def getDrumPadSize() -> tuple[int, int]:
+    @classmethod
+    def getDrumPadSize(cls) -> tuple[int, int]:
         """
         Returns the size of the grid of drum pads used by the controller
 

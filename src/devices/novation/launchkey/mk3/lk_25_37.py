@@ -39,7 +39,9 @@ from devices.novation.launchkey.incontrol.controls import (
     getMk3SmallMuteControls
 )
 
-DEVICE_ID = "Novation.Launchkey.Mk3.25-37"
+DEVICE_ID_25 = "Novation.Launchkey.Mk3.25"
+DEVICE_ID_37 = "Novation.Launchkey.Mk3.37"
+DEVICE_IDS = (DEVICE_ID_25, DEVICE_ID_37)
 
 
 class LaunchkeyMk3_25_37(Device):
@@ -79,8 +81,8 @@ class LaunchkeyMk3_25_37(Device):
     def deinitialize(self) -> None:
         self._incontrol.enable()
 
-    @staticmethod
-    def getDrumPadSize() -> tuple[int, int]:
+    @classmethod
+    def getDrumPadSize(cls) -> tuple[int, int]:
         return 2, 8
 
     def getDeviceNumber(self) -> int:
@@ -90,12 +92,15 @@ class LaunchkeyMk3_25_37(Device):
     def create(cls, event: Optional[EventData]) -> Device:
         return cls()
 
-    @staticmethod
-    def getId() -> str:
-        return DEVICE_ID
+    def getId(self) -> str:
+        return DEVICE_ID_37 if '37' in device.getName() else DEVICE_ID_25
 
-    @staticmethod
-    def getUniversalEnquiryResponsePattern():
+    @classmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        return DEVICE_IDS
+
+    @classmethod
+    def getUniversalEnquiryResponsePattern(cls):
         return BasicPattern(
             [
                 0xF0,  # Sysex start
@@ -112,11 +117,6 @@ class LaunchkeyMk3_25_37(Device):
                 0x00,
             ]
         )
-
-    @staticmethod
-    def matchDeviceName(name: str) -> bool:
-        """Controller can't be matched to FL device name"""
-        return False
 
 
 # Register devices

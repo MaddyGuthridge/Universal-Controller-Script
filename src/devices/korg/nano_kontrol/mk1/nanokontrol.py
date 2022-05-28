@@ -1,5 +1,5 @@
 """
-devices > korg > nanokontrol > mk1 > nanokontrol
+devices > korg > nano_kontrol > mk1 > nano_kontrol
 
 Definition for the Korg NanoKontrol Mk1 controller.
 
@@ -97,12 +97,8 @@ class NanoKontrol(Device):
 
         super().__init__(matcher)
 
-    @staticmethod
-    def getDrumPadSize() -> tuple[int, int]:
-        return 0, 0
-
-    @staticmethod
-    def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
+    @classmethod
+    def getUniversalEnquiryResponsePattern(cls) -> Optional[IEventPattern]:
         return BasicPattern([
             0xF7,
             0x7E,
@@ -120,15 +116,12 @@ class NanoKontrol(Device):
     def create(cls, event: Optional[EventData]) -> 'Device':
         return cls()
 
-    @staticmethod
-    def matchDeviceName(name: str) -> bool:
-        return False
-
-    def getDeviceNumber(self) -> int:
-        return 1
-
     def getId(self) -> str:
         return "Korg.NanoKontrol.Mk1"
+
+    @classmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        return ("Korg.NanoKontrol.Mk1",)
 
 
 ExtensionManager.devices.register(NanoKontrol)

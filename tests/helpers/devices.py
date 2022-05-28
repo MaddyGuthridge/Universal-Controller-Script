@@ -85,9 +85,12 @@ class DummyDevice(Device):
     def create(cls, event: Optional[EventData]) -> 'Device':
         return cls()
 
-    @staticmethod
-    def getId() -> str:
+    def getId(self) -> str:
         return "Dummy.Device"
+
+    @classmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        return ("Dummy.Device",)
 
     @staticmethod
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:

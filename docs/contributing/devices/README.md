@@ -65,24 +65,28 @@ script take advantage of that fact.
 * `@classmethod create(cls, event: Optional[eventData]) -> Device`: Create an
   instance of this device.
 
-* `@staticmethod getId() -> str`: Returns the ID of the device
+* `getId(self) -> str`: Returns the ID of the detected device
   (`"Manufacturer.Model.Revision.Variant"`). This is used to encode
   [forwarded events](eventforward.md), as well as to assist with bug reporting.
 
-* `@staticmethod getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]`:
+* `@classmethod getSupportedIds(cls) -> tuple[str, ...]`: Return all the device
+  IDs that are supported by this device definition.
+
+## Methods to Implement if Required
+
+* `@classmethod getUniversalEnquiryResponsePattern(cls) -> Optional[IEventPattern]`:
   Returns an event pattern used to match the device's response to a universal
   device enquiry. Refer to the manual page on
   [device detection](detection.md#2-universal-device-enquiry).
 
-* `@staticmethod matchDeviceName(name: str) -> bool`: Given a device name,
+* `@classmethod matchDeviceName(cls, name: str) -> bool`: Given a device name,
   return whether it matches this device. Refer to the manual page on
   [device detection](detection.md#3-name-matching).
 
-* `@staticmethod getDrumPadSize() -> int, int`: Return the size of the drum
+* `@classmethod getDrumPadSize(cls) -> int, int`: Return the size of the drum
   pad grid in terms of rows, cols. Devices without drum pads should return
   `(0, 0)`.
 
-## Methods to Implement if Required
 * `initialize(self)`: Called when the device is initialized.
 
 * `deinitialize(self)`: Called when the device is deinitialized.

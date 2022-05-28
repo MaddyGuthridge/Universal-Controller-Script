@@ -32,6 +32,7 @@
         "Cimbalom",
         "classmethod",
         "deinitialize",
+        "deinitialized",
         "docstrings",
         "Dpad",
         "Drumline",

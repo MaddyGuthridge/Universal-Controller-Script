@@ -83,8 +83,8 @@ class LaunchkeyMk2(Device):
     def deinitialize(self) -> None:
         self._incontrol.enable()
 
-    @staticmethod
-    def getDrumPadSize() -> tuple[int, int]:
+    @classmethod
+    def getDrumPadSize(cls) -> tuple[int, int]:
         return 2, 8
 
     def getDeviceNumber(self) -> int:
@@ -113,16 +113,19 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
     def create(cls, event: Optional[EventData]) -> Device:
         return cls()
 
-    @staticmethod
-    def getId() -> str:
+    def getId(self) -> str:
         if "49" in device.getName():
             num = 49
         else:
             num = 61
         return f"{ID_PREFIX}.{num}"
 
-    @staticmethod
-    def getUniversalEnquiryResponsePattern():
+    @classmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        return (f"{ID_PREFIX}.49", f"{ID_PREFIX}.61")
+
+    @classmethod
+    def getUniversalEnquiryResponsePattern(cls):
         return BasicPattern(
             [
                 0xF0,  # Sysex start
@@ -137,11 +140,6 @@ class LaunchkeyMk2_49_61(LaunchkeyMk2):
             ]
         )
 
-    @staticmethod
-    def matchDeviceName(name: str) -> bool:
-        """Controller can't be matched to FL device name"""
-        return False
-
 
 class LaunchkeyMk2_25(LaunchkeyMk2):
     """
@@ -155,20 +153,18 @@ class LaunchkeyMk2_25(LaunchkeyMk2):
     def create(cls, event: Optional[EventData]) -> Device:
         return cls()
 
-    @staticmethod
-    def getId() -> str:
+    def getId(self) -> str:
         return f"{ID_PREFIX}.25"
 
-    @staticmethod
-    def getUniversalEnquiryResponsePattern():
+    @classmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        return (f"{ID_PREFIX}.25",)
+
+    @classmethod
+    def getUniversalEnquiryResponsePattern(cls):
         return BasicPattern(
             [0xF0, 0x7E, 0x00, 0x06, 0x02, 0x00, 0x20, 0x29, 0x7B]
         )
-
-    @staticmethod
-    def matchDeviceName(name: str) -> bool:
-        """Controller can't be matched to FL device name"""
-        return False
 
 
 # Register devices

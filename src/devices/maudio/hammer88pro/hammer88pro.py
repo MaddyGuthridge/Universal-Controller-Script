@@ -187,8 +187,8 @@ class Hammer88Pro(Device):
 
         super().__init__(matcher)
 
-    @staticmethod
-    def getDrumPadSize() -> tuple[int, int]:
+    @classmethod
+    def getDrumPadSize(cls) -> tuple[int, int]:
         return 2, 8
 
     @classmethod
@@ -198,8 +198,12 @@ class Hammer88Pro(Device):
     def getId(self) -> str:
         return "Maudio.Hammer88Pro"
 
-    @staticmethod
-    def getUniversalEnquiryResponsePattern():
+    @classmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        return ("Maudio.Hammer88Pro",)
+
+    @classmethod
+    def getUniversalEnquiryResponsePattern(cls):
         return BasicPattern(
             [
                 0xF0,  # Sysex start
@@ -215,11 +219,6 @@ class Hammer88Pro(Device):
                 # Extra details omitted
             ]
         )
-
-    @staticmethod
-    def matchDeviceName(name: str) -> bool:
-        """Controller can't be matched to FL device name"""
-        return False
 
     def getDeviceNumber(self) -> int:
         name = device.getName()

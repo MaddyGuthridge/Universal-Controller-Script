@@ -62,8 +62,8 @@ class LaunchkeyMiniMk3(Device):
     def deinitialize(self) -> None:
         self._incontrol.enable()
 
-    @staticmethod
-    def getDrumPadSize() -> tuple[int, int]:
+    @classmethod
+    def getDrumPadSize(cls) -> tuple[int, int]:
         return 2, 8
 
     def getDeviceNumber(self) -> int:
@@ -73,12 +73,15 @@ class LaunchkeyMiniMk3(Device):
     def create(cls, event: Optional[EventData]) -> Device:
         return cls()
 
-    @staticmethod
-    def getId() -> str:
+    def getId(self) -> str:
         return DEVICE_ID
 
-    @staticmethod
-    def getUniversalEnquiryResponsePattern():
+    @classmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        return (DEVICE_ID,)
+
+    @classmethod
+    def getUniversalEnquiryResponsePattern(cls):
         return BasicPattern(
             [
                 0xF0,  # Sysex start
@@ -95,11 +98,6 @@ class LaunchkeyMiniMk3(Device):
                 0x00,
             ]
         )
-
-    @staticmethod
-    def matchDeviceName(name: str) -> bool:
-        """Controller can't be matched to FL device name"""
-        return False
 
 
 # Register devices
