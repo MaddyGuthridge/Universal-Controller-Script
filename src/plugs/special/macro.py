@@ -14,9 +14,11 @@ from typing import Any
 
 from common.extension_manager import ExtensionManager
 from common import getContext
-from common.util.api_fixes import UnsafeIndex
+from common.types import Color
+from common.util.api_fixes import getUndoPosition
 from control_surfaces import (
     ControlShadowEvent,
+    ControlShadow,
     UndoButton,
     RedoButton,
     UndoRedoButton,
@@ -34,6 +36,10 @@ from plugs import SpecialPlugin
 from plugs.event_filters import filterButtonLift
 
 
+ENABLED = Color.fromGrayscale(0.7)
+DISABLED = Color.fromGrayscale(0.3, False)
+
+
 class Macro(SpecialPlugin):
     """
     The macro plugin handles macro commands.
@@ -43,21 +49,23 @@ class Macro(SpecialPlugin):
         shadow.setMinimal(True)
         super().__init__(shadow, [])
         # Macro buttons
-        shadow.bindMatch(UndoButton, self.undo)
-        shadow.bindMatch(RedoButton, self.redo)
-        shadow.bindMatch(UndoRedoButton, self.undoRedo)
-        shadow.bindMatch(SaveButton, self.save)
-        shadow.bindMatch(QuantizeButton, self.quantize)
-        shadow.bindMatch(CaptureMidiButton, self.captureMidi)
+        shadow.bindMatch(UndoButton, self.eUndo, self.tUndo)
+        shadow.bindMatch(RedoButton, self.eRedo, self.tRedo)
+        shadow.bindMatch(UndoRedoButton, self.eUndoRedo).colorize(ENABLED)
+        shadow.bindMatch(SaveButton, self.eSave, self.tSave)
+        shadow.bindMatch(QuantizeButton, self.eQuantize).colorize(ENABLED)
+        shadow.bindMatch(CaptureMidiButton, self.eCaptureMidi)\
+            .colorize(ENABLED)
         shadow.bindMatches(
             SwitchActiveButton,
-            self.switchActive,
+            self.eSwitchActive,
+            self.tSwitchActive,
             one_type=False,
         )
-        shadow.bindMatches(
+        shadow.bindMatch(
             PauseActiveButton,
-            self.pauseActive,
-            one_type=False,
+            self.ePauseActive,
+            self.tPauseActive,
         )
 
     @classmethod
@@ -69,60 +77,80 @@ class Macro(SpecialPlugin):
         return True
 
     @filterButtonLift()
-    def undo(
+    def eUndo(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         general.undoUp()
         return True
 
+    def tUndo(self, control: ControlShadow, *args: Any):
+        pos, num = getUndoPosition()
+        if pos == num - 1:
+            # Nothing to undo
+            control.color = DISABLED
+        else:
+            control.color = ENABLED
+
     @filterButtonLift()
-    def redo(
+    def eRedo(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         general.undoDown()
         return True
 
+    def tRedo(self, control: ControlShadow, *args: Any):
+        pos = general.getUndoHistoryLast()
+        if pos == 0:
+            # Nothing to redo
+            control.color = DISABLED
+        else:
+            control.color = ENABLED
+
     @filterButtonLift()
-    def undoRedo(
+    def eUndoRedo(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         general.undo()
         return True
 
     @filterButtonLift()
-    def save(
+    def eSave(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         transport.globalTransport(92, 1)
         return True
 
+    def tSave(
+        self,
+        control: ControlShadow,
+        *args,
+    ):
+        if general.getChangedFlag():
+            control.color = ENABLED
+        else:
+            control.color = DISABLED
+
     @filterButtonLift()
-    def quantize(
+    def eQuantize(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         channels.quickQuantize(channels.selectedChannel())
         return True
 
     @filterButtonLift()
-    def switchActive(
+    def eSwitchActive(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         c = control.getControl()
@@ -135,11 +163,30 @@ class Macro(SpecialPlugin):
             getContext().active.toggleWindowsPlugins()
         return True
 
+    def tSwitchActive(
+        self,
+        control: ControlShadow,
+        *args: Any
+    ) -> bool:
+        c = control.getControl()
+        if isinstance(c, SwitchActivePluginButton):
+            if getContext().active.isPlugActive():
+                control.color = ENABLED
+            else:
+                control.color = DISABLED
+        elif isinstance(c, SwitchActiveWindowButton):
+            if not getContext().active.isPlugActive():
+                control.color = ENABLED
+            else:
+                control.color = DISABLED
+        elif isinstance(c, SwitchActiveToggleButton):
+            control.color = ENABLED
+        return True
+
     @filterButtonLift()
-    def pauseActive(
+    def ePauseActive(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         # TODO: If there's enough demand, potentially add support for a direct
@@ -147,11 +194,20 @@ class Macro(SpecialPlugin):
         getContext().active.playPause()
         return True
 
+    def tPauseActive(
+        self,
+        control: ControlShadow,
+        *args,
+    ):
+        if getContext().active.isUpdating():
+            control.color = DISABLED
+        else:
+            control.color = ENABLED
+
     @filterButtonLift()
-    def captureMidi(
+    def eCaptureMidi(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         # Find out how much length to write

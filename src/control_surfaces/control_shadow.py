@@ -1,5 +1,5 @@
 """
-controlsurfaces > controlshadow
+control_surfaces > control_shadow
 
 Represents a "shadow" control surface, which can be modified as necessary
 without affecting the original control, unless it is specifically applied
@@ -65,6 +65,62 @@ class IControlShadow:
     @annotation.setter
     def annotation(self, newAnnotation: str) -> None:
         ...
+
+    def colorize(self, newColor: Color) -> 'IControlShadow':
+        """
+        Add a color to this control shadow
+
+        This function differs from the color property, as it can be used in a
+        "pipeline" fashion to apply multiple properties to a control quickly
+        and easily.
+
+        ### Args:
+        * `newColor` (`Color`): new color to assign
+
+        ### Returns:
+        * `Self`: the same control, so that the pipeline can be continued
+
+        ### Example usage
+
+        This is best used when binding controls to quickly apply properties to
+        the control.
+
+        ```py
+        # Bind to a play button, set its color to black, and label it "control"
+        shadow.bindControl(PlayButton, ...) \\
+            .colorize(Color()) \\
+            .annotate("Control")
+        ```
+        """
+        return self
+
+    def annotate(self, newAnnotation: str) -> 'IControlShadow':
+        """
+        Add an annotation to this control shadow
+
+        This function differs from the annotation property, as it can be used
+        in a"pipeline" fashion to apply multiple properties to a control
+        quickly and easily.
+
+        ### Args:
+        * `newAnnotation` (`str`): new annotation to assign
+
+        ### Returns:
+        * `Self`: the same control, so that the pipeline can be continued
+
+        ### Example usage
+
+        This is best used when binding controls to quickly apply properties to
+        the control.
+
+        ```py
+        # Bind to a play button, set its color to pink, and label it "control"
+        shadow.bindControl(PlayButton, ...) \\
+            .colorize(Color.fromRgb(255, 0, 255)) \\
+            .annotate("Control")
+        ```
+        """
+        return self
 
 
 class ControlShadow(IControlShadow):
@@ -184,7 +240,7 @@ class ControlShadow(IControlShadow):
 
         ```py
         # Bind to a play button, set its color to black, and label it "control"
-        shadow.bindControl(PlayButton) \\
+        shadow.bindControl(PlayButton, ...) \\
             .colorize(Color()) \\
             .annotate("Control")
         ```
@@ -213,7 +269,7 @@ class ControlShadow(IControlShadow):
 
         ```py
         # Bind to a play button, set its color to pink, and label it "control"
-        shadow.bindControl(PlayButton) \\
+        shadow.bindControl(PlayButton, ...) \\
             .colorize(Color.fromRgb(255, 0, 255)) \\
             .annotate("Control")
         ```

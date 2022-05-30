@@ -191,7 +191,7 @@ class ActivityState:
         """
         Sets whether windows and plugins should be addressed independently.
 
-        This should be set by the device object during initialisation if that
+        This should be set by the device object during initialization if that
         device has a way to toggle between plugin and DAW controls.
         """
         self._split = value
@@ -223,3 +223,16 @@ class ActivityState:
             self._plug_active = \
                 not self._plug_active if value is None else value
             return self._plug_active
+
+    def isPlugActive(self) -> bool:
+        """
+        Returns whether plugins are focused (as opposed to windows), when split
+        plugins are active.
+
+        ### Returns:
+        * `bool`: whether plugins are focused
+        """
+        if not self._split:
+            raise ValueError("Can't toggle between windows and plugins unless "
+                             "they are being addressed independently")
+        return self._plug_active

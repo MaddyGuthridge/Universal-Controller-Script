@@ -5,6 +5,7 @@ Contains wrapper code for FL Studio API functions which are just too awful to
 be called directly.
 """
 
+import general
 import plugins
 import ui
 import channels
@@ -281,3 +282,14 @@ def getSelectedPlaylistTracks() -> list[int]:
         if playlist.isTrackSelected(i):
             selections.append(i)
     return selections
+
+
+def getUndoPosition() -> tuple[int, int]:
+    """
+    Returns a tuple of two ints representing the position in the undo history
+
+    ### Returns:
+    * `tuple[int, int]`: position in undo history, number of items in undo
+      history
+    """
+    return general.getUndoHistoryPos(), general.getUndoHistoryCount()
