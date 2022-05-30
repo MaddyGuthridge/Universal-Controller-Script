@@ -40,6 +40,7 @@ from devices.novation.launchkey.incontrol.controls import (
     Mk3DirectionDown,
     Mk3DirectionLeft,
     Mk3DirectionRight,
+    LkPauseActive,
 )
 
 DEVICE_ID_49 = "Novation.Launchkey.Mk3.49"
@@ -80,6 +81,7 @@ class LaunchkeyMk3_49_61(Device):
         matcher.addControl(Mk3DirectionRight())
         matcher.addControl(StandardPitchWheel())
         matcher.addControl(StandardModWheel())
+        matcher.addControl(LkPauseActive())
 
         super().__init__(matcher)
 
