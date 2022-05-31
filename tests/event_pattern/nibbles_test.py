@@ -1,7 +1,13 @@
 """
-tests > eventpattern > test_nibbles
+tests > event_pattern > test_nibbles
 
 Tests generating event patterns from nibbles
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import pytest

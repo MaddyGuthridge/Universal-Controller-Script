@@ -1,7 +1,13 @@
 """
-tests > test_devices
+tests > devices_test
 
-Test to ensure device objects are behaving correctly
+Tests to ensure device objects are behaving correctly
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import pytest

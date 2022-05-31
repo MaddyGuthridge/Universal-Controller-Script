@@ -1,7 +1,13 @@
 """
-tests > device > manual_mapping
+tests > device > manual_mapping_test
 
 Tests that devices can be manually mapped through the configuration
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import pytest

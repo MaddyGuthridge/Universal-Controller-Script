@@ -1,7 +1,13 @@
 """
-tests > device_shadow_test
+tests > device_match_event_test
 
 Tests to ensure device shadows bind controls correctly
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from common.types import EventData
