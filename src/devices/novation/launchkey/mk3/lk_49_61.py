@@ -130,7 +130,7 @@ class LaunchkeyMk3_49_61(Device):
                 0x00,  # Manufacturer
                 0x20,  # Manufacturer
                 0x29,  # Manufacturer
-                (0x36, 0x37),  # Family code (documented as 0x7A???)
+                (0x36, 0x37, 0x40),  # Family code (documented as 0x7A???)
                 0x01,
                 0x00,
                 0x00,

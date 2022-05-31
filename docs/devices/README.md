@@ -12,3 +12,7 @@
 ## Novation
 
 * [LaunchKey Mk2](novation/launchkey.mk2.md)
+
+* [LaunchKey Mk3](novation/launchkey.mk3.md)
+
+* [LaunchKey Mk3 Mini](novation/launchkey.mk3_mini.md)
