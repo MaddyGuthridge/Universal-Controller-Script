@@ -1,5 +1,5 @@
 """
-plugins > mappingstrategies > notestrategy
+plugins > mapping_strategies > note_strategy
 
 Strategy for mapping notes to plugins
 
@@ -10,7 +10,7 @@ Authors:
 import channels
 
 from typing import Any
-from common.util.api_fixes import UnsafeIndex
+from common.plug_indexes import UnsafeIndex
 from common import getContext
 
 from control_surfaces import Note

@@ -6,10 +6,8 @@ import transport
 import general
 from common import getContext
 from common.extension_manager import ExtensionManager
-from common.util.api_fixes import (
-    UnsafeIndex,
-    getFirstPlaylistSelection,
-)
+from common.plug_indexes import UnsafeIndex
+from common.util.api_fixes import getFirstPlaylistSelection
 from control_surfaces import consts
 from control_surfaces import ControlShadowEvent
 from control_surfaces import MoveJogWheel, StandardJogWheel, JogWheel

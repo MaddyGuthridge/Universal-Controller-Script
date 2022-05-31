@@ -1,5 +1,5 @@
 """
-plugins > mappingstrategies > pedalstrategy
+plugins > mapping_strategies > pedal_strategy
 
 Strategy for mapping a pedal to the plugin
 """

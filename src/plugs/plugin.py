@@ -11,7 +11,7 @@ Authors:
 from typing import final
 from common import log, verbosity
 from common.util.abstract_method_error import AbstractMethodError
-from common.util.api_fixes import UnsafeIndex, WindowIndex
+from common.plug_indexes import UnsafeIndex, WindowIndex
 from control_surfaces import ControlEvent
 from devices import DeviceShadow
 from plugs.mapping_strategies import IMappingStrategy

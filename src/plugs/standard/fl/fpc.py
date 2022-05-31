@@ -4,7 +4,7 @@ import channels
 from typing import Any
 from common.types import Color
 from common.extension_manager import ExtensionManager
-from common.util.api_fixes import GeneratorIndex
+from common.plug_indexes import GeneratorIndex
 from control_surfaces import DrumPad, Note
 from control_surfaces import ControlShadowEvent
 from devices import DeviceShadow

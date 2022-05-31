@@ -6,7 +6,7 @@ Mappings for mute/solo buttons
 
 from typing import Callable, Any
 from common.types import Color
-from common.util.api_fixes import UnsafeIndex
+from common.plug_indexes import UnsafeIndex
 from control_surfaces import (
     ControlShadowEvent,
     ControlShadow,

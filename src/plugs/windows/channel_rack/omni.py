@@ -1,7 +1,7 @@
 from typing import Any
 import channels
 from common.types.color import Color
-from common.util.api_fixes import UnsafeIndex
+from common.plug_indexes import UnsafeIndex
 from control_surfaces import ControlShadowEvent
 from control_surfaces import (
     DrumPad,

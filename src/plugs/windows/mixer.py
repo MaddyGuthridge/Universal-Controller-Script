@@ -5,10 +5,8 @@ import mixer
 from common import getContext
 from common.types import Color
 from common.extension_manager import ExtensionManager
-from common.util.api_fixes import (
-    UnsafeIndex,
-    getSelectedMixerTracks,
-)
+from common.plug_indexes import (UnsafeIndex)
+from common.util.api_fixes import getSelectedMixerTracks
 from common.util.snap import snap
 from control_surfaces import consts
 from control_surfaces import ControlShadowEvent

@@ -5,7 +5,7 @@ import channels
 import plugins
 from common.types import Color
 from common.extension_manager import ExtensionManager
-from common.util.api_fixes import GeneratorIndex
+from common.plug_indexes import GeneratorIndex
 from control_surfaces import ControlShadowEvent
 from control_surfaces import Fader, DrumPad
 from devices import DeviceShadow

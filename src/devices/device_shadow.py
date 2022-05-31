@@ -10,7 +10,7 @@ Authors:
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 from typing_extensions import TypeAlias
-from common.util.api_fixes import UnsafeIndex
+from common.plug_indexes import UnsafeIndex
 
 from common.util.dict_tools import lowestValueGrEqTarget, greatestKey
 from control_surfaces import ControlSurface

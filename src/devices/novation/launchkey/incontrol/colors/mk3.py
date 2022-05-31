@@ -1,7 +1,7 @@
 """
-devices > novation > launchkey > mk2 > colors
+devices > novation > launchkey > mk3 > colors
 
-Color definitions for the Novation Launchkey Mk2
+Color definitions for the Novation Launchkey Mk3
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]

@@ -1,6 +1,6 @@
 
 from typing import Any, Callable
-from common.util.api_fixes import UnsafeIndex
+from common.plug_indexes import UnsafeIndex
 from control_surfaces import ControlShadowEvent
 from devices.device_shadow import EventCallback
 

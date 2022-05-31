@@ -12,24 +12,13 @@ import channels
 import mixer
 import playlist
 
-from typing import Union, Optional
 from common.profiler import profilerDecoration, ProfilerContext
 from common.consts import PARAM_CC_START
-
-GeneratorIndex = tuple[int]
-UnsafeGeneratorIndex = Optional[GeneratorIndex]
-
-EffectIndex = tuple[int, int]
-UnsafeEffectIndex = Optional[EffectIndex]
-
-PluginIndex = Union[GeneratorIndex, EffectIndex]
-UnsafePluginIndex = Optional[PluginIndex]
-
-WindowIndex = int
-UnsafeWindowIndex = Optional[int]
-
-UnsafeIndex = Union[UnsafePluginIndex, UnsafeWindowIndex]
-
+from common.plug_indexes import (
+    UnsafePluginIndex,
+    PluginIndex,
+    UnsafeWindowIndex,
+)
 
 # HACK: A terrible horrible no good really bad global variable to make sure
 # that we hopefully avoid crashes in getFocusedPluginIndex
@@ -102,7 +91,7 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
 
 
 @profilerDecoration("getFocusedWindowIndex")
-def getFocusedWindowIndex() -> Optional[int]:
+def getFocusedWindowIndex() -> UnsafeWindowIndex:
     """
     Fixes the horrible ui.getFocused() function
 

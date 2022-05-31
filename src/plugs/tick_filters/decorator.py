@@ -1,7 +1,7 @@
 
 from typing import Callable
 from typing_extensions import TypeAlias
-from common.util.api_fixes import UnsafeIndex
+from common.plug_indexes import UnsafeIndex
 
 TickCallback: TypeAlias = Callable[[UnsafeIndex], bool]
 

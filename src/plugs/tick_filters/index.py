@@ -3,7 +3,7 @@ plugs > tick_filters > index
 
 Contains filters for filtering by plugin and window indexes
 """
-from common.util.api_fixes import UnsafeIndex
+from common.plug_indexes import UnsafeIndex
 from .decorator import do_filter
 
 

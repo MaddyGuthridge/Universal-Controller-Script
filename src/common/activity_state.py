@@ -10,7 +10,7 @@ Authors:
 
 from common.profiler import profilerDecoration
 from common.logger import log, verbosity
-from common.util.api_fixes import (
+from common.plug_indexes import (
     PluginIndex,
     UnsafeIndex,
     GeneratorIndex,
