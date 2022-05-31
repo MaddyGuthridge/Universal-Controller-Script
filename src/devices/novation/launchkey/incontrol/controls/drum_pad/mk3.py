@@ -1,4 +1,14 @@
+"""
+devices > novation > launchkey > incontrol > controls > drum_pad > mk3
 
+Definition for the Launchkey Mk3 drum pad class
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 from .drum_pad import LkDrumPad, LkDrumPadMute, LkDrumPadSolo
 from ...colors.mk3 import COLORS
 

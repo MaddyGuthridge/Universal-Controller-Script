@@ -1,4 +1,15 @@
+"""
+devices > novation > sl > mk3 > controls > sl_color_surface
 
+Contains definition for SlColorSurface class, which manages the colors of
+controls on the SL Mk3.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 from common.types import EventData, Color
 from common.util.events import forwardEvent
 

@@ -1,4 +1,14 @@
+"""
+devices > novation > launchkey > incontrol > controls > incontrol_surface
 
+Contains the base class for Launchkey control surfaces that can be colorized.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 from common import profilerDecoration
 from common.types import EventData, Color
 from common.util.events import forwardEvent

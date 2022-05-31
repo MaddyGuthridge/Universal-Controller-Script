@@ -1,10 +1,13 @@
 """
-devices > novation > launchkey > mk2 > drumpad
+devices > novation > launchkey > incontrol > controls > drum_pad > drum_pad
 
-Definition for the Launchkey Mk2 drum pads
+Definition for the Launchkey drum pad base class
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import TYPE_CHECKING

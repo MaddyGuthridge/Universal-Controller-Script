@@ -1,10 +1,13 @@
 """
-devices > novation > sl > mk3 > controls > drumpad
+devices > novation > sl > mk3 > controls > drum_pad
 
-Definition for the SL Mk3 Drumpads
+Definition for the SL Mk3 drum pads
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from control_surfaces.event_patterns import ForwardedPattern, NotePattern

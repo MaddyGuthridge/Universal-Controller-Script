@@ -1,7 +1,13 @@
 """
-devices > novation > incontrol > controls > transport > mk2
+devices > novation > launchkey > incontrol > controls > transport > mk2
 
 Definitions for transport controls used by Launchkey Mk2 Launchkey devices
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 

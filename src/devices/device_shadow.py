@@ -6,6 +6,9 @@ be manipulated without modifying the original device.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
@@ -84,7 +87,6 @@ class DeviceShadow:
     the device's control surfaces independently of other plugins, and without
     affecting the actual device unless the script chooses to apply this shadow.
     """
-
     def __init__(self, device: Device) -> None:
         """
         Create a device shadow

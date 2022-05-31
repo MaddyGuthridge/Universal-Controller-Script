@@ -1,4 +1,14 @@
+"""
+devices > novation > launchkey > incontrol > incontrol
 
+Contains code for managing the InControl state used by some launchkey devices.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 from typing import Optional
 from control_surfaces import ControlSurface, ControlEvent, NullEvent
 from devices.matchers import IControlMatcher
@@ -28,7 +38,10 @@ DRUMS_RESPONSE = EventData(0x9F, 0x0F, 0x7F)
 
 
 class InControl:
-
+    """
+    Contains code for managing the InControl/DAW mode for some LaunchKey
+    Devices.
+    """
     def __init__(self, matcher: IControlMatcher) -> None:
         self._enabled = False
         self._matcher = matcher

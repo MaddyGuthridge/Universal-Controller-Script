@@ -1,7 +1,13 @@
 """
-devices > novation > incontrol > controls
+devices > novation > launchkey > incontrol > controls
 
-Definitions for controls shared between Novation devices
+Definitions for controls shared between Novation Launchkey devices
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 __all__ = [

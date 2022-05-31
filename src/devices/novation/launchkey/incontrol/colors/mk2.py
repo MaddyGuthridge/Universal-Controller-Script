@@ -1,10 +1,13 @@
 """
-devices > novation > launchkey > mk2 > colors
+devices > novation > launchkey > incontrol > colors > mk2
 
 Color definitions for the Novation Launchkey Mk2
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from common.types.color import Color

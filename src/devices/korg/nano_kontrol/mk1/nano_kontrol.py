@@ -5,10 +5,13 @@ Definition for the Korg NanoKontrol Mk1 controller.
 
 I currently don't have access to this device, so I can't be certain that it
 works 100% correctly. Let me know if you run into any issues and we can
-troubleshoot it together
+troubleshoot it together.
 
 Authors:
-* Miguel Guthridge [HDSQ#2154, hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import Optional

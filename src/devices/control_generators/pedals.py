@@ -1,10 +1,13 @@
 """
-devices > controlgenerators > pedals
+devices > control_generators > pedals
 
-Contains custom control matcher for pedal events
+Contains control matcher for pedal events.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 from control_surfaces import SustainPedal, SoftPedal, SostenutoPedal
 from devices.matchers import BasicControlMatcher

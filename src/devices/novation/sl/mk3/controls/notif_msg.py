@@ -1,10 +1,13 @@
 """
-devices > novation > sl > mk3 > controls > notifmsg
+devices > novation > sl > mk3 > controls > notif_msg
 
 Definition for notification message control surface
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 from control_surfaces import NotifMsg
 from common.types import EventData

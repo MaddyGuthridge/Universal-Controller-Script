@@ -1,11 +1,14 @@
 """
-devices > controlmatcher
+devices > matchers > control_matcher
 
 Defines the IControlMatcher interface for matching up controls, as well as a
-BasicControlMatcher for simple devices
+BasicControlMatcher for simple devices.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 from typing import Optional
 from abc import abstractmethod

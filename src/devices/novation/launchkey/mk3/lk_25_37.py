@@ -1,10 +1,13 @@
 """
-devices > novation > launchkey > mk2 > launchkey
+devices > novation > launchkey > mk3 > lk_25_37
 
-Device definitions for Launchkey Mk2 controllers
+Device definitions for Launchkey Mk3 25/37 controllers
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import device
