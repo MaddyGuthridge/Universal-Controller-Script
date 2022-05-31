@@ -2,6 +2,12 @@
 plugins > mapping_strategies > pedal_strategy
 
 Strategy for mapping a pedal to the plugin
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import plugins

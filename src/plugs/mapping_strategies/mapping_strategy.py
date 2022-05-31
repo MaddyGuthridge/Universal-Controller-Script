@@ -1,8 +1,14 @@
 """
-plugins > mappingstrategies > mappingstrategy
+plugins > mapping_strategies > mapping_strategy
 
 Definition for a mapping strategy, which can be used to map a controls
 with little effort on the part of the plugin developer
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from common.util.abstract_method_error import AbstractMethodError

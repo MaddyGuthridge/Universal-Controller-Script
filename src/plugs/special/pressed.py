@@ -1,10 +1,14 @@
 """
 plugs > special > pressed
 
-Contains the definition for the press plugin
+Contains the definition for the press plugin, which is responsible for coloring
+control surfaces when they are pressed
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import Any

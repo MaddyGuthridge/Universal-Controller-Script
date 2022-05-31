@@ -1,4 +1,12 @@
+"""
+plugs > pager > pager
 
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 from typing import Any
 from common.types import Color
 from common.plug_indexes import UnsafeIndex

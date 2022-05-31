@@ -1,17 +1,22 @@
 # name=Universal Controller
 # url=https://forum.image-line.com/viewtopic.php?f=1994&t=274277
 # receiveFrom=Universal Event Forwarder
-"""device_universal.py
+"""
+device_universal
 
 The entrypoint for the universal controller script.
-It is responsible for event parsing, forwarding, script initialisation, and
+It is responsible for event parsing, forwarding, script initialization, and
 contains a context object used throughout the script.
 
-This entire script is licensed under GPL v3. Refer to the `LICENSE` file for a
-full copy.
-
 Refer to module `common.consts` for a list of authors for the project
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
+# Disable flake8 on this file: it gets too mad at us
 # flake8: noqa
 
 # Add our additional includes to the Python environment

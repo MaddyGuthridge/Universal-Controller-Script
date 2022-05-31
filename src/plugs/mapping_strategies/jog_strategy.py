@@ -5,6 +5,9 @@ Strategy for mapping jog wheels
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import ui
@@ -27,7 +30,6 @@ class JogStrategy(IMappingStrategy):
     """
     Maps jog wheels to navigation controls
     """
-
     def apply(self, shadow: DeviceShadow) -> None:
         # Bind note events to noteCallback()
         shadow.bindMatches(

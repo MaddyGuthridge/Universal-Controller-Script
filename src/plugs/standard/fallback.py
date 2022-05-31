@@ -1,10 +1,13 @@
 """
-plugs > special > default
+plugs > standard > fallback
 
-Contains the definition for the default mappings plugin
+Contains the definition for the fallback plugin
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from common.extension_manager import ExtensionManager
@@ -21,9 +24,6 @@ class Defaults(StandardPlugin):
     """
     Used to provide logical default mappings for plugins where a definition
     hasn't been created.
-
-    If you create a plugin definition, these behaviors won't be implemented
-    by default, so you'll need to include the strategies used here.
 
     Handles:
     * Pedals

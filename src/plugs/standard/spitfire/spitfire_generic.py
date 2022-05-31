@@ -1,4 +1,12 @@
+"""
+plugs > standard > spitfire > spitfire_generic
 
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 from typing import Any
 import channels
 
@@ -59,7 +67,6 @@ class SpitfireGeneric(StandardPlugin):
     """
     Used to interact with Spitfire Audio plugins, mapping faders to parameters
     """
-
     def __init__(self, shadow: DeviceShadow) -> None:
         self._faders = shadow.bindMatches(
             Fader,

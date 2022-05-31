@@ -1,10 +1,14 @@
 """
 plugs > special > transport
 
-Contains the definition for the transport plugin
+Contains the definition for the transport plugin, which provides mappings for
+transport controls such as play and stop.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import transport

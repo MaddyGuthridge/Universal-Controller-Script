@@ -1,4 +1,15 @@
+"""
+plugs > event_filters > decorator
 
+A disgusting piece of code that decorates the filter functions so that they can
+be implemented more easily.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 from typing import Any, Callable
 from common.plug_indexes import UnsafeIndex
 from control_surfaces import ControlShadowEvent

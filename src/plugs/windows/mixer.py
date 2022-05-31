@@ -1,4 +1,14 @@
+"""
+plugs > windows > mixer
 
+Plugin for FL Studio's mixer
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 from typing import Any
 import ui
 import mixer

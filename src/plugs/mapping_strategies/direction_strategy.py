@@ -1,3 +1,14 @@
+"""
+plugs > mapping_strategies > direction_strategy
+
+Mapping strategy to handle direction buttons
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 import ui
 from . import IMappingStrategy
 from devices import DeviceShadow
@@ -19,6 +30,8 @@ BOUND_COLOR = Color.fromInteger(0x888888)
 
 
 class DirectionStrategy(IMappingStrategy):
+    """Mapping strategy to handle direction buttons
+    """
     def __init__(self) -> None:
         self._controls: list[IControlShadow] = []
 

@@ -1,3 +1,15 @@
+"""
+plugs > windows > channel_rack > helpers
+
+Helper functions for working with the channel rack
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
+
 import channels
 
 from common.context_manager import getContext

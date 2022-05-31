@@ -1,4 +1,12 @@
+"""
+plugs > standard > fl > fpc
 
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 import plugins
 import channels
 from typing import Any
@@ -17,7 +25,6 @@ class FPC(StandardPlugin):
     Used to interact with the FPC plugin, mapping drum pads to the required
     notes
     """
-
     def __init__(self, shadow: DeviceShadow) -> None:
 
         # Bind a different callback depending on drum pad size

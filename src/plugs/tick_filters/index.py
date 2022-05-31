@@ -2,6 +2,12 @@
 plugs > tick_filters > index
 
 Contains filters for filtering by plugin and window indexes
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 from common.plug_indexes import UnsafeIndex
 from .decorator import do_filter

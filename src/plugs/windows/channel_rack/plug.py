@@ -1,3 +1,14 @@
+"""
+plugs > windows > channel_rack > plug
+
+Overall plugin for channel rack
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 import channels
 from common.extension_manager import ExtensionManager
 from common.types import Color
