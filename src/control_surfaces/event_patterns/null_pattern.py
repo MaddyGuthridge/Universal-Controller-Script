@@ -1,5 +1,5 @@
 """
-common > event_pattern > null_pattern
+control_surfaces > event_patterns > null_pattern
 
 An event pattern that matches with nothing
 

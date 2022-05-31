@@ -1,11 +1,14 @@
 """
-controlsurfaces > nullevent
+control_surfaces > controls > null_event
 
 Contains the definition of the NullEvent, which represents events that should
 be ignored entirely.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 from typing import Optional
 
@@ -31,6 +34,11 @@ class NullEvent(ControlSurface):
 
         ### Args:
         * `event_pattern` (`IEventPattern`): pattern to match
+
+        * `value_strategy` (`IValueStrategy`, optional): strategy to get the
+          value of the control. Defaults to None, which will lead to a
+          `NullEventStrategy` being used. A value strategy should be provided
+          if this control is used to toggle through a menu (eg a shift button).
         """
         if value_strategy is None:
             value_strategy = NullEventStrategy()

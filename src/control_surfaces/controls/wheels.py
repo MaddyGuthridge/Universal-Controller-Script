@@ -1,10 +1,13 @@
 """
-controlsurfaces > wheel
+control_surfaces > controls > wheel
 
 Contains the definitions for pitch and modulation wheels
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from ..event_patterns import IEventPattern, BasicPattern, fromNibbles

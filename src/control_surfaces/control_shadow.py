@@ -2,10 +2,13 @@
 control_surfaces > control_shadow
 
 Represents a "shadow" control surface, which can be modified as necessary
-without affecting the original control, unless it is specifically applied
+without affecting the original control, unless it is specifically applied.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import TYPE_CHECKING, Iterator, overload

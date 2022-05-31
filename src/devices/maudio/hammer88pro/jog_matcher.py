@@ -40,16 +40,16 @@ class JogValueStrategy(IValueStrategy):
     def getValueFromEvent(self, event: EventData, value: float) -> float:
         # Prev
         if event.data2 == 63:
-            return consts.ENCODER_PREV
+            return consts.JOG_PREV
         # Next
         elif event.data2 == 65:
-            return consts.ENCODER_NEXT
+            return consts.JOG_NEXT
         # Release
         elif event.data2 == 0:
-            return consts.ENCODER_SELECT
+            return consts.JOG_SELECT
         # Press
         else:
-            return consts.ENCODER_NULL
+            return consts.JOG_NULL
 
     def getChannelFromEvent(self, event: EventData) -> int:
         return -1

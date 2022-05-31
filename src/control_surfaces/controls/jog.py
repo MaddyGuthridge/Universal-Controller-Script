@@ -1,10 +1,13 @@
 """
-controlsurfaces > jog
+control_surfaces > controls > jog
 
 Defines jog wheel control surfaces
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from . import ControlSurface, NavigationControl
@@ -21,8 +24,8 @@ class JogWheel(NavigationControl):
     could be triggered through a single control, by mapping to different
     controls depending on context.
 
-    NOTE: Jog wheels use the ENCODER values found in the controlsurfaces.consts
-    module.
+    NOTE: Jog wheels use the ENCODER values found in the
+    `control_surfaces.consts` module.
     """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
@@ -30,7 +33,7 @@ class JogWheel(NavigationControl):
 
     @staticmethod
     def isPress(value: float):
-        return value == consts.ENCODER_SELECT
+        return value == consts.JOG_SELECT
 
 
 class StandardJogWheel(JogWheel):

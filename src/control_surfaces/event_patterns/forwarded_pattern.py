@@ -1,10 +1,13 @@
 """
-common > event_pattern > forwarded_pattern
+control_surfaces > event_patterns > forwarded_pattern
 
 Contains the definition for the ForwardedPattern class
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com, HDSQ#2154]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from common.util.events import (

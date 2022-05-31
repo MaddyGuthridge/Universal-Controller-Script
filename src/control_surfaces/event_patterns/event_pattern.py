@@ -6,10 +6,10 @@ patterns must inherit from.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
-
-# from __future__ import annotations
-
 from typing import TYPE_CHECKING
 from abc import abstractmethod
 from common.util.abstract_method_error import AbstractMethodError

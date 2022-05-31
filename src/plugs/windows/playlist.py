@@ -62,11 +62,11 @@ class Playlist(WindowPlugin):
         index: UnsafeIndex,
         *args: Any
     ) -> bool:
-        if control.value == consts.ENCODER_NEXT:
+        if control.value == consts.JOG_NEXT:
             increment = 1
-        elif control.value == consts.ENCODER_PREV:
+        elif control.value == consts.JOG_PREV:
             increment = -1
-        elif control.value == consts.ENCODER_SELECT:
+        elif control.value == consts.JOG_SELECT:
             ui.enter()
             return True
         else:

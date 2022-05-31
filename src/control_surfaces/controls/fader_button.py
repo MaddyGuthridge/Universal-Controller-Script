@@ -1,10 +1,13 @@
 """
-controlsurfaces > faderbutton
+control_surfaces > controls > fader_button
 
-Classes representing fader buttons
+Classes representing fader buttons.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 __all__ = [

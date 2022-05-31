@@ -1,10 +1,13 @@
 """
-controlsurfaces > aftertouch
+control_surfaces > controls > after_touch
 
-Contains the definition of aftertouch control surfaces
+Contains the definition of after-touch control surfaces
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from ..event_patterns import BasicPattern, fromNibbles, IEventPattern
@@ -14,11 +17,11 @@ from ..value_strategies import IValueStrategy, Data2Strategy, Data1Strategy
 
 class AfterTouch(ControlSurface):
     """
-    The definition of a generic aftertouch control surface.
+    The definition of a generic after-touch control surface.
     """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
-        # Allow substitution between different aftertouch types
+        # Allow substitution between different after-touch types
         return (AfterTouch,)
 
     def __init__(
@@ -36,7 +39,7 @@ class AfterTouch(ControlSurface):
 
 class ChannelAfterTouch(AfterTouch):
     """
-    The definition of channel aftertouch, which represents the strongest key
+    The definition of channel after-touch, which represents the strongest key
     pressure out of all active keys
     """
 
@@ -52,7 +55,7 @@ class ChannelAfterTouch(AfterTouch):
 
 class NoteAfterTouch(AfterTouch):
     """
-    The definition of note aftertouch, which represents the pressure of a
+    The definition of note after-touch, which represents the pressure of a
     single key
     """
 

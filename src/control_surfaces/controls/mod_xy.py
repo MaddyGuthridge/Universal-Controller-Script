@@ -1,10 +1,13 @@
 """
-control_surfaces > mod_xy
+control_surfaces > controls > mod_xy
 
 Defines ModX and ModY control surfaces
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from ..event_patterns import IEventPattern

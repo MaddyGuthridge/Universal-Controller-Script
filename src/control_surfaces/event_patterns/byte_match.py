@@ -1,11 +1,14 @@
 """
-common > event_pattern > byte_match
+control_surfaces > event_patterns > byte_match
 
 Contains the definition for the byte-match type expression, as well as helper
 functions for creating event patterns.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import TYPE_CHECKING, Union
@@ -31,7 +34,7 @@ def fromNibbles(upper: ByteMatch, lower: ByteMatch) -> tuple:
     """
     def toIter(b: ByteMatch) -> 'Iterable[int]':
         """
-        Convert a bytematch to an iterable
+        Convert a ByteMatch to an iterable
         """
         if isinstance(b, int):
             return [b]

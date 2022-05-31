@@ -157,11 +157,11 @@ class Mixer(WindowPlugin):
         if len(selected) == 0:
             selected = [0]
         # Calculate increment
-        if control.value == consts.ENCODER_NEXT:
+        if control.value == consts.JOG_NEXT:
             dest = selected[-1] + 1
-        elif control.value == consts.ENCODER_PREV:
+        elif control.value == consts.JOG_PREV:
             dest = selected[0] - 1
-        elif control.value == consts.ENCODER_SELECT:
+        elif control.value == consts.JOG_SELECT:
             # When we push the encoder, toggle the selected tracks' mutes
             for i in selected:
                 mixer.muteTrack(i)

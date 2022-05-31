@@ -1,11 +1,14 @@
 """
-controlsurfaces > controlsurface
+control_surfaces > controls > control_surface
 
 Contains the ControlSurface class, which defines the abstract base type for
-all control surfaces
+all control surfaces.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 # from __future__ import annotations
 
