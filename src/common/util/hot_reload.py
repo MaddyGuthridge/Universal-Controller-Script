@@ -1,10 +1,16 @@
 """
-common > util > hotreload
+common > util > hot_reload
 
-Contains helper functions for hot reloading components of the script
+Contains helper functions for hot reloading components of the script.
+
+Note that this code isn't currently widely used in the code, but may be used
+later.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import sys

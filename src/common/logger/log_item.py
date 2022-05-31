@@ -1,15 +1,17 @@
 """
-common > logger > logitem
+common > logger > log_item
 
 Contains LogItem, a class used to represent an entry in the script's log
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import time
 
-from common.util.misc import formatLongTime, formatTime
 # import traceback
 
 from .verbosity import Verbosity
@@ -53,6 +55,7 @@ class LogItem:
         ### Returns:
         * `str`: stringified log item
         """
+        from common.util.misc import formatTime
         index = f"[#{self.index:6d}]"
         time = formatTime(self.time)
         return \
@@ -63,6 +66,7 @@ class LogItem:
         Print full details of the log item, including time, category and
         traceback
         """
+        from common.util.misc import formatLongTime
         print(
             f"Log item #{self.index} ({formatLongTime(self.time)}), "
             f"verbosity={self.verbosity}"

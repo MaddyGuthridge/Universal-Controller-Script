@@ -1,10 +1,13 @@
 """
 common > util > dict_tools
 
-Contains utility functions used within the rest of the code
+Contains utility functions for working with dictionaries.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import Any, Protocol, TypeVar

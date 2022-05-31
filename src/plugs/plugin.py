@@ -19,14 +19,31 @@ from abc import abstractmethod
 
 
 class Plugin:
+    """
+    Represents a plugin, which is used to describe how the script should
+    interact with an FL Studio window, or a VST or FL plugin.
 
+    Plugins can be of three types:
+
+    * `StandardPlugin`: used for VST and FL plugins
+
+    * `WindowPlugin`: used for FL Studio windows (mixer, etc)
+
+    * `SpecialPlugin`: used when the plugin should decide for itself whether to
+      be active or not. Used for global controls, such as transport buttons.
+
+    Plugin definitions can be created by extending one of these plugin types.
+    The base plugin type shouldn't be extended.
+
+    For more info, refer to docs/contributing/plugins/README.md
+    """
     def __init__(
         self,
         shadow: DeviceShadow,
         mapping_strategies: list[IMappingStrategy]
     ) -> None:
         """
-        Create a plugin object which interacts with a device shadow
+        Create a base plugin object
 
         ### Args:
         * `shadow` (`DeviceShadow`): device shadow to interact with
@@ -126,6 +143,14 @@ class Plugin:
 class StandardPlugin(Plugin):
     """
     Standard plugins, representing VST or FL generators and effects
+
+    Methods to implement:
+    * `@classmethod getPlugIds(cls) -> tuple[str, ...]` return a tuple of all
+      the plugin names that this plugin can handle.
+
+    * `@classmethod create(cls, shadow: DeviceShadow) -> Self` create an
+      instance of this plugin. This is used so that we can ensure type safety
+      of the constructor when plugins are instantiated.
     """
 
     @classmethod
@@ -146,13 +171,33 @@ class StandardPlugin(Plugin):
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         """
         Create and return an instance of this plugin
+
+        This method should be implemented by every plugin definition
         """
         raise AbstractMethodError(cls)
 
 
 class WindowPlugin(Plugin):
     """
-    Window plugins, representing FL Studio windows
+    Window plugins, representing FL Studio windows.
+
+    * Mixer
+
+    * Channel rack
+
+    * Playlist
+
+    * Piano roll
+
+    * Browser
+
+    Methods to implement:
+    * `@classmethod getWindowId(cls) -> WindowIndex` return a the window index
+      that this plugin should be active for.
+
+    * `@classmethod create(cls, shadow: DeviceShadow) -> Self` create an
+      instance of this plugin. This is used so that we can ensure type safety
+      of the constructor when plugins are instantiated.
     """
 
     @classmethod
@@ -173,13 +218,24 @@ class WindowPlugin(Plugin):
     def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
         """
         Create and return an instance of this plugin
+
+        This method should be implemented by every plugin definition
         """
         raise AbstractMethodError(cls)
 
 
 class SpecialPlugin(Plugin):
     """
-    Special plugins, representing other plugins
+    Special plugins, representing plugins that are active independently of a
+    VST or FL plugin or window.
+
+    Methods to implement:
+    * `@classmethod shouldBeActive(cls) -> bool` return whether the plugin
+      should currently be active.
+
+    * `@classmethod create(cls, shadow: DeviceShadow) -> Self` create an
+      instance of this plugin. This is used so that we can ensure type safety
+      of the constructor when plugins are instantiated.
     """
 
     @classmethod
@@ -200,5 +256,7 @@ class SpecialPlugin(Plugin):
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         """
         Create and return an instance of this plugin
+
+        This method should be implemented by every plugin definition
         """
         raise AbstractMethodError(cls)

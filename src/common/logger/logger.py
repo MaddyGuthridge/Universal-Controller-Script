@@ -6,6 +6,9 @@ and allows for log information to be searched and recalled
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 __all__ = [
@@ -14,8 +17,6 @@ __all__ = [
 
 from .log_item import LogItem
 from .verbosity import Verbosity, DEFAULT, ERROR, NOTE
-
-from ..util.misc import NoneNoPrintout
 
 
 class Log:
@@ -183,6 +184,7 @@ class Log:
         * `number` (`int`, optional): number of values to recall, defaults to
           all.
         """
+        from common.util.misc import NoneNoPrintout
         # Figure out what to print
         num_prints = 0
         num_skips = 0
@@ -228,6 +230,7 @@ class Log:
         ### Args:
         * `itemNumber` (`int`): entry number
         """
+        from common.util.misc import NoneNoPrintout
         self._history[itemNumber].printDetails()
 
         return NoneNoPrintout

@@ -3,6 +3,12 @@ common > util > api_fixes
 
 Contains wrapper code for FL Studio API functions which are just too awful to
 be called directly.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import general
@@ -19,6 +25,7 @@ from common.plug_indexes import (
     PluginIndex,
     UnsafeWindowIndex,
 )
+from common.logger import verbosity, log
 
 # HACK: A terrible horrible no good really bad global variable to make sure
 # that we hopefully avoid crashes in getFocusedPluginIndex
@@ -61,7 +68,11 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
         # HACK: Error checking to hopefully avoid a crash due to bugs in FL
         # Studio
         if generator_previously_active:
-            print("getFocusedPluginIndex() crash prevention")
+            log(
+                "state.active",
+                "getFocusedPluginIndex() crash prevention",
+                verbosity.WARNING
+            )
             return None
         with ProfilerContext("getFocusedFormID @ mixer"):
             form_id = ui.getFocusedFormID()
@@ -103,35 +114,6 @@ def getFocusedWindowIndex() -> UnsafeWindowIndex:
         if ui.getFocused(i):
             return i
     return None
-
-
-# def getPluginName(index: UnsafeIndex) -> str:
-#     """
-#     Returns the name of a plugin
-#
-#     ### Args:
-#     * `index` (`PluginIndex`): index of plugin
-#
-#     ### Returns:
-#     * `str`: plugin name
-#     """
-#     # Nothing selected
-#     if index is None:
-#         return ""
-#
-#     # FL Window
-#     if isinstance(index, int):
-#         return {
-#             0: "Mixer",
-#             1: "Channel Rack",
-#             2: "Playlist",
-#             3: "Piano Roll",
-#             4: "Browser"
-#         }[index]
-#
-#     # Generator
-#     elif len(index) == 1:
-#         return plugins.get
 
 
 def isPluginVst(index: PluginIndex) -> bool:

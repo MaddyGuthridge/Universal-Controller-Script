@@ -6,6 +6,9 @@ When logging something, these constants should be used.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 __all__ = [
@@ -14,10 +17,11 @@ __all__ = [
     'EVENT',
     'NOTE',
     'INFO',
-    "WARNING",
+    'WARNING',
+    'SUCCESS',
     'ERROR',
     'CRITICAL',
-    'DEFAULT'
+    'DEFAULT',
 ]
 
 from typing import NewType
@@ -26,10 +30,11 @@ Verbosity = NewType("Verbosity", int)
 
 MOST_VERBOSE = Verbosity(100)
 
-EVENT = Verbosity(6)
-NOTE = Verbosity(5)
-INFO = Verbosity(4)
-WARNING = Verbosity(3)
+EVENT = Verbosity(15)
+NOTE = Verbosity(12)
+INFO = Verbosity(10)
+WARNING = Verbosity(8)
+SUCCESS = Verbosity(5)
 ERROR = Verbosity(2)
 CRITICAL = Verbosity(1)
 

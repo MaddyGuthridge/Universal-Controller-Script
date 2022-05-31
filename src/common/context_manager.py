@@ -1,11 +1,14 @@
 """
-common > contextmanager
+common > context_manager
 
 Contains the DeviceContextManager class, used to manage the state of the
 script, allowing for soft resets of the script when required.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 __all__ = [
