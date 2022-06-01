@@ -9,7 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-import pytest
+# import pytest
 from common.types import EventData
 from common.util.events import encodeForwardedEvent
 from devices.matchers import IndexedMatcher
