@@ -9,8 +9,8 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from control_surfaces.event_patterns import BasicPattern
-from control_surfaces.value_strategies import Data2Strategy
+from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
+from control_surfaces.value_strategies import Data2Strategy, ForwardedStrategy
 
 from control_surfaces import ControlSurface
 
@@ -36,4 +36,17 @@ class SimplerControl(ControlSurface):
         super().__init__(
             BasicPattern(0, i, 0),
             Data2Strategy(),
+        )
+
+
+class SimpleForwardedControl(ControlSurface):
+    """A simple control surface for testing
+
+    It matches any forwarded event from device 2 with a status of 0 and a data1
+    of i
+    """
+    def __init__(self, i: int) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0, i, ...)),
+            ForwardedStrategy(Data2Strategy()),
         )

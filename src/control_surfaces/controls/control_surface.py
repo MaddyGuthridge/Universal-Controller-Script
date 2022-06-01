@@ -51,8 +51,8 @@ class ControlSurface:
         Returns whether a value (0-1.0) for this control should count as a
         press.
 
-        You must override this method in order to provide double press
-        functionality.
+        Control surface definitions override this method in order to provide
+        double press functionality.
 
         This is used to create the doublePress property for ControlEvent
         objects
@@ -111,6 +111,19 @@ class ControlSurface:
         """
         return \
             f"{self.__class__}, ({self._coord}, {self.value})"
+
+    @final
+    def getPattern(self) -> IEventPattern:
+        """
+        Returns the event pattern used by this control surface
+
+        This allows validation to be performed if using the control within a
+        particular control matcher.
+
+        ### Returns:
+        * `IEventPattern`: pattern
+        """
+        return self._pattern
 
     @final
     def getMapping(self) -> ControlMapping:
