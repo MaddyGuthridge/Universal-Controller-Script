@@ -24,4 +24,10 @@ class IMappingStrategy:
 
     @abstractmethod
     def apply(self, shadow: DeviceShadow) -> None:
+        """
+        Apply the strategy to a control shadow.
+
+        ### Args:
+        * `shadow` (`DeviceShadow`): device shadow to apply mappings to
+        """
         raise AbstractMethodError(self)

@@ -28,7 +28,7 @@ from . import IMappingStrategy
 
 class JogStrategy(IMappingStrategy):
     """
-    Maps jog wheels to navigation controls
+    Maps jog wheels to navigation controls.
     """
     def apply(self, shadow: DeviceShadow) -> None:
         # Bind note events to noteCallback()

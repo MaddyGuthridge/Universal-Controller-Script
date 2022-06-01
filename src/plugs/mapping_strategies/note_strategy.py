@@ -24,7 +24,7 @@ from . import IMappingStrategy
 
 class NoteStrategy(IMappingStrategy):
     """
-    Maps notes to the active generator plugin
+    Maps notes to the active generator plugin.
     """
 
     def apply(self, shadow: DeviceShadow) -> None:

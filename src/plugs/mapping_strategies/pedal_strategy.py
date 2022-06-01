@@ -31,9 +31,12 @@ from . import IMappingStrategy
 
 
 class PedalStrategy(IMappingStrategy):
+    """
+    Binds pedals to relevant CC parameters.
+    """
     def __init__(self, raise_on_error: bool = True) -> None:
         """
-        Create a WheelStrategy for binding mod and pitch wheel events
+        Create a PedalStrategy for binding pedals to CC parameters
 
         ### Args:
         * `raise_on_error` (`bool`, optional): Whether an error should be

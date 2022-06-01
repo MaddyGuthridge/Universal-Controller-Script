@@ -30,7 +30,10 @@ BOUND_COLOR = Color.fromInteger(0x888888)
 
 
 class DirectionStrategy(IMappingStrategy):
-    """Mapping strategy to handle direction buttons
+    """
+    Mapping strategy to handle direction buttons.
+
+    This maps controls to next or previous commands.
     """
     def __init__(self) -> None:
         self._controls: list[IControlShadow] = []

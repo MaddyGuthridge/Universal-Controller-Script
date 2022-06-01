@@ -26,9 +26,8 @@ from . import IMappingStrategy
 
 class WheelStrategy(IMappingStrategy):
     """
-    Maps mod and pitch wheels to the current plugin
+    Maps mod and pitch wheels to the current plugin.
     """
-
     def __init__(self, raise_on_error: bool = False) -> None:
         """
         Create a WheelStrategy for binding mod and pitch wheel events
