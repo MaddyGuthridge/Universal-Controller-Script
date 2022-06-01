@@ -171,9 +171,8 @@ class WaitingForDevice(IScriptState):
             except DeviceRecognizeError:
                 log(
                     LOG_CAT,
-                    "Failed to recognize device via sysex, using fallback "
-                    "method",
+                    f"Failed to recognize device via sysex, using fallback "
+                    f"method {eventToString(event)}",
                     verbosity.WARNING,
-                    eventToString(event)
                 )
                 self.detectFallback()
