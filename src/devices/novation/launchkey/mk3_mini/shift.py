@@ -19,7 +19,7 @@ from control_surfaces import (
     NullEvent,
     CaptureMidiButton,
 )
-from devices.matchers import ShiftMatcher, BasicControlMatcher
+from control_surfaces.matchers import ShiftMatcher, BasicControlMatcher
 from devices.novation.launchkey.incontrol.controls import (
     LkMk3ControlSwitchButton,
     LkMk3RecordButton,

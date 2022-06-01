@@ -15,7 +15,7 @@ from control_surfaces.event_patterns import BasicPattern, fromNibbles
 from common.types.event_data import EventData, isEventStandard
 from control_surfaces import ControlSurface, Note, NoteAfterTouch
 from control_surfaces.control_mapping import ControlEvent
-from devices.matchers import IControlMatcher
+from control_surfaces.matchers import IControlMatcher
 
 
 class NoteMatcher(IControlMatcher):

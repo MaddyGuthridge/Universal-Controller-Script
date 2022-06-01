@@ -14,11 +14,8 @@ __all__ = [
     'Device',
     'DeviceShadow',
     'EventCallback',
-    'IControlMatcher',
-    'BasicControlMatcher',
 ]
 
-from .matchers import IControlMatcher, BasicControlMatcher
 from .device import Device
 from .device_shadow import DeviceShadow, EventCallback
 

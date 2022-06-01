@@ -13,8 +13,9 @@ from typing import Optional
 from common.context_manager import getContext, unsafeResetContext
 from control_surfaces.event_patterns import IEventPattern, BasicPattern
 from common.types.event_data import EventData
-from devices import Device, BasicControlMatcher
-from devices.control_generators import NoteMatcher
+from devices import Device
+from control_surfaces.matchers import BasicControlMatcher
+from control_surfaces.generators import NoteMatcher
 from control_surfaces import Fader, PlayButton, LoopButton, ControlSurface
 from control_surfaces.value_strategies import (
     Data2Strategy,

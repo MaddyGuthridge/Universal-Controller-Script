@@ -32,7 +32,7 @@ from control_surfaces import (
     MoveJogWheel
 )
 
-from devices import IControlMatcher
+from control_surfaces.matchers import IControlMatcher
 
 
 class JogValueStrategy(IValueStrategy):

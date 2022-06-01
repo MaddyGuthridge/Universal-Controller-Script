@@ -17,7 +17,7 @@ from control_surfaces.value_strategies import NoteStrategy, ForwardedStrategy
 from control_surfaces import ControlSurface, DrumPad, MuteButton, SoloButton
 from .. import ColorInControlSurface
 from ...consts import DRUM_ROWS, DRUM_COLS
-from devices.matchers import (
+from control_surfaces.matchers import (
     BasicControlMatcher,
 )
 

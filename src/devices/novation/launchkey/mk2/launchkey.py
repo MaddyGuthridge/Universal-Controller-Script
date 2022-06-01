@@ -19,8 +19,9 @@ from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
 )
-from devices import BasicControlMatcher, Device
-from devices.control_generators import NoteMatcher
+from devices import Device
+from control_surfaces.matchers import BasicControlMatcher
+from control_surfaces.generators import NoteMatcher
 
 from devices.novation.launchkey.incontrol import (
     InControl,

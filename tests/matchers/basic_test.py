@@ -11,7 +11,7 @@ more details.
 """
 
 from common.types import EventData
-from devices.matchers import BasicControlMatcher
+from control_surfaces.matchers import BasicControlMatcher
 from tests.helpers.controls import SimpleControl, SimplerControl
 
 

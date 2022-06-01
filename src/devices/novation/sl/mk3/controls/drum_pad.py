@@ -14,7 +14,7 @@ from control_surfaces.event_patterns import ForwardedPattern, NotePattern
 from control_surfaces.value_strategies import NoteStrategy, ForwardedStrategy
 from control_surfaces import DrumPad
 from . import SlColorSurface
-from devices.matchers import (
+from control_surfaces.matchers import (
     BasicControlMatcher,
 )
 

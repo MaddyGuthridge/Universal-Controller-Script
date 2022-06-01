@@ -12,7 +12,7 @@ more details.
 # import pytest
 from common.types import EventData
 from common.util.events import encodeForwardedEvent
-from devices.matchers import IndexedMatcher
+from control_surfaces.matchers import IndexedMatcher
 from tests.helpers.controls import SimpleControl, SimpleForwardedControl
 from tests.helpers.devices import DummyDeviceContext
 

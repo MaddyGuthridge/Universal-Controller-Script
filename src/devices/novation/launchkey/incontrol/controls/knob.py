@@ -16,7 +16,7 @@ from control_surfaces.value_strategies import (
     Data2Strategy,
     ForwardedStrategy,
 )
-from devices.matchers import IndexedMatcher
+from control_surfaces.matchers import IndexedMatcher
 
 __all__ = [
     'LkKnob',

@@ -19,7 +19,7 @@ from common.types import EventData
 from control_surfaces import ControlShadow
 
 from control_surfaces import ControlEvent
-from devices import IControlMatcher
+from control_surfaces.matchers import IControlMatcher
 from abc import abstractmethod
 
 

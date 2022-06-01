@@ -21,8 +21,9 @@ from control_surfaces.event_patterns import (
 )
 from common.extension_manager import ExtensionManager
 from common.types import EventData
-from devices import Device, BasicControlMatcher
-from devices.control_generators import NoteMatcher, PedalMatcher
+from devices import Device
+from control_surfaces.matchers import BasicControlMatcher
+from control_surfaces.generators import NoteMatcher, PedalMatcher
 from control_surfaces import (
     NullEvent,
     Fader,

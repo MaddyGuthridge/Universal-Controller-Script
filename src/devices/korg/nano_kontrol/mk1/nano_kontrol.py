@@ -23,7 +23,7 @@ from control_surfaces.value_strategies import (
     Data2Strategy,
 )
 from devices import Device
-from devices.matchers import BasicControlMatcher
+from control_surfaces.matchers import BasicControlMatcher
 from control_surfaces import (
     StopButton,
     PlayButton,

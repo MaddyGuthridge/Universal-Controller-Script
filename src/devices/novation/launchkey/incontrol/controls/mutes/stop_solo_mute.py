@@ -14,7 +14,7 @@ from control_surfaces.value_strategies import (
     ForwardedStrategy
 )
 from control_surfaces import NullEvent
-from devices.matchers.shift_matcher import ShiftMatcher
+from control_surfaces.matchers import ShiftMatcher
 from ..incontrol_surface import ColorInControlSurface
 from ...colors.mk3 import COLORS
 from ..drum_pad import (

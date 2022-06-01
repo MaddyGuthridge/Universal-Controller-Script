@@ -38,6 +38,19 @@ class ShiftMatcher(IControlMatcher):
         disabled: IControlMatcher,
         enabled: IControlMatcher,
     ) -> None:
+        """
+        Create a shift control matcher
+
+        ### Args:
+        * `shift` (`ControlSurface`): control surface to control whether the
+          shift layer should be active.
+
+        * `disabled` (`IControlMatcher`): layer to use when shift menu is
+          disabled
+
+        * `enabled` (`IControlMatcher`): layer to used when shift menu is
+          enabled
+        """
         # Shift button
         self.__shift = shift
         # Sub-matchers

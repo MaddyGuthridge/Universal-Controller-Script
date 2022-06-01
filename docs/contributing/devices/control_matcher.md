@@ -1,7 +1,7 @@
 
 # Control Matchers
 
-Import from `devices.matchers`
+Import from `control_surfaces.matchers`
 
 Control matchers are used to maintain a set of control surfaces, which can
 be matched with incoming events.
