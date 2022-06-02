@@ -20,8 +20,7 @@ from control_surfaces import (
     StandardPitchWheel,
 )
 from devices import Device
-from control_surfaces.matchers import BasicControlMatcher
-from control_surfaces.generators import NoteMatcher
+from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
 from .controls.transport import (
     SlPlayButton,
     SlStopButton,

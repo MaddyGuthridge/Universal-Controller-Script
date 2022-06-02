@@ -9,6 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from control_surfaces.event_patterns import ByteMatch
 from ..event_patterns import NotePattern
 from . import ControlSurface
 from ..value_strategies import NoteStrategy
@@ -18,11 +19,11 @@ class Note(ControlSurface):
     """
     Represents a note event, usually linked to a key press on a piano
     """
-    def __init__(self, note_num: int, channel: int = 0) -> None:
+    def __init__(self, note_num: int, channels: ByteMatch = ...) -> None:
         super().__init__(
-            NotePattern(note_num),
+            NotePattern(note_num, channels),
             NoteStrategy(),
-            (channel, note_num)
+            (0, note_num)
         )
 
     @staticmethod

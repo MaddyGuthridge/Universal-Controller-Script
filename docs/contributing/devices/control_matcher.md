@@ -35,6 +35,16 @@ A control matcher that matches different controls based on whether a shift
 button is pressed. This can be used alongside more advanced control matchers in
 order to build advanced control matching systems.
 
+## `NoteMatcher`
+
+A control matcher that matches all 128 notes. By default, it will match all
+channels, but a ByteMatch object can be used to customize this.
+
+## `PedalMatcher`
+
+A control matcher that matches pedal events, including the sustain pedal,
+sostenuto pedal, and soft pedal.
+
 ## `IControlMatcher`
 
 The interface used by control matchers. If the matchers documented above don't

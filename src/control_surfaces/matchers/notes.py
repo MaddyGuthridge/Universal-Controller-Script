@@ -11,7 +11,11 @@ more details.
 """
 
 from typing import Optional
-from control_surfaces.event_patterns import BasicPattern, fromNibbles
+from control_surfaces.event_patterns import (
+    BasicPattern,
+    fromNibbles,
+    ByteMatch,
+)
 from common.types.event_data import EventData, isEventStandard
 from control_surfaces import ControlSurface, Note, NoteAfterTouch
 from control_surfaces.control_mapping import ControlEvent
@@ -23,8 +27,18 @@ class NoteMatcher(IControlMatcher):
     Defines a matcher for note events
     """
 
-    def __init__(self) -> None:
-        self._notes: list[ControlSurface] = [Note(i) for i in range(128)]
+    def __init__(self, channels: ByteMatch = ...) -> None:
+        """
+        Create a NoteMatcher
+
+        This will match all 128 notes for all the given channels.
+
+        ### Args:
+        * `channels` (`ByteMatch`, optional): channels to match.
+          Defaults to `...`, for all channels.
+        """
+        self._notes: list[ControlSurface] = \
+            [Note(i, channels) for i in range(128)]
         # A pattern to match any and all notes (this improves efficiency by
         # allowing us to only try to match events that are already notes)
         self._note_pattern = BasicPattern(
