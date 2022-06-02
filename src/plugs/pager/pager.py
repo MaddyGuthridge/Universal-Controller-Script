@@ -25,13 +25,54 @@ class PluginPager:
     To implement a PluginPager, you should use multiple inheritance, with this
     being the first class to inherit from.
 
-    TODO: Example usage
-
     Note that the central plugin will always be transparent, so that it won't
     interfere with how values are applied from various pages.
+
+    ## Methods
+
+    * `addPage(self, page: Plugin) -> None`: add a page to the pager
+
+    * `nextPage(self) -> None`: jump to the next page
+
+    ## Example Usage
+
+    ```py
+    # Define a page
+    class MyPage1(StandardPlugin):
+        # Each page is created exactly like a standard plugin
+        ...
+    class MyPage2(StandardPlugin):
+        ...
+
+    # Create our pager plugin
+    # We use multiple inheritance to add the pager properties to our plugin
+    class MyPlugin(PluginPager, StandardPlugin):
+        def __init__(self, shadow: DeviceShadow) -> None:
+            # Initialize the pager
+            PluginPager.__init__(self, shadow)
+
+            # Add pages to the pager
+            # We should create a copy of the device shadow to give to each
+            # page, and register a color to use with the page, which will be
+            # displayed on the control switch button
+            self.addPage(MyPage1(shadow.copy()), Color.fromInteger(0xFF00AA))
+            self.addPage(MyPage2(shadow.copy()), Color.fromInteger(0xAA00FF))
+
+            # Add any other required controls that should be bound universally
+            shadow.bindMatches(...)
+
+            # Initialize the main plugin
+            StandardPlugin.__init__(self, shadow, [])
+    ```
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
+        """
+        Create a PluginPager
+
+        ### Args:
+        * `shadow` (`DeviceShadow`): device shadow to work with
+        """
         # PluginPagers are always transparent, so that they won't interfere
         # with the pages
         shadow.setTransparent(True)
@@ -48,7 +89,8 @@ class PluginPager:
         Add a page to this plugin
 
         ### Args:
-        * `new` (`Page`): page to add
+        * `new` (`Plugin`): page to add. This should be a plugin of the same
+          type as the plugin providing the page.
         """
         self.__pages.append(new)
         self.__page_colors.append(color)
