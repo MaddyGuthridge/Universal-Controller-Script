@@ -37,7 +37,7 @@ class PluginPager:
     ## Example Usage
 
     ```py
-    # Define a page
+    # Define pages
     class MyPage1(StandardPlugin):
         # Each page is created exactly like a standard plugin
         ...

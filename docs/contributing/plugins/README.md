@@ -180,3 +180,39 @@ class MyPlugin(StandardPlugin):
 # Register my plugin
 ExtensionManager.plugins.register(MyPlugin)
 ```
+
+## Pagers
+
+A class can inherit from the `PluginPager` class in order to page between
+multiple interfaces.
+
+### Example Usage
+
+```py
+# Define pages
+class MyPage1(StandardPlugin):
+    # Each page is created exactly like a standard plugin
+    ...
+class MyPage2(StandardPlugin):
+    ...
+
+# Create our pager plugin
+# We use multiple inheritance to add the pager properties to our plugin
+class MyPlugin(PluginPager, StandardPlugin):
+    def __init__(self, shadow: DeviceShadow) -> None:
+        # Initialize the pager
+        PluginPager.__init__(self, shadow)
+
+        # Add pages to the pager
+        # We should create a copy of the device shadow to give to each
+        # page, and register a color to use with the page, which will be
+        # displayed on the control switch button
+        self.addPage(MyPage1(shadow.copy()), Color.fromInteger(0xFF00AA))
+        self.addPage(MyPage2(shadow.copy()), Color.fromInteger(0xAA00FF))
+
+        # Add any other required controls that should be bound universally
+        shadow.bindMatches(...)
+
+        # Initialize the main plugin
+        StandardPlugin.__init__(self, shadow, [])
+```
