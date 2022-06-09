@@ -4,7 +4,7 @@ attrs==21.2.0
 autopep8==1.6.0
 colorama==0.4.4
 coverage==6.3.2
-FL-Studio-API-Stubs==20.2.0
+FL-Studio-API-Stubs==20.3.1
 flake8==4.0.1
 iniconfig==1.1.1
 isort==5.10.1
