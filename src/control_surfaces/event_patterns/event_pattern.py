@@ -10,12 +10,10 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from typing import TYPE_CHECKING
+
+from fl_classes import EventData
 from abc import abstractmethod
 from common.util.abstract_method_error import AbstractMethodError
-
-if TYPE_CHECKING:
-    from fl_classes import EventData
 
 
 class IEventPattern:
