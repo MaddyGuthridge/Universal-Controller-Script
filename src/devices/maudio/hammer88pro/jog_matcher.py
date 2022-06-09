@@ -11,7 +11,7 @@ more details.
 """
 
 from typing import Optional
-from common.types import EventData
+from fl_classes import EventData
 from control_surfaces.event_patterns import (
     BasicPattern,
     UnionPattern,

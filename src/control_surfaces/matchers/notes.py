@@ -16,7 +16,7 @@ from control_surfaces.event_patterns import (
     fromNibbles,
     ByteMatch,
 )
-from common.types.event_data import EventData, isEventStandard
+from fl_classes import EventData, isEventStandard
 from control_surfaces import ControlSurface, Note, NoteAfterTouch
 from control_surfaces.control_mapping import ControlEvent
 from control_surfaces.matchers import IControlMatcher

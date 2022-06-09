@@ -10,7 +10,8 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from common import profilerDecoration
-from common.types import EventData, Color
+from fl_classes import EventData
+from common.types import Color
 from common.util.events import forwardEvent
 from ..consts import REFRESH_INTERVAL
 

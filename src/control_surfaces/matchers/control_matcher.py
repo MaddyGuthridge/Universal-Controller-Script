@@ -12,7 +12,7 @@ more details.
 """
 from typing import Optional
 from abc import abstractmethod
-from common.types import EventData
+from fl_classes import EventData
 from common.util.abstract_method_error import AbstractMethodError
 from control_surfaces import ControlEvent, ControlSurface
 

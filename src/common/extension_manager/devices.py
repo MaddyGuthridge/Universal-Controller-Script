@@ -11,7 +11,7 @@ more details.
 """
 from typing import TYPE_CHECKING
 from common.exceptions import DeviceRecognizeError
-from common.types import EventData
+from fl_classes import EventData
 
 
 if TYPE_CHECKING:

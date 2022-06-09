@@ -17,7 +17,7 @@ more details.
 from typing import Optional
 from common.extension_manager import ExtensionManager
 from control_surfaces.event_patterns import IEventPattern, BasicPattern
-from common.types import EventData
+from fl_classes import EventData
 from control_surfaces.value_strategies import (
     ButtonData2Strategy,
     Data2Strategy,

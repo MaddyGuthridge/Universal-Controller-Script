@@ -1,14 +1,17 @@
 """
-controlsurfaces > valuestrategies > forwardedstrategy
+control_surfaces > value_strategies > forwarded_strategy
 
 Contains the definition for the ForwardedStrategy strategy for getting values
 from forwarded events
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
-from common.types import EventData
+from fl_classes import EventData
 from common.util.events import decodeForwardedEvent, isEventForwarded
 from . import IValueStrategy
 

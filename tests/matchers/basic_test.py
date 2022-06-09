@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from common.types import EventData
+from fl_classes import EventData
 from control_surfaces.matchers import BasicControlMatcher
 from tests.helpers.controls import SimpleControl, SimplerControl
 
@@ -30,7 +30,7 @@ def test_match():
     assert matcher.matchEvent(EventData(0, 3, 0)) is None
 
 
-def test_submatchers():
+def test_sub_matchers():
     """Test we can match things in sub matchers"""
     main = BasicControlMatcher()
     sub = BasicControlMatcher()

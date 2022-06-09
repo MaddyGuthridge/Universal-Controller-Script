@@ -15,7 +15,7 @@ more details.
 from typing import Optional, final
 from common.util.abstract_method_error import AbstractMethodError
 from control_surfaces.event_patterns import IEventPattern
-from common.types import EventData
+from fl_classes import EventData
 from control_surfaces import ControlShadow
 
 from control_surfaces import ControlEvent

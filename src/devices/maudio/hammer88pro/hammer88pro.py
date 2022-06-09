@@ -20,7 +20,7 @@ from control_surfaces.event_patterns import (
     NotePattern,
 )
 from common.extension_manager import ExtensionManager
-from common.types import EventData
+from fl_classes import EventData
 from devices import Device
 from control_surfaces.matchers import (
     BasicControlMatcher,

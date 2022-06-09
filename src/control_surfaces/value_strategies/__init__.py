@@ -1,11 +1,14 @@
 """
-controlsurfaces > valuestrategies
+control_surfaces > value_strategies
 
-Contains deinitions for value strategies, as well as the IValueStrategy
+Contains definitions for value strategies, as well as the IValueStrategy
 interface.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 __all__ = [

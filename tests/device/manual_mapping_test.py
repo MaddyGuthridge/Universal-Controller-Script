@@ -14,7 +14,7 @@ import pytest
 from fl_context import FlContext
 from common import getContext, ExtensionManager, unsafeResetContext
 from common.states import WaitingForDevice, DeviceState
-from common.types import EventData
+from fl_classes import EventData
 from devices import Device
 
 

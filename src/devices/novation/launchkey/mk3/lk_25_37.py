@@ -14,7 +14,7 @@ import device
 
 from control_surfaces.event_patterns import BasicPattern
 from common.extension_manager import ExtensionManager
-from common.types import EventData
+from fl_classes import EventData
 from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,

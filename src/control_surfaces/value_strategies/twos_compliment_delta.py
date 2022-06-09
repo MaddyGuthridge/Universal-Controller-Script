@@ -1,12 +1,15 @@
 """
-controlsurfaces > valuestrategies > twoscomplimentdelta
+control_surfaces > value_strategies > twos_compliment_delta
 
 Contains the definitions for a two's compliment delta value strategy
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
-from common.types.event_data import EventData, isEventStandard
+from fl_classes import EventData, isEventStandard
 from common.util.misc import clamp
 from . import IValueStrategy
 

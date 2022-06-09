@@ -13,7 +13,7 @@ more details.
 from typing import TYPE_CHECKING
 import common
 import device
-from common.types.event_data import EventData, isEventStandard, isEventSysex
+from fl_classes import EventData, isEventStandard, isEventSysex
 from common.exceptions import (
     EventEncodeError,
     EventInspectError,

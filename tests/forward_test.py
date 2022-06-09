@@ -24,7 +24,7 @@ from common.exceptions import (
     # EventDecodeError,
     # EventDispatchError,
 )
-from common.types import EventData
+from fl_classes import EventData
 from common.util.events import (
     encodeForwardedEvent,
     decodeForwardedEvent,

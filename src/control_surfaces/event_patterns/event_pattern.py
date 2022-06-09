@@ -15,7 +15,7 @@ from abc import abstractmethod
 from common.util.abstract_method_error import AbstractMethodError
 
 if TYPE_CHECKING:
-    from common.types import EventData
+    from fl_classes import EventData
 
 
 class IEventPattern:
@@ -28,7 +28,7 @@ class IEventPattern:
     """
 
     @abstractmethod
-    def matchEvent(self, event: 'EventData') -> bool:
+    def matchEvent(self, event: EventData) -> bool:
         """
         Return whether the given event matches the pattern
 
@@ -44,7 +44,7 @@ class IEventPattern:
         raise AbstractMethodError(self)
 
     @abstractmethod
-    def fulfil(self) -> 'EventData':
+    def fulfil(self) -> EventData:
         """
         Create and return an EventData object which will match with this
         pattern. The return value should be randomly generated.

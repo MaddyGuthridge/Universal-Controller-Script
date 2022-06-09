@@ -13,7 +13,7 @@ more details.
 import pytest
 
 from control_surfaces.event_patterns import BasicPattern, UnionPattern
-from common.types import EventData
+from fl_classes import EventData
 
 
 def test_create_not_enough():

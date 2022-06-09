@@ -11,7 +11,7 @@ more details.
 """
 
 from control_surfaces.event_patterns import BasicPattern
-from common.types import EventData
+from fl_classes import EventData
 
 
 def test_basic_pattern():

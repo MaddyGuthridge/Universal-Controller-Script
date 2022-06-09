@@ -11,7 +11,7 @@ more details.
 """
 
 from ..event_patterns import IEventPattern, BasicPattern, fromNibbles
-from common.types.event_data import EventData, isEventStandard
+from fl_classes import EventData, isEventStandard
 from . import ControlSurface
 from ..value_strategies import Data2Strategy, IValueStrategy
 

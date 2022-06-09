@@ -1,13 +1,15 @@
 """
-controlsurfaces > valuestrategies > ntoestrategy
+control_surfaces > value_strategies > note_strategy
 
 Contains the definition for the note value strategy
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
-from common.types import EventData
-from common.types.event_data import isEventStandard
+from fl_classes import EventData, isEventStandard
 from . import IValueStrategy
 
 

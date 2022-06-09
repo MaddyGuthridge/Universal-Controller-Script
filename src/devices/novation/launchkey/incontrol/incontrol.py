@@ -13,7 +13,7 @@ from typing import Optional
 from control_surfaces import ControlSurface, ControlEvent, NullEvent
 from control_surfaces.matchers import IControlMatcher
 from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
-from common.types import EventData
+from fl_classes import EventData
 from common.util.events import forwardEvent
 
 from .controls.drum_pad import LkDrumPad

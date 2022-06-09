@@ -11,7 +11,7 @@ more details.
 """
 import ui
 from common import log, verbosity, consts
-from common.types import EventData
+from fl_classes import EventData
 from common.util.events import eventToString
 from . import IScriptState
 

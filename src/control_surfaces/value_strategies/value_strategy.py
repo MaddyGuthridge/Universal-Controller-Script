@@ -1,14 +1,17 @@
 """
-controlsurfaces > valuestrategies > ivaluestrategy
+control_surfaces > value_strategies > value_strategy
 
 Contains IValueStrategy: the interface for value strategies.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from abc import abstractmethod
-from common.types import EventData
+from fl_classes import EventData
 
 
 class IValueStrategy:
@@ -39,7 +42,7 @@ class IValueStrategy:
         Return the channel number associated with an event
 
         ### Args:
-        * `event` (`EventData`): event to analyse
+        * `event` (`EventData`): event to analyze
 
         ### Returns:
         * `int`: channel number or `-1` for no channel

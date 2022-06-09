@@ -9,7 +9,7 @@ Authors:
 """
 
 import random
-from common.types import EventData
+from fl_classes import EventData
 from .event_pattern import IEventPattern
 
 
@@ -32,8 +32,8 @@ class UnionPattern(IEventPattern):
             raise ValueError("Expected at least two event patterns to union")
         self._patterns = patterns
 
-    def matchEvent(self, event: 'EventData') -> bool:
+    def matchEvent(self, event: EventData) -> bool:
         return any(p.matchEvent(event) for p in self._patterns)
 
-    def fulfil(self) -> 'EventData':
+    def fulfil(self) -> EventData:
         return random.choice(self._patterns).fulfil()

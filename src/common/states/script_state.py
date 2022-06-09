@@ -14,7 +14,7 @@ more details.
 from typing import Any, Callable
 from typing_extensions import ParamSpec
 from abc import abstractmethod
-from common.types import EventData
+from fl_classes import EventData
 from common.util.abstract_method_error import AbstractMethodError
 
 

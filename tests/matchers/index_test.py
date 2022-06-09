@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 # import pytest
-from common.types import EventData
+from fl_classes import EventData
 from common.util.events import encodeForwardedEvent
 from control_surfaces.matchers import IndexedMatcher
 from tests.helpers.controls import SimpleControl, SimpleForwardedControl

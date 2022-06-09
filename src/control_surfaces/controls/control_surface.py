@@ -12,12 +12,13 @@ more details.
 """
 # from __future__ import annotations
 
+from fl_classes import EventData
 from time import time
 from typing import Optional, final
 from abc import abstractmethod
 from common import getContext
 from common.util.abstract_method_error import AbstractMethodError
-from common.types import EventData, Color
+from common.types import Color
 from ..event_patterns import IEventPattern
 from ..value_strategies import IValueStrategy
 from ..control_mapping import ControlEvent, ControlMapping

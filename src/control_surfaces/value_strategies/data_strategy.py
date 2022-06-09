@@ -1,13 +1,16 @@
 """
-controlsurfaces > valuestrategies > data2strategy
+control_surfaces > value_strategies > data_strategy
 
-Contains the Data2 value strategy
+Contains Data2Strategy and Data1Strategy
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
-from common.types.event_data import EventData, isEventStandard
+from fl_classes import EventData, isEventStandard
 from . import IValueStrategy
 
 
@@ -51,7 +54,7 @@ class Data1Strategy(DataStrategy):
     A value strategy using the data1 property of an event as the value
 
     Usable for event types where the value is stored in data1, such as channel
-    aftertouch
+    after-touch
     """
 
     def __init__(self) -> None:

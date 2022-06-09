@@ -22,6 +22,7 @@ from .profiler import profilerDecoration
 from . import logger
 from typing import NoReturn, Optional, Callable, TYPE_CHECKING
 from time import time_ns
+from fl_classes import EventData
 
 from .settings import Settings
 from .activity_state import ActivityState
@@ -29,7 +30,6 @@ from .activity_state import ActivityState
 from .util.api_fixes import catchUnsafeOperation
 from .util.misc import NoneNoPrintout
 from .util.events import isEventForwarded, isEventForwardedHere
-from .types import EventData
 from .profiler import ProfilerManager
 
 from .states import (

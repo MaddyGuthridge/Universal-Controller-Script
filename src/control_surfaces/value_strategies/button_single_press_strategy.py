@@ -1,12 +1,15 @@
 """
-controlsurfaces > valuestrategies > buttonsinglepressstrategy
+control_surfaces > value_strategies > button_single_press_strategy
 
 Contains the definition for the button single press strategy
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
-from common.types import EventData
+from fl_classes import EventData
 from . import IValueStrategy
 
 

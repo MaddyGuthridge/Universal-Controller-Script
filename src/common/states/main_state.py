@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING
 import common
 from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
-from common.types import EventData
+from fl_classes import EventData
 from common.util.events import eventToString
 from .dev_state import DeviceState
 

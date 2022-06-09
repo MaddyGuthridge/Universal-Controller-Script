@@ -15,7 +15,7 @@ from control_surfaces.event_patterns import (
     ForwardedPattern,
     ForwardedUnionPattern,
 )
-from common.types import EventData
+from fl_classes import EventData
 from common.util.events import encodeForwardedEvent
 
 from tests.helpers.devices import DummyDeviceContext

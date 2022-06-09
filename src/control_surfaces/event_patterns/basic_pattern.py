@@ -12,7 +12,7 @@ more details.
 
 from typing import TYPE_CHECKING, Any, Callable, Optional
 
-from common.types.event_data import EventData, isEventStandard, isEventSysex
+from fl_classes import EventData, isEventStandard, isEventSysex
 from . import ByteMatch, IEventPattern, fulfilByte
 
 
@@ -115,7 +115,7 @@ class BasicPattern(IEventPattern):
             self.data1 = data1
             self.data2 = data2
 
-    def fulfil(self) -> 'EventData':
+    def fulfil(self) -> EventData:
         if self.sysex_event:
             return EventData(bytes([fulfilByte(b) for b in self.sysex]))
         else:
@@ -125,7 +125,7 @@ class BasicPattern(IEventPattern):
                 fulfilByte(self.data2),
             )
 
-    def matchEvent(self, event: 'EventData') -> bool:
+    def matchEvent(self, event: EventData) -> bool:
         """
         Returns whether an event matches this pattern.
 
@@ -173,7 +173,7 @@ class BasicPattern(IEventPattern):
         }
         return matches[type(expected)](expected, actual)
 
-    def _matchSysex(self, event: 'EventData') -> bool:
+    def _matchSysex(self, event: EventData) -> bool:
         """
         Matcher function for sysex events
         """
@@ -184,7 +184,7 @@ class BasicPattern(IEventPattern):
             return False
         return all(map(self._matchByte, self.sysex, event.sysex))
 
-    def _matchStandard(self, event: 'EventData') -> bool:
+    def _matchStandard(self, event: EventData) -> bool:
         """
         Matcher function for standard events
         """

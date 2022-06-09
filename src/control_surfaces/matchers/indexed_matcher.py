@@ -16,7 +16,7 @@ from control_surfaces.event_patterns import (
     BasicPattern,
     ForwardedPattern
 )
-from common.types.event_data import EventData, isEventStandard
+from fl_classes import EventData, isEventStandard
 from common.util.events import decodeForwardedEvent
 from control_surfaces import ControlEvent, ControlSurface
 from . import IControlMatcher

@@ -15,8 +15,6 @@ more details.
 
 __all__ = [
     'Color',
-    'EventData',
 ]
 
-from .event_data import EventData
 from .color import Color
