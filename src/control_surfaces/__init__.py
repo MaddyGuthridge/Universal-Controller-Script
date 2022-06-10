@@ -26,6 +26,8 @@ __all__ = [
     # Other imports
     'value_strategies',
     'event_patterns',
+    'matchers',
+    'managers',
     # Control surfaces
     'NullEvent',
     'Note',
@@ -194,3 +196,5 @@ from .control_mapping import (
 
 from . import value_strategies
 from . import event_patterns
+from . import managers
+from . import matchers
