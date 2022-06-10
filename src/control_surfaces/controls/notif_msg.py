@@ -9,8 +9,13 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from typing import Optional
 from ..event_patterns import NullPattern
 from control_surfaces.value_strategies import NullEventStrategy
+from control_surfaces.managers import (
+    IAnnotationManager,
+    IColorManager,
+)
 from . import ControlSurface
 
 
@@ -30,9 +35,18 @@ class NotifMsg(ControlSurface):
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
         return tuple()
 
-    def __init__(self) -> None:
-        super().__init__(
+    @classmethod
+    def create(
+        cls,
+        annotation_manager: IAnnotationManager,
+        color_manager: Optional[IColorManager] = None,
+    ) -> 'NotifMsg':
+        """
+        Create a hint message control surface
+        """
+        return cls(
             NullPattern(),
             NullEventStrategy(),
-            (0, 0)
+            annotation_manager=annotation_manager,
+            color_manager=color_manager,
         )

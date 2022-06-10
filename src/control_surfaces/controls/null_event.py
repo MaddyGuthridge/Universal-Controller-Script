@@ -14,6 +14,11 @@ from typing import Optional
 
 from ..event_patterns import IEventPattern
 from control_surfaces.value_strategies import NullEventStrategy, IValueStrategy
+from control_surfaces.managers import (
+    IAnnotationManager,
+    IColorManager,
+    IValueManager,
+)
 from . import ControlSurface
 
 
@@ -21,12 +26,15 @@ class NullEvent(ControlSurface):
     """
     Represents events that should be ignored entirely by the script.
     """
-
-    def __init__(
-        self,
+    @classmethod
+    def create(
+        cls,
         event_pattern: IEventPattern,
         value_strategy: Optional[IValueStrategy] = None,
-    ) -> None:
+        annotation_manager: Optional[IAnnotationManager] = None,
+        color_manager: Optional[IColorManager] = None,
+        value_manager: Optional[IValueManager] = None,
+    ) -> 'NullEvent':
         """
         Create a NullEvent
 
@@ -42,7 +50,13 @@ class NullEvent(ControlSurface):
         """
         if value_strategy is None:
             value_strategy = NullEventStrategy()
-        super().__init__(event_pattern, value_strategy)
+        return cls(
+            event_pattern,
+            value_strategy,
+            annotation_manager=annotation_manager,
+            color_manager=color_manager,
+            value_manager=value_manager,
+        )
 
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:

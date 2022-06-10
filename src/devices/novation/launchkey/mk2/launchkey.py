@@ -73,8 +73,8 @@ class LaunchkeyMk2(Device):
         matcher.addControl(LkMk2DirectionPrevious())
         matcher.addControl(LkRewindButton())
         matcher.addControl(LkFastForwardButton())
-        matcher.addControl(StandardPitchWheel())
-        matcher.addControl(StandardModWheel())
+        matcher.addControl(StandardPitchWheel.create())
+        matcher.addControl(StandardModWheel.create())
 
         super().__init__(matcher)
 

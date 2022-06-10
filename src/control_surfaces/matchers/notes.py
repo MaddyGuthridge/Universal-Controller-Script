@@ -38,7 +38,7 @@ class NoteMatcher(IControlMatcher):
           Defaults to `...`, for all channels.
         """
         self._notes: list[ControlSurface] = \
-            [Note(i, channels) for i in range(128)]
+            [Note.create(i, channels) for i in range(128)]
         # A pattern to match any and all notes (this improves efficiency by
         # allowing us to only try to match events that are already notes)
         self._note_pattern = BasicPattern(
@@ -69,13 +69,12 @@ class NoteAfterTouchMatcher(IControlMatcher):
     """
     Defines a matcher for note after-touch events
     """
-
-    def __init__(self) -> None:
+    def __init__(self, channels: ByteMatch) -> None:
         self._touches: list[ControlSurface] = [
-            NoteAfterTouch(i) for i in range(128)
+            NoteAfterTouch.create(i, channels) for i in range(128)
         ]
         self._touch_pattern = BasicPattern(
-            fromNibbles((0xA), ...),
+            fromNibbles((0xA), channels),
             ...,
             ...
         )

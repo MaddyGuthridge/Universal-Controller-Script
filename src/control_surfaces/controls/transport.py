@@ -9,6 +9,8 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from .button import Button
+
 __all__ = [
     'TransportButton',
     'PlayButton',
@@ -20,22 +22,11 @@ __all__ = [
     'MetronomeButton',
 ]
 
-from ..event_patterns import IEventPattern
-from control_surfaces.value_strategies import IValueStrategy
-from .button import Button
-
 
 class TransportButton(Button):
     """
     Represents buttons used for transport within FL Studio
     """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy)
 
 
 class PlayButton(TransportButton):

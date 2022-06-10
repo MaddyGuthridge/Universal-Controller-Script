@@ -43,7 +43,7 @@ class DummyValueManager(IValueManager):
     """
     A value manager that doesn't display values on the controller
     """
-    def onColorChange(self, new_value: str) -> None:
+    def onValueChange(self, new_value: str) -> None:
         pass
 
     def tick(self) -> None:

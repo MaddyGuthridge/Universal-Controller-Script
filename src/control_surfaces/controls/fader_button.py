@@ -9,6 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from . import Button
 
 __all__ = [
     'FaderButton',
@@ -24,10 +25,6 @@ __all__ = [
     'MasterSelectButton',
 ]
 
-from ..event_patterns.event_pattern import IEventPattern
-from control_surfaces.value_strategies.value_strategy import IValueStrategy
-from . import Button
-
 
 class FaderButton(Button):
     """
@@ -35,18 +32,6 @@ class FaderButton(Button):
     buttons are often present beneath faders, so their functionality should
     be mapped to the same channel that the existing button is using.
     """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy,
-        coordinate: tuple[int, int]
-    ) -> None:
-        super().__init__(
-            event_pattern,
-            value_strategy,
-            coordinate
-        )
 
 
 class AbstractGenericFaderButton(FaderButton):
@@ -67,13 +52,6 @@ class MasterGenericFaderButton(AbstractGenericFaderButton):
     intelligently map the behavior to required controls.
     """
 
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))
-
 
 class AbstractMuteButton(FaderButton):
     """
@@ -91,13 +69,6 @@ class MasterMuteButton(AbstractMuteButton):
     """
     Represents a master mute track button
     """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))
 
 
 class AbstractSoloButton(FaderButton):
@@ -117,13 +88,6 @@ class MasterSoloButton(AbstractSoloButton):
     Represents a master solo track button
     """
 
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))
-
 
 class AbstractArmButton(FaderButton):
     """
@@ -142,13 +106,6 @@ class MasterArmButton(AbstractArmButton):
     Represents a master arm track button
     """
 
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))
-
 
 class AbstractSelectButton(FaderButton):
     """
@@ -166,10 +123,3 @@ class MasterSelectButton(AbstractSelectButton):
     """
     Represents a master select track button
     """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, (0, 0))

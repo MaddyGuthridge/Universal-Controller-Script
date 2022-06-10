@@ -19,7 +19,7 @@ __all__ = [
     'SOFT'
 ]
 
-from ..event_patterns import BasicPattern, IEventPattern
+from ..event_patterns import BasicPattern
 from . import ControlSurface
 from ..value_strategies import ButtonData2Strategy
 
@@ -28,12 +28,6 @@ class Pedal(ControlSurface):
     """
     Represents pedal events, including sustain, soft and sostenuto pedals
     """
-
-    def __init__(self, pattern: IEventPattern) -> None:
-        super().__init__(
-            pattern,
-            ButtonData2Strategy(),
-        )
 
     @staticmethod
     def isPress(value: float):
@@ -57,24 +51,33 @@ class SustainPedal(Pedal):
     """
     Represents a sustain pedal
     """
-
-    def __init__(self) -> None:
-        super().__init__(BasicPattern(0xB0, SUSTAIN, ...))
+    @classmethod
+    def create(cls) -> 'SustainPedal':
+        return cls(
+            BasicPattern(0xB0, SUSTAIN, ...),
+            ButtonData2Strategy(),
+        )
 
 
 class SostenutoPedal(Pedal):
     """
     Represents a sostenuto pedal
     """
-
-    def __init__(self) -> None:
-        super().__init__(BasicPattern(0xB0, SOSTENUTO, ...))
+    @classmethod
+    def create(cls) -> 'SostenutoPedal':
+        return cls(
+            BasicPattern(0xB0, SOSTENUTO, ...),
+            ButtonData2Strategy(),
+        )
 
 
 class SoftPedal(Pedal):
     """
     Represents a soft pedal
     """
-
-    def __init__(self) -> None:
-        super().__init__(BasicPattern(0xB0, SOFT, ...))
+    @classmethod
+    def create(cls) -> 'SoftPedal':
+        return cls(
+            BasicPattern(0xB0, SOFT, ...),
+            ButtonData2Strategy(),
+        )

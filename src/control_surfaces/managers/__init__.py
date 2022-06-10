@@ -10,3 +10,15 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+__all__ = [
+    'IAnnotationManager',
+    'IColorManager',
+    'IValueManager',
+    'DummyAnnotationManager',
+    'DummyColorManager',
+    'DummyValueManager',
+]
+
+from .annotation_manager import IAnnotationManager, DummyAnnotationManager
+from .color_manager import IColorManager, DummyColorManager
+from .value_manager import IValueManager, DummyValueManager

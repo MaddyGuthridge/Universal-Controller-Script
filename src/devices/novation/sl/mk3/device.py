@@ -67,8 +67,8 @@ class SlMk3(Device):
         matcher.addControl(SlDirectionNext())
         matcher.addControl(SlDirectionPrevious())
         matcher.addControl(SlRecordButton())
-        matcher.addControl(StandardPitchWheel())
-        matcher.addControl(StandardModWheel())
+        matcher.addControl(StandardPitchWheel.create())
+        matcher.addControl(StandardModWheel.create())
 
         super().__init__(matcher)
 

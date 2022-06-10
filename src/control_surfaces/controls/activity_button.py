@@ -19,8 +19,6 @@ __all__ = [
     'PauseActiveButton',
 ]
 
-from ..event_patterns import IEventPattern
-from control_surfaces.value_strategies.value_strategy import IValueStrategy
 from .button import Button
 
 
@@ -47,13 +45,6 @@ class SwitchActiveButton(ActivityButton):
     * `SwitchActiveToggleButton` for a button to toggle between windows and
       plugins
     """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy)
 
 
 class SwitchActivePluginButton(SwitchActiveButton):
@@ -83,9 +74,3 @@ class PauseActiveButton(ActivityButton):
     allowing users to keep their parameters mapped to the currently selected
     plugin, even if they choose a new plugin.
     """
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy)

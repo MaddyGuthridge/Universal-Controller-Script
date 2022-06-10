@@ -19,9 +19,19 @@ from abc import abstractmethod
 from common import getContext
 from common.util.abstract_method_error import AbstractMethodError
 from common.types import Color
+from control_surfaces.event_patterns import NullPattern
+from control_surfaces.value_strategies import NullEventStrategy
 from ..event_patterns import IEventPattern
 from ..value_strategies import IValueStrategy
 from ..control_mapping import ControlEvent, ControlMapping
+from ..managers import (
+    IAnnotationManager,
+    IColorManager,
+    IValueManager,
+    DummyAnnotationManager,
+    DummyColorManager,
+    DummyValueManager,
+)
 
 
 class ControlSurface:
@@ -68,9 +78,12 @@ class ControlSurface:
 
     def __init__(
         self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy,
-        coordinate: tuple[int, int] = (0, 0)
+        event_pattern: Optional[IEventPattern] = None,
+        value_strategy: Optional[IValueStrategy] = None,
+        coordinate: tuple[int, int] = (0, 0),
+        annotation_manager: Optional[IAnnotationManager] = None,
+        color_manager: Optional[IColorManager] = None,
+        value_manager: Optional[IValueManager] = None,
     ) -> None:
         """
         Create a ControlSurface
@@ -85,10 +98,14 @@ class ControlSurface:
         * `coordinate` (`tuple[int, int]`, optional): coordinate of controls.
           Used if controls form a 2D grid (eg, drum pads). Defaults to (0, 0).
         """
+        if event_pattern is None:
+            event_pattern = NullPattern()
         self._pattern = event_pattern
         self._color = Color()
         self._annotation = ""
         self._value = 0.0
+        if value_strategy is None:
+            value_strategy = NullEventStrategy()
         self._value_strategy = value_strategy
         self._coord = coordinate
 
@@ -100,6 +117,20 @@ class ControlSurface:
         self._color_changed: bool = True
         self._annotation_changed: bool = True
         self._value_changed: bool = True
+
+        # Managers for control
+        if annotation_manager is None:
+            self.__annotation_manager = annotation_manager
+        else:
+            self.__annotation_manager = DummyAnnotationManager()
+        if color_manager is None:
+            self.__color_manager = color_manager
+        else:
+            self.__color_manager = DummyColorManager()
+        if value_manager is None:
+            self.__value_manager = value_manager
+        else:
+            self.__value_manager = DummyValueManager()
 
         # The time that this control was pressed last
         self._press = 0.0

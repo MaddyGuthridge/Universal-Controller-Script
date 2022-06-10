@@ -10,8 +10,6 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from .encoder import Encoder
-from ..event_patterns import IEventPattern
-from control_surfaces.value_strategies import IValueStrategy
 from . import ControlSurface
 
 
@@ -36,14 +34,6 @@ class Knob(GenericKnob):
         # Knob controls should be assigned to faders if knobs aren't available
         return (Fader, Encoder)
 
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy,
-        coordinate: tuple[int, int],
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, coordinate)
-
 
 class MasterKnob(GenericKnob):
     """
@@ -57,10 +47,3 @@ class MasterKnob(GenericKnob):
         # If the master knob isn't available, it should be substituted for the
         # master fader
         return (MasterFader, )
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy)

@@ -50,8 +50,8 @@ class LaunchkeyMiniMk3(Device):
 
         matcher.addSubMatcher(LkKnobSet())
         matcher.addControl(LkMk3PlayButton())
-        matcher.addControl(StandardPitchWheel())
-        matcher.addControl(StandardModWheel())
+        matcher.addControl(StandardPitchWheel.create())
+        matcher.addControl(StandardModWheel.create())
 
         # Shift controls
         matcher.addSubMatcher(getShiftControls())

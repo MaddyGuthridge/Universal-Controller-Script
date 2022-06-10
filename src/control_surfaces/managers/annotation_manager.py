@@ -43,7 +43,7 @@ class DummyAnnotationManager(IAnnotationManager):
     """
     An annotation manager that doesn't display annotations on the controller
     """
-    def onColorChange(self, new_annotation: str) -> None:
+    def onAnnotationChange(self, new_annotation: str) -> None:
         pass
 
     def tick(self) -> None:

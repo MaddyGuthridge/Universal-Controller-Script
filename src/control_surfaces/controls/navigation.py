@@ -9,6 +9,8 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from . import ControlSurface
+from . import Button
 
 __all__ = [
     'NavigationControl',
@@ -24,24 +26,12 @@ __all__ = [
     'DirectionPrevious',
 ]
 
-from ..event_patterns import IEventPattern
-from control_surfaces.value_strategies import IValueStrategy
-from . import ControlSurface
-from . import Button
-
 
 class NavigationControl(ControlSurface):
     """
     Navigation control surfaces are used to navigate through FL Studio,
     changing or relocating selections, for example
     """
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy)
 
 
 class NavigationButton(Button, NavigationControl):

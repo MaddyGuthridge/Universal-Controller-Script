@@ -9,9 +9,6 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-
-from ..event_patterns import IEventPattern
-from control_surfaces.value_strategies import IValueStrategy
 from . import ControlSurface
 
 
@@ -30,11 +27,3 @@ class Encoder(ControlSurface):
         from .knob import Knob
         from .fader import Fader
         return (Knob, Fader)
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy,
-        coordinate: tuple[int, int],
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, coordinate)

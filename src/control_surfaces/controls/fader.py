@@ -11,8 +11,6 @@ more details.
 """
 from .knob import Knob, MasterKnob
 from .encoder import Encoder
-from ..event_patterns.event_pattern import IEventPattern
-from ..value_strategies.value_strategy import IValueStrategy
 from . import ControlSurface
 
 
@@ -33,14 +31,6 @@ class Fader(GenericFader):
         # Fader controls should be assigned to knobs if faders aren't available
         return (Knob, Encoder)
 
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy,
-        coordinate: tuple[int, int],
-    ) -> None:
-        super().__init__(event_pattern, value_strategy, coordinate)
-
 
 class MasterFader(GenericFader):
     """
@@ -52,10 +42,3 @@ class MasterFader(GenericFader):
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
         # Fader controls should be assigned to knobs if faders aren't available
         return (MasterKnob, )
-
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy)

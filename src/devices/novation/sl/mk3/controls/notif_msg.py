@@ -19,6 +19,9 @@ LINE_LEN = 18
 class SlNotifMsg(NotifMsg):
     """SL Mk3 notification message"""
 
+    def __init__(self) -> None:
+        super().__init__(annotation_manager=None)  # TODO
+
     def onAnnotationChange(self, new: str) -> None:
         new = new[:LINE_LEN]
         # TODO: Check if this encoding works

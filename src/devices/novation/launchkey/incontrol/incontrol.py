@@ -81,7 +81,7 @@ class InControlMatcher(IControlMatcher):
     def __init__(self, manager: InControl) -> None:
         super().__init__()
         self._manager = manager
-        self._event = NullEvent(INCONTROL_MATCH)
+        self._event = NullEvent.create(INCONTROL_MATCH)
 
     def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
         m = self._event.match(event)

@@ -10,9 +10,15 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from ..event_patterns import BasicPattern, fromNibbles, IEventPattern
+from typing import Optional
+from control_surfaces.managers import (
+    IAnnotationManager,
+    IColorManager,
+    IValueManager,
+)
+from ..event_patterns import BasicPattern, fromNibbles, ByteMatch
 from . import ControlSurface
-from ..value_strategies import IValueStrategy, Data2Strategy, Data1Strategy
+from ..value_strategies import Data2Strategy, Data1Strategy
 
 
 class AfterTouch(ControlSurface):
@@ -24,32 +30,28 @@ class AfterTouch(ControlSurface):
         # Allow substitution between different after-touch types
         return (AfterTouch,)
 
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy,
-        coordinate: tuple[int, int] = (0, 0)
-    ) -> None:
-        super().__init__(
-            event_pattern,
-            value_strategy,
-            coordinate
-        )
-
 
 class ChannelAfterTouch(AfterTouch):
     """
     The definition of channel after-touch, which represents the strongest key
     pressure out of all active keys
     """
-
-    def __init__(
-        self,
-        channel: 'int|ellipsis' = ...  # noqa: F821
-    ) -> None:
-        super().__init__(
+    @classmethod
+    def fromChannel(
+        cls,
+        channel: ByteMatch,
+        coordinate: tuple[int, int] = (0, 0),
+        annotation_manager: Optional[IAnnotationManager] = None,
+        color_manager: Optional[IColorManager] = None,
+        value_manager: Optional[IValueManager] = None,
+    ) -> 'ChannelAfterTouch':
+        return cls(
             BasicPattern(fromNibbles(0xD, channel), ..., ...),
-            Data1Strategy()
+            Data1Strategy(),
+            coordinate,
+            annotation_manager,
+            color_manager,
+            value_manager,
         )
 
 
@@ -58,13 +60,21 @@ class NoteAfterTouch(AfterTouch):
     The definition of note after-touch, which represents the pressure of a
     single key
     """
-
-    def __init__(
-        self,
+    @classmethod
+    def create(
+        cls,
         note: int,
-        channel: 'int|ellipsis' = ...  # noqa: F821
-    ) -> None:
-        super().__init__(
+        channel: ByteMatch,
+        coordinate: tuple[int, int] = (0, 0),
+        annotation_manager: Optional[IAnnotationManager] = None,
+        color_manager: Optional[IColorManager] = None,
+        value_manager: Optional[IValueManager] = None,
+    ) -> 'NoteAfterTouch':
+        return cls(
             BasicPattern(fromNibbles(0xA, channel), note, ...),
-            Data2Strategy()
+            Data2Strategy(),
+            coordinate,
+            annotation_manager,
+            color_manager,
+            value_manager,
         )

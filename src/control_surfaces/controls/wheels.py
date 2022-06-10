@@ -10,7 +10,14 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from ..event_patterns import IEventPattern, BasicPattern, fromNibbles
+from typing import Optional
+
+from control_surfaces.managers import (
+    IAnnotationManager,
+    IColorManager,
+    IValueManager,
+)
+from ..event_patterns import BasicPattern, fromNibbles
 from fl_classes import EventData, isEventStandard
 from . import ControlSurface
 from ..value_strategies import Data2Strategy, IValueStrategy
@@ -37,11 +44,19 @@ class StandardModWheel(ModWheel):
     """
     Standard implementation of a mod wheel
     """
-
-    def __init__(self) -> None:
-        super().__init__(
+    @classmethod
+    def create(
+        cls,
+        annotation_manager: Optional[IAnnotationManager] = None,
+        color_manager: Optional[IColorManager] = None,
+        value_manager: Optional[IValueManager] = None,
+    ) -> 'StandardModWheel':
+        return cls(
             BasicPattern(fromNibbles(0xB, ...), 0x1, ...),
             Data2Strategy(),
+            annotation_manager=annotation_manager,
+            color_manager=color_manager,
+            value_manager=value_manager,
         )
 
 
@@ -71,24 +86,25 @@ class PitchWheel(ControlSurface):
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         return tuple()
 
-    def __init__(
-        self,
-        event_pattern: IEventPattern,
-        value_strategy: IValueStrategy
-    ) -> None:
-        super().__init__(event_pattern, value_strategy)
-
 
 class StandardPitchWheel(PitchWheel):
     """
     Standard implementation of a pitch bend wheel (using 14 bits of
     information)
     """
-
-    def __init__(self) -> None:
-        super().__init__(
+    @classmethod
+    def create(
+        cls,
+        annotation_manager: Optional[IAnnotationManager] = None,
+        color_manager: Optional[IColorManager] = None,
+        value_manager: Optional[IValueManager] = None,
+    ) -> 'StandardPitchWheel':
+        return cls(
             BasicPattern(fromNibbles(0xE, ...), ..., ...),
-            PitchValueStrategy()
+            PitchValueStrategy(),
+            annotation_manager=annotation_manager,
+            color_manager=color_manager,
+            value_manager=value_manager,
         )
 
 
@@ -97,9 +113,17 @@ class Data2PitchWheel(PitchWheel):
     Implementation of a pitch wheel using data2 values to determine pitch, as
     some manufacturers don't follow the standard of using 14 bits or precision.
     """
-
-    def __init__(self) -> None:
-        super().__init__(
+    @classmethod
+    def create(
+        cls,
+        annotation_manager: Optional[IAnnotationManager] = None,
+        color_manager: Optional[IColorManager] = None,
+        value_manager: Optional[IValueManager] = None,
+    ) -> 'Data2PitchWheel':
+        return cls(
             BasicPattern(fromNibbles(0xE, ...), 0x0, ...),
-            Data2Strategy()
+            PitchValueStrategy(),
+            annotation_manager=annotation_manager,
+            color_manager=color_manager,
+            value_manager=value_manager,
         )
