@@ -1,5 +1,6 @@
 [run]
 branch = True
+omit = src/fl_typing
 [report]
 exclude_lines =
     pragma: no cover
