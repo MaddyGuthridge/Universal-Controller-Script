@@ -71,17 +71,12 @@ def createLkDrumPadBase(
         note_num: int,
         colors: dict[Color, int]
     ) -> None:
-        ColorInControlSurface.__init__(
-            self,
-            channel,
-            note_num,
-            colors,
-        )
         extends.__init__(
             self,
             ForwardedPattern(2, NotePattern(note_num, channel)),
             ForwardedStrategy(NoteStrategy()),
-            coordinate
+            coordinate,
+            color_manager=ColorInControlSurface(channel, note_num, colors)
         )
 
     @classmethod  # type: ignore
@@ -90,7 +85,7 @@ def createLkDrumPadBase(
 
     return type(
         name,
-        (ColorInControlSurface, extends),
+        (extends,),
         {
             "__init__": constructor,
             "create": create

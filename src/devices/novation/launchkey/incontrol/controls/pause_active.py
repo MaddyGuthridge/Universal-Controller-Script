@@ -21,14 +21,13 @@ class LkPauseActive(ColorInControlSurface, PauseActiveButton):
     Stop/Solo/Mute button on larger LkMk3 models
     """
     def __init__(self) -> None:
-        ColorInControlSurface.__init__(
-            self,
-            0,
-            0x78,
-            COLORS,
-        )
         PauseActiveButton.__init__(
             self,
             ForwardedPattern(2, BasicPattern(0xB0, 0x78, ...)),
             ForwardedStrategy(NoteStrategy()),
+            color_manager=ColorInControlSurface(
+                0,
+                0x78,
+                COLORS,
+            )
         )

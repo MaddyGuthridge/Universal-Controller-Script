@@ -21,7 +21,7 @@ from control_surfaces import ControlSwitchButton
 from ..incontrol_surface import ColorInControlSurface
 
 
-class LkControlSwitchButton(ColorInControlSurface, ControlSwitchButton):
+class LkControlSwitchButton(ControlSwitchButton):
     def __init__(
         self,
         channel: int,
@@ -33,21 +33,19 @@ class LkControlSwitchButton(ColorInControlSurface, ControlSwitchButton):
         self._color_manager = ColorInControlSurface(status, note_num, colors)
         # Variable to keep lights working
         self._ticker_timer = 0
-        ColorInControlSurface.__init__(
-            self,
-            channel,
-            note_num,
-            colors,
-            event_num,
-        )
         if event_num == 9:
             # Note
             pat: IEventPattern = NotePattern(note_num, channel)
         else:
             # Something else
             pat = BasicPattern(status, note_num, ...)
-        ControlSwitchButton.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, pat),
             ForwardedStrategy(NoteStrategy()),
+            color_manager=ColorInControlSurface(
+                channel,
+                note_num,
+                colors,
+                event_num,
+            )
         )

@@ -39,14 +39,7 @@ class LkMk3StopButton(GrayscaleInControlSurface, StopButton):
         StopButton.__init__(
             self,
             ForwardedPattern(2, BasicPattern(0xBF, val, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        GrayscaleInControlSurface.__init__(
-            self,
-            0x0,
-            val,
-            COLORS,
-            0xB,
+            ForwardedStrategy(ButtonData2Strategy()),
         )
 
 
@@ -56,14 +49,7 @@ class LkMk3LoopButton(GrayscaleInControlSurface, LoopButton):
         LoopButton.__init__(
             self,
             ForwardedPattern(2, BasicPattern(0xBF, val, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        GrayscaleInControlSurface.__init__(
-            self,
-            0x0,
-            val,
-            COLORS,
-            0xB,
+            ForwardedStrategy(ButtonData2Strategy()),
         )
 
 
@@ -73,14 +59,13 @@ class LkMk3PlayButton(GrayscaleInControlSurface, PlayButton):
         PlayButton.__init__(
             self,
             ForwardedPattern(2, BasicPattern(0xBF, val, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        GrayscaleInControlSurface.__init__(
-            self,
-            0x0,
-            val,
-            COLORS,
-            0xB,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=GrayscaleInControlSurface(
+                0x0,
+                val,
+                COLORS,
+                0xB,
+            )
         )
 
 
@@ -90,14 +75,13 @@ class LkMk3RecordButton(GrayscaleInControlSurface, RecordButton):
         RecordButton.__init__(
             self,
             ForwardedPattern(2, BasicPattern(0xBF, val, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        GrayscaleInControlSurface.__init__(
-            self,
-            0x0,
-            val,
-            COLORS,
-            0xB,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=GrayscaleInControlSurface(
+                0x0,
+                val,
+                COLORS,
+                0xB,
+            )
         )
 
 
@@ -107,4 +91,3 @@ class LkMk3CaptureMidiButton(CaptureMidiButton):
             ForwardedPattern(2, BasicPattern(0xBF, 0x4A, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
         )
-        pass

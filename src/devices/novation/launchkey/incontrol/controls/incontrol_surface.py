@@ -13,6 +13,7 @@ from common import profilerDecoration
 from fl_classes import FlMidiMsg
 from common.types import Color
 from common.util.events import forwardEvent
+from control_surfaces.managers import IColorManager
 from ..consts import REFRESH_INTERVAL
 
 __all__ = [
@@ -21,7 +22,7 @@ __all__ = [
 ]
 
 
-class InControlSurface:
+class InControlSurface(IColorManager):
     def __init__(self, status: int, note: int) -> None:
         self.__status = status
         self.__note = note

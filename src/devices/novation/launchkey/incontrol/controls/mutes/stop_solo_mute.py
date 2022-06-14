@@ -25,23 +25,21 @@ from ..drum_pad import (
 )
 
 
-class StopSoloMuteButton(ColorInControlSurface, NullEvent):
+class StopSoloMuteButton(NullEvent):
     """
     Stop/solo/mute button is used to switch drum pads to a mode where they can
     be used to mute and solo tracks on smaller launchkey mk3 models.
     """
     def __init__(self) -> None:
-        ColorInControlSurface.__init__(
-            self,
-            0x0,
-            0x69,
-            COLORS,
-            event_num=0xB
-        )
-        NullEvent.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xB0, 0x69, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=ColorInControlSurface(
+                0x0,
+                0x69,
+                COLORS,
+                event_num=0xB,
+            )
         )
 
     @staticmethod
