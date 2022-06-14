@@ -21,13 +21,13 @@ class IValueManager:
     show its value property on the physical control.
     """
     @abstractmethod
-    def onValueChange(self, new_value: str) -> None:
+    def onValueChange(self, new_value: float) -> None:
         """
         Called when the value of a control surface changes, so the manager
         can send any required MIDI events to update the physical hardware.
 
         ### Args:
-        * `new_value` (`str`): new value to set
+        * `new_value` (`float`): new value to set
         """
         raise AbstractMethodError(self)
 
@@ -43,7 +43,7 @@ class DummyValueManager(IValueManager):
     """
     A value manager that doesn't display values on the controller
     """
-    def onValueChange(self, new_value: str) -> None:
+    def onValueChange(self, new_value: float) -> None:
         pass
 
     def tick(self) -> None:

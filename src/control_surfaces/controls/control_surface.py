@@ -119,15 +119,15 @@ class ControlSurface:
         self._value_changed: bool = True
 
         # Managers for control
-        if annotation_manager is None:
+        if annotation_manager is not None:
             self.__annotation_manager = annotation_manager
         else:
             self.__annotation_manager = DummyAnnotationManager()
-        if color_manager is None:
+        if color_manager is not None:
             self.__color_manager = color_manager
         else:
             self.__color_manager = DummyColorManager()
-        if value_manager is None:
+        if value_manager is not None:
             self.__value_manager = value_manager
         else:
             self.__value_manager = DummyValueManager()
@@ -299,39 +299,6 @@ class ControlSurface:
     ###########################################################################
     # Events
 
-    def onColorChange(self, new: Color) -> None:
-        """
-        Called when the color of the control changes
-
-        This can be overridden to send a MIDI message to the controller if
-        required, so that the color can be shown on compatible controls.
-
-        ## Args:
-        * `new` (`Color`): The new value
-        """
-
-    def onAnnotationChange(self, new: str) -> None:
-        """
-        Called when the annotation of the control changes
-
-        This can be overridden to send a MIDI message to the controller if
-        required, so that the annotation can be shown on compatible controls.
-
-        ## Args:
-        * `new` (`str`): The new value
-        """
-
-    def onValueChange(self, new: float) -> None:
-        """
-        Called when the value of the control changes
-
-        This can be overridden to send a MIDI message to the controller if
-        required, so that the value can be shown on compatible controls.
-
-        ## Args:
-        * `new` (`float`): The new value as a float between `0` and `1`
-        """
-
     @final
     def doTick(self, thorough: bool) -> None:
         """
@@ -347,12 +314,15 @@ class ControlSurface:
         # device
         # Otherwise, only update them if they need it
         if thorough or self._color_changed:
-            self.onColorChange(self.color)
+            self.__color_manager.onColorChange(self.color)
         if thorough or self._annotation_changed:
-            self.onAnnotationChange(self.annotation)
+            self.__annotation_manager.onAnnotationChange(self.annotation)
         if thorough or self._value_changed:
-            self.onValueChange(self.value)
+            self.__value_manager.onValueChange(self.value)
         self.tick()
+        self.__color_manager.tick()
+        self.__annotation_manager.tick()
+        self.__value_manager.tick()
         if self._got_update:
             self._needs_update = False
             self._got_update = False
