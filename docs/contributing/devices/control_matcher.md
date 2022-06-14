@@ -52,7 +52,7 @@ suit your needs, you can implement this interface to create your own control
 matcher.
 
 ### Methods to Implement
-* `matchEvent(self, event: eventData) -> Optional[ControlEvent]`: Given an
+* `matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]`: Given an
   event, return a [`ControlEvent`](../plugins/control_event.md) mapped to the
   matched control, or `None` if there were no matches.
 

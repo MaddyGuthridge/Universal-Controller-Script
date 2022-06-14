@@ -11,7 +11,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from abc import abstractmethod
 from common.util.abstract_method_error import AbstractMethodError
 
@@ -26,7 +26,7 @@ class IEventPattern:
     """
 
     @abstractmethod
-    def matchEvent(self, event: EventData) -> bool:
+    def matchEvent(self, event: FlMidiMsg) -> bool:
         """
         Return whether the given event matches the pattern
 
@@ -34,7 +34,7 @@ class IEventPattern:
         classes.
 
         ### Args:
-        * `event` (`eventData`): Event to match against
+        * `event` (`FlMidiMsg`): Event to match against
 
         ### Returns:
         * `bool`: whether the event matches
@@ -42,15 +42,15 @@ class IEventPattern:
         raise AbstractMethodError(self)
 
     @abstractmethod
-    def fulfil(self) -> EventData:
+    def fulfil(self) -> FlMidiMsg:
         """
-        Create and return an EventData object which will match with this
+        Create and return an FlMidiMsg object which will match with this
         pattern. The return value should be randomly generated.
 
         ## Raises:
         * `TypeError`: unable to fulfil a pattern
 
         ### Returns:
-        * `EventData`: event that matches the strategy
+        * `FlMidiMsg`: event that matches the strategy
         """
         raise AbstractMethodError(self)

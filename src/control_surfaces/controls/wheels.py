@@ -18,7 +18,7 @@ from control_surfaces.managers import (
     IValueManager,
 )
 from ..event_patterns import BasicPattern, fromNibbles
-from fl_classes import EventData, isEventStandard
+from fl_classes import FlMidiMsg, isMidiMsgStandard
 from . import ControlSurface
 from ..value_strategies import Data2Strategy, IValueStrategy
 
@@ -66,15 +66,15 @@ class PitchValueStrategy(IValueStrategy):
     0 - 16384, zero at 8192)
     """
 
-    def getValueFromEvent(self, event: EventData, value: float) -> float:
+    def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
         """Returns a 14-bit int (0 - 16384)
         Zero value = 8192
         """
-        assert isEventStandard(event)
+        assert isMidiMsgStandard(event)
         return (event.data1 + (event.data2 << 7)) / 16383
 
-    def getChannelFromEvent(self, event: EventData) -> int:
-        assert isEventStandard(event)
+    def getChannelFromEvent(self, event: FlMidiMsg) -> int:
+        assert isMidiMsgStandard(event)
         return event.status & 0xF
 
 

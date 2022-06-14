@@ -13,7 +13,7 @@ from typing import Optional
 from control_surfaces import ControlSurface, ControlEvent, NullEvent
 from control_surfaces.matchers import IControlMatcher
 from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.events import forwardEvent
 
 from .controls.drum_pad import LkDrumPad
@@ -25,16 +25,16 @@ INCONTROL_MATCH = ForwardedPattern(
 )
 
 # Events for enabling and disabling  InControl
-INCONTROL_ENABLE = EventData(0x9F, 0x0C, 0x7F)
-INCONTROL_DISABLE = EventData(0x9F, 0x0C, 0x00)
+INCONTROL_ENABLE = FlMidiMsg(0x9F, 0x0C, 0x7F)
+INCONTROL_DISABLE = FlMidiMsg(0x9F, 0x0C, 0x00)
 
 # Patterns for recognizing and managing InControl buttons
 FADERS_BUTTON = ForwardedPattern(2, BasicPattern(0x9F, 0x0E, 0x00))
-FADERS_RESPONSE = EventData(0x9F, 0x0E, 0x7F)
+FADERS_RESPONSE = FlMidiMsg(0x9F, 0x0E, 0x7F)
 KNOBS_BUTTON = ForwardedPattern(2, BasicPattern(0x9F, 0x0D, 0x00))
-KNOBS_RESPONSE = EventData(0x9F, 0x0D, 0x7F)
+KNOBS_RESPONSE = FlMidiMsg(0x9F, 0x0D, 0x7F)
 DRUMS_BUTTON = ForwardedPattern(2, BasicPattern(0x9F, 0x0F, 0x00))
-DRUMS_RESPONSE = EventData(0x9F, 0x0F, 0x7F)
+DRUMS_RESPONSE = FlMidiMsg(0x9F, 0x0F, 0x7F)
 
 
 class InControl:
@@ -54,7 +54,7 @@ class InControl:
     def disable(self):
         forwardEvent(INCONTROL_DISABLE, 2)
 
-    def handleButtons(self, event: EventData):
+    def handleButtons(self, event: FlMidiMsg):
         """Handle presses of the InControl buttons, so that users don't
         accidentally disable InControl mode, which will lead to broken
         behavior.
@@ -83,7 +83,7 @@ class InControlMatcher(IControlMatcher):
         self._manager = manager
         self._event = NullEvent.create(INCONTROL_MATCH)
 
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
+    def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         m = self._event.match(event)
         if m is not None:
             self._manager.handleButtons(event)

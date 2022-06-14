@@ -22,7 +22,7 @@ from .profiler import profilerDecoration
 from . import logger
 from typing import NoReturn, Optional, Callable, TYPE_CHECKING
 from time import time_ns
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 
 from .settings import Settings
 from .activity_state import ActivityState
@@ -105,7 +105,7 @@ class DeviceContextManager:
     @catchUnsafeOperation
     @catchStateChangeException
     @profilerDecoration("processEvent")
-    def processEvent(self, event: EventData) -> None:
+    def processEvent(self, event: FlMidiMsg) -> None:
         """Process a MIDI event
 
         ### Args:

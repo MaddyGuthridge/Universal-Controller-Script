@@ -17,8 +17,8 @@ import device
 
 import common
 from common.logger import log
-from fl_classes import EventData
-from fl_classes import isEventStandard, isEventSysex
+from fl_classes import FlMidiMsg
+from fl_classes import isMidiMsgStandard, isMidiMsgSysex
 from common.util.events import (
     decodeForwardedEvent,
     eventToString,
@@ -32,21 +32,21 @@ if TYPE_CHECKING:
     from devices import Device
 
 
-def outputForwarded(event: EventData):
+def outputForwarded(event: FlMidiMsg):
     """
     Output a received event to this device
 
     This handles events forwarded from the main script
 
     ### Args:
-    * `event` (`EventData`): event
+    * `event` (`FlMidiMsg`): event
     """
     event = decodeForwardedEvent(event)
-    if isEventSysex(event):
+    if isMidiMsgSysex(event):
         device.midiOutSysex(event.sysex)
     else:
         if TYPE_CHECKING:
-            assert isEventStandard(event)
+            assert isMidiMsgStandard(event)
         device.midiOutMsg(
             event.status + (event.data1 << 8) + (event.data2 << 16)
         )
@@ -85,7 +85,7 @@ class ForwardState(DeviceState):
     def tick(self) -> None:
         pass
 
-    def processEvent(self, event: EventData) -> None:
+    def processEvent(self, event: FlMidiMsg) -> None:
         if isEventForwarded(event):
             if isEventForwardedHereFrom(event):
                 outputForwarded(event)

@@ -11,7 +11,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.events import decodeForwardedEvent, isEventForwarded
 from . import IValueStrategy
 
@@ -24,7 +24,7 @@ class ForwardedStrategy(IValueStrategy):
     def __init__(self, strat: IValueStrategy) -> None:
         self._strat = strat
 
-    def getValueFromEvent(self, event: EventData, value: float) -> float:
+    def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
         # The value is already matching, so we can cheat somewhat with getting
         # the data out
         return self._strat.getValueFromEvent(
@@ -32,7 +32,7 @@ class ForwardedStrategy(IValueStrategy):
             value,
         )
 
-    def getChannelFromEvent(self, event: EventData):
+    def getChannelFromEvent(self, event: FlMidiMsg):
         return self._strat.getChannelFromEvent(decodeForwardedEvent(event))
 
 
@@ -45,13 +45,13 @@ class ForwardedUnionStrategy(IValueStrategy):
         self._strat = strat
         self._strat_forward = ForwardedStrategy(strat)
 
-    def getValueFromEvent(self, event: EventData, value: float) -> float:
+    def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
         if isEventForwarded(event):
             return self._strat_forward.getValueFromEvent(event, value)
         else:
             return self._strat.getValueFromEvent(event, value)
 
-    def getChannelFromEvent(self, event: EventData):
+    def getChannelFromEvent(self, event: FlMidiMsg):
         if isEventForwarded(event):
             return self._strat_forward.getChannelFromEvent(event)
         else:

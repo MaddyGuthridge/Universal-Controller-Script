@@ -10,7 +10,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.types import Color
 from common.util.events import forwardEvent
 
@@ -28,7 +28,7 @@ class SlColorSurface:
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
         forwardEvent(
-            EventData([
+            FlMidiMsg([
                 0xF0,
                 0x00,
                 0x20,

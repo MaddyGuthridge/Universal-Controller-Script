@@ -15,7 +15,7 @@ from control_surfaces.event_patterns import (
     ForwardedPattern,
     ForwardedUnionPattern,
 )
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.events import encodeForwardedEvent
 
 from tests.helpers.devices import DummyDeviceContext
@@ -24,16 +24,16 @@ from tests.helpers.devices import DummyDeviceContext
 def test_forwarded():
     with DummyDeviceContext():
         p = ForwardedPattern(2, BasicPattern(1, 2, 3))
-        e = EventData(encodeForwardedEvent(EventData(1, 2, 3), 2))
+        e = FlMidiMsg(encodeForwardedEvent(FlMidiMsg(1, 2, 3), 2))
         assert p.matchEvent(e)
-        assert not p.matchEvent(EventData(1, 2, 3))
+        assert not p.matchEvent(FlMidiMsg(1, 2, 3))
 
 
 def test_union():
     with DummyDeviceContext():
         p = ForwardedUnionPattern(2, BasicPattern(1, 2, 3))
-        e = EventData(encodeForwardedEvent(EventData(1, 2, 3), 2))
+        e = FlMidiMsg(encodeForwardedEvent(FlMidiMsg(1, 2, 3), 2))
         assert p.matchEvent(e)
-        assert p.matchEvent(EventData(1, 2, 3))
-        e = EventData(encodeForwardedEvent(EventData(1, 2, 3), 3))
+        assert p.matchEvent(FlMidiMsg(1, 2, 3))
+        e = FlMidiMsg(encodeForwardedEvent(FlMidiMsg(1, 2, 3), 3))
         assert not p.matchEvent(e)

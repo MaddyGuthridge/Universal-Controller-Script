@@ -12,7 +12,7 @@ more details.
 """
 # from __future__ import annotations
 
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from time import time
 from typing import Optional, final
 from abc import abstractmethod
@@ -172,13 +172,13 @@ class ControlSurface:
         return ControlMapping(self)
 
     @final
-    def match(self, event: EventData) -> Optional[ControlEvent]:
+    def match(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         """
         Returns a control event if the given event matches this
         control surface, otherwise returns None
 
         ### Args:
-        * `event` (`eventData`): event to potentially match
+        * `event` (`FlMidiMsg`): event to potentially match
 
         ### Returns:
         * `Optional[ControlEvent]`: control mapping, if the event maps

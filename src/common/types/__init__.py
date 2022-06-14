@@ -3,7 +3,7 @@ common > types
 
 Contains type definitions used by the script, including:
 * `Color`, used to manage colors in the script
-* `EventData`, used as a shadow for the real `eventData` type when testing and
+* `FlMidiMsg`, used as a shadow for the real `FlMidiMsg` type when testing and
   type hinting
 
 Authors:

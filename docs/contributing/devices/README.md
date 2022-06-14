@@ -62,7 +62,7 @@ controls, but if your device does have complex hardware, you should let the
 script take advantage of that fact.
 
 ## Methods to Implement
-* `@classmethod create(cls, event: EventData = None, id: str = None) -> Device`:
+* `@classmethod create(cls, event: FlMidiMsg = None, id: str = None) -> Device`:
   Create an instance of this device. The event or ID should be used to ensure
   that the device is created with the correct ID.
 
@@ -133,7 +133,7 @@ class MyController(Device):
         return 0, 0 # Our controller doesn't have drum pads
 
     @classmethod
-    def create(cls, event: Optional[eventData]) -> Device:
+    def create(cls, event: Optional[FlMidiMsg]) -> Device:
         return cls() # Our constructor doesn't take any arguments
 
     @staticmethod

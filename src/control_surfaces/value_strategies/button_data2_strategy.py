@@ -9,7 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from . import IValueStrategy
 
 
@@ -21,8 +21,8 @@ class ButtonData2Strategy(IValueStrategy):
     Usable for most basic button event types
     """
 
-    def getValueFromEvent(self, event: EventData, value: float) -> float:
+    def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
         return 1.0 if event.data2 != 0 else 0.0
 
-    def getChannelFromEvent(self, event: EventData) -> int:
+    def getChannelFromEvent(self, event: FlMidiMsg) -> int:
         return -1

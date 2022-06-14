@@ -14,7 +14,7 @@ more details.
 from typing import Any, Callable
 from typing_extensions import ParamSpec
 from abc import abstractmethod
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.abstract_method_error import AbstractMethodError
 
 
@@ -44,7 +44,7 @@ class IScriptState:
         raise AbstractMethodError(self)
 
     @abstractmethod
-    def processEvent(self, event: EventData) -> None:
+    def processEvent(self, event: FlMidiMsg) -> None:
         """Process a MIDI event
 
         ### Args:

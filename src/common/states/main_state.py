@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING
 import common
 from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.events import eventToString
 from .dev_state import DeviceState
 
@@ -106,7 +106,7 @@ class MainState(DeviceState):
         self._device.doTick()
 
     @profilerDecoration("main.processEvent")
-    def processEvent(self, event: EventData) -> None:
+    def processEvent(self, event: FlMidiMsg) -> None:
         with ProfilerContext("Match event"):
             mapping = self._device.matchEvent(event)
         if mapping is None:

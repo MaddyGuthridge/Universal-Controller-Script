@@ -11,7 +11,7 @@ more details.
 """
 
 from abc import abstractmethod
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 
 
 class IValueStrategy:
@@ -22,12 +22,12 @@ class IValueStrategy:
     relatively simple event types.
     """
     @abstractmethod
-    def getValueFromEvent(self, event: EventData, value: float) -> float:
+    def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
         """
         Returns a value given a MIDI event and the current value.
 
         ### Args:
-        * `event` (`eventData`): event to get value from
+        * `event` (`FlMidiMsg`): event to get value from
         * `value` (`float`): current value, for use with relative controllers
 
         ### Returns:
@@ -37,12 +37,12 @@ class IValueStrategy:
                                   "child classes")
 
     @abstractmethod
-    def getChannelFromEvent(self, event: EventData) -> int:
+    def getChannelFromEvent(self, event: FlMidiMsg) -> int:
         """
         Return the channel number associated with an event
 
         ### Args:
-        * `event` (`EventData`): event to analyze
+        * `event` (`FlMidiMsg`): event to analyze
 
         ### Returns:
         * `int`: channel number or `-1` for no channel

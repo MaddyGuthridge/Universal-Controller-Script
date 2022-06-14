@@ -12,7 +12,7 @@ more details.
 """
 from typing import Optional
 from abc import abstractmethod
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.abstract_method_error import AbstractMethodError
 from control_surfaces import ControlEvent, ControlSurface
 
@@ -25,12 +25,12 @@ class IControlMatcher:
     if required or desired. Otherwise, the BasicControlMatcher class will work.
     """
     @abstractmethod
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
+    def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         """
         Match an event to a control.
 
         ### Args:
-        * `event` (`eventData`): event to match
+        * `event` (`FlMidiMsg`): event to match
 
         ### Returns:
         * `ControlMapping | None`: mapping to matched control, or None if there

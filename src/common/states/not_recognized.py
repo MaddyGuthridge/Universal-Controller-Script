@@ -11,7 +11,7 @@ more details.
 """
 import ui
 from common import log, verbosity, consts
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.events import eventToString
 from . import IScriptState
 
@@ -38,7 +38,7 @@ class DeviceNotRecognized(IScriptState):
     def tick(self) -> None:
         ui.setHintMsg("Failed to recognize device")
 
-    def processEvent(self, event: EventData) -> None:
+    def processEvent(self, event: FlMidiMsg) -> None:
         log(
             "bootstrap.device.type_detect",
             f"Received event: {eventToString(event)}"

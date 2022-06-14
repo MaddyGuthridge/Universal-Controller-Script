@@ -11,7 +11,7 @@ more details.
 """
 
 from typing import Optional
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from control_surfaces.event_patterns import (
     BasicPattern,
     UnionPattern,
@@ -40,7 +40,7 @@ class JogValueStrategy(IValueStrategy):
     Value strategy for getting data out of the Hammer 88 Pro jog wheel
     """
 
-    def getValueFromEvent(self, event: EventData, value: float) -> float:
+    def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
         # Prev
         if event.data2 == 63:
             return consts.JOG_PREV
@@ -54,7 +54,7 @@ class JogValueStrategy(IValueStrategy):
         else:
             return consts.JOG_NULL
 
-    def getChannelFromEvent(self, event: EventData) -> int:
+    def getChannelFromEvent(self, event: FlMidiMsg) -> int:
         return -1
 
 
@@ -100,7 +100,7 @@ class JogMatcher(IControlMatcher):
         self._pressed = False
         self._used_since_press = False
 
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
+    def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         # If it's not a jog wheel event, ignore it
         if not self._pattern.matchEvent(event):
             return None

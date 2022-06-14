@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 import pytest
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from tests.helpers.devices import DummyDeviceContext
 from control_surfaces.event_patterns import (
     IEventPattern,
@@ -24,7 +24,7 @@ from control_surfaces.event_patterns import (
 
 
 def test_basic():
-    assert BasicPattern(1, 2, 3).fulfil() == EventData(1, 2, 3)
+    assert BasicPattern(1, 2, 3).fulfil() == FlMidiMsg(1, 2, 3)
 
 
 def test_range():

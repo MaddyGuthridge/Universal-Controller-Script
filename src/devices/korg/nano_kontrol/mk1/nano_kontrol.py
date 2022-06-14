@@ -17,7 +17,7 @@ more details.
 from typing import Optional
 from common.extension_manager import ExtensionManager
 from control_surfaces.event_patterns import IEventPattern, BasicPattern
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from control_surfaces.value_strategies import (
     ButtonData2Strategy,
     Data2Strategy,
@@ -116,7 +116,7 @@ class NanoKontrol(Device):
         ])
 
     @classmethod
-    def create(cls, event: EventData = None, id: str = None) -> 'Device':
+    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:

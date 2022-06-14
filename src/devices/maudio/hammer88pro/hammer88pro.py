@@ -20,7 +20,7 @@ from control_surfaces.event_patterns import (
     NotePattern,
 )
 from common.extension_manager import ExtensionManager
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from devices import Device
 from control_surfaces.matchers import (
     BasicControlMatcher,
@@ -197,7 +197,7 @@ class Hammer88Pro(Device):
         return 2, 8
 
     @classmethod
-    def create(cls, event: EventData = None, id: str = None) -> 'Device':
+    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:

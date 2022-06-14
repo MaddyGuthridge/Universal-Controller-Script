@@ -12,7 +12,7 @@ more details.
 
 from typing import TYPE_CHECKING, Any, Callable, Optional
 
-from fl_classes import EventData, isEventStandard, isEventSysex
+from fl_classes import FlMidiMsg, isMidiMsgStandard, isMidiMsgSysex
 from . import ByteMatch, IEventPattern, fulfilByte
 
 
@@ -115,22 +115,22 @@ class BasicPattern(IEventPattern):
             self.data1 = data1
             self.data2 = data2
 
-    def fulfil(self) -> EventData:
+    def fulfil(self) -> FlMidiMsg:
         if self.sysex_event:
-            return EventData(bytes([fulfilByte(b) for b in self.sysex]))
+            return FlMidiMsg(bytes([fulfilByte(b) for b in self.sysex]))
         else:
-            return EventData(
+            return FlMidiMsg(
                 fulfilByte(self.status),
                 fulfilByte(self.data1),
                 fulfilByte(self.data2),
             )
 
-    def matchEvent(self, event: EventData) -> bool:
+    def matchEvent(self, event: FlMidiMsg) -> bool:
         """
         Returns whether an event matches this pattern.
 
         ### Args:
-        * `event` (`eventData`): Event to attempt to match
+        * `event` (`FlMidiMsg`): Event to attempt to match
 
         ### Returns:
         * `bool`: whether there is a match
@@ -173,22 +173,22 @@ class BasicPattern(IEventPattern):
         }
         return matches[type(expected)](expected, actual)
 
-    def _matchSysex(self, event: EventData) -> bool:
+    def _matchSysex(self, event: FlMidiMsg) -> bool:
         """
         Matcher function for sysex events
         """
-        if not isEventSysex(event):
+        if not isMidiMsgSysex(event):
             return False
         # If we have more sysex data than them, it can't possibly be a match
         if len(self.sysex) > len(event.sysex):
             return False
         return all(map(self._matchByte, self.sysex, event.sysex))
 
-    def _matchStandard(self, event: EventData) -> bool:
+    def _matchStandard(self, event: FlMidiMsg) -> bool:
         """
         Matcher function for standard events
         """
-        if not isEventStandard(event):
+        if not isMidiMsgStandard(event):
             return False
         return all(self._matchByte(expected, actual) for expected, actual in
                    zip(

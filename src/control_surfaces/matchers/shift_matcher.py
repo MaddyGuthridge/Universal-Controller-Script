@@ -11,7 +11,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from typing import Optional
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.types import Color
 from control_surfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
@@ -65,7 +65,7 @@ class ShiftMatcher(IControlMatcher):
         self.__changed = True
         super().__init__()
 
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
+    def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         # If it's the shift button
         if (control_event := self.__shift.match(event)) is not None:
             # If we're pressing the shift button

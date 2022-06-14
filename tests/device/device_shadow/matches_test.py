@@ -11,7 +11,7 @@ more details.
 """
 
 import pytest
-# from common.types import EventData
+# from common.types import FlMidiMsg
 from control_surfaces import (
     ControlSurface,
     Note,

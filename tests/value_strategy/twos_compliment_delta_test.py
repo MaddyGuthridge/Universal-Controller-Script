@@ -10,38 +10,38 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 import pytest
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from control_surfaces.value_strategies import TwosComplimentDeltaStrategy
 
 
 def test_zero():
     s = TwosComplimentDeltaStrategy()
-    e = EventData(0, 0, 0)
+    e = FlMidiMsg(0, 0, 0)
     assert s.getValueFromEvent(e, 0.5) == 0.5
 
 
 def test_positive():
     s = TwosComplimentDeltaStrategy()
-    e = EventData(0, 0, 1)
+    e = FlMidiMsg(0, 0, 1)
     assert s.getValueFromEvent(e, 0.5) == 0.5 + 1/64
-    e = EventData(0, 0, 5)
+    e = FlMidiMsg(0, 0, 5)
     assert s.getValueFromEvent(e, 0.5) == 0.5 + 5/64
 
 
 def test_negative():
     s = TwosComplimentDeltaStrategy()
-    e = EventData(0, 0, 127)
+    e = FlMidiMsg(0, 0, 127)
     assert s.getValueFromEvent(e, 0.5) == 0.5 - 1/64
-    e = EventData(0, 0, 123)
+    e = FlMidiMsg(0, 0, 123)
     assert s.getValueFromEvent(e, 0.5) == 0.5 - 5/64
 
 
 @pytest.mark.parametrize(
     'e', [
-        EventData(0, 0, 1),
-        EventData(0, 0, 127),
-        EventData(0, 0, 0),
-        EventData(0, 0, 5),
+        FlMidiMsg(0, 0, 1),
+        FlMidiMsg(0, 0, 127),
+        FlMidiMsg(0, 0, 0),
+        FlMidiMsg(0, 0, 5),
     ]
 )
 def test_scaling(e):
@@ -53,7 +53,7 @@ def test_scaling(e):
 
 def test_clamp():
     s = TwosComplimentDeltaStrategy()
-    e = EventData(0, 0, 127)
+    e = FlMidiMsg(0, 0, 127)
     assert s.getValueFromEvent(e, 0.0) == 0.0
-    e = EventData(0, 0, 1)
+    e = FlMidiMsg(0, 0, 1)
     assert s.getValueFromEvent(e, 1.0) == 1.0

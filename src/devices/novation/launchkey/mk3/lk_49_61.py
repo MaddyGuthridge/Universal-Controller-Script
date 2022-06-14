@@ -14,7 +14,7 @@ import device
 
 from control_surfaces.event_patterns import BasicPattern
 from common.extension_manager import ExtensionManager
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
@@ -102,7 +102,7 @@ class LaunchkeyMk3_49_61(Device):
         return 2 if'2' in device.getName() else 1
 
     @classmethod
-    def create(cls, event: EventData = None, id: str = None) -> 'Device':
+    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:

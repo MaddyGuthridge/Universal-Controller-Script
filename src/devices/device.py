@@ -15,7 +15,7 @@ more details.
 from typing import Optional, final
 from common.util.abstract_method_error import AbstractMethodError
 from control_surfaces.event_patterns import IEventPattern
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from control_surfaces import ControlShadow
 
 from control_surfaces import ControlEvent
@@ -35,7 +35,7 @@ class Device:
 
     ### Class methods
 
-    * `create(cls, event: Optional[EventData]) -> Device`: create an instance
+    * `create(cls, event: Optional[FlMidiMsg]) -> Device`: create an instance
       of this device
 
     ### Static methods
@@ -81,7 +81,7 @@ class Device:
 
     @classmethod
     @abstractmethod
-    def create(cls, event: EventData = None, id: str = None) -> 'Device':
+    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
         """
         Create an instance of this device
 
@@ -89,7 +89,7 @@ class Device:
         instance of that particular device.
 
         ### Args:
-        * `event` (`eventData`, optional): event used to recognize device, or
+        * `event` (`FlMidiMsg`, optional): event used to recognize device, or
           None if not applicable (eg when using deviceId). Defaults to None.
 
         * `id` (`str`, optional): ID used to map to the device.
@@ -223,7 +223,7 @@ class Device:
         """
 
     @final
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
+    def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         """
         Match an event from the device, so that the script can operate on it.
 

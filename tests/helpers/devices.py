@@ -12,7 +12,7 @@ more details.
 from typing import Optional
 from common.context_manager import getContext, unsafeResetContext
 from control_surfaces.event_patterns import IEventPattern, BasicPattern
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from devices import Device
 from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
 from control_surfaces import Fader, PlayButton, LoopButton, ControlSurface
@@ -88,7 +88,7 @@ class DummyDevice(Device):
         super().__init__(matcher)
 
     @classmethod
-    def create(cls, event: EventData = None, id: str = None) -> 'Device':
+    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:

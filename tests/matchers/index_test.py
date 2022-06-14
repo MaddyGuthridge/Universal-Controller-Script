@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 # import pytest
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.events import encodeForwardedEvent
 from control_surfaces.matchers import IndexedMatcher
 from tests.helpers.controls import SimpleControl, SimpleForwardedControl
@@ -26,7 +26,7 @@ def test_index():
         controls=controls,
     )
     for i in range(10):
-        assert matcher.matchEvent(EventData(0, i, 0)).getControl()\
+        assert matcher.matchEvent(FlMidiMsg(0, i, 0)).getControl()\
             is controls[i]
 
 
@@ -37,13 +37,13 @@ def test_no_match():
         data1_start=0,
         controls=[SimpleControl(i) for i in range(10)],
     )
-    assert matcher.matchEvent(EventData(0, 10, 0)) is None
+    assert matcher.matchEvent(FlMidiMsg(0, 10, 0)) is None
 
 
 def test_forwarded():
     """Test that we can still match forwarded events"""
     with DummyDeviceContext(2):
-        event = EventData(encodeForwardedEvent(EventData(0, 10, 0), 2))
+        event = FlMidiMsg(encodeForwardedEvent(FlMidiMsg(0, 10, 0), 2))
     with DummyDeviceContext(1):
         matcher = IndexedMatcher(
             status=0,

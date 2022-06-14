@@ -12,7 +12,7 @@ The interface used to define an event pattern. If none of the following patterns
 match your needs, you can make a custom pattern by implementing this.
 
 ### Methods to Implement
-* `matchEvent(self, event: eventData) -> bool`: Given a MIDI event, return
+* `matchEvent(self, event: FlMidiMsg) -> bool`: Given a MIDI event, return
   whether that event matches with the pattern.
 
 ## `BasicPattern`

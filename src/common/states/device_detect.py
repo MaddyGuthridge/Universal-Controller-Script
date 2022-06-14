@@ -19,7 +19,7 @@ import common
 from common.consts import UNIVERSAL_DEVICE_ENQUIRY
 from common.exceptions import DeviceRecognizeError
 from common import log, verbosity
-from fl_classes import isEventSysex, EventData
+from fl_classes import isMidiMsgSysex, FlMidiMsg
 from common.util.events import eventToString
 
 from . import IScriptState, DeviceNotRecognized, DeviceState
@@ -154,11 +154,11 @@ class WaitingForDevice(IScriptState):
         else:
             self.sendEnquiry()
 
-    def processEvent(self, event: EventData) -> None:
+    def processEvent(self, event: FlMidiMsg) -> None:
         # Always handle all events
         event.handled = True
         # Ignore all events unless they are Sysex
-        if isEventSysex(event):
+        if isMidiMsgSysex(event):
             try:
                 dev = common.ExtensionManager.devices.get(event)
                 log(

@@ -16,7 +16,7 @@ from control_surfaces.event_patterns import (
     BasicPattern,
     ForwardedPattern
 )
-from fl_classes import EventData, isEventStandard
+from fl_classes import FlMidiMsg, isMidiMsgStandard
 from common.util.events import decodeForwardedEvent
 from control_surfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
@@ -79,14 +79,14 @@ class IndexedMatcher(IControlMatcher):
         #             f"pattern to match: {self.__pattern}"
         #         )
 
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
+    def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         if not self.__pattern.matchEvent(event):
             return None
         if self.__forwarded:
             decoded = decodeForwardedEvent(event)
         else:
             decoded = event
-        assert isEventStandard(decoded)
+        assert isMidiMsgStandard(decoded)
         idx = decoded.data1 - self.__start
         match = self.__controls[idx].match(event)
         assert match is not None

@@ -11,7 +11,7 @@ more details.
 """
 from typing import TYPE_CHECKING
 from common.exceptions import DeviceRecognizeError
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 
 
 if TYPE_CHECKING:
@@ -45,13 +45,13 @@ class DeviceCollection:
         """
         self.__devices.append(device)
 
-    def get(self, arg: 'EventData | str') -> 'Device':
+    def get(self, arg: 'FlMidiMsg | str') -> 'Device':
         """
         Returns a new instance of a device, given a universal device enquiry
         response or a device identifier (as a fallback)
 
         ### Args:
-        * `arg` (``eventData | str`): event to match with devices
+        * `arg` (``FlMidiMsg | str`): event to match with devices
 
         ### Raises:
         * `ValueError`: Device not recognized
@@ -67,7 +67,7 @@ class DeviceCollection:
                     # create an instance and return it
                     return device.create(None)
         # Sysex event
-        # elif isinstance(arg, eventData):
+        # elif isinstance(arg, FlMidiMsg):
         # Can't runtime type check for MIDI events
         else:
             for device in self.__devices:

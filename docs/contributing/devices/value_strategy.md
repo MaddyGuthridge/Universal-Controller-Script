@@ -14,11 +14,11 @@ Note that value strategies should be stateless.
 
 ### Functions to Implement
 
-* `getValueFromEvent(self, event: eventData, value: float) -> float`: Returns
+* `getValueFromEvent(self, event: FlMidiMsg, value: float) -> float`: Returns
   a floating point value given an event. If needed, the previous value is
   provided to calculate relative values.
 
-* `getChannelFromEvent(self, event: EventData) -> int`: Returns the channel
+* `getChannelFromEvent(self, event: FlMidiMsg) -> int`: Returns the channel
   that the event is associated with, or -1 for no channel.
 
 ## `Data2Strategy`

@@ -12,7 +12,7 @@ more details.
 """
 
 from typing import Optional
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from control_surfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
 
@@ -88,7 +88,7 @@ class BasicControlMatcher(IControlMatcher):
             self._priorities.add(priority)
             self._sub_matchers[priority] = [matcher]
 
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
+    def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         # Work through in order of priority
         for priority in reversed(sorted(self._priorities)):
             if priority in self._controls:

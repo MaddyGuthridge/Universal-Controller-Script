@@ -24,7 +24,7 @@ from common.exceptions import (
     # EventDecodeError,
     # EventDispatchError,
 )
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.events import (
     encodeForwardedEvent,
     decodeForwardedEvent,
@@ -38,11 +38,11 @@ from common.util.events import (
 def test_encode_decode():
     """When an event is encoded then decoded, is it still equivalent?"""
     with DummyDeviceContext():
-        e = EventData(1, 2, 3)
-        assert e == decodeForwardedEvent(EventData(encodeForwardedEvent(e, 1)))
+        e = FlMidiMsg(1, 2, 3)
+        assert e == decodeForwardedEvent(FlMidiMsg(encodeForwardedEvent(e, 1)))
 
-        e = EventData([5, 2, 7, 4, 1])
-        assert e == decodeForwardedEvent(EventData(encodeForwardedEvent(e, 1)))
+        e = FlMidiMsg([5, 2, 7, 4, 1])
+        assert e == decodeForwardedEvent(FlMidiMsg(encodeForwardedEvent(e, 1)))
 
 
 def test_invalid_event_forward():
@@ -51,7 +51,7 @@ def test_invalid_event_forward():
     """
     with DummyDeviceContext():
         with pytest.raises(EventEncodeError):
-            encodeForwardedEvent(EventData(1, 2, 3))
+            encodeForwardedEvent(FlMidiMsg(1, 2, 3))
 
 
 def test_invalid_event_receive():
@@ -59,7 +59,7 @@ def test_invalid_event_receive():
     no from index is specified
     """
     with DummyDeviceContext(2):
-        e = EventData(encodeForwardedEvent(EventData(1, 2, 3)))
+        e = FlMidiMsg(encodeForwardedEvent(FlMidiMsg(1, 2, 3)))
 
     with DummyDeviceContext(1):
         with pytest.raises(EventInspectError):
@@ -69,16 +69,16 @@ def test_invalid_event_receive():
 def test_isEventForwarded():
     """Make sure the forwarded event type checker is working"""
     with DummyDeviceContext():
-        assert isEventForwarded(EventData(
-            encodeForwardedEvent(EventData(1, 2, 3), 1)
+        assert isEventForwarded(FlMidiMsg(
+            encodeForwardedEvent(FlMidiMsg(1, 2, 3), 1)
         ))
 
-        assert not isEventForwarded(EventData(1, 2, 3))
+        assert not isEventForwarded(FlMidiMsg(1, 2, 3))
 
 
 def test_isEventForwardedHere():
     with DummyDeviceContext(2):
-        e = EventData(encodeForwardedEvent(EventData(1, 2, 3)))
+        e = FlMidiMsg(encodeForwardedEvent(FlMidiMsg(1, 2, 3)))
 
     with DummyDeviceContext(1):
         assert isEventForwardedHere(e)
@@ -89,7 +89,7 @@ def test_isEventForwardedHere():
 
 def test_isEventForwardedHereFrom():
     with DummyDeviceContext(2):
-        e = EventData(encodeForwardedEvent(EventData(1, 2, 3)))
+        e = FlMidiMsg(encodeForwardedEvent(FlMidiMsg(1, 2, 3)))
 
     with DummyDeviceContext(1):
         assert isEventForwardedHereFrom(e, 2)
@@ -98,7 +98,7 @@ def test_isEventForwardedHereFrom():
 
 def test_isEventForwardedHereFrom_target():
     with DummyDeviceContext(1):
-        e = EventData(encodeForwardedEvent(EventData(1, 2, 3), 2))
+        e = FlMidiMsg(encodeForwardedEvent(FlMidiMsg(1, 2, 3), 2))
 
     with DummyDeviceContext(2):
         assert isEventForwardedHereFrom(e)
@@ -108,4 +108,4 @@ def testForwardChecking():
     """Make sure checks are put into place before we forward an event"""
     with DummyDeviceContext(2):
         with FlContext({"dispatch_targets": [1]}):
-            forwardEvent(EventData(7, 8, 9))
+            forwardEvent(FlMidiMsg(7, 8, 9))

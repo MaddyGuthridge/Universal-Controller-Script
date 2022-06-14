@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from control_surfaces import NotifMsg
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.util.events import forwardEvent
 
 LINE_LEN = 18
@@ -28,4 +28,4 @@ class SlNotifMsg(NotifMsg):
         sysex = bytes(
             [0xF0, 0x00, 0x20, 0x29, 0x02, 0x0A, 0x01, 0x04]
         ) + new.encode('ascii') + bytes([0, 0, 0xF7])
-        forwardEvent(EventData(sysex), 2)
+        forwardEvent(FlMidiMsg(sysex), 2)

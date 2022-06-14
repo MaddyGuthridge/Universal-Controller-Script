@@ -17,7 +17,7 @@ from common.util.events import (
 )
 from . import IEventPattern, UnionPattern
 
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 
 
 class ForwardedPattern(IEventPattern):
@@ -45,7 +45,7 @@ class ForwardedPattern(IEventPattern):
         self._device_num = device_num
         self._pattern = pattern
 
-    def matchEvent(self, event: EventData) -> bool:
+    def matchEvent(self, event: FlMidiMsg) -> bool:
         # Check if the event was forwarded here
         if not isEventForwardedHereFrom(event, self._device_num):
             return False
@@ -55,9 +55,9 @@ class ForwardedPattern(IEventPattern):
         # print(eventToString(eventFromForwarded(event, null+2)))
         return self._pattern.matchEvent(decodeForwardedEvent(event))
 
-    def fulfil(self) -> EventData:
+    def fulfil(self) -> FlMidiMsg:
         num = self._device_num
-        return EventData(encodeForwardedEvent(self._pattern.fulfil(), num))
+        return FlMidiMsg(encodeForwardedEvent(self._pattern.fulfil(), num))
 
 
 class ForwardedUnionPattern(IEventPattern):
@@ -77,8 +77,8 @@ class ForwardedUnionPattern(IEventPattern):
             device_num, pattern
         ))
 
-    def matchEvent(self, event: EventData) -> bool:
+    def matchEvent(self, event: FlMidiMsg) -> bool:
         return self._pattern.matchEvent(event)
 
-    def fulfil(self) -> EventData:
+    def fulfil(self) -> FlMidiMsg:
         return self._pattern.fulfil()

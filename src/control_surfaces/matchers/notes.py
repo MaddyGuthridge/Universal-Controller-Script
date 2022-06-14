@@ -16,7 +16,7 @@ from control_surfaces.event_patterns import (
     fromNibbles,
     ByteMatch,
 )
-from fl_classes import EventData, isEventStandard
+from fl_classes import FlMidiMsg, isMidiMsgStandard
 from control_surfaces import ControlSurface, Note, NoteAfterTouch
 from control_surfaces.control_mapping import ControlEvent
 from control_surfaces.matchers import IControlMatcher
@@ -48,8 +48,8 @@ class NoteMatcher(IControlMatcher):
         )
         super().__init__()
 
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
-        if isEventStandard(event) and self._note_pattern.matchEvent(event):
+    def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
+        if isMidiMsgStandard(event) and self._note_pattern.matchEvent(event):
             note = event.data1
             return self._notes[note].match(event)
         else:
@@ -80,8 +80,8 @@ class NoteAfterTouchMatcher(IControlMatcher):
         )
         super().__init__()
 
-    def matchEvent(self, event: EventData) -> Optional[ControlEvent]:
-        if isEventStandard(event) and self._touch_pattern.matchEvent(event):
+    def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
+        if isMidiMsgStandard(event) and self._touch_pattern.matchEvent(event):
             note = event.data1
             return self._touches[note].match(event)
         else:

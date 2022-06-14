@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from common import profilerDecoration
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from common.types import Color
 from common.util.events import forwardEvent
 from ..consts import REFRESH_INTERVAL
@@ -36,7 +36,7 @@ class InControlSurface:
     def updateColor(self) -> None:
         """Send a color update event from the recent color"""
         forwardEvent(
-            EventData(
+            FlMidiMsg(
                 self.__status,
                 self.__note,
                 self.__color,

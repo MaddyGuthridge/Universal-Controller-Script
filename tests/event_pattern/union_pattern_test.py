@@ -13,7 +13,7 @@ more details.
 import pytest
 
 from control_surfaces.event_patterns import BasicPattern, UnionPattern
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 
 
 def test_create_not_enough():
@@ -31,13 +31,13 @@ def test_union():
     )
 
     # Make sure it matches
-    assert p.matchEvent(EventData(1, 2, 3))
-    assert p.matchEvent(EventData(4, 5, 6))
-    assert p.matchEvent(EventData(7, 8, 9))
+    assert p.matchEvent(FlMidiMsg(1, 2, 3))
+    assert p.matchEvent(FlMidiMsg(4, 5, 6))
+    assert p.matchEvent(FlMidiMsg(7, 8, 9))
 
     # And make sure it doesn't match anything else
-    assert not p.matchEvent(EventData([1, 2, 3]))
-    assert not p.matchEvent(EventData(2, 3, 4))
+    assert not p.matchEvent(FlMidiMsg([1, 2, 3]))
+    assert not p.matchEvent(FlMidiMsg(2, 3, 4))
 
 
 def test_union_sysex():
@@ -47,8 +47,8 @@ def test_union_sysex():
     )
 
     # Make sure it matches
-    assert p.matchEvent(EventData(1, 2, 3))
-    assert p.matchEvent(EventData([1, 2, 3]))
+    assert p.matchEvent(FlMidiMsg(1, 2, 3))
+    assert p.matchEvent(FlMidiMsg([1, 2, 3]))
 
     # And make sure it doesn't match anything else
-    assert not p.matchEvent(EventData(4, 5, 6))
+    assert not p.matchEvent(FlMidiMsg(4, 5, 6))

@@ -9,7 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from fl_classes import EventData, isEventStandard
+from fl_classes import FlMidiMsg, isMidiMsgStandard
 from common.util.misc import clamp
 from . import IValueStrategy
 
@@ -30,8 +30,8 @@ class TwosComplimentDeltaStrategy(IValueStrategy):
         """
         self.__scaling = scaling
 
-    def getValueFromEvent(self, event: EventData, value: float) -> float:
-        assert isEventStandard(event)
+    def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
+        assert isMidiMsgStandard(event)
         if event.data2 < 64:
             # Positive
             delta = event.data2
@@ -39,6 +39,6 @@ class TwosComplimentDeltaStrategy(IValueStrategy):
             delta = event.data2 - 128
         return clamp((delta / 64) * self.__scaling + value, 0.0, 1.0)
 
-    def getChannelFromEvent(self, event: EventData) -> int:
-        assert isEventStandard(event)
+    def getChannelFromEvent(self, event: FlMidiMsg) -> int:
+        assert isMidiMsgStandard(event)
         return event.status & 0xF

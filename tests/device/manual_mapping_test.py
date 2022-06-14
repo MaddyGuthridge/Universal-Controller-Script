@@ -14,7 +14,7 @@ import pytest
 from fl_context import FlContext
 from common import getContext, ExtensionManager, unsafeResetContext
 from common.states import WaitingForDevice, DeviceState
-from fl_classes import EventData
+from fl_classes import FlMidiMsg
 from devices import Device
 
 
@@ -33,7 +33,7 @@ class DummyState(DeviceState):
     def tick(self) -> None:
         pass
 
-    def processEvent(self, event: EventData) -> None:
+    def processEvent(self, event: FlMidiMsg) -> None:
         pass
 
 

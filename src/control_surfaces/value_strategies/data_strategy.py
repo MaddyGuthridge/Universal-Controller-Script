@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from fl_classes import EventData, isEventStandard
+from fl_classes import FlMidiMsg, isMidiMsgStandard
 from . import IValueStrategy
 
 
@@ -30,11 +30,11 @@ class DataStrategy(IValueStrategy):
         """
         self._prop = prop
 
-    def getValueFromEvent(self, event: EventData, value: float) -> float:
+    def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
         return getattr(event, self._prop) / 127
 
-    def getChannelFromEvent(self, event: EventData) -> int:
-        assert isEventStandard(event)
+    def getChannelFromEvent(self, event: FlMidiMsg) -> int:
+        assert isMidiMsgStandard(event)
         return event.status & 0xF
 
 

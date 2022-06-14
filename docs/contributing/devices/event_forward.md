@@ -46,21 +46,21 @@ following functionality:
 The following functions in the `common.util.events` module are available when
 working with forwarded events. Refer to their docstrings for full information.
 
-* `isEventForwarded(event: EventData) -> bool`
+* `isEventForwarded(event: FlMidiMsg) -> bool`
   * Returns whether an event has been forwarded
-* `isEventForwardedHere(event: EventData) -> bool`
+* `isEventForwardedHere(event: FlMidiMsg) -> bool`
   * Returns whether an event has been forwarded, and is targeting this device
     ID.
-* `isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool`
+* `isEventForwardedHereFrom(event: FlMidiMsg, device_num: int = -1) -> bool`
   * Returns whether an event has been forwarded, is targeting this device ID,
     and was forwarded from a forwarder device with number `device_num`, or was
     forwarded from the primary device targeting the forwarder device with
     number `device_num`.
-* `encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes`
+* `encodeForwardedEvent(event: FlMidiMsg, device_num: int = -1) -> bytes`
   * Encode an event for forwarding.
-* `decodeForwardedEvent(event: EventData, type_idx:int=-1) -> EventData`
+* `decodeForwardedEvent(event: FlMidiMsg, type_idx:int=-1) -> FlMidiMsg`
   * Decode a forwarded event.
-* `forwardEvent(event: EventData, device_num: int = -1)`
+* `forwardEvent(event: FlMidiMsg, device_num: int = -1)`
   * Forward an event.
 
 ## Forwarded Event Specification
