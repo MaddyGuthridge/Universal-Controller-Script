@@ -15,7 +15,16 @@ from plugs.mapping_strategies import (
     SimpleFaders,
 )
 
-PARAMS = [0, 1, 2, 4, 5, 6, 7, 8]
+PARAMS = [
+    0,  # Tuning
+    1,  # Waveform
+    2,  # Cutoff
+    4,  # Resonance
+    5,  # Envelope Modulation
+    6,  # Decay
+    7,  # Accent
+    8,  # Volume
+]
 
 COLOR = Color.fromInteger(0x455765)
 
