@@ -11,13 +11,13 @@ more details.
 """
 
 # Version info
-VERSION = (0, 6, 0)
+VERSION = (1, 0, 0)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
 VERSION_MINOR = VERSION[1]
 VERSION_REVISION = VERSION[2]
-VERSION_SUFFIX = "beta-2"
+VERSION_SUFFIX = "beta-1"
 
 # Minimum API version required to run script
 MIN_API_VERSION = 19
