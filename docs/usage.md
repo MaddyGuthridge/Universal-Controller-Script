@@ -58,25 +58,34 @@ can be sure you're getting the most out of the script.
 The script tracks the active plugin and FL Studio window so that it can
 automatically map controls the the most logical destinations.
 
-This activity can be controlled using a few useful controls:
-
-* Pause active button prevents the active plugin or window selection from being
-  updated, meaning that you can continue interfacing with that plugin, even if
-  you change your selection.
-
 There are two different ways that this can be managed, depending on the design
 of your device. Make sure you know which one your device uses.
 
-## Split Controls
+### Split Controls
 
 FL Studio windows (mixer, channel rack, etc) are controlled separately to
 plugins. Your device will let you select a DAW mode or a Plugin mode to
 determine what will be controlled.
 
-## Unified Controls
+### Unified Controls
 
 FL Studio windows are controlled alongside plugins. Your device will map
 controls to whichever window or plugin is currently selected.
+
+## Managing Activity
+
+This activity can be controlled using the following controls:
+
+* Pause active button prevents the active plugin or window selection from being
+  updated, meaning that you can continue interfacing with that plugin, even if
+  you change your selection.
+
+* Switch Active button switches between window and plugin activity if a device
+  with split controls is being used.
+
+Note that if your device doesn't include a pause active button, the behavior
+can be triggered manually from the script output window but entering the
+command `getContext().activity.playPause()`.
 
 # Plugin-specific Usage
 
