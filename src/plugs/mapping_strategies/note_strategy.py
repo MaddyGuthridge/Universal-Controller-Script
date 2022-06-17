@@ -43,7 +43,7 @@ class NoteStrategy(IMappingStrategy):
         **kwargs: Any
     ) -> bool:
         try:
-            i = channels.getChannelIndex(*getContext().active.getGenerator())
+            i = channels.getChannelIndex(*getContext().activity.getGenerator())
         except TypeError:
             # Index out of range - we're using a plugin from a different group
             i = channels.channelNumber()

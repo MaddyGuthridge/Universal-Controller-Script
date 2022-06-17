@@ -158,12 +158,12 @@ class Macro(SpecialPlugin):
     ) -> bool:
         c = control.getControl()
         if isinstance(c, SwitchActivePluginButton):
-            getContext().active.toggleWindowsPlugins(True)
+            getContext().activity.toggleWindowsPlugins(True)
         elif isinstance(c, SwitchActiveWindowButton):
-            getContext().active.toggleWindowsPlugins(False)
+            getContext().activity.toggleWindowsPlugins(False)
         elif isinstance(c, SwitchActiveToggleButton):
             # Toggle between windows and plugins
-            getContext().active.toggleWindowsPlugins()
+            getContext().activity.toggleWindowsPlugins()
         return True
 
     def tSwitchActive(
@@ -173,12 +173,12 @@ class Macro(SpecialPlugin):
     ) -> bool:
         c = control.getControl()
         if isinstance(c, SwitchActivePluginButton):
-            if getContext().active.isPlugActive():
+            if getContext().activity.isPlugActive():
                 control.color = ENABLED
             else:
                 control.color = DISABLED
         elif isinstance(c, SwitchActiveWindowButton):
-            if not getContext().active.isPlugActive():
+            if not getContext().activity.isPlugActive():
                 control.color = ENABLED
             else:
                 control.color = DISABLED
@@ -194,7 +194,7 @@ class Macro(SpecialPlugin):
     ) -> bool:
         # TODO: If there's enough demand, potentially add support for a direct
         # controls as well as just a toggle
-        getContext().active.playPause()
+        getContext().activity.playPause()
         return True
 
     def tPauseActive(
@@ -202,7 +202,7 @@ class Macro(SpecialPlugin):
         control: ControlShadow,
         *args,
     ):
-        if getContext().active.isUpdating():
+        if getContext().activity.isUpdating():
             control.color = DISABLED
         else:
             control.color = ENABLED

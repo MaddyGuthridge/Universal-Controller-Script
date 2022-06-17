@@ -55,8 +55,8 @@ class MainState(DeviceState):
     def tick(self) -> None:
         # Get the currently active plugin
         with ProfilerContext("getActive"):
-            plug_idx = common.getContext().active.getActive()
-            changed = common.getContext().active.hasChanged()
+            plug_idx = common.getContext().activity.getActive()
+            changed = common.getContext().activity.hasChanged()
 
         # Tick special plugins
         for p in common.ExtensionManager.special.get(self._device):
@@ -132,7 +132,7 @@ class MainState(DeviceState):
                 detailed_msg=eventToString(event)
             )
         # Get active standard plugin
-        plug_idx = common.getContext().active.getActive()
+        plug_idx = common.getContext().activity.getActive()
         if plug_idx is not None:
             if isinstance(plug_idx, tuple):
                 try:

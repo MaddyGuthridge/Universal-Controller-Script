@@ -86,7 +86,7 @@ class Hammer88Pro(Device):
         ))
 
         # Active switches
-        getContext().active.setSplitWindowsPlugins(True)
+        getContext().activity.setSplitWindowsPlugins(True)
         matcher.addControl(SwitchActiveWindowButton(
             ForwardedPattern(3, BasicPattern(0xBF, 0x6E, ...)),
             ForwardedStrategy(ButtonData2Strategy())

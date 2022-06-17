@@ -55,7 +55,7 @@ class DeviceContextManager:
         modules
         """
         self.settings = Settings()
-        self.active = ActivityState()
+        self.activity = ActivityState()
         # Set the state of the script to wait for the device to be recognized
         self.state: Optional[IScriptState] = None
         if self.settings.get("debug.profiling"):
@@ -143,7 +143,7 @@ class DeviceContextManager:
             return
         tick_start = time_ns()
         # Tick active plugin
-        self.active.tick()
+        self.activity.tick()
         # Tick the current script state
         self.state.tick()
         tick_end = time_ns()

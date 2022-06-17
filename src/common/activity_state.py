@@ -11,6 +11,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
+import ui
 from common.profiler import profilerDecoration
 from common.logger import log, verbosity
 from common.plug_indexes import (
@@ -25,6 +26,11 @@ from common.util.api_fixes import (
     getFocusedWindowIndex,
     reset_generator_active,
 )
+from common.types.bool_s import BoolS
+import plugins
+
+
+WINDOW_NAMES = ['Mixer', 'Channel Rack', 'Playlist', 'Piano Roll', 'Browser']
 
 
 class ActivityState:
@@ -36,12 +42,13 @@ class ActivityState:
         """
         Create an ActivityState object
         """
-        self._doUpdate = True
+        self._do_update = True
         self._split = False
         self._window: WindowIndex = 0
         self._generator: GeneratorIndex = (0,)
         self._effect: EffectIndex = (0, 0)
         self._plugin: PluginIndex = self._generator
+        self._plugin_name = ""
         self._plug_active = True if self._plugin is not None else False
         self._changed = False
         self._plug_unsafe = False
@@ -52,7 +59,7 @@ class ActivityState:
         """
         print(f"Window: {self._window}, Plugin: {self._plugin}")
         print(f"Active: {'plugin' if self._plug_active else 'window'}")
-        print(f"Updating: {self._doUpdate}")
+        print(f"Updating: {self._do_update}")
         print(f"Split: {self._split}")
         return ''
 
@@ -71,9 +78,11 @@ class ActivityState:
                 )
                 self._plug_unsafe = True
                 self._plugin = (-1,)
+                self._plugin_name = ""
                 self._generator = (-1,)
             return
         self._plugin = plugin
+        self._plugin_name = plugins.getPluginName(*plugin)
         if len(plugin) == 1:
             self._generator = plugin  # type: ignore
         else:
@@ -87,7 +96,11 @@ class ActivityState:
         # HACK: Fix FL Studio bugs
         reset_generator_active()
         self._changed = False
-        if self._doUpdate:
+        # If the current plugin name has changed, we should unpause the updates
+        if self._plug_active and not self._do_update:
+            if self._plugin_name != plugins.getPluginName(*self._plugin):
+                self._do_update = True
+        if self._do_update:
             # Manually update plugin using selection
             if (window := getFocusedWindowIndex()) is not None:
                 if window != self._window:
@@ -103,6 +116,7 @@ class ActivityState:
                 if plugin != self._plugin:
                     self._changed = True
                 self._plugin = plugin
+                self._plugin_name = plugins.getPluginName(*plugin)
                 # Ignore typing because len(plugin) doesn't narrow types in
                 # mypy
                 if len(plugin) == 1:
@@ -170,7 +184,7 @@ class ActivityState:
         """
         return self._window
 
-    def playPause(self, value: bool = None) -> bool:
+    def playPause(self, value: bool = None) -> BoolS:
         """
         Pause or resume updating the active plugin
 
@@ -179,16 +193,25 @@ class ActivityState:
           not. Defaults to `None` (toggle).
 
         ### Returns:
-        * `bool`: whether updating will happen
+        * `BoolS`: whether updating will happen
         """
-        self._doUpdate = not self._doUpdate if value is None else value
-        return self._doUpdate
+        self._do_update = not self._do_update if value is None else value
+        if self._do_update:
+            msg = "Updating active plugin"
+        else:
+            if self._plug_active:
+                name = self._plugin_name
+            else:
+                name = WINDOW_NAMES[self._window]
+            msg = f"Paused active plugin on {name}"
+        ui.setHintMsg(msg)
+        return BoolS(self._do_update, msg)
 
     def isUpdating(self) -> bool:
         """
         Returns whether the plugin state is actively updating (or paused)
         """
-        return self._doUpdate
+        return self._do_update
 
     def setSplitWindowsPlugins(self, value: bool) -> None:
         """
