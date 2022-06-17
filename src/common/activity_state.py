@@ -82,7 +82,10 @@ class ActivityState:
                 self._generator = (-1,)
             return
         self._plugin = plugin
-        self._plugin_name = plugins.getPluginName(*plugin)
+        try:
+            self._plugin_name = plugins.getPluginName(*plugin)
+        except TypeError:
+            self._plugin_name = ""
         if len(plugin) == 1:
             self._generator = plugin  # type: ignore
         else:
@@ -116,7 +119,10 @@ class ActivityState:
                 if plugin != self._plugin:
                     self._changed = True
                 self._plugin = plugin
-                self._plugin_name = plugins.getPluginName(*plugin)
+                try:
+                    self._plugin_name = plugins.getPluginName(*plugin)
+                except TypeError:
+                    self._plugin_name = ""
                 # Ignore typing because len(plugin) doesn't narrow types in
                 # mypy
                 if len(plugin) == 1:
