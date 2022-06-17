@@ -35,7 +35,7 @@ CONFIG = {
     # Settings used for debugging
     "debug": {
         # Whether performance profiling should be enabled
-        "profiling": False,
+        "profiling": True,
         # Whether profiling should print the tracing of profiler contexts
         # within the script. Useful for troubleshooting crashes in FL Studio's
         # MIDI API. Requires profiling to be enabled.

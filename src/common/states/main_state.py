@@ -61,9 +61,9 @@ class MainState(DeviceState):
         # Tick special plugins
         for p in common.ExtensionManager.special.get(self._device):
             if p.shouldBeActive():
-                with ProfilerContext(f"Tick {type(p)}"):
+                with ProfilerContext(f"tick-{type(p).__name__}"):
                     p.doTick(plug_idx)
-                with ProfilerContext(f"Apply {type(p)}"):
+                with ProfilerContext(f"apply-{type(p).__name__}"):
                     # Special plugins should always be thoroughly applied
                     # TODO: Find out why
                     p.apply(thorough=True)
@@ -80,26 +80,26 @@ class MainState(DeviceState):
                     plug_id, self._device
                 )
                 if plug is not None:
-                    with ProfilerContext(f"Tick {type(plug)}"):
+                    with ProfilerContext(f"tick-{type(plug).__name__}"):
                         plug.doTick(plug_idx)
-                    with ProfilerContext(f"Apply {type(plug)}"):
+                    with ProfilerContext(f"apply-{type(plug).__name__}"):
                         plug.apply(thorough=changed)
             else:
                 window = common.ExtensionManager.windows.get(
                     plug_idx, self._device
                 )
                 if window is not None:
-                    with ProfilerContext(f"Tick {type(window)}"):
+                    with ProfilerContext(f"tick-{type(window).__name__}"):
                         window.doTick(plug_idx)
-                    with ProfilerContext(f"Apply {type(window)}"):
+                    with ProfilerContext(f"apply-{type(window).__name__}"):
                         window.apply(thorough=changed)
 
         # Tick final special plugins
         for p in common.ExtensionManager.final.get(self._device):
             if p.shouldBeActive():
-                with ProfilerContext(f"Tick {type(p)}"):
+                with ProfilerContext(f"tick-{type(p).__name__}"):
                     p.doTick(plug_idx)
-                with ProfilerContext(f"Apply {type(p)}"):
+                with ProfilerContext(f"apply-{type(p).__name__}"):
                     p.apply(thorough=True)
 
         # Tick the device
@@ -107,7 +107,7 @@ class MainState(DeviceState):
 
     @profilerDecoration("main.processEvent")
     def processEvent(self, event: FlMidiMsg) -> None:
-        with ProfilerContext("Match event"):
+        with ProfilerContext("match-event"):
             mapping = self._device.matchEvent(event)
         if mapping is None:
             event.handled = True
@@ -144,7 +144,7 @@ class MainState(DeviceState):
                     plug_id, self._device
                 )
                 if plug is not None:
-                    with ProfilerContext(f"Process {type(plug)}"):
+                    with ProfilerContext(f"process-{type(plug).__name__}"):
                         if plug.processEvent(mapping, plug_idx):
                             event.handled = True
                             return
@@ -153,7 +153,7 @@ class MainState(DeviceState):
                     plug_idx, self._device
                 )
                 if window is not None:
-                    with ProfilerContext(f"Process {type(window)}"):
+                    with ProfilerContext(f"process-{type(window).__name__}"):
                         if window.processEvent(mapping, plug_idx):
                             event.handled = True
                             return
@@ -164,7 +164,7 @@ class MainState(DeviceState):
             + common.ExtensionManager.final.get(self._device)
         ):
             if p.shouldBeActive():
-                with ProfilerContext(f"Process {type(p)}"):
+                with ProfilerContext(f"process-{type(p).__name__}"):
                     if p.processEvent(mapping, plug_idx):
                         event.handled = True
                         return

@@ -21,7 +21,7 @@ performance of the script:
 ```
  Name                                                   | Total (ms)     | Samples | Ave (ms)   | Max (ms)
 ==========================================================================================================
- tick.Device tick.LaunchKey onColorChange               |       78.08680 |     608 |    0.12843 |    0.71490
+ tick.Device tick.lk-color-change                       |       78.08680 |     608 |    0.12843 |    0.71490
  tick.Device tick                                       |       87.93350 |     188 |    0.46773 |    3.50390
  tick.Tick <class 'plugs.special.transport.Transport'>  |        0.00000 |     188 |    0.00000 |    0.00000
  tick.Apply <class 'plugs.special.transport.Transport'> |        2.99360 |     188 |    0.01592 |    0.50400

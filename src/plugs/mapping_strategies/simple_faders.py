@@ -12,6 +12,7 @@ more details.
 
 import plugins
 from common.types import Color
+from common.profiler import profilerDecoration, ProfilerContext
 from control_surfaces import ControlShadowEvent, ControlShadow, Fader
 from devices.device_shadow import DeviceShadow
 from plugs.event_filters import toPluginIndex
@@ -44,6 +45,7 @@ class SimpleFaders(IMappingStrategy):
         """
         self._parameters = parameters
         self._colors = colors
+        self.__ticker = 0
 
     def apply(self, shadow: DeviceShadow) -> None:
         shadow.bindMatches(
@@ -63,10 +65,12 @@ class SimpleFaders(IMappingStrategy):
         *args,
     ) -> bool:
         """Fader event"""
-        plugins.setParamValue(control.value, param_index, *index)
+        with ProfilerContext("set-param-value"):
+            plugins.setParamValue(control.value, param_index, *index)
         return True
 
     @toPluginIndex()
+    @profilerDecoration("simple-faders")
     def tFaders(
         self,
         control: ControlShadow,
@@ -76,6 +80,12 @@ class SimpleFaders(IMappingStrategy):
     ):
         """Fader tick"""
         # Update value
-        control.value = plugins.getParamValue(param_index, *index)
+        with ProfilerContext("value"):
+            # HACK: Workaround for performance issues with getParamValue()
+            self.__ticker += 1
+            self.__ticker %= 10
+            if self.__ticker == 0:
+                control.value = plugins.getParamValue(param_index, *index)
         # Update annotations
-        control.annotation = plugins.getParamName(param_index, *index)
+        with ProfilerContext("annotation"):
+            control.annotation = plugins.getParamName(param_index, *index)

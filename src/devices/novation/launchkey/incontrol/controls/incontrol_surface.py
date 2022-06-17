@@ -67,7 +67,7 @@ class ColorInControlSurface(InControlSurface):
         self.__colors = colors
         super().__init__(status, note_num)
 
-    @profilerDecoration("LaunchKey onColorChange")
+    @profilerDecoration("lk-color-change")
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
         self.setColor(self.__colors[new.closest(list(self.__colors.keys()))])
@@ -89,7 +89,7 @@ class GrayscaleInControlSurface(InControlSurface):
         self.__colors = colors
         super().__init__(status, note_num)
 
-    @profilerDecoration("LaunchKey onColorChange")
+    @profilerDecoration("lk-grayscale-change")
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
         self.setColor(self.__colors[new.closestGrayscale(
