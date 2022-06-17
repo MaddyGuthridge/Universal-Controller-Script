@@ -33,7 +33,7 @@ __all__ = [
 ]
 
 
-class LkMk3StopButton(GrayscaleInControlSurface, StopButton):
+class LkMk3StopButton(StopButton):
     def __init__(self) -> None:
         val = 0x74
         StopButton.__init__(
@@ -43,7 +43,7 @@ class LkMk3StopButton(GrayscaleInControlSurface, StopButton):
         )
 
 
-class LkMk3LoopButton(GrayscaleInControlSurface, LoopButton):
+class LkMk3LoopButton(LoopButton):
     def __init__(self) -> None:
         val = 0x76
         LoopButton.__init__(
@@ -53,7 +53,7 @@ class LkMk3LoopButton(GrayscaleInControlSurface, LoopButton):
         )
 
 
-class LkMk3PlayButton(GrayscaleInControlSurface, PlayButton):
+class LkMk3PlayButton(PlayButton):
     def __init__(self) -> None:
         val = 0x73
         PlayButton.__init__(
@@ -69,7 +69,7 @@ class LkMk3PlayButton(GrayscaleInControlSurface, PlayButton):
         )
 
 
-class LkMk3RecordButton(GrayscaleInControlSurface, RecordButton):
+class LkMk3RecordButton(RecordButton):
     def __init__(self) -> None:
         val = 0x75
         RecordButton.__init__(
