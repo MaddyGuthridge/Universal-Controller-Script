@@ -28,8 +28,10 @@ control surface, but specifically for the master channel.
 * `Button`: Represents a button (used by many transport controls)
 * `ControlSwitchButton`: Used as a command for plugins to switch modes, for
   example switching from omni mode to sequencer mode in the channel rack.
-* `JogWheel`: Represents an encoder used for transport and navigation
+* `JogWheel`: Represents an encoder used for transport and navigation.
     * `StandardJogWheel`: Scrolling and changing selection
+    * `ShiftedJogWheel`: Scrolling and changing selection, but along the opposite
+      axis
     * `MoveJogWheel`: Moving selection
 * `TransportButton`: Buttons used for transport
     * `PlayButton`
@@ -49,22 +51,26 @@ control surface, but specifically for the master channel.
     * `NextPrevButton`: Next and previous buttons
         * `DirectionNext`
         * `DirectionPrevious`
-* `FaderButton` * : Represents a button commonly found near a fader
+* `FaderButton` * : Represents a button commonly found near a fader.
     * `GenericFaderButton` * : A button that can act as a mute or solo control
     * `MuteButton` * : A mute track button
     * `SoloButton` * : A solo track button
     * `ArmButton` * : An arm track button
     * `SelectButton` * : A select track button
-* `Fader` * : Represents a fader (linear slider)
-* `Knob` * : Represents a knob (rotating dial)
+* `Fader` * : Represents a fader (linear slider).
+* `Knob` * : Represents a knob (rotating dial).
+* `ModXY`: 2D modulation surface
+    * `ModX`: 2D modulation surface (X component)
+    * `ModY`: 2D modulation surface (Y component)
 * `Encoder`: Represents an encoder (endlessly rotating dial)
 * `DrumPad`: Represents a drum pad
 * `MacroButton`: Represents a button used to perform some action in FL Studio
-    * `SaveButton`
+    * `SaveButton`: Save
     * `UndoRedoButton`: Redo if possible, otherwise undo
-    * `UndoButton`
-    * `RedoButton`
-    * `QuantizeButton`
+    * `UndoButton`: Undo
+    * `RedoButton`: Redo
+    * `QuantizeButton`: Quantize
+    * `CaptureMidiButton`: Dump score log to selected pattern
 * `ActivityButton`:
     * `SwitchActiveButton`: Button that switches between plugins and windows
       for controllers designed with a split activity scheme
@@ -73,9 +79,37 @@ control surface, but specifically for the master channel.
         * `SwitchActiveToggleButton`: Toggle activity between plugins and
           windows
     * `PauseActiveButton`: Pause updating of the active plugin and window.
+* `HintMsg`: A control that shouldn't map to any events, but which should use
+  an [`AnnotationManager`](property_managers.md#annotation-manager) to display
+  the contents of FL Studio's hint panel.
+* `NotifMsg`: A control that shouldn't map to any events, but which should use
+  an [`AnnotationManager`](property_managers.md#annotation-manager) to display
+  notification messages.
 * `NullEvent`: Used to handle events that the script should ignore
 
-## Creating New Control Surfaces
+## Instantiating Control Surfaces
+Control surfaces can be instantiated by providing any of the following
+arguments:
+
+* `event_pattern`: an [event pattern](event_pattern.md) that can be used to
+  recognize the event. If not provided, the control can never be matched.
+
+* `value_strategy`: a [value strategy](value_strategy.md) that can be used to
+  determine a value from events. If not provided, the control won't get values.
+
+* `coordinate`: the coordinate of the control. Defaults to `(0, 0)`.
+
+* `annotation_manager`: an
+  [`AnnotationManager`](property_managers.md#annotation-manager).
+
+* `color_manager`: a [`ColorManager`](property_managers.md#color-manager)
+
+* `value_manager`: a [`ValueManager`](property_managers.md#value-manager)
+
+As well as this, some control surfaces provide class methods to create
+instances without specifying all the properties.
+
+## Defining New Control Surfaces
 
 As a general rule of thumb, new control surfaces types shouldn't be created
 except for those that don't match any existing types. This should be discussed
@@ -92,18 +126,6 @@ child class to the control surface it most accurately represents, and then
 implement any required functions.
 
 ### Methods to Implement if Required
-* `onColorChange(self, new: Color)`: Called when the color of the control has
-  changed. This can be used to send MIDI events to manage LEDs on the control
-  surface.
-
-* `onAnnotationChange(self, new: str)`: Called when the annotation of the
-  control has changed. This can be used to send MIDI events to manage a screen
-  associated with the control.
-
-* `onValueChange(self, new: float)`: Called when the value of the control has
-  changed. This can be used to send MIDI events to manage a motorized control,
-  or update LEDs that represent the control's value.
-
 * `tick(self)`: Called when a tick happens. This should be used to send any
   events required to keep the control functioning. For example, if your
   controller is prone to losing LED colors randomly (like the Novation

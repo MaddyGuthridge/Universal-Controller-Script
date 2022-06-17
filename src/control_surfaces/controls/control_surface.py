@@ -86,17 +86,28 @@ class ControlSurface:
         value_manager: Optional[IValueManager] = None,
     ) -> None:
         """
-        Create a ControlSurface
+        Create an ControlSurface
 
         ### Args:
-        * `event_pattern` (`IEventPattern`): pattern to use when recognizing
-          the event
-        * `value_strategy` (`IValueStrategy`): strategy for getting values from
-          events
-        * `group` (`str`): group that this control belongs to. Controls in
-          different groups are never assigned together.
-        * `coordinate` (`tuple[int, int]`, optional): coordinate of controls.
-          Used if controls form a 2D grid (eg, drum pads). Defaults to (0, 0).
+        * `event_pattern`: an [event pattern](event_pattern.md) that can be
+          used to recognize the event. If not provided, the control can never
+          be matched.
+
+        * `value_strategy`: a [value strategy](value_strategy.md) that can be
+          used to determine a value from events. If not provided, the control
+          won't get values.
+
+        * `coordinate`: the coordinate of the control. Defaults to `(0, 0)`.
+
+        * `annotation_manager`: a manager to provide functionality of sharing
+          annotations with a device. This can be used to control text displays
+          associated with a control, or to control a global LED text display.
+
+        * `color_manager`: a manager to provide functionality of sharing colors
+          with a device. This can be used to control LEDs on controls.
+
+        * `value_manager`: a manager to provide functionality of sharing values
+          with a device. This can be used to drive motorized controls.
         """
         if event_pattern is None:
             event_pattern = NullPattern()

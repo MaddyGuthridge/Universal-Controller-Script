@@ -24,8 +24,9 @@ class JogWheel(NavigationControl):
     could be triggered through a single control, by mapping to different
     controls depending on context.
 
-    NOTE: Jog wheels use the ENCODER values found in the
-    `control_surfaces.consts` module.
+    NOTE: Jog wheels use the JOG values found in the `control_surfaces.consts`
+    module for specifying directions. This is because they aren't used for
+    managing relative values.
     """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':

@@ -31,6 +31,8 @@
 
 * [Profiling](debugging/profiling.md)
 
+* [Property managers](devices/property_managers.md)
+
 * [Setup instructions](setup.md)
 
 * [Style guide](style.md)

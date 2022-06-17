@@ -20,7 +20,7 @@ class Encoder(ControlSurface):
 
     The values of encoders are calculated using the existing value of the
     control. This means that a value strategy with support for relative
-    values should be used.
+    values should be used, such as the `TwosComplimentDeltaStrategy`.
     """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
