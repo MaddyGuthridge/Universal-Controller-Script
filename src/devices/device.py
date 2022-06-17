@@ -13,6 +13,7 @@ more details.
 # from __future__ import annotations
 
 from typing import Optional, final
+from common.profiler import profilerDecoration, ProfilerContext
 from common.util.abstract_method_error import AbstractMethodError
 from control_surfaces.event_patterns import IEventPattern
 from fl_classes import FlMidiMsg
@@ -203,6 +204,7 @@ class Device:
         """
 
     @final
+    @profilerDecoration("device")
     def doTick(self) -> None:
         """
         Called frequently, so that the device can perform any required actions,
@@ -211,8 +213,10 @@ class Device:
         This method forwards ticks onto other parts of the controller as well
         as to its own tick() method which is overridden by child classes
         """
-        self.tick()
-        self._matcher.tick(False)
+        with ProfilerContext("object"):
+            self.tick()
+        with ProfilerContext("matcher"):
+            self._matcher.tick(False)
 
     def tick(self) -> None:
         """

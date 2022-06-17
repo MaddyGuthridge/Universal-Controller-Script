@@ -100,23 +100,21 @@ class ControlSurface:
         """
         if event_pattern is None:
             event_pattern = NullPattern()
-        self._pattern = event_pattern
-        self._color = Color()
-        self._annotation = ""
-        self._value = 0.0
+        self.__pattern = event_pattern
+        self.__color = Color()
+        self.__prev_color = Color()
+        self.__annotation = ""
+        self.__prev_annotation = ""
+        self.__value = 0.0
+        self.__prev_value = 0.0
         if value_strategy is None:
             value_strategy = NullEventStrategy()
-        self._value_strategy = value_strategy
-        self._coord = coordinate
+        self.__value_strategy = value_strategy
+        self.__coord = coordinate
 
         # Attributes to make our pressed thing work better
-        self._needs_update = False
-        self._got_update = False
-
-        # Whether we need to call the onUpdate... methods
-        self._color_changed: bool = True
-        self._annotation_changed: bool = True
-        self._value_changed: bool = True
+        self.__needs_update = False
+        self.__got_update = False
 
         # Managers for control
         if annotation_manager is not None:
@@ -133,16 +131,16 @@ class ControlSurface:
             self.__value_manager = DummyValueManager()
 
         # The time that this control was pressed last
-        self._press = 0.0
+        self.__last_press_time = 0.0
         # The time that this control was tweaked last
-        self._tweak = 0.0
+        self.__last_tweak_time = 0.0
 
     def __repr__(self) -> str:
         """
         String representation of the control surface
         """
         return \
-            f"{self.__class__}, ({self._coord}, {self.value})"
+            f"{self.__class__}, ({self.__coord}, {self.value})"
 
     @final
     def getPattern(self) -> IEventPattern:
@@ -155,7 +153,7 @@ class ControlSurface:
         ### Returns:
         * `IEventPattern`: pattern
         """
-        return self._pattern
+        return self.__pattern
 
     @final
     def getMapping(self) -> ControlMapping:
@@ -183,18 +181,18 @@ class ControlSurface:
         ### Returns:
         * `Optional[ControlEvent]`: control mapping, if the event maps
         """
-        if self._pattern.matchEvent(event):
-            self._value = self._value_strategy.getValueFromEvent(
-                event, self._value)
-            channel = self._value_strategy.getChannelFromEvent(event)
-            self._needs_update = True
-            self._got_update = False
+        if self.__pattern.matchEvent(event):
+            self.__value = self.__value_strategy.getValueFromEvent(
+                event, self.__value)
+            channel = self.__value_strategy.getChannelFromEvent(event)
+            self.__needs_update = True
+            self.__got_update = False
             t = time()
-            self._tweak = t
+            self.__last_tweak_time = t
             if self.isPress(self.value):
-                double_press = t - self._press \
+                double_press = t - self.__last_press_time \
                     <= getContext().settings.get("controls.double_press_time")
-                self._press = t
+                self.__last_press_time = t
             else:
                 double_press = False
             return ControlEvent(self, self.value, channel, double_press)
@@ -209,7 +207,7 @@ class ControlSurface:
         """
         Coordinate of the control. Read only.
         """
-        return self._coord
+        return self.__coord
 
     @property
     def color(self) -> Color:
@@ -219,14 +217,13 @@ class ControlSurface:
         On compatible controllers, this can be displayed on the control using
         LED lighting.
         """
-        return self._color
+        return self.__color
 
     @color.setter
     def color(self, c: Color):
-        self._got_update = True
-        if self._color != c:
-            self._color = c
-            self._color_changed = True
+        self.__got_update = True
+        if self.__color != c:
+            self.__color = c
 
     @property
     def annotation(self) -> str:
@@ -236,13 +233,12 @@ class ControlSurface:
         On compatible controllers, this can be displayed as text near the
         control.
         """
-        return self._annotation
+        return self.__annotation
 
     @annotation.setter
     def annotation(self, a: str):
-        if self._annotation != a:
-            self._annotation = a
-            self._annotation_changed = True
+        if self.__annotation != a:
+            self.__annotation = a
 
     @property
     def value(self) -> float:
@@ -255,7 +251,7 @@ class ControlSurface:
         set is determined by the functions _getValue() and _setValue()
         respectively.
         """
-        return self._value
+        return self.__value
 
     @value.setter
     def value(self, val: float) -> None:
@@ -264,11 +260,10 @@ class ControlSurface:
             raise ValueError(
                 "Value for control must be between 0 and 1"
             )
-        if self._value != val:
-            self._value = val
-            self._needs_update = True
-            self._got_update = False
-            self._value_changed = True
+        if self.__value != val:
+            self.__value = val
+            self.__needs_update = True
+            self.__got_update = False
 
     @property
     def needs_update(self) -> bool:
@@ -276,7 +271,7 @@ class ControlSurface:
         Represents whether the value of the control has changed since the last
         time the color was set.
         """
-        return self._needs_update
+        return self.__needs_update
 
     @property
     def got_update(self) -> bool:
@@ -284,7 +279,7 @@ class ControlSurface:
         Represents whether the value of the control has changed since the last
         time the color was set, and was since updated.
         """
-        return self._got_update
+        return self.__got_update
 
     @property
     def last_tweaked(self) -> float:
@@ -294,7 +289,7 @@ class ControlSurface:
         ### Returns:
         * `float`: unix time of last tweak
         """
-        return self._tweak
+        return self.__last_tweak_time
 
     ###########################################################################
     # Events
@@ -312,20 +307,23 @@ class ControlSurface:
         """
         # If it's a thorough tick, force all the properties to update on the
         # device
-        # Otherwise, only update them if they need it
-        if thorough or self._color_changed:
+        # Otherwise, only update them if they need it (ie the property changed)
+        if thorough or self.__color != self.__prev_color:
             self.__color_manager.onColorChange(self.color)
-        if thorough or self._annotation_changed:
+        if thorough or self.__annotation != self.__prev_annotation:
             self.__annotation_manager.onAnnotationChange(self.annotation)
-        if thorough or self._value_changed:
+        if thorough or self.__value != self.__prev_value:
             self.__value_manager.onValueChange(self.value)
         self.tick()
         self.__color_manager.tick()
         self.__annotation_manager.tick()
         self.__value_manager.tick()
-        if self._got_update:
-            self._needs_update = False
-            self._got_update = False
+        if self.__got_update:
+            self.__needs_update = False
+            self.__got_update = False
+        self.__prev_color = self.__color
+        self.__prev_annotation = self.__annotation
+        self.__prev_value = self.__value
 
     def tick(self) -> None:
         """

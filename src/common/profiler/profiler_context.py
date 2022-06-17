@@ -46,7 +46,7 @@ Params = ParamSpec("Params")
 RT = TypeVar("RT")
 
 
-def profilerDecoration(name):
+def profilerDecoration(name: str):
     def decorator(func: Callable[Params, RT]) -> Callable[Params, RT]:
         def wrapper(*args, **kwargs):
             with ProfilerContext(name):
