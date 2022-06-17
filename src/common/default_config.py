@@ -35,7 +35,7 @@ CONFIG = {
     # Settings used for debugging
     "debug": {
         # Whether performance profiling should be enabled
-        "profiling": True,
+        "profiling": False,
         # Whether profiling should print the tracing of profiler contexts
         # within the script. Useful for troubleshooting crashes in FL Studio's
         # MIDI API. Requires profiling to be enabled.
@@ -84,5 +84,16 @@ CONFIG = {
             # * False: faders will map from 0-100%
             "allow_extended_volume": False
         },
+    },
+    "advanced": {
+        # A span of time during which we expect the script to be ticked. If the
+        # script doesn't tick during this time, then the script will consider
+        # itself to be constrained by performance, and will drop the next tick
+        # to prevent lag in FL Studio
+        "drop_tick_time": 100,
+        # A span of time for which a tick should be expected to complete. If
+        # ticking FL Studio takes longer than this, it will be recorded,
+        # regardless of whether profiling is enabled.
+        "slow_tick_time": 50,
     },
 }

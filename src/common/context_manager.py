@@ -67,6 +67,7 @@ class DeviceContextManager:
         self._last_tick = time_ns()
         self._ticks = 0
         self._dropped_ticks = 0
+        self._slow_ticks = 0
         self._device: Optional['Device'] = None
 
     def enableProfiler(self, trace: bool = False) -> None:
@@ -136,13 +137,19 @@ class DeviceContextManager:
         # Skip this tick to compensate
         last_tick = self._last_tick
         self._last_tick = time_ns()
-        if (self._last_tick - last_tick) / 1_000_000 > 60:
+        drop_tick_time = self.settings.get("advanced.drop_tick_time")
+        if (self._last_tick - last_tick) / 1_000_000 > drop_tick_time:
             self._dropped_ticks += 1
             return
+        tick_start = time_ns()
         # Tick active plugin
         self.active.tick()
         # Tick the current script state
         self.state.tick()
+        tick_end = time_ns()
+        slow_tick_time = self.settings.get("advanced.slow_tick_time")
+        if (tick_end - tick_start) / 1_000_000 > slow_tick_time:
+            self._slow_ticks += 1
 
     def getTickNumber(self) -> int:
         """
@@ -159,13 +166,25 @@ class DeviceContextManager:
         """
         Returns the number of ticks dropped by the controller
 
-        This is a good indicator of script performance
+        This is indicative of FL Studio performance
 
         ### Returns:
         * `str`: info on dropped ticks
         """
         percent = int(self._dropped_ticks / self._ticks * 100)
         return f"{self._dropped_ticks} dropped ticks ({percent}%)"
+
+    def getSlowTicks(self) -> str:
+        """
+        Returns the number of ticks that ran slowly
+
+        This is indicative of script performance
+
+        ### Returns:
+        * `str`: info on dropped ticks
+        """
+        percent = int(self._slow_ticks / self._ticks * 100)
+        return f"{self._slow_ticks} slow ticks ({percent}%)"
 
     def setState(self, new_state: IScriptState) -> NoReturn:
         """
