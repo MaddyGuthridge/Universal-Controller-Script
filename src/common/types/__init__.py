@@ -15,6 +15,10 @@ more details.
 
 __all__ = [
     'Color',
+    'BoolS',
+    'TrueS',
+    'FalseS',
 ]
 
 from .color import Color
+from .bool_s import BoolS, TrueS, FalseS
