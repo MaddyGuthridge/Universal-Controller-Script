@@ -25,7 +25,7 @@ scripts_dir = \
     '/'.join(__file__.replace('\\', '/').split('/')[:-2]) + '/ucs_config'
 sys.path.append(scripts_dir)
 try:
-    from config import CONFIG
+    from config import CONFIG  # type: ignore
 except ImportError:
     CONFIG = {}
 

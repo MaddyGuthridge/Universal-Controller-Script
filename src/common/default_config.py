@@ -14,43 +14,18 @@ more details.
 from .logger import verbosity
 
 CONFIG = {
-    # Logging settings
-    "logger": {
-        # Verbosity for which full details will be printed to the console when
-        # it is logged.
-        "critical_verbosity": verbosity.ERROR,
-        # Maximum verbosity for which all logged messages will be printed
-        "max_verbosity": verbosity.WARNING,
-        # Categories to watch
-        "watched_categories": [
-            "general"
-        ],
-        # Maximum verbosity for which watched categories of logged messages
-        # will be printed
-        "max_watched_verbosity": verbosity.INFO,
-        # Verbosity levels at or above this will be discarded entirely be the
-        # logger to improve performance
-        "discard_verbosity": verbosity.NOTE,
-    },
-    # Settings used for debugging
-    "debug": {
-        # Whether performance profiling should be enabled
-        "profiling": False,
-        # Whether profiling should print the tracing of profiler contexts
-        # within the script. Useful for troubleshooting crashes in FL Studio's
-        # MIDI API. Requires profiling to be enabled.
-        "exec_tracing": False
-    },
     # Settings used during script initialization
     "bootstrap": {
         # Whether to skip sending sysex messages when attempting to recognize
-        # devices... may improve startup time for some devices
+        # devices... will improve startup time for devices that don't support
+        # universal device enquiries, but will result in other devices
+        # breaking. Enabling this is not recommended.
         "skip_enquiry": False,
         # Whether sending the device enquiry message should be delayed
         # until after initialization (workaround for a bug in FL 20.9.1)
         "delay_enquiry": True,
-        # How long to wait until the fallback device recognition method is
-        # used.
+        # How long to wait after sending a universal device enquiry until the
+        # fallback device recognition method is used.
         "detection_timeout": 3.0,
         # Associations between device name (as shown in FL Studio) and device
         # id to register (listed in class under getId() function)
@@ -73,8 +48,8 @@ CONFIG = {
             # Whether values that have a centred default should snap close
             # values to the default
             "do_snap": True,
-            # The length of time to dump to the score log when a capture MIDI
-            # button is pressed, in seconds.
+            # The length of time to dump to a pattern from the score log when a
+            # capture MIDI button is pressed, in seconds.
             "score_log_dump_length": 120
         },
         # FL Studio mixer
@@ -85,11 +60,42 @@ CONFIG = {
             "allow_extended_volume": False
         },
     },
+    # Settings used for debugging
+    "debug": {
+        # Whether performance profiling should be enabled
+        "profiling": False,
+        # Whether profiling should print the tracing of profiler contexts
+        # within the script. Useful for troubleshooting crashes in FL Studio's
+        # MIDI API. Requires profiling to be enabled.
+        "exec_tracing": False
+    },
+    # Logging settings
+    "logger": {
+        # Verbosity for which full details will be printed to the console when
+        # it is logged.
+        "critical_verbosity": verbosity.ERROR,
+        # Maximum verbosity for which all logged messages will be printed
+        "max_verbosity": verbosity.WARNING,
+        # Categories to watch, meaning they will be printed, even if a lower
+        # verbosity is used. For details on available categories, refer to
+        # common/logger/log_hierarchy.py.
+        "watched_categories": [
+            "general"
+        ],
+        # Maximum verbosity for which watched categories of logged messages
+        # will be printed
+        "max_watched_verbosity": verbosity.INFO,
+        # Verbosity levels at or above this will be discarded entirely be the
+        # logger to improve performance
+        "discard_verbosity": verbosity.NOTE,
+    },
+    # Advanced settings for the script. Don't edit these unless you know what
+    # you're doing, as they could cause the script to break, or behave badly.
     "advanced": {
         # A span of time during which we expect the script to be ticked. If the
         # script doesn't tick during this time, then the script will consider
         # itself to be constrained by performance, and will drop the next tick
-        # to prevent lag in FL Studio
+        # to prevent lag in FL Studio.
         "drop_tick_time": 100,
         # A span of time for which a tick should be expected to complete. If
         # ticking FL Studio takes longer than this, it will be recorded,
