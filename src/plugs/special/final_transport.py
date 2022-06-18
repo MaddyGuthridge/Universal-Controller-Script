@@ -36,7 +36,7 @@ class FallbackTransport(SpecialPlugin):
             JogStrategy(),
             NoteStrategy(),
             WheelStrategy(),
-            PedalStrategy(),
+            PedalStrategy(raise_on_error=False),
         ])
 
     @classmethod
