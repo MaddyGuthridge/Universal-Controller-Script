@@ -102,7 +102,7 @@ class Hammer88Pro(Device):
         # Notes and pedals
         matcher.addSubMatcher(NoteMatcher())
         matcher.addSubMatcher(PedalMatcher())
-        matcher.addControl(ChannelAfterTouch())
+        matcher.addControl(ChannelAfterTouch.fromChannel(...))
 
         # Drum pads (high priority because they just use note on events)
         matcher.addControls([

@@ -40,7 +40,6 @@ class ChannelAfterTouch(AfterTouch):
     def fromChannel(
         cls,
         channel: ByteMatch,
-        coordinate: tuple[int, int] = (0, 0),
         annotation_manager: Optional[IAnnotationManager] = None,
         color_manager: Optional[IColorManager] = None,
         value_manager: Optional[IValueManager] = None,
@@ -48,7 +47,7 @@ class ChannelAfterTouch(AfterTouch):
         return cls(
             BasicPattern(fromNibbles(0xD, channel), ..., ...),
             Data1Strategy(),
-            coordinate,
+            (0, 0),
             annotation_manager,
             color_manager,
             value_manager,
