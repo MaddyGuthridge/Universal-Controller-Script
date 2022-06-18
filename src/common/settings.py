@@ -15,11 +15,19 @@ __all__ = [
     'Settings'
 ]
 
+import sys
 from typing import Any
-
-from .util import dict_tools, hot_reload
-
+from .util import dict_tools
 from . import default_config as d
+
+# Load the main config
+scripts_dir = \
+    '/'.join(__file__.replace('\\', '/').split('/')[:-2]) + '/ucs_config'
+sys.path.append(scripts_dir)
+try:
+    from config import CONFIG
+except ImportError:
+    CONFIG = {}
 
 
 class Settings:
@@ -35,9 +43,7 @@ class Settings:
         """
         Initialize and load the script's settings
         """
-
-        c = hot_reload.getTemporaryModule('config')
-        config = dict_tools.expandDictShorthand(c.CONFIG)
+        config = dict_tools.expandDictShorthand(CONFIG)
         self._settings_dict = dict_tools.recursiveMergeDictionaries(
             d.CONFIG, config)
 
