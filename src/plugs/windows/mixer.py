@@ -20,16 +20,13 @@ from common.util.api_fixes import getSelectedMixerTracks
 from common.util.snap import snap
 from control_surfaces import consts
 from control_surfaces import ControlShadowEvent
-from control_surfaces import (  # noqa: F401
+from control_surfaces import (
     JogWheel,
     StandardJogWheel,
     Fader,
     Knob,
     MasterFader,
     MasterKnob,
-    GenericFaderButton,
-    MuteButton,
-    SoloButton,
     ArmButton,
     SelectButton,
 )
@@ -40,6 +37,7 @@ from plugs import WindowPlugin
 
 INDEX = 0
 COLOR_DISABLED = Color.fromGrayscale(0.3, False)
+COLOR_ARMED = Color.fromInteger(0xAF0000, 1.0, True)
 
 
 def snapFaders(value: float) -> float:
@@ -82,6 +80,14 @@ class Mixer(WindowPlugin):
         self._knobs = shadow.bindMatches(
             Knob,
             self.knob,
+        )
+        self._fader_master = shadow.bindMatch(
+            MasterFader,
+            self.masterFader,
+        )
+        self._knob_master = shadow.bindMatch(
+            MasterKnob,
+            self.masterKnob,
         )
         self._arms = shadow.bindMatches(
             ArmButton,
@@ -160,7 +166,6 @@ class Mixer(WindowPlugin):
     def jogWheel(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         selected = getSelectedMixerTracks()
@@ -194,42 +199,72 @@ class Mixer(WindowPlugin):
     def fader(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         """Faders -> volume"""
         index = self._selection[control.getControl().coordinate[1]]
-
         mixer.setTrackVolume(index, snapFaders(control.value))
+        return True
 
+    def masterFader(
+        self,
+        control: ControlShadowEvent,
+        *args: Any
+    ) -> bool:
+        track = mixer.trackNumber()
+        mixer.setTrackVolume(track, snapFaders(control.value))
         return True
 
     def updateColors(self):
+        # Master tracks
+        idx = mixer.trackNumber()
+        c = Color.fromInteger(mixer.getTrackColor(idx))
+        name = mixer.getTrackName(idx)
+        self._knob_master.color = c
+        self._knob_master.annotation = name
+        self._fader_master.color = c
+        self._fader_master.annotation = name
         # For each selected track
         for n, i in enumerate(self._selection):
             c = Color.fromInteger(mixer.getTrackColor(i))
+            name = mixer.getTrackName(i)
             # Only apply to controls that are within range
             if len(self._faders) > n:
                 self._faders[n].color = c
+                self._faders[n].annotation = name
             if len(self._knobs) > n:
                 self._knobs[n].color = c
+                self._knobs[n].annotation = name
             # Select buttons
             if len(self._selects) > n:
                 if mixer.isTrackSelected(i):
                     self._selects[n].color = c
                 else:
                     self._selects[n].color = COLOR_DISABLED
+            # Arm buttons
+            if len(self._arms) > n:
+                if mixer.isTrackArmed(i):
+                    self._arms[n].color = COLOR_ARMED
+                else:
+                    self._arms[n].color = COLOR_DISABLED
 
     def knob(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         """Knobs -> panning"""
         index = self._selection[control.getControl().coordinate[1]]
         mixer.setTrackPan(index, snapKnobs(control.value))
+        return True
 
+    def masterKnob(
+        self,
+        control: ControlShadowEvent,
+        *args: Any
+    ) -> bool:
+        track = mixer.trackNumber()
+        mixer.setTrackPan(track, snapKnobs(control.value))
         return True
 
     @filterButtonLift()
