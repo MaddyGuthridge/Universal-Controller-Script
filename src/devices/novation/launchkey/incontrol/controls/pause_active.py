@@ -14,7 +14,7 @@ from . import ColorInControlSurface
 from ..colors.mk3 import COLORS
 
 
-class LkPauseActive(ColorInControlSurface, PauseActiveButton):
+class LkPauseActive(PauseActiveButton):
     """
     Pause updating the active plugin.
 
