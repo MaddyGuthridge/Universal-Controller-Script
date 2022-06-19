@@ -35,6 +35,8 @@ def getVersionString() -> str:
 
 # Website
 WEBSITE = "https://github.com/MiguelGuthridge/Universal-Controller-Script"
+ISSUES_PAGE = f"{WEBSITE}/issues"
+DOCUMENTATION = f"{WEBSITE}/tree/main/docs"
 DISCORD = "https://discord.gg/6vpfJUF"
 
 # Contributor information

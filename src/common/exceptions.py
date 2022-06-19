@@ -17,9 +17,13 @@ class UcsException(Exception):
     """
 
 
-class EventForwardError(UcsException):
-    """Errors to do with forwarding events
+class UcsError(UcsException):
+    """Base type for critical errors within the universal controller script
     """
+
+
+class EventForwardError(UcsError):
+    """Errors to do with forwarding events"""
 
 
 class EventEncodeError(EventForwardError):
@@ -38,5 +42,5 @@ class EventInspectError(EventForwardError):
     """Insufficient or incorrect information to inspect event"""
 
 
-class DeviceRecognizeError(UcsException):
+class DeviceRecognizeError(UcsError):
     """Failed to recognize device"""

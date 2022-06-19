@@ -138,7 +138,7 @@ def catchUnsafeOperation(func):
     """
     def wrapper(*args, **kwargs):
         try:
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         except TypeError as e:
             if e.args != ("Operation unsafe at current time",):
                 raise e

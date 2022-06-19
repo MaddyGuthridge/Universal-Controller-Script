@@ -12,22 +12,20 @@ more details.
 
 __all__ = [
     'IScriptState',
-    'catchStateChangeException',
     'StateChangeException',
     'DeviceState',
     'MainState',
     'ForwardState',
-    'DeviceNotRecognized',
+    'ErrorState',
     'WaitingForDevice',
 ]
 
 from .script_state import (
     IScriptState,
-    catchStateChangeException,
     StateChangeException,
 )
 from .dev_state import DeviceState
 from .main_state import MainState
 from .forward_state import ForwardState
-from .not_recognized import DeviceNotRecognized
+from .error_state import ErrorState
 from .device_detect import WaitingForDevice

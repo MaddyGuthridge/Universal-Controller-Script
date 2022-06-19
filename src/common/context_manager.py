@@ -26,20 +26,25 @@ from fl_classes import FlMidiMsg
 
 from .settings import Settings
 from .activity_state import ActivityState
-
+from .exceptions import UcsError
 from .util.api_fixes import catchUnsafeOperation
 from .util.misc import NoneNoPrintout
 from .util.events import isEventForwarded, isEventForwardedHere
+from .util.catch_exception_decorator import catchExceptionDecorator
 from .profiler import ProfilerManager
 
 from .states import (
     IScriptState,
+    ErrorState,
     StateChangeException,
-    catchStateChangeException,
 )
 
 if TYPE_CHECKING:
     from devices import Device
+
+
+def toErrorState(err: UcsError):
+    getContext().setState(ErrorState(err))
 
 
 class DeviceContextManager:
@@ -80,7 +85,8 @@ class DeviceContextManager:
         """
         self.profiler = ProfilerManager(trace)
 
-    @catchStateChangeException
+    @catchExceptionDecorator(StateChangeException)
+    @catchExceptionDecorator(UcsError, toErrorState)
     @profilerDecoration("initialize")
     def initialize(self, state: IScriptState) -> None:
         """Initialize the controller associated with this context manager.
@@ -91,7 +97,8 @@ class DeviceContextManager:
         self.state = state
         state.initialize()
 
-    @catchStateChangeException
+    @catchExceptionDecorator(StateChangeException)
+    @catchExceptionDecorator(UcsError, toErrorState)
     @profilerDecoration("deinitialize")
     def deinitialize(self) -> None:
         """Deinitialize the controller when FL Studio closes or begins a render
@@ -104,7 +111,8 @@ class DeviceContextManager:
             self.state = None
 
     @catchUnsafeOperation
-    @catchStateChangeException
+    @catchExceptionDecorator(StateChangeException)
+    @catchExceptionDecorator(UcsError, toErrorState)
     @profilerDecoration("processEvent")
     def processEvent(self, event: FlMidiMsg) -> None:
         """Process a MIDI event
@@ -123,7 +131,8 @@ class DeviceContextManager:
         self.state.processEvent(event)
 
     @catchUnsafeOperation
-    @catchStateChangeException
+    @catchExceptionDecorator(StateChangeException)
+    @catchExceptionDecorator(UcsError, toErrorState)
     @profilerDecoration("tick")
     def tick(self) -> None:
         """

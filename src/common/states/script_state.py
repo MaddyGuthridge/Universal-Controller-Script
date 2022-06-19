@@ -10,9 +10,6 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-
-from typing import Any, Callable
-from typing_extensions import ParamSpec
 from abc import abstractmethod
 from fl_classes import FlMidiMsg
 from common.util.abstract_method_error import AbstractMethodError
@@ -64,24 +61,3 @@ class StateChangeException(Exception):
     """
     Raised when the the state of the controller has been reset
     """
-
-
-P = ParamSpec("P")
-
-
-def catchStateChangeException(func: Callable[P, Any]) -> Callable[P, None]:
-    """A decorator for catching StateChangeExceptions so that the program
-    continues normally
-
-    ### Args:
-    * `func` (`Callable`): function to decorate
-
-    ### Returns:
-    * `Callable`: decorated function
-    """
-    def wrapper(*args, **kwargs):
-        try:
-            func(*args, **kwargs)
-        except StateChangeException:
-            pass
-    return wrapper

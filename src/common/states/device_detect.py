@@ -22,7 +22,7 @@ from common import log, verbosity
 from fl_classes import isMidiMsgSysex, FlMidiMsg
 from common.util.events import eventToString
 
-from . import IScriptState, DeviceNotRecognized, DeviceState
+from . import IScriptState, ErrorState, DeviceState
 
 LOG_CAT = "bootstrap.device.type_detect"
 
@@ -95,13 +95,13 @@ class WaitingForDevice(IScriptState):
                 verbosity.INFO
             )
             common.getContext().setState(self._to.create(dev))
-        except DeviceRecognizeError:
+        except DeviceRecognizeError as e:
             log(
                 LOG_CAT,
                 "Failed to recognize device via fallback method",
                 verbosity.WARNING
             )
-            common.getContext().setState(DeviceNotRecognized())
+            common.getContext().setState(ErrorState(e))
 
     def sendEnquiry(self) -> None:
         self._sent_enquiry = True
