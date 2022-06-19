@@ -85,11 +85,13 @@ class DirectionStrategy(IMappingStrategy):
     @filterButtonLift()
     def next(self, control, index, *args, **kwargs):
         ui.next()
+        print("next")
         return True
 
     @filterButtonLift()
     def previous(self, control, index, *args, **kwargs):
         ui.previous()
+        print("prev")
         return True
 
     @filterButtonLift()
