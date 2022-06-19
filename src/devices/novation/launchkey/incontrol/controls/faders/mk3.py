@@ -55,20 +55,19 @@ class LkMk3MasterFader(MasterFader):
             )
 
 
-class LkMk3FaderButton(ColorInControlSurface, GenericFaderButton):
+class LkMk3FaderButton(GenericFaderButton):
     def __init__(self, index: int) -> None:
         GenericFaderButton.__init__(
             self,
             ForwardedPattern(2, BasicPattern(0xBF, FB_START + index, ...)),
             ForwardedStrategy(Data2Strategy()),
-            (0, index)
-        )
-        ColorInControlSurface.__init__(
-            self,
-            0,
-            FB_START + index,
-            COLORS,
-            event_num=0xB
+            (0, index),
+            color_manager=ColorInControlSurface(
+                0,
+                FB_START + index,
+                COLORS,
+                event_num=0xB
+            )
         )
 
 
