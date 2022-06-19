@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from typing import Optional
-from control_surfaces import ControlSurface, ControlEvent, NullEvent
+from control_surfaces import ControlSurface, ControlEvent, NullControl
 from control_surfaces.matchers import IControlMatcher
 from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
 from fl_classes import FlMidiMsg
@@ -81,7 +81,7 @@ class InControlMatcher(IControlMatcher):
     def __init__(self, manager: InControl) -> None:
         super().__init__()
         self._manager = manager
-        self._event = NullEvent.create(INCONTROL_MATCH)
+        self._event = NullControl.create(INCONTROL_MATCH)
 
     def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         m = self._event.match(event)

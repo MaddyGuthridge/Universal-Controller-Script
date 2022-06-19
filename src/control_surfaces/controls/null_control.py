@@ -13,7 +13,7 @@ more details.
 from typing import Optional
 
 from ..event_patterns import IEventPattern
-from control_surfaces.value_strategies import NullEventStrategy, IValueStrategy
+from control_surfaces.value_strategies import NullStrategy, IValueStrategy
 from control_surfaces.managers import (
     IAnnotationManager,
     IColorManager,
@@ -22,7 +22,7 @@ from control_surfaces.managers import (
 from . import ControlSurface
 
 
-class NullEvent(ControlSurface):
+class NullControl(ControlSurface):
     """
     Represents events that should be ignored entirely by the script.
     """
@@ -34,7 +34,7 @@ class NullEvent(ControlSurface):
         annotation_manager: Optional[IAnnotationManager] = None,
         color_manager: Optional[IColorManager] = None,
         value_manager: Optional[IValueManager] = None,
-    ) -> 'NullEvent':
+    ) -> 'NullControl':
         """
         Create a NullEvent
 
@@ -49,7 +49,7 @@ class NullEvent(ControlSurface):
           if this control is used to toggle through a menu (eg a shift button).
         """
         if value_strategy is None:
-            value_strategy = NullEventStrategy()
+            value_strategy = NullStrategy()
         return cls(
             event_pattern,
             value_strategy,

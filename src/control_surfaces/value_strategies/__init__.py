@@ -21,7 +21,7 @@ __all__ = [
     'ButtonSinglePressStrategy',
     'ForwardedStrategy',
     'ForwardedUnionStrategy',
-    'NullEventStrategy',
+    'NullStrategy',
 ]
 
 from .value_strategy import IValueStrategy
@@ -31,4 +31,4 @@ from .twos_compliment_delta import TwosComplimentDeltaStrategy
 from .button_data2_strategy import ButtonData2Strategy
 from .button_single_press_strategy import ButtonSinglePressStrategy
 from .forwarded_strategy import ForwardedStrategy, ForwardedUnionStrategy
-from .null_strategy import NullEventStrategy
+from .null_strategy import NullStrategy

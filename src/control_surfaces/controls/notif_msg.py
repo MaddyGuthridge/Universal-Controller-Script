@@ -11,7 +11,7 @@ more details.
 """
 from typing import Optional
 from ..event_patterns import NullPattern
-from control_surfaces.value_strategies import NullEventStrategy
+from control_surfaces.value_strategies import NullStrategy
 from control_surfaces.managers import (
     IAnnotationManager,
     IColorManager,
@@ -46,7 +46,7 @@ class NotifMsg(ControlSurface):
         """
         return cls(
             NullPattern(),
-            NullEventStrategy(),
+            NullStrategy(),
             annotation_manager=annotation_manager,
             color_manager=color_manager,
         )

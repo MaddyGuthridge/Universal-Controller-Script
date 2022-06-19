@@ -28,7 +28,7 @@ from control_surfaces.matchers import (
     PedalMatcher,
 )
 from control_surfaces import (
-    NullEvent,
+    NullControl,
     Fader,
     MasterFader,
     Knob,
@@ -73,15 +73,15 @@ class Hammer88Pro(Device):
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
         # Null events
-        matcher.addControl(NullEvent(
+        matcher.addControl(NullControl(
             BasicPattern(0xFA, 0x0, 0x0)
         ))
-        matcher.addControl(NullEvent(
+        matcher.addControl(NullControl(
             BasicPattern(0xFC, 0x0, 0x0)
         ))
         # Switch fader button types
         # TODO: When adding lighting, map this to a refresh command?
-        matcher.addControl(NullEvent(
+        matcher.addControl(NullControl(
             BasicPattern(0xBF, range(0x39, 0x3D+1), ...)
         ))
 

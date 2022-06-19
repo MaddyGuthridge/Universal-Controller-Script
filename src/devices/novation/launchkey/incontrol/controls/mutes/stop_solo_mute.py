@@ -13,7 +13,7 @@ from control_surfaces.value_strategies import (
     ButtonData2Strategy,
     ForwardedStrategy
 )
-from control_surfaces import NullEvent
+from control_surfaces import NullControl
 from control_surfaces.matchers import ShiftMatcher
 from ..incontrol_surface import ColorInControlSurface
 from ...colors.mk3 import COLORS
@@ -25,7 +25,7 @@ from ..drum_pad import (
 )
 
 
-class StopSoloMuteButton(NullEvent):
+class StopSoloMuteButton(NullControl):
     """
     Stop/solo/mute button is used to switch drum pads to a mode where they can
     be used to mute and solo tracks on smaller launchkey mk3 models.

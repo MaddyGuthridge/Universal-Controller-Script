@@ -20,7 +20,7 @@ from common.extension_manager import ExtensionManager
 from common.types import Color
 from control_surfaces import (
     ControlShadowEvent,
-    NullEvent,
+    NullControl,
     PlayButton,
     StopButton,
     FastForwardButton,
@@ -96,7 +96,7 @@ class Transport(SpecialPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
-        shadow.bindMatches(NullEvent, self.nullEvent)
+        shadow.bindMatches(NullControl, self.nullEvent)
         shadow.bindMatch(PlayButton, self.playButton, self.tickPlay)
         # Need to be able to determine whether the stop button is assigned
         self._stop = shadow.bindMatch(StopButton, self.stopButton,

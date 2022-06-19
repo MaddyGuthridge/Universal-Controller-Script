@@ -29,7 +29,7 @@ __all__ = [
     'matchers',
     'managers',
     # Control surfaces
-    'NullEvent',
+    'NullControl',
     'Note',
     'ModWheel',
     'PitchWheel',
@@ -106,7 +106,7 @@ __all__ = [
 
 from .controls import (
     ControlSurface,
-    NullEvent,
+    NullControl,
     Note,
     ModWheel,
     PitchWheel,

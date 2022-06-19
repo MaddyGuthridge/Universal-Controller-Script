@@ -27,7 +27,7 @@ from control_surfaces import consts
 from control_surfaces import (
     ControlSurface,
     ControlEvent,
-    NullEvent,
+    NullControl,
     StandardJogWheel,
     MoveJogWheel
 )
@@ -66,7 +66,7 @@ class JogMatcher(IControlMatcher):
     """
 
     def __init__(self) -> None:
-        self._null = NullEvent(NullPattern())
+        self._null = NullControl(NullPattern())
 
         self._value_strat = ForwardedUnionStrategy(JogValueStrategy())
 

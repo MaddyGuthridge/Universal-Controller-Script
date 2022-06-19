@@ -16,6 +16,8 @@ __all__ = [
     'MiniMk3DirectionDown',
     'Mk3DirectionUp',
     'Mk3DirectionDown',
+    'Mk3DirectionUpSilenced',
+    'Mk3DirectionDownSilenced',
 ]
 
 from .mk2 import (
@@ -29,4 +31,6 @@ from .mk3 import (
     MiniMk3DirectionDown,
     Mk3DirectionUp,
     Mk3DirectionDown,
+    Mk3DirectionUpSilenced,
+    Mk3DirectionDownSilenced,
 )

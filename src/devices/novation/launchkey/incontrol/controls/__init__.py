@@ -53,6 +53,8 @@ __all__ = [
     'MiniMk3DirectionDown',
     'Mk3DirectionUp',
     'Mk3DirectionDown',
+    'Mk3DirectionUpSilenced',
+    'Mk3DirectionDownSilenced',
     'StopSoloMuteButton',
     'LkMk3DrumPadMute',
     'LkMk3DrumPadSolo',
@@ -115,6 +117,8 @@ from .navigation import (
     MiniMk3DirectionDown,
     Mk3DirectionUp,
     Mk3DirectionDown,
+    Mk3DirectionUpSilenced,
+    Mk3DirectionDownSilenced,
 )
 from .mutes import (
     StopSoloMuteButton,

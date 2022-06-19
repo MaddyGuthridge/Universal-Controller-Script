@@ -13,7 +13,7 @@ more details.
 
 __all__ = [
     'ControlSurface',
-    'NullEvent',
+    'NullControl',
     'Note',
     'ModWheel',
     'PitchWheel',
@@ -89,7 +89,7 @@ __all__ = [
 ]
 
 from .control_surface import ControlSurface
-from .null_event import NullEvent
+from .null_control import NullControl
 from .note import Note
 from .wheels import (
     ModWheel,

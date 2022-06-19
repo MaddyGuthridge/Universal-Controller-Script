@@ -16,7 +16,7 @@ from control_surfaces.value_strategies import (
     ForwardedStrategy,
 )
 from control_surfaces import (
-    NullEvent,
+    NullControl,
     CaptureMidiButton,
 )
 from control_surfaces.matchers import ShiftMatcher, BasicControlMatcher
@@ -32,7 +32,7 @@ from devices.novation.launchkey.incontrol.controls import (
 
 
 def getShiftControls() -> ShiftMatcher:
-    shift = NullEvent(
+    shift = NullControl(
         ForwardedPattern(2, BasicPattern(0xB0, 0x6C, ...)),
         ForwardedStrategy(ButtonData2Strategy()),
     )

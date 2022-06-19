@@ -13,7 +13,7 @@ from fl_classes import FlMidiMsg
 from . import IValueStrategy
 
 
-class NullEventStrategy(IValueStrategy):
+class NullStrategy(IValueStrategy):
     """
     A value strategy that is always true, for buttons that only send a press
     event, and not a release event

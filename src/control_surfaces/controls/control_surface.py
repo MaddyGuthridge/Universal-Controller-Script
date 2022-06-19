@@ -20,7 +20,7 @@ from common import getContext
 from common.util.abstract_method_error import AbstractMethodError
 from common.types import Color
 from control_surfaces.event_patterns import NullPattern
-from control_surfaces.value_strategies import NullEventStrategy
+from control_surfaces.value_strategies import NullStrategy
 from ..event_patterns import IEventPattern
 from ..value_strategies import IValueStrategy
 from ..control_mapping import ControlEvent, ControlMapping
@@ -119,7 +119,7 @@ class ControlSurface:
         self.__value = 0.0
         self.__prev_value = 0.0
         if value_strategy is None:
-            value_strategy = NullEventStrategy()
+            value_strategy = NullStrategy()
         self.__value_strategy = value_strategy
         self.__coord = coordinate
 
