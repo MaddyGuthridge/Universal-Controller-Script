@@ -19,7 +19,11 @@ from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
 )
-from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
+from control_surfaces.matchers import (
+    BasicControlMatcher,
+    NoteMatcher,
+    NoteAfterTouchMatcher,
+)
 from devices import Device
 from devices.novation.launchkey.incontrol import (
     InControl,
@@ -77,6 +81,9 @@ class LaunchkeyMk3_25_37(Device):
         matcher.addControl(Mk3DirectionDownSilenced())
         matcher.addControl(Mk3DirectionLeft())
         matcher.addControl(Mk3DirectionRight())
+        # Note after-touch for drum pad
+        # TODO: Create custom type for it
+        matcher.addSubMatcher(NoteAfterTouchMatcher(...))
 
         super().__init__(matcher)
 
