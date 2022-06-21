@@ -59,7 +59,7 @@ class LogItem:
         index = f"[#{self.index:6d}]"
         time = formatTime(self.time)
         return \
-            f"{index}: {time} | {self.category.ljust(30)} : {self.message}"
+            f"{index}: {time} | {self.category} : {self.message}"
 
     def printDetails(self):
         """
