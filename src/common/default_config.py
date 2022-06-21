@@ -14,31 +14,9 @@ more details.
 from .logger import verbosity
 
 CONFIG = {
-    # Settings used during script initialization
-    "bootstrap": {
-        # Whether to skip sending sysex messages when attempting to recognize
-        # devices... will improve startup time for devices that don't support
-        # universal device enquiries, but will result in other devices
-        # breaking. Enabling this is not recommended.
-        "skip_enquiry": False,
-        # Whether sending the device enquiry message should be delayed
-        # until after initialization (workaround for a bug in FL 20.9.1)
-        "delay_enquiry": True,
-        # How long to wait after sending a universal device enquiry until the
-        # fallback device recognition method is used.
-        "detection_timeout": 3.0,
-        # Associations between device name (as shown in FL Studio) and device
-        # id to register (listed in class under getId() function)
-        # This can be used to skip using universal device enquiry messages, if
-        # necessary
-        "name_associations": [
-            # For example:
-            # ("my device name", "Manufacturer.Model.Mark.Variant")
-        ],
-    },
     # Settings to configure for controllers
     "controls": {
-        # The time for which a double press is valid
+        # The time for which a double press is valid in seconds
         "double_press_time": 0.3,
     },
     # Settings to configure plugins
@@ -59,6 +37,28 @@ CONFIG = {
             # * False: faders will map from 0-100%
             "allow_extended_volume": False
         },
+    },
+    # Settings used during script initialization
+    "bootstrap": {
+        # Whether to skip sending sysex messages when attempting to recognize
+        # devices... will improve startup time for devices that don't support
+        # universal device enquiries, but will result in other devices
+        # breaking. Enabling this is not recommended.
+        "skip_enquiry": False,
+        # Whether sending the device enquiry message should be delayed
+        # until after initialization (workaround for a bug in FL 20.9.1)
+        "delay_enquiry": True,
+        # How long to wait after sending a universal device enquiry until the
+        # fallback device recognition method is used, in seconds.
+        "detection_timeout": 3.0,
+        # Associations between device name (as shown in FL Studio) and device
+        # id to register (listed in class under getId() function)
+        # This can be used to skip using universal device enquiry messages, if
+        # necessary
+        "name_associations": [
+            # For example:
+            # ("my device name", "Manufacturer.Model.Mark.Variant")
+        ],
     },
     # Settings used for debugging
     "debug": {
@@ -92,12 +92,12 @@ CONFIG = {
     # Advanced settings for the script. Don't edit these unless you know what
     # you're doing, as they could cause the script to break, or behave badly.
     "advanced": {
-        # A span of time during which we expect the script to be ticked. If the
+        # Time in ms during which we expect the script to be ticked. If the
         # script doesn't tick during this time, then the script will consider
         # itself to be constrained by performance, and will drop the next tick
         # to prevent lag in FL Studio.
         "drop_tick_time": 100,
-        # A span of time for which a tick should be expected to complete. If
+        # Time in ms for which a tick should be expected to complete. If
         # ticking FL Studio takes longer than this, it will be recorded,
         # regardless of whether profiling is enabled.
         "slow_tick_time": 50,
