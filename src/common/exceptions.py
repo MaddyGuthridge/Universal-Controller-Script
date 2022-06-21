@@ -44,3 +44,7 @@ class EventInspectError(EventForwardError):
 
 class DeviceRecognizeError(UcsError):
     """Failed to recognize device"""
+
+
+class InvalidConfigError(UcsError):
+    """Errors in configuration"""

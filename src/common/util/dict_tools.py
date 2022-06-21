@@ -57,6 +57,13 @@ def recursiveMergeDictionaries(
     * `path` (`str`, optional): path of current setting, used to give
       meaningful exception info. Defaults to ''.
 
+    ### Raises:
+    * `KeyError`: invalid settings value
+
+    * `TypeError`: assign a value to a category
+
+    * `TypeError`: incorrect type for a value
+
     ### Returns:
     * `dict`: new dictionary representing the merged results
     """
@@ -68,9 +75,12 @@ def recursiveMergeDictionaries(
 
     for key, value in override.items():
         # Check for invalid settings value
-        key_path = path + '.' + key
+        if path == '':
+            key_path = key
+        else:
+            key_path = path + '.' + key
         if key not in ref:
-            raise KeyError(f"{ERROR_HEADER}: {key_path} is "
+            raise KeyError(f"{ERROR_HEADER}: `{key_path}` is "
                            f"not a valid settings value")
         ref_value = ref[key]
 
@@ -81,7 +91,7 @@ def recursiveMergeDictionaries(
             # But first, make sure that we're given the correct type of setting
             if type(value) is not dict:
                 raise TypeError(f"{ERROR_HEADER}: expected a category at "
-                                f"{key_path}, not a value")
+                                f"`{key_path}`, not a value")
             # Recurse and merge the result
             new[key] = recursiveMergeDictionaries(ref_value, value, key_path)
 
@@ -95,7 +105,7 @@ def recursiveMergeDictionaries(
             if not isinstance(ref_value, type(value)):
                 raise TypeError(f"{ERROR_HEADER}: expected a value of type "
                                 f"{type(ref_value)} for settings value at "
-                                f"{key_path}")
+                                f"`{key_path}`")
             new[key] = value  # deepcopy(value)
 
     # Finally return the new dictionary
@@ -114,6 +124,9 @@ def dictKeyRecursiveInsert(
     * `keys` (`list[str]`): keys to recurse to
     * `val` (any): value to insert
     * `key_full` (`str`): path to key, for use in exceptions
+
+    ### Raises:
+    * `KeyError`: duplicate key
     """
     if len(keys) == 1:
         if keys[0] in d:
@@ -152,6 +165,9 @@ def expandDictShorthand(d: dict[str, Any], path: str = '') -> dict:
     * `d` (`dict`): dictionary to expand
     * `path` (`str`, optional): path string to give meaningful exceptions.\
       Defaults to ''.
+
+    ### Raises:
+    * `KeyError`: duplicate key
 
     ### Returns:
     * `dict`: new dictionary that is expanded

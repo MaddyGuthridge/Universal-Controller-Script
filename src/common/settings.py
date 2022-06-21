@@ -19,15 +19,28 @@ import sys
 from typing import Any
 from .util import dict_tools
 from . import default_config as d
+from .exceptions import InvalidConfigError
 
 # Load the main config
 scripts_dir = \
-    '/'.join(__file__.replace('\\', '/').split('/')[:-2]) + '/ucs_config'
+    '/'.join(__file__.replace('\\', '/').split('/')[:-3]) + '/ucs_config'
 sys.path.append(scripts_dir)
+
+had_errors = False
+config_errors = ''
 try:
     from config import CONFIG  # type: ignore
 except ImportError:
+    # Failed to import - assume they don't have custom settings
     CONFIG = {}
+except SyntaxError as e:
+    CONFIG = {}
+    had_errors = True
+    config_errors = f'Syntax error: {e}'
+except Exception as e:
+    CONFIG = {}
+    had_errors = True
+    config_errors = f'Unknown error: {e}'
 
 
 class Settings:
@@ -43,9 +56,31 @@ class Settings:
         """
         Initialize and load the script's settings
         """
-        config = dict_tools.expandDictShorthand(CONFIG)
-        self._settings_dict = dict_tools.recursiveMergeDictionaries(
-            d.CONFIG, config)
+        self.__valid = True
+        self.__error_msg = ''
+        if had_errors:
+            self.__valid = False
+            self.__error_msg = config_errors
+            self._settings_dict = d.CONFIG
+            return
+        try:
+            config = dict_tools.expandDictShorthand(CONFIG)
+            self._settings_dict = dict_tools.recursiveMergeDictionaries(
+                d.CONFIG, config)
+        except (KeyError, TypeError) as e:
+            self.__valid = False
+            self.__error_msg = str(e)
+            self._settings_dict = d.CONFIG
+
+    def assert_loaded(self) -> None:
+        """
+        Raise an exception if settings didn't load correctly
+
+        ### Raises:
+        * `InvalidConfigError`: invalid config
+        """
+        if not self.__valid:
+            raise InvalidConfigError(self.__error_msg)
 
     @staticmethod
     def _recursiveGet(keys: list[str], settings: dict) -> Any:

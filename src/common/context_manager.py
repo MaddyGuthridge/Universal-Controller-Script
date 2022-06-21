@@ -94,6 +94,8 @@ class DeviceContextManager:
         ### Args:
         * `state` (`IScriptState`): state to initialize with
         """
+        # Ensure settings are valid
+        self.settings.assert_loaded()
         self.state = state
         state.initialize()
 

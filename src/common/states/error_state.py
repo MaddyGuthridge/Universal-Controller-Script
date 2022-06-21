@@ -19,6 +19,7 @@ from common.exceptions import (
     EventEncodeError,
     EventDecodeError,
     EventDispatchError,
+    InvalidConfigError,
 )
 from common.util.events import eventToString
 from . import IScriptState
@@ -79,6 +80,16 @@ ERROR_MAPPINGS: dict[type[Exception], dict] = {
             f"({consts.ISSUES_PAGE})."
         )
     },
+    InvalidConfigError: {
+        "category": "bootstrap.initialize",
+        "msg": "Failed to load custom settings",
+        "verbosity": verbosity.CRITICAL,
+        "detailed_msg": (
+            "An error occurred when loading the script's configuration file. "
+            "This usually means that you've entered invalid options, or have "
+            "a syntax error in your configuration file."
+        )
+    },
 }
 
 DEFAULT_ERROR = {
@@ -104,6 +115,11 @@ class ErrorState(IScriptState):
     def initialize(self) -> None:
         error_info = ERROR_MAPPINGS.get(type(self.__exception), DEFAULT_ERROR)
         log(**error_info)
+        log(
+            "general",
+            f"Error details: {self.__exception}",
+            verbosity.WARNING,
+        )
         ui.setHintMsg("[UCS] error: see script output")
 
     def deinitialize(self) -> None:
