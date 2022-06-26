@@ -9,7 +9,7 @@ flake8==4.0.1
 iniconfig==1.1.1
 isort==5.10.1
 lazy-object-proxy==1.7.1
-mccabe==0.6.1
+mccabe==0.7.0
 mypy==0.961
 mypy-extensions==0.4.3
 packaging==21.3
