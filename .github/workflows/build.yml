@@ -15,5 +15,5 @@ jobs:
         python-version: 3.9
     - uses: actions/upload-artifact@v3
       with:
-        name: UniversalController.zip
+        name: 'UniversalController'
         path: src
