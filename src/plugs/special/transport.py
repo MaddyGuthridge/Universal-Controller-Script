@@ -1,10 +1,14 @@
 """
 plugs > special > transport
 
-Contains the definition for the transport plugin
+Contains the definition for the transport plugin, which provides mappings for
+transport controls such as play and stop.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import transport
@@ -12,14 +16,15 @@ import ui
 
 from typing import Any
 
-from common.extensionmanager import ExtensionManager
+from common.extension_manager import ExtensionManager
 from common.types import Color
-from common.util.apifixes import UnsafeIndex
-from controlsurfaces import (
+from control_surfaces import (
     ControlShadowEvent,
-    NullEvent,
+    NullControl,
     PlayButton,
     StopButton,
+    FastForwardButton,
+    RewindButton,
     DirectionNext,
     DirectionPrevious,
     NavigationButton,
@@ -33,21 +38,30 @@ from controlsurfaces import (
     MetronomeButton,
     HintMsg,
 )
+from control_surfaces.control_shadow import ControlShadow
 from devices import DeviceShadow
 from plugs import SpecialPlugin
-from plugs.eventfilters import filterButtonLift
+from plugs.event_filters import filterButtonLift
+from plugs.mapping_strategies import DirectionStrategy, JogStrategy
+
+# Constants
+FAST_FORWARDING = 1
+REWINDING = -1
+NORMAL_SPEED = 0
+
+# Color definitions
 
 OFF = Color()
-GRAY = Color.fromInteger(0x606060)
-ON = Color.fromInteger(0xFFFFFF)
+GRAY = Color.fromInteger(0x606060, 0.3, False)
+ON = Color.fromInteger(0xFFFFFF, 1.0, True)
 
-SONG_COLOR = Color.fromInteger(0x45A147)
-PAT_COLOR = Color.fromInteger(0xF78F41)
-REC_COLOR = Color.fromInteger(0xAF0000)
-STOP_COLOR = Color.fromInteger(0xB9413E)
+SONG_COLOR = Color.fromInteger(0x45A147, 0.6, True)
+PAT_COLOR = Color.fromInteger(0xF78F41, 0.6, True)
+REC_COLOR = Color.fromInteger(0xAF0000, 1.0, True)
+STOP_COLOR = Color.fromInteger(0xB9413E, 1.0, True)
 
-BEAT_SONG_COLOR = Color.fromInteger(0x00A0F0)
-BEAT_PAT_COLOR = Color.fromInteger(0xA43A37)
+BEAT_SONG_COLOR = Color.fromInteger(0x00A0F0, 1.0, True)
+BEAT_PAT_COLOR = Color.fromInteger(0xA43A37, 1.0, True)
 
 
 def getPatSongCol() -> Color:
@@ -60,13 +74,16 @@ def getPatSongCol() -> Color:
 def getBeatColor(off: Color) -> Color:
     beat = transport.getHWBeatLEDState()
     # print(beat)
+    # odd number -> off beat
     if beat % 2 == 1:
         return off
+    # 0 -> new bar
     elif beat == 0:
         if transport.getLoopMode():
             return BEAT_SONG_COLOR
         else:
             return BEAT_PAT_COLOR
+    # -> new beat
     else:
         return getPatSongCol()
 
@@ -79,105 +96,70 @@ class Transport(SpecialPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
-        shadow.bindMatches(NullEvent, self.nullEvent, raise_on_failure=False)
-        self._play = shadow.bindMatch(
-            PlayButton, self.playButton, raise_on_failure=False
-        )
-        self._stop = shadow.bindMatch(
-            StopButton, self.stopButton, raise_on_failure=False
-        )
-        self._rec = shadow.bindMatch(
-            RecordButton, self.recButton, raise_on_failure=False
-        )
-        self._loop = shadow.bindMatch(
-            LoopButton, self.loopButton, raise_on_failure=False
-        )
-        self._metronome = shadow.bindMatch(
-            MetronomeButton, self.metroButton, raise_on_failure=False
-        )
-        self._navigation = shadow.bindMatches(
-            NavigationButton, self.navigationButtons, raise_on_failure=False
-        )
-        self._hint = shadow.bindMatch(
-            HintMsg, self.nullEvent, raise_on_failure=False
-        )
-        super().__init__(shadow, [])
+        shadow.bindMatches(NullControl, self.nullEvent)
+        shadow.bindMatch(PlayButton, self.playButton, self.tickPlay)
+        # Need to be able to determine whether the stop button is assigned
+        self._stop = shadow.bindMatch(StopButton, self.stopButton,
+                                      self.tickStop)
+        shadow.bindMatch(RecordButton, self.recButton, self.tickRec)
+        shadow.bindMatch(LoopButton, self.loopButton, self.tickLoop)
+        shadow.bindMatch(MetronomeButton, self.metroButton, self.tickMetro)
+        shadow.bindMatch(HintMsg, self.nullEvent, self.tickHint)
+        shadow.bindMatch(FastForwardButton, self.fastForward, self.tickFf)
+        shadow.bindMatch(RewindButton, self.rewind, self.tickRw)
+        shadow.bindMatches(NavigationButton, self.navButtons)
+        # Whether we're fast forwarding or rewinding
+        self._playback_ff_rw = 0
+        super().__init__(shadow, [
+            DirectionStrategy(),
+            JogStrategy(),
+        ])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
         return cls(shadow)
 
-    @staticmethod
-    def shouldBeActive() -> bool:
+    @classmethod
+    def shouldBeActive(cls) -> bool:
         return True
 
-    @filterButtonLift
-    def playButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
-        transport.start()
+    @filterButtonLift()
+    def playButton(self, *args: Any) -> bool:
+        # If there's no stop button, this should behave like a stop button
+        # when playing
+        if not self._stop.isBound() and transport.isPlaying():
+            transport.stop()
+        else:
+            transport.start()
         return True
 
-    @filterButtonLift
-    def stopButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    @filterButtonLift()
+    def stopButton(self, *args: Any) -> bool:
         transport.stop()
         return True
 
-    @filterButtonLift
-    def recButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    @filterButtonLift()
+    def recButton(self, *args: Any) -> bool:
         transport.record()
         return True
 
-    @filterButtonLift
-    def loopButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    @filterButtonLift()
+    def loopButton(self, *args: Any) -> bool:
         transport.setLoopMode()
         return True
 
-    @filterButtonLift
-    def metroButton(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    @filterButtonLift()
+    def metroButton(self, *args: Any) -> bool:
         transport.globalTransport(110, 1)
         return True
 
-    def nullEvent(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    def nullEvent(self, *args: Any) -> bool:
         """Handle NullEvents for which no action should be taken
         """
         return True
 
-    @filterButtonLift
-    def navigationButtons(
-        self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
-        *args: Any
-    ) -> bool:
+    @filterButtonLift()
+    def navButtons(self, control: ControlShadowEvent, *args: Any) -> bool:
         c_type = type(control.getControl())
         if c_type == DirectionUp:
             ui.up()
@@ -197,50 +179,65 @@ class Transport(SpecialPlugin):
             return False
         return True
 
-    def tick(self):
-        self.tickLoopMode()
-        self.tickPlayback()
-        self.tickRec()
-        self.tickMetro()
-        self.tickHint()
+    def fastForward(self, control: ControlShadowEvent, *args: Any,) -> bool:
+        val = control.value != 0
+        transport.fastForward(2 if val else 0)
+        self._playback_ff_rw = FAST_FORWARDING if val else 0
+        return True
 
-    def tickPlayback(self):
-        """Color play and stop buttons"""
-        # Playback on
+    def rewind(self, control: ControlShadowEvent, *args: Any,) -> bool:
+        val = control.value != 0
+        transport.rewind(2 if val else 0)
+        self._playback_ff_rw = REWINDING if val else 0
+        return True
+
+    def tickPlay(self, control: ControlShadow, *args):
         if transport.isPlaying():
-            if self._play is not None:
-                self._play.color = getBeatColor(off=GRAY)
-            if self._stop is not None:
-                self._stop.color = STOP_COLOR
-        # Playback off
+            control.color = getBeatColor(off=GRAY)
         else:
-            if self._play is not None:
-                self._play.color = OFF
-            if self._stop is not None:
-                self._stop.color = GRAY
+            control.color = GRAY
 
-    def tickLoopMode(self):
+    def tickStop(self, control: ControlShadow, *args):
+        if transport.isPlaying():
+            control.color = GRAY
+        else:
+            control.color = STOP_COLOR
+
+    def tickLoop(self, control: ControlShadow, *args):
         """Color loop mode button"""
-        if self._loop is not None:
-            self._loop.color = getPatSongCol()
+        control.color = getPatSongCol()
 
-    def tickRec(self):
+    def tickRec(self, control: ControlShadow, *args):
         """Color record button"""
-        if self._rec is not None:
-            self._rec.color = REC_COLOR if transport.isRecording() else GRAY
+        control.color = REC_COLOR if transport.isRecording() else GRAY
 
-    def tickMetro(self):
+    def tickMetro(self, control: ControlShadow, *args):
         """Color metronome button"""
-        if self._metronome is not None:
-            if ui.isMetronomeEnabled():
-                self._metronome.color = getBeatColor(GRAY)
+        if ui.isMetronomeEnabled():
+            if transport.isPlaying():
+                control.color = getBeatColor(GRAY)
             else:
-                self._metronome.color = OFF
+                control.color = ON
+        else:
+            control.color = GRAY
 
-    def tickHint(self):
+    def tickHint(self, control: ControlShadow, *args):
         """Set hint message"""
-        if self._hint is not None:
-            self._hint.annotation = ui.getHintMsg()
+        control.annotation = ui.getHintMsg()
+
+    def tickFf(self, control: ControlShadow, *args):
+        """Fast forward"""
+        if self._playback_ff_rw == FAST_FORWARDING:
+            control.color = ON
+        else:
+            control.color = GRAY
+
+    def tickRw(self, control: ControlShadow, *args):
+        """Rewind"""
+        if self._playback_ff_rw == REWINDING:
+            control.color = ON
+        else:
+            control.color = GRAY
 
 
-ExtensionManager.registerSpecialPlugin(Transport)
+ExtensionManager.special.register(Transport)

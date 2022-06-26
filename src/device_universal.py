@@ -1,17 +1,22 @@
 # name=Universal Controller
 # url=https://forum.image-line.com/viewtopic.php?f=1994&t=274277
 # receiveFrom=Universal Event Forwarder
-"""device_universal.py
+"""
+device_universal
 
 The entrypoint for the universal controller script.
-It is responsible for event parsing, forwarding, script initialisation, and
+It is responsible for event parsing, forwarding, script initialization, and
 contains a context object used throughout the script.
 
-This entire script is licensed under GPL v3. Refer to the `LICENSE` file for a
-full copy.
-
 Refer to module `common.consts` for a list of authors for the project
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
+# Disable flake8 on this file: it gets too mad at us
 # flake8: noqa
 
 # Add our additional includes to the Python environment
@@ -20,7 +25,7 @@ import fl_typing
 # Get context, and context reset wrapper
 from common import getContext, catchContextResetException, getVersionString
 # Function to allow user to reset context
-from common.contextmanager import unsafeResetContext as reset
+from common.context_manager import unsafeResetContext as reset
 # Import constants and logger
 from common import consts, log, verbosity, ExtensionManager
 # Import verbosities
@@ -31,17 +36,17 @@ from common.util.events import eventToString
 from common.states import WaitingForDevice, MainState
 
 # Import console helpers
-from common.util.consolehelpers import *
+from common.util.console_helpers import *
 
 
 class OverallDevice:
     @catchContextResetException
     def onInit(self) -> None:
-        getContext().initialise(WaitingForDevice(MainState))
+        getContext().initialize(WaitingForDevice(MainState))
 
     @catchContextResetException
     def onDeinit(self) -> None:
-        getContext().deinitialise()
+        getContext().deinitialize()
 
     @catchContextResetException
     def onMidiIn(self, event) -> None:
@@ -56,35 +61,35 @@ class OverallDevice:
         log("bootstrap.initialize", "Load success", verbosity.INFO)
         print(consts.ASCII_HEADER_ART)
         print(f"Universal Controller Script: v{getVersionString()}")
-        print(ExtensionManager.getInfo())
+        print(ExtensionManager.getBasicInfo())
         print("Type `help` for help using the script\n")
 
 
-device = OverallDevice()
+dev = OverallDevice()
 
 
 def OnInit():
-    device.onInit()
+    dev.onInit()
 
 
 def OnDeInit():
-    device.onDeinit()
+    dev.onDeinit()
 
 
 def OnMidiIn(event):
-    device.onMidiIn(event)
+    dev.onMidiIn(event)
 
 
 def OnIdle():
-    device.onIdle()
+    dev.onIdle()
 
 
 def OnRefresh(flags: int):
-    device.onIdle()
+    dev.onIdle()
 
 
 def bootstrap():
-    device.bootstrap()
+    dev.bootstrap()
 
 
 if __name__ == "__main__":

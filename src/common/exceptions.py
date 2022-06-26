@@ -2,6 +2,12 @@
 common > exceptions
 
 Contains definitions for custom exceptions used by the script.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 
@@ -11,9 +17,13 @@ class UcsException(Exception):
     """
 
 
-class EventForwardError(UcsException):
-    """Errors to do with forwarding events
+class UcsError(UcsException):
+    """Base type for critical errors within the universal controller script
     """
+
+
+class EventForwardError(UcsError):
+    """Errors to do with forwarding events"""
 
 
 class EventEncodeError(EventForwardError):
@@ -32,5 +42,9 @@ class EventInspectError(EventForwardError):
     """Insufficient or incorrect information to inspect event"""
 
 
-class DeviceRecogniseError(UcsException):
-    """Failed to recognise device"""
+class DeviceRecognizeError(UcsError):
+    """Failed to recognize device"""
+
+
+class InvalidConfigError(UcsError):
+    """Errors in configuration"""

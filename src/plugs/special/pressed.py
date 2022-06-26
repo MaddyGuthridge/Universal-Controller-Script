@@ -1,18 +1,21 @@
 """
 plugs > special > pressed
 
-Contains the definition for the press plugin
+Contains the definition for the press plugin, which is responsible for coloring
+control surfaces when they are pressed
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import Any
 from time import time
 from common.types import Color
-from common.extensionmanager import ExtensionManager
-from common.util.apifixes import UnsafeIndex
-from controlsurfaces import (
+from common.extension_manager import ExtensionManager
+from control_surfaces import (
     DrumPad,
     Button,
     Note,
@@ -23,7 +26,7 @@ from controlsurfaces import (
     PitchWheel,
     ControlSurface,
 )
-from controlsurfaces import ControlShadow, ControlShadowEvent
+from control_surfaces import ControlShadow
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 
@@ -43,7 +46,7 @@ def fadeOverTime(control: ControlSurface) -> float:
 
 class Press(SpecialPlugin):
     """
-    Used to add colours to each control surface when it is pressed or recently
+    Used to add colors to each control surface when it is pressed or recently
     tweaked.
     """
 
@@ -78,8 +81,8 @@ class Press(SpecialPlugin):
         )
         super().__init__(shadow, [])
 
-    @staticmethod
-    def shouldBeActive() -> bool:
+    @classmethod
+    def shouldBeActive(cls) -> bool:
         return True
 
     @classmethod
@@ -88,13 +91,11 @@ class Press(SpecialPlugin):
 
     def any(
         self,
-        control: ControlShadowEvent,
-        index: UnsafeIndex,
         *args: Any
     ) -> bool:
         return False
 
-    def tick(self):
+    def tick(self, *args):
         self.tickVelocities()
         self.tickButtons()
         self.tickOthers()
@@ -120,4 +121,4 @@ class Press(SpecialPlugin):
             c.color = Color.fade(OFF, ON, fadeOverTime(control))
 
 
-ExtensionManager.registerFinalSpecialPlugin(Press)
+ExtensionManager.final.register(Press)

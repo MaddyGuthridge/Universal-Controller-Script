@@ -13,9 +13,10 @@ __all__ = [
     'SpecialPlugin',
     'StandardPlugin',
     'WindowPlugin',
+    'PluginPager',
 ]
 
-from .mappingstrategies import (
+from .mapping_strategies import (
     IMappingStrategy,
     NoteStrategy,
     PedalStrategy,
@@ -23,6 +24,7 @@ from .mappingstrategies import (
 )
 
 from .plugin import Plugin, SpecialPlugin, StandardPlugin, WindowPlugin
+from .pager import PluginPager
 
 # Register plugins
 from . import (

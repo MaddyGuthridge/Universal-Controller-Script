@@ -2,6 +2,12 @@
 common > util > misc
 
 Miscellaneous tools and things
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 import math
@@ -78,3 +84,18 @@ def formatLongTime(t: float) -> str:
     t_obj = time.localtime(t)
     ms = f"{t - math.floor(t):.3}".lstrip("0.")
     return f"{t_obj.tm_hour:02}:{t_obj.tm_min:02}:{t_obj.tm_sec:02}.{ms}"
+
+
+def clamp(value: float, lower: float, upper: float) -> float:
+    """
+    Clamp value between lower and upper
+
+    ### Args:
+    * `value` (`float`): value to clamp
+    * `lower` (`float`): lowest allowed value
+    * `upper` (`float`): greatest allowed value
+
+    ### Returns:
+    * `float`: clamped value
+    """
+    return min(max(value, lower), upper)

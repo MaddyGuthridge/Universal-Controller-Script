@@ -10,9 +10,11 @@
 ### Args:
 {{#args}}
 * `{{var}}` (`{{typePlaceholder}}`): {{descriptionPlaceholder}}
+
 {{/args}}
 {{#kwargs}}
 * `{{var}}` (`{{typePlaceholder}}`, optional): {{descriptionPlaceholder}}. Defaults to `{{&default}}`.
+
 {{/kwargs}}
 {{/parametersExist}}
 
@@ -20,6 +22,7 @@
 ### Raises:
 {{#exceptions}}
 * `{{type}}`: {{descriptionPlaceholder}}
+
 {{/exceptions}}
 {{/exceptionsExist}}
 
@@ -27,6 +30,7 @@
 ### Returns:
 {{#returns}}
 * `{{typePlaceholder}}`: {{descriptionPlaceholder}}
+
 {{/returns}}
 {{/returnsExist}}
 
@@ -34,5 +38,6 @@
 ### Yields:
 {{#yields}}
 * `{{typePlaceholder}}`: {{descriptionPlaceholder}}
+
 {{/yields}}
 {{/yieldsExist}}

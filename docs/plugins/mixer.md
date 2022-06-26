@@ -3,6 +3,10 @@
 
 Basic mappings to FL Studio's mixer window.
 
+Note that all controls map to the selected tracks. Changing the selection will
+change which tracks are affected by the changes. The affected tracks will be
+highlighted using a red rectangle on the mixer window.
+
 ## Mappings
 * Faders to volume of highlighted tracks
 * Knobs to pan of highlighted tracks

@@ -1,3 +1,16 @@
+"""
+devices > maudio > hammer88pro > mackie_mappings
+
+Random notes on how the Hammer 88 pro behaves when using its standard Mackie
+mappings. May be used in the future to reduce the setup complexity for the
+Hammer 88 Pro controller.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 
 {
     (0xB0, 0x0F, 0x00-7): {  # data2 refers to fader button number
