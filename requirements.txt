@@ -1,6 +1,6 @@
 astroid==2.9.2
 atomicwrites==1.4.0
-attrs==21.2.0
+attrs==21.4.0
 autopep8==1.6.0
 colorama==0.4.4
 coverage==6.4.1
