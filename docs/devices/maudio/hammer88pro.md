@@ -3,8 +3,8 @@
 
 ## Setup
 
-In order for the controller to work correctly, DAW and Preset configurations
-need to be sent to the device.
+Continuing from the primary setup instructions. In order for the controller to
+work correctly, DAW and Preset configurations need to be sent to the device.
 
 1.  Download the preset files for the controller from
     [the script resources folder](../../../resources/deviceconfigs/maudio/hammer88pro/)
@@ -54,5 +54,4 @@ When it is used normally, it will change selections and scroll. If it is turned
 while pressed, it will either move items, or scroll along a different axis.
 
 ## Who to contact
-This device is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
-Discord: ***HDSQ#2154***.
+This device is maintained by Miguel Guthridge. Discord: ***HDSQ#2154***.

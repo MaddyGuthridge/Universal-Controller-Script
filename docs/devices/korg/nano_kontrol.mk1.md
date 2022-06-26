@@ -21,5 +21,4 @@ be bound correctly. Follow the instructions in the
   switches between plugin modes for support plugins.
 
 ## Who to contact
-This device is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
-Discord: ***HDSQ#2154***.
+This device is maintained by Miguel Guthridge. Discord: ***HDSQ#2154***.

@@ -3,6 +3,8 @@
 
 ## Setup
 
+Continuing from the primary setup instructions.
+
 1. Assign the second MIDI port for your device to the Universal Event
    Forwarder.
 
