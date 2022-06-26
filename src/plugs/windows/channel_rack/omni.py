@@ -1,0 +1,72 @@
+"""
+plugs > windows > channel_rack > omni
+
+Omni preview mode for channel
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
+
+from typing import Any
+import channels
+from common.types.color import Color
+from common.plug_indexes import UnsafeIndex
+from control_surfaces import ControlShadowEvent
+from control_surfaces import (
+    DrumPad,
+)
+from devices import DeviceShadow
+from plugs import WindowPlugin
+from .helpers import coordToIndex, INDEX
+
+
+class OmniPreview(WindowPlugin):
+    """
+    used to process omni preview mode
+    """
+
+    def __init__(self, shadow: DeviceShadow) -> None:
+        self._drums = \
+            shadow.bindMatches(DrumPad, self.drumPads)
+        super().__init__(shadow, [])
+
+    @classmethod
+    def getWindowId(cls) -> int:
+        return INDEX
+
+    @classmethod
+    def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
+        return cls(shadow)
+
+    def drumPads(
+        self,
+        control: ControlShadowEvent,
+        idx: UnsafeIndex,
+        *args: Any
+    ) -> bool:
+        """Bind drum pads to omni preview"""
+        try:
+            idx = channels.getChannelIndex(
+                coordToIndex(control.getShadow())
+            )
+        except TypeError:  # Index out of range
+            return True
+        channels.midiNoteOn(
+            idx,
+            60,
+            int(control.value * 127),
+            control.channel
+        )
+        return True
+
+    def tick(self, *args):
+        """Set colors and annotations for omni preview"""
+        for drum in self._drums:
+            index = coordToIndex(drum)
+            if index == -1:
+                continue
+            drum.color = Color.fromInteger(channels.getChannelColor(index))
+            drum.annotation = channels.getChannelName(index)

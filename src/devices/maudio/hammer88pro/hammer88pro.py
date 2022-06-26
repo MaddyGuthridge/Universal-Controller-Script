@@ -5,25 +5,30 @@ Device definitions for M-Audio Hammer 88 Pro
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
-"""
 
-from typing import Optional
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 
 import device
 
 from common import getContext
-from common.eventpattern import (
+from control_surfaces.event_patterns import (
     BasicPattern,
     ForwardedPattern,
     ForwardedUnionPattern,
     NotePattern,
 )
-from common.extensionmanager import ExtensionManager
-from common.types import EventData
-from devices import Device, BasicControlMatcher
-from devices.controlgenerators import NoteMatcher, PedalMatcher
-from controlsurfaces import (
-    NullEvent,
+from common.extension_manager import ExtensionManager
+from fl_classes import FlMidiMsg
+from devices import Device
+from control_surfaces.matchers import (
+    BasicControlMatcher,
+    NoteMatcher,
+    PedalMatcher,
+)
+from control_surfaces import (
+    NullControl,
     Fader,
     MasterFader,
     Knob,
@@ -45,7 +50,7 @@ from controlsurfaces import (
     ArmButton,
     SelectButton,
 )
-from controlsurfaces.valuestrategies import (
+from control_surfaces.value_strategies import (
     ForwardedStrategy,
     ForwardedUnionStrategy,
     ButtonData2Strategy,
@@ -53,8 +58,8 @@ from controlsurfaces.valuestrategies import (
     NoteStrategy,
 )
 
-from .hammerpitch import HammerPitchWheel
-from .jogmatcher import JogMatcher
+from .hammer_pitch import HammerPitchWheel
+from .jog_matcher import JogMatcher
 
 
 class Hammer88Pro(Device):
@@ -68,20 +73,20 @@ class Hammer88Pro(Device):
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
         # Null events
-        matcher.addControl(NullEvent(
+        matcher.addControl(NullControl(
             BasicPattern(0xFA, 0x0, 0x0)
         ))
-        matcher.addControl(NullEvent(
+        matcher.addControl(NullControl(
             BasicPattern(0xFC, 0x0, 0x0)
         ))
         # Switch fader button types
         # TODO: When adding lighting, map this to a refresh command?
-        matcher.addControl(NullEvent(
+        matcher.addControl(NullControl(
             BasicPattern(0xBF, range(0x39, 0x3D+1), ...)
         ))
 
         # Active switches
-        getContext().active.setSplitWindowsPlugins(True)
+        getContext().activity.setSplitWindowsPlugins(True)
         matcher.addControl(SwitchActiveWindowButton(
             ForwardedPattern(3, BasicPattern(0xBF, 0x6E, ...)),
             ForwardedStrategy(ButtonData2Strategy())
@@ -97,7 +102,7 @@ class Hammer88Pro(Device):
         # Notes and pedals
         matcher.addSubMatcher(NoteMatcher())
         matcher.addSubMatcher(PedalMatcher())
-        matcher.addControl(ChannelAfterTouch())
+        matcher.addControl(ChannelAfterTouch.fromChannel(...))
 
         # Drum pads (high priority because they just use note on events)
         matcher.addControls([
@@ -187,19 +192,23 @@ class Hammer88Pro(Device):
 
         super().__init__(matcher)
 
-    @staticmethod
-    def getDrumPadSize() -> tuple[int, int]:
+    @classmethod
+    def getDrumPadSize(cls) -> tuple[int, int]:
         return 2, 8
 
     @classmethod
-    def create(cls, event: Optional[EventData]) -> Device:
+    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
         return cls()
 
     def getId(self) -> str:
         return "Maudio.Hammer88Pro"
 
-    @staticmethod
-    def getUniversalEnquiryResponsePattern():
+    @classmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        return ("Maudio.Hammer88Pro",)
+
+    @classmethod
+    def getUniversalEnquiryResponsePattern(cls):
         return BasicPattern(
             [
                 0xF0,  # Sysex start
@@ -216,11 +225,6 @@ class Hammer88Pro(Device):
             ]
         )
 
-    @staticmethod
-    def matchDeviceName(name: str) -> bool:
-        """Controller can't be matched to FL device name"""
-        return False
-
     def getDeviceNumber(self) -> int:
         name = device.getName()
 
@@ -235,4 +239,4 @@ class Hammer88Pro(Device):
             raise TypeError("Couldn't find a mapping for device name") from e
 
 
-ExtensionManager.registerDevice(Hammer88Pro)
+ExtensionManager.devices.register(Hammer88Pro)

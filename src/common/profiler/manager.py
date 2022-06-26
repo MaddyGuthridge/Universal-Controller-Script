@@ -2,12 +2,18 @@
 common > profiler > manager
 
 Contains the profiler manager
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import Optional
 import time
 
-from common.util.consolehelpers import NoneNoPrintout
+from common.util.console_helpers import NoneNoPrintout
 
 MAX_NAME = 48
 
@@ -16,7 +22,8 @@ class ProfileNode:
     """
     A node in the profiler
 
-    Manages our position in the profile
+    Manages our position in the profile by allowing us to build a stack of
+    profiler nodes.
     """
     def __init__(self, parent: Optional['ProfileNode'], name: str):
         """
@@ -69,7 +76,10 @@ class ProfileNode:
 
 class ProfilerManager:
     """
-    Class for managing profiles
+    Class for managing profiles.
+
+    It is called upon by profiler context managers in order to manage
+    profiling.
     """
     @staticmethod
     def _getProfileName(n: ProfileNode) -> str:
@@ -79,12 +89,26 @@ class ProfilerManager:
             return ProfilerManager._getProfileName(n.parent) + "." + n.name
 
     def __init__(self, print_traces: bool) -> None:
+        """
+        Create a ProfilerManager
+
+        ### Args:
+        * `print_traces` (`bool`): whether to print the trace of which profiles
+          are entered and exited. This has a massive performance impact, but
+          can be helpful when debugging crashes in FL Studio's API.
+        """
         self._print = print_traces
+        # Current profiler node
         self._current: Optional[ProfileNode] = None
+        # Current depth of the profiler
         self._depth = 0
+        # Name of the longest category
         self._max_name = 0
+        # Total times from each profiler
         self._totals: dict[str, float] = {}
+        # Number of samples from each profiler
         self._number: dict[str, float] = {}
+        # Max times from each profiler
         self._maxes: dict[str, float] = {}
 
     def __repr__(self) -> str:
@@ -159,3 +183,21 @@ class ProfilerManager:
             )
         print()
         return NoneNoPrintout
+
+    def getTotals(self):
+        """
+        Return a dictionary with the total times for each category
+        """
+        return self._totals
+
+    def getNumbers(self):
+        """
+        Return a dictionary with the total times for each category
+        """
+        return self._number
+
+    def getMaxes(self):
+        """
+        Return a dictionary with the total times for each category
+        """
+        return self._maxes

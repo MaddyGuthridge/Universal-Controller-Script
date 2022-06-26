@@ -2,12 +2,18 @@
 common > util > events
 
 Contains useful functions for operating on events.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 from typing import TYPE_CHECKING
 import common
 import device
-from common.types.eventdata import EventData, isEventStandard, isEventSysex
+from fl_classes import FlMidiMsg, isMidiMsgStandard, isMidiMsgSysex
 from common.exceptions import (
     EventEncodeError,
     EventInspectError,
@@ -37,7 +43,7 @@ def getDeviceNum() -> int:
     return common.getContext().getDevice().getDeviceNumber()
 
 
-def isEventForwarded(event: EventData) -> bool:
+def isEventForwarded(event: FlMidiMsg) -> bool:
     """
     Returns whether an event was forwarded from the Universal Event Forwarder
     script
@@ -45,14 +51,14 @@ def isEventForwarded(event: EventData) -> bool:
     Note that the event isn't necessarily directed towards this device
 
     ### Args:
-    * `event` (`eventData`): event to check
+    * `event` (`FlMidiMsg`): event to check
 
     ### Returns:
     * `bool`: whether it was forwarded
     """
     # Check if the event is a forwarded one
     # Look for 0xF0 and 0x7D
-    if not isEventSysex(event) \
+    if not isMidiMsgSysex(event) \
             or not event.sysex.startswith(bytes([0xF0, 0x7D])):
         return False
     else:
@@ -73,13 +79,13 @@ def getForwardedEventHeader() -> bytes:
        + bytes([0])
 
 
-def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
+def encodeForwardedEvent(event: FlMidiMsg, device_num: int = -1) -> bytes:
     """
     Encode an event such that it can be forwarded to the main script from
     auxiliary scripts or to an auxiliary script from the main script
 
     ### Args:
-    * `event` (`EventData`): event to encode
+    * `event` (`FlMidiMsg`): event to encode
     * `device_num` (`int`, optional): device number to target. Defaults to
       `-1`.
 
@@ -101,7 +107,7 @@ def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
 
     sysex = getForwardedEventHeader() + bytes([device_num])
 
-    if isEventStandard(event):
+    if isMidiMsgStandard(event):
         return sysex + bytes([0]) + bytes([
             event.data2,
             event.data1,
@@ -110,55 +116,82 @@ def encodeForwardedEvent(event: EventData, device_num: int = -1) -> bytes:
         ])
     else:
         if TYPE_CHECKING:  # TODO: Find a way to make this unnecessary
-            assert isEventSysex(event)
+            assert isMidiMsgSysex(event)
         return sysex + bytes([1]) + bytes(event.sysex)
 
 
-def _getForwardedNameEndIdx(event: EventData) -> int:
+def _getForwardedNameEndIdx(event: FlMidiMsg) -> int:
     """
     Returns the index of the null zero of a forwarded event's name
 
     ### Args:
-    * `event` (`eventData`): event
+    * `event` (`FlMidiMsg`): event
 
     ### Returns:
     * `int`: index of null zero
     """
-    assert isEventSysex(event)
+    assert isMidiMsgSysex(event)
     return event.sysex.index(b'\0')
 
 
-def isEventForwardedHere(event: EventData) -> bool:
+def getEventForwardedTo(event: FlMidiMsg) -> str:
+    """
+    Returns the name of the device that this event is targeting
+
+    ### Args:
+    * `event` (`FlMidiMsg`): event
+
+    ### Returns:
+    * `str`: device name
+    """
+    assert isMidiMsgSysex(event)
+    return event.sysex[2:_getForwardedNameEndIdx(event)].decode()
+
+
+def isEventForwardedHere(event: FlMidiMsg) -> bool:
     """
     Returns whether an event was forwarded from the Universal Event Forwarder
     script from a controller directed to this particular script
 
     ### Args:
-    * `event` (`eventData`): event to check
+    * `event` (`FlMidiMsg`): event to check
 
     ### Returns:
     * `bool`: whether it was forwarded
     """
     if not isEventForwarded(event):
         return False
-    assert isEventSysex(event)
 
     if (
-        event.sysex[2:_getForwardedNameEndIdx(event)].decode()
+        getEventForwardedTo(event)
         != getDeviceId()
     ):
         return False
     return True
 
 
-def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
+def getEventDeviceNum(event: FlMidiMsg) -> int:
+    """
+    Returns the device number that a forwarded event is targeting or from
+
+    ### Args:
+    * `event` (`FlMidiMsg`): event
+
+    ### Returns:
+    * `int`: device number
+    """
+    assert isMidiMsgSysex(event)
+    return event.sysex[_getForwardedNameEndIdx(event) + 1]
+
+
+def isEventForwardedHereFrom(event: FlMidiMsg, device_num: int = -1) -> bool:
     """
     Returns whether an event was forwarded from a particular instance of the
     Universal Event Forwarder script, or is directed to a controller with this
     device number
 
     ### Args:
-    * `event` (`eventData`): event to check
+    * `event` (`FlMidiMsg`): event to check
     * `device_num` (`int`, optional): device number to match (defaults to the
       device number of this script, must be provided on main script)
 
@@ -175,14 +208,13 @@ def isEventForwardedHereFrom(event: EventData, device_num: int = -1) -> bool:
     if not isEventForwardedHere(event):
         return False
 
-    assert isEventSysex(event)
-    if device_num != event.sysex[_getForwardedNameEndIdx(event) + 1]:
+    if device_num != getEventDeviceNum(event):
         return False
 
     return True
 
 
-def decodeForwardedEvent(event: EventData, type_idx: int = -1) -> EventData:
+def decodeForwardedEvent(event: FlMidiMsg, type_idx: int = -1) -> FlMidiMsg:
     """
     Given a forwarded event, decode it and return the original event
 
@@ -190,37 +222,37 @@ def decodeForwardedEvent(event: EventData, type_idx: int = -1) -> EventData:
     so no additional checks are made.
 
     ### Args:
-    * `event` (`eventData`): event to decode
+    * `event` (`FlMidiMsg`): event to decode
     * `type_idx` (`int`, optional): index of event type flag, if known.
       Defaults to `-1`.
 
     ### Returns:
-    * `eventData`: decoded data
+    * `FlMidiMsg`: decoded data
     """
     if not isEventForwarded(event):
         raise EventDecodeError(f"Event not forwarded: {eventToString(event)}")
-    assert isEventSysex(event)
+    assert isMidiMsgSysex(event)
     if type_idx == -1:
         type_idx = _getForwardedNameEndIdx(event) + 2
 
     if event.sysex[type_idx]:
         # Remaining bytes are sysex data
-        return EventData(list(event.sysex[type_idx + 1:]))
+        return FlMidiMsg(list(event.sysex[type_idx + 1:]))
     else:
         # Extract (data2, data1, status)
-        return EventData(
+        return FlMidiMsg(
             event.sysex[type_idx + 3],
             event.sysex[type_idx + 2],
             event.sysex[type_idx + 1]
         )
 
 
-def forwardEvent(event: EventData, device_num: int = -1):
+def forwardEvent(event: FlMidiMsg, device_num: int = -1):
     """
     Encode a forwarded event and send it to all available devices
 
     ### Args:
-    * `event` (`EventData`): event to encode and forward
+    * `event` (`FlMidiMsg`): event to encode and forward
     * `device_num` (`int`, optional): target device number if on main script
     """
     if device_num == -1:
@@ -240,7 +272,7 @@ def forwardEvent(event: EventData, device_num: int = -1):
         device.dispatch(i, 0xF0, output)
 
 
-def eventToRawData(event: EventData) -> 'int | bytes':
+def eventToRawData(event: FlMidiMsg) -> 'int | bytes':
     """
     Convert event to raw data.
 
@@ -250,10 +282,10 @@ def eventToRawData(event: EventData) -> 'int | bytes':
     ### Returns:
     * `int | bytes`: data
     """
-    if isEventStandard(event):
+    if isMidiMsgStandard(event):
         return (event.status) + (event.data1 << 8) + (event.data2 << 16)
     else:
-        assert isEventSysex(event)
+        assert isMidiMsgSysex(event)
         return event.sysex
 
 
@@ -270,25 +302,25 @@ def bytesToString(bytes_iter: bytes) -> str:
     return f"[{', '.join(f'0x{b:02X}' for b in bytes_iter)}]"
 
 
-def eventToString(event: EventData) -> str:
+def eventToString(event: FlMidiMsg) -> str:
     """
     Convert event to string
 
     ### Args:
-    * `event` (`eventData`): event
+    * `event` (`FlMidiMsg`): event
 
     ### Returns:
     * `str`: stringified
     """
-    if isEventStandard(event):
+    if isMidiMsgStandard(event):
         return (
             f"(0x{event.status:02X}, 0x{event.data1:02X}, 0x{event.data2:02X})"
         )
     else:
-        assert isEventSysex(event)
-        if isEventForwarded(event):
-            decoded = eventToString(decodeForwardedEvent(event))
-            suffix = f" (Likely from forwarded event: {decoded})"
-        else:
-            suffix = ""
-        return bytesToString(event.sysex) + suffix
+        assert isMidiMsgSysex(event)
+        if not isEventForwarded(event):
+            return bytesToString(event.sysex)
+        dev = getEventForwardedTo(event)
+        num = getEventDeviceNum(event)
+        decoded = eventToString(decodeForwardedEvent(event))
+        return f"{dev}@{num} => {decoded})"

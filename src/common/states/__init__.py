@@ -2,26 +2,30 @@
 common > states
 
 Defines states used by the script
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 __all__ = [
     'IScriptState',
-    'catchStateChangeException',
     'StateChangeException',
     'DeviceState',
     'MainState',
     'ForwardState',
-    'DeviceNotRecognised',
+    'ErrorState',
     'WaitingForDevice',
 ]
 
-from .scriptstate import (
+from .script_state import (
     IScriptState,
-    catchStateChangeException,
     StateChangeException,
 )
-from .devstate import DeviceState
-from .mainstate import MainState
-from .forwardstate import ForwardState
-from .notrecognised import DeviceNotRecognised
-from .devicedetect import WaitingForDevice
+from .dev_state import DeviceState
+from .main_state import MainState
+from .forward_state import ForwardState
+from .error_state import ErrorState
+from .device_detect import WaitingForDevice

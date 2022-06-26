@@ -5,10 +5,13 @@ Constants used within the script
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 # Version info
-VERSION = (0, 5, 0)
+VERSION = (1, 0, 0)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
@@ -24,7 +27,7 @@ def getVersionString() -> str:
     """
     Returns the version string of the script
 
-    Eg: "1.2.3-beta"
+    Eg: `"1.2.3-beta"`
     """
     suffix = f"-{VERSION_SUFFIX}" if VERSION_SUFFIX else ""
     return ".".join(map(str, VERSION)) + suffix
@@ -32,6 +35,8 @@ def getVersionString() -> str:
 
 # Website
 WEBSITE = "https://github.com/MiguelGuthridge/Universal-Controller-Script"
+ISSUES_PAGE = f"{WEBSITE}/issues"
+DOCUMENTATION = f"{WEBSITE}/tree/main/docs"
 DISCORD = "https://discord.gg/6vpfJUF"
 
 # Contributor information
@@ -50,31 +55,35 @@ AUTHORS: dict[str, list[str]] = {
     ]
 }
 
-ASCII_HEADER_ART = """
-                                '
-                             ';;'
+ASCII_HEADER_ART = r"""
+                                .
+                             ,;;'
                             ;;'
-             ',;/\\\\/;,    ,L,
-           ,\\FFFFFFFFFF; ;L'
-          ;FFFFFFFFFFFFFFF/;;;,,    ',,;;;;;/;;'
-         .FLL\\LFFFFFFFFFFFFFFFFFFLL;;,.''    ',L,
-             ;//;/FFFFFFFFFFFFFFFFF\\           L;
-                  ;FFFFFFFFFFFFFFFFF/        'L/
-                 ';LFFFFFFFFFFFFFFFFL      ';L,
-              .;;;.'/LFFFL\\;;,;LL\\FF/    ./L,
-           .;;,'      '.'      ;; ,;   ;L/,
-        ',;,'                  ;'   ,\\\\;
-      .;;.                    ,,';\\\\;'
-    .;;'                    ';L\\/,
-   ;;'                  ',/\\L;'
-  ;/               ',;/\\/,'..
-  /;        '.,;///;;.    ,'
-   ,;;;;;;//;;,.         ,
-                       .'
-                     ..
-            '.'   '''
-              '.''
+             .,;/F\/;,    ,L,
+           ,\FFFLFLFFLF; ;L'
+          ;FLFLFLFFLFFFFLF/L;;,,     ,,;;;;;/;;,
+         'FLL\LFFFFFLFLFLFFFLFFFFLL;;,.'`    ',&
+            ':/L;/FFFFLFFLFFFFFLFFF\           &;
+                 \;FFFFFLFFFFLFFFFLF;        .&/
+                 ,;LFFFLFLFLLFFLFLFFL      ,;&/
+              .;;:.'/LFLFL\F;,;LL\FL/    ./&'
+           .;;,'      '.'      'FL/'   ;&/"
+         ,;,'                       ,\\;'
+      .;;.                    ,,';\\;'
+    .;;'                    ,;L\/'`
+   ;;'                  .,/\L;'
+  ;/               .,;/\/,'..
+  \;,        .,;/&/;;.    ,'
+   ":;;;;;//;;&/''       ;
+      ``'''``          .'
+                     .;
+            ',    ,:'
+              ';''
 """
+print(ASCII_HEADER_ART)
+
+# Device enquiry message
+UNIVERSAL_DEVICE_ENQUIRY = bytes([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7])
 
 # Device type constants
 DEVICE_TYPE_CONTROLLER = 1

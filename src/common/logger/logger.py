@@ -6,16 +6,17 @@ and allows for log information to be searched and recalled
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
 """
 
 __all__ = [
     'log'
 ]
 
-from .logitem import LogItem
+from .log_item import LogItem
 from .verbosity import Verbosity, DEFAULT, ERROR, NOTE
-
-from ..util.misc import NoneNoPrintout
 
 
 class Log:
@@ -67,7 +68,7 @@ class Log:
         import common
         try:
             context = common.getContext()
-        except common.contextmanager.MissingContextException:
+        except common.context_manager.MissingContextException:
             verbosity = DEFAULT
         else:
             if verbosity is None:
@@ -108,7 +109,7 @@ class Log:
             verbosity = common.getContext().settings.get(
                 "logger.critical_verbosity"
             )
-        except common.contextmanager.MissingContextException:
+        except common.context_manager.MissingContextException:
             verbosity = ERROR
         return item.verbosity <= verbosity
 
@@ -183,6 +184,7 @@ class Log:
         * `number` (`int`, optional): number of values to recall, defaults to
           all.
         """
+        from common.util.misc import NoneNoPrintout
         # Figure out what to print
         num_prints = 0
         num_skips = 0
@@ -228,6 +230,7 @@ class Log:
         ### Args:
         * `itemNumber` (`int`): entry number
         """
+        from common.util.misc import NoneNoPrintout
         self._history[itemNumber].printDetails()
 
         return NoneNoPrintout
@@ -257,7 +260,7 @@ class Log:
             discarded = common.getContext().settings.get(
                 "logger.discard_verbosity"
             )
-        except common.contextmanager.MissingContextException:
+        except common.context_manager.MissingContextException:
             discarded = NOTE
         if verbosity > discarded:
             return

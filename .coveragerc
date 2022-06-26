@@ -1,0 +1,11 @@
+[run]
+branch = True
+omit = src/fl_typing
+[report]
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:
+    def __str__
+    def __repr__
+    def inspect
+    return NotImplemented
