@@ -25,7 +25,7 @@ from .helpers import coordToIndex, INDEX
 
 class OmniPreview(WindowPlugin):
     """
-    used to process omni preview mode
+    Used to process omni preview mode on the channel rack
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
@@ -67,6 +67,8 @@ class OmniPreview(WindowPlugin):
         for drum in self._drums:
             index = coordToIndex(drum)
             if index == -1:
-                continue
-            drum.color = Color.fromInteger(channels.getChannelColor(index))
-            drum.annotation = channels.getChannelName(index)
+                drum.color = Color()
+                drum.annotation = ""
+            else:
+                drum.color = Color.fromInteger(channels.getChannelColor(index))
+                drum.annotation = channels.getChannelName(index)
