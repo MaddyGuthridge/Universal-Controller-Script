@@ -80,7 +80,6 @@ ASCII_HEADER_ART = r"""
             ',    ,:'
               ';''
 """
-print(ASCII_HEADER_ART)
 
 # Device enquiry message
 UNIVERSAL_DEVICE_ENQUIRY = bytes([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7])
