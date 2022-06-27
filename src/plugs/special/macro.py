@@ -119,7 +119,10 @@ class Macro(SpecialPlugin):
         control: ControlShadowEvent,
         *args: Any
     ) -> bool:
-        general.undo()
+        if getContext().settings.get("controls.disable_undo_toggle"):
+            general.undoUp()
+        else:
+            general.undo()
         return True
 
     @filterButtonLift()
