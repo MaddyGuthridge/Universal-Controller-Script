@@ -33,14 +33,15 @@ def coordToIndex(control: ControlShadow) -> int:
     num_cols = getNumDrumCols()
     row, col = control.getControl().coordinate
     index = num_cols * row + col
-    if index >= channels.channelCount(1):
+    if index >= channels.channelCount(False):
         return -1
     return index
 
 
 def getChannelRows():
     """
-    Returns the rows which should be used by the channel rack
+    Returns the rows which should be used by the channel rack, when using the
+    drum pad as a step sequencer
 
     ## Actual behavior:
 
@@ -57,7 +58,7 @@ def getChannelRows():
     num_cols = getNumDrumCols()
     s = channels.selectedChannel(0)
     ret = []
-    for i in range(s, channels.channelCount(True)):
+    for i in range(s, channels.channelCount(False)):
         ret.append(i)
     return ret[:num_cols]
 
