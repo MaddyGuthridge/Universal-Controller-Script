@@ -11,7 +11,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from typing import Optional
+from typing import Optional, Sequence
 from fl_classes import FlMidiMsg
 from control_surfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
@@ -36,7 +36,7 @@ class BasicControlMatcher(IControlMatcher):
 
     def addControls(
         self,
-        controls: list[ControlSurface],
+        controls: Sequence[ControlSurface],
         priority: int = 0
     ) -> None:
         """
