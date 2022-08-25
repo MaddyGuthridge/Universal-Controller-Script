@@ -21,7 +21,7 @@ def test_timing_context():
     with ProfilerContext("test"):
         time.sleep(0.01)
     res = getContext().profiler.getTotals()
-    assert floatApproxEqMagnitude(10.0, res["test"])
+    assert floatApproxEqMagnitude(10.0, res["test"], 0.5)
 
 
 def test_timing_decorator():
