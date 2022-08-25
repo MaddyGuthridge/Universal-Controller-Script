@@ -55,7 +55,7 @@ ORIGINALS = [
     'Epic Brass & Woodwinds',
     'Felt Piano',
     'Intimate Grand Piano',
-    'Epic Choir',
+    'Epic Choir',  # Working
 ]
 ORIGINALS = ['Originals - ' + ele for ele in ORIGINALS]
 
