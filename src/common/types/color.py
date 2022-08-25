@@ -234,9 +234,9 @@ class Color:
         Create a color object from RGB values
 
         ### Args:
-        * `r` (`int`): red
-        * `g` (`int`): green
-        * `b` (`int`): blue
+        * `r` (`int`): red (0-255)
+        * `g` (`int`): green (0-255)
+        * `b` (`int`): blue (0-255)
         * `grayscale` (`float`, optional): brightness for grayscale LEDs.
           Defaults to value of color.
         * `enabled` (`bool`, optional): whether the LED should be on for on/off
