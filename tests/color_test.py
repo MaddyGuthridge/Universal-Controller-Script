@@ -13,7 +13,7 @@ more details.
 import pytest
 from common.types import Color
 
-from .helpers import floatApproxEq, combinations
+from .helpers import floatApproxEqRatio, combinations
 
 
 def test_basic():
@@ -35,9 +35,9 @@ def test_rgb():
 def test_hsv():
     c = Color.fromHsv(0.0, 0.5, 1.0)
 
-    assert floatApproxEq(0.0, c.hue)
-    assert floatApproxEq(0.5, c.saturation)
-    assert floatApproxEq(1.0, c.value)
+    assert floatApproxEqRatio(0.0, c.hue)
+    assert floatApproxEqRatio(0.5, c.saturation)
+    assert floatApproxEqRatio(1.0, c.value)
 
     assert c.red == 255
     assert c.green == 128
@@ -56,9 +56,9 @@ def test_hsv():
 def test_hsv_get_set(hsv):
     c = Color.fromHsv(*hsv)
     h, s, v = hsv
-    assert floatApproxEq(c.hue, h)
-    assert floatApproxEq(c.saturation, s)
-    assert floatApproxEq(c.value, v)
+    assert floatApproxEqRatio(c.hue, h)
+    assert floatApproxEqRatio(c.saturation, s)
+    assert floatApproxEqRatio(c.value, v)
 
 
 def test_integer():
@@ -89,16 +89,16 @@ def test_assign_out_of_bounds_rgb():
 
 def test_assign_out_of_bounds():
     c = Color.fromHsv(0, 1.2, 1.0)
-    assert floatApproxEq(1.0, c.saturation)
+    assert floatApproxEqRatio(1.0, c.saturation)
 
     c = Color.fromHsv(0, 1.0, 1.2)
-    assert floatApproxEq(1.0, c.value)
+    assert floatApproxEqRatio(1.0, c.value)
 
     c = Color.fromHsv(370, 1.0, 1.0)
-    assert floatApproxEq(10.0, c.hue)
+    assert floatApproxEqRatio(10.0, c.hue)
 
     c = Color.fromHsv(-10, 1.0, 1.0)
-    assert floatApproxEq(350.0, c.hue)
+    assert floatApproxEqRatio(350.0, c.hue)
 
 
 def test_add():
@@ -138,19 +138,19 @@ def test_fade():
 )
 def test_fade_distance(c1, c2):
     fade = Color.fade(c1, c2)
-    assert floatApproxEq(Color.distance(c1, fade), Color.distance(c2, fade))
+    assert floatApproxEqRatio(Color.distance(c1, fade), Color.distance(c2, fade))
 
 
 def test_fade_black():
     """Fading to black should halve the value"""
     c = Color.fromHsv(250, 1.0, 0.6)
-    assert floatApproxEq(c.value / 2, Color.fadeBlack(c).value)
+    assert floatApproxEqRatio(c.value / 2, Color.fadeBlack(c).value)
 
 
 def test_fade_gray():
     """Fading to black should halve the saturation"""
     c = Color.fromHsv(250, 1.0, 0.6)
-    assert floatApproxEq(c.saturation / 2, Color.fadeGray(c).saturation)
+    assert floatApproxEqRatio(c.saturation / 2, Color.fadeGray(c).saturation)
 
 
 def test_distance():
@@ -211,19 +211,19 @@ def test_grayscale():
 
 def test_grayscale_hsv():
     c = Color.fromHsv(0, 1.0, 0.5)
-    assert floatApproxEq(c.grayscale, 0.5)
+    assert floatApproxEqRatio(c.grayscale, 0.5)
 
 
 def test_grayscale_rgb():
     c = Color.fromHsv(0, 1.0, 0.5)
     c = Color.fromRgb(c.red, c.green, c.blue)
-    assert floatApproxEq(c.grayscale, 0.5)
+    assert floatApproxEqRatio(c.grayscale, 0.5)
 
 
 def test_grayscale_int():
     c = Color.fromHsv(0, 1.0, 0.5)
     c = Color.fromInteger(c.integer)
-    assert floatApproxEq(c.grayscale, 0.5)
+    assert floatApproxEqRatio(c.grayscale, 0.5)
 
 
 def test_closest_grayscale():

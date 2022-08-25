@@ -16,6 +16,7 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+    "python.testing.cwd": "${workspaceFolder}",
 
     // Enable linters
     "python.linting.enabled": true,

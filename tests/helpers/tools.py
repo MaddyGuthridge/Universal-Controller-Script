@@ -14,7 +14,7 @@ from typing import TypeVar, Generator
 T = TypeVar("T")
 
 
-def floatApproxEq(expected: float, actual: float) -> bool:
+def floatApproxEqRatio(expected: float, actual: float) -> bool:
     """
     Return whether there is less than a 5% error between the expected
     and actual values, or if the expected value is zero, whether the actual
@@ -23,6 +23,28 @@ def floatApproxEq(expected: float, actual: float) -> bool:
     if expected == 0:
         return abs(actual) < 0.001
     return abs(expected - actual) / abs(expected) < 0.05
+
+
+def floatApproxEqMagnitude(
+    expected: float,
+    actual: float,
+    margin: float = 0.1,
+) -> bool:
+    """
+    Return whether there is less than a certain margin of error between the
+    expected and actual values.
+
+    ### Args:
+    * `expected` (`float`): expected value
+
+    * `actual` (`float`): actual value
+
+    * `margin` (`float`, optional): margin of error. Defaults to `0.1`.
+
+    ### Returns:
+    * `bool`: whether the expected value approximately equals the actual value
+    """
+    return abs(expected - actual) < margin
 
 
 def combinations(
