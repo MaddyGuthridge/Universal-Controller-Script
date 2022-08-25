@@ -1,7 +1,7 @@
 """
-tests > helpers > devices
+tests > helpers > devices > basic
 
-Helper code for testing with devices
+Device definitions for use when testing.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -10,7 +10,6 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from typing import Optional
-from common.context_manager import getContext, unsafeResetContext
 from control_surfaces.event_patterns import IEventPattern, BasicPattern
 from fl_classes import FlMidiMsg
 from devices import Device
@@ -22,9 +21,8 @@ from control_surfaces.value_strategies import (
 )
 
 __all__ = [
-    'DummyDevice',
-    'DummyDevice2',
-    'DummyDeviceContext',
+    'DummyDeviceBasic',
+    'DummyDeviceBasic2',
 ]
 
 
@@ -38,19 +36,46 @@ class DummyLoopButton2(LoopButton):
     """Another type of loop button on our controller"""
 
 
-class DummyDevice(Device):
+class DummyDeviceAbstract(Device):
+    """A device that is only used during testing. It is extended by devices
+    with specific properties for testing.
+    """
+    def getId(self) -> str:
+        return "Dummy.Device"
+
+    @classmethod
+    def getSupportedIds(cls) -> tuple[str, ...]:
+        return ("Dummy.Device",)
+
+    @staticmethod
+    def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
+        return None
+
+    def getDeviceNumber(self) -> int:
+        return 1
+
+    @staticmethod
+    def matchDeviceName(name: str) -> bool:
+        return False
+
+    @staticmethod
+    def getDrumPadSize() -> tuple[int, int]:
+        return 0, 0
+
+
+class DummyDeviceBasic(DummyDeviceAbstract):
     """A dummy device so that the script doesn't have a hissy fit during
     testing.
 
-    Contains some control surfaces:
+    Contains some basic control surfaces:
 
     * Notes
 
-    * Play button (0, 0, ...)
+    * Play button, matching `FlMidiMsg(0, 0, ...)`
 
-    * 4 faders (1, i, ...)
+    * 4 faders, matching `FlMidiMsg(1, i, ...)`, where `i` is the index
 
-    * 2 loop buttons (2, i, ...)
+    * 2 loop buttons, matching `FlMidiMsg(2, i, ...)`, where `i` is the index
     """
 
     def __init__(self, device_num: int = 1) -> None:
@@ -91,49 +116,12 @@ class DummyDevice(Device):
     def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
         return cls()
 
-    def getId(self) -> str:
-        return "Dummy.Device"
-
-    @classmethod
-    def getSupportedIds(cls) -> tuple[str, ...]:
-        return ("Dummy.Device",)
-
-    @staticmethod
-    def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
-        return None
-
     def getDeviceNumber(self) -> int:
         return self._num
 
-    @staticmethod
-    def matchDeviceName(name: str) -> bool:
-        return False
 
-    @staticmethod
-    def getDrumPadSize() -> tuple[int, int]:
-        return 0, 0
-
-
-class DummyDevice2(DummyDevice):
+class DummyDeviceBasic2(DummyDeviceBasic):
     """Another dummy device, to test that different devices don't interact"""
     @staticmethod
     def getId() -> str:
         return "Dummy.Device.2"
-
-
-class DummyDeviceContext:
-    """A context manager for working with dummy devices"""
-
-    def __init__(
-        self,
-        num: int = 1,
-        dev: type[DummyDevice] = DummyDevice
-    ) -> None:
-        self._dev = dev
-        self._num = num
-
-    def __enter__(self):
-        getContext().registerDevice(self._dev(self._num))
-
-    def __exit__(self, exc_type, exc_value, exc_traceback):
-        unsafeResetContext()
