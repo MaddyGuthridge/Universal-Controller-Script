@@ -1,7 +1,10 @@
 """
 tests > profiler_test
 
-Tests for the profiler system
+Tests for the profiler system.
+
+If these tests fail, it is likely due to performance issues, and the leeways
+may need to be increased.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]

@@ -227,7 +227,10 @@ class DrumPadStrategy(IMappingStrategy):
             self.processTrigger,
             self.tick,
         )
-        if len(drums) == 0 and shadow.getDevice().getDrumPadSize() != (0, 0):
+        if (
+            len(drums) != rows * cols
+            and shadow.getDevice().getDrumPadSize() != (0, 0)
+        ):
             raise ValueError("Unable to bind drum pads. Perhaps they were "
                              "already bound by another component of this "
                              "plugin?")

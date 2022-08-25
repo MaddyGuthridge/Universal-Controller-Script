@@ -14,7 +14,7 @@ from devices import DeviceShadow
 from plugs.mapping_strategies import DrumPadStrategy
 from common.plug_indexes import UnsafeIndex
 from common.types import Color
-from control_surfaces import ControlShadowEvent, ControlShadow
+from control_surfaces import ControlShadowEvent, ControlShadow, DrumPad
 from tests.helpers.devices import DummyDeviceDrumPads, getEventForDrumPad
 
 
@@ -302,10 +302,11 @@ def test_limited_height_wraps_around():
 
 def test_colorize_annotate():
     """
-    Are the drum pads colored correctly?
+    Are the drum pads colored and annotated correctly?
 
-    We check that the colorize callback is called 16 times, and that all the
-    indexes match up.
+    We check that the colorize and annotate callbacks are called 16 times each,
+    that all the indexes match up, and that the colors and annotations are set
+    correctly.
     """
     device = DummyDeviceDrumPads(4, 4)
     layout = [
@@ -330,8 +331,88 @@ def test_colorize_annotate():
     # Now colorize each one
     shadow.tick(0)
 
-    # The flag should have been set twice for each drum pad
+    # The flag should have been set twice for each drum pad (once for each
+    # callback)
     assert flag.count == 32
+
+    # Check the annotations and colors
+    shadow.apply(False)
+    for row in device.drums:
+        for drum in row:
+            assert drum.color == Color.fromGrayscale(1)
+            assert drum.annotation == "My annotation"
+
+
+def test_colorize_annotate_ignore_unmapped():
+    """
+    Are the drum pads colored and annotated correctly?
+
+    We check that the colorize and annotate callbacks are not called for
+    unmapped controls, that all the indexes match up, and that the colors and
+    annotations for unmapped controls are unset.
+    """
+    device = DummyDeviceDrumPads(4, 4)
+    layout = [
+            [0,  1,  2,  -1],
+            [3,  4,  5,  -1],
+            [6,  7,  8, -1],
+            [9, 10, 11, -1],
+        ]
+    flag = Flag()
+    strategy = DrumPadStrategy(
+        3,
+        -1,
+        True,
+        triggerCallbackGenerator(0, flag),
+        colorizeCallbackGenerator(layout, flag),
+        annotateCallbackGenerator(layout, flag),
+    )
+    # Create the bindings
+    shadow = DeviceShadow(device)
+    strategy.apply(shadow)
+
+    # Now colorize each one
+    shadow.tick(0)
+
+    # The flag should have been set twice for each drum pad, but not for
+    # unassigned ones
+    assert flag.count == 24
+
+    # Check the annotations and colors
+    shadow.apply(False)
+    for row in device.drums:
+        # The unmapped drums shouldn't be colored or annotated
+        drum = row[3]
+        assert drum.color == Color()
+        assert drum.annotation == ""
+
+
+def test_colorize_annotate_defaults():
+    """
+    Are the drum pads colored and annotated correctly when using the default
+    callbacks?
+    """
+    device = DummyDeviceDrumPads(4, 4)
+    flag = Flag()
+    strategy = DrumPadStrategy(
+        -1,
+        -1,
+        True,
+        triggerCallbackGenerator(0, flag),
+    )
+    # Create the bindings
+    shadow = DeviceShadow(device)
+    strategy.apply(shadow)
+
+    # Now colorize each one
+    shadow.tick(0)
+
+    # Check the annotations and colors
+    shadow.apply(False)
+    for row in device.drums:
+        for drum in row:
+            assert drum.color == Color.fromGrayscale(0.3)
+            assert drum.annotation == ""
 
 
 def test_unassigned_column():
@@ -423,3 +504,27 @@ def test_prevent_updates():
     # once for the color and once for the annotation
     # It won't be four times, even though we ticked it twice
     assert flag.count == 32
+
+
+def test_error_when_drums_already_assigned():
+    """
+    Do we get a ValueError when we try to use this with another mapping
+    strategy on this plugin that assigns drum pads
+    """
+    device = DummyDeviceDrumPads(4, 4)
+    shadow = DeviceShadow(device)
+
+    def callback(*args, **kwargs) -> bool: return True
+
+    # Assign a few drum pads
+    shadow.bindMatches(DrumPad, callback, target_num=3)
+
+    # Now when we try to bind the matcher it will fail
+    strategy = DrumPadStrategy(
+        -1,
+        -1,
+        False,
+        triggerCallbackGenerator(0, Flag()),
+    )
+    with pytest.raises(ValueError):
+        strategy.apply(shadow)
