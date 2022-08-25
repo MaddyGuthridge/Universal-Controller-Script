@@ -21,7 +21,7 @@ from control_surfaces import (
     ControlShadowEvent,
 )
 
-TriggerCallback = Callable[[int, ControlShadowEvent, UnsafeIndex], None]
+TriggerCallback = Callable[[int, ControlShadowEvent, UnsafeIndex], bool]
 ColorCallback = Callable[[int, ControlShadow, UnsafeIndex], Color]
 AnnotationCallback = Callable[[int, ControlShadow, UnsafeIndex], str]
 
@@ -101,7 +101,8 @@ class DrumPadStrategy(IMappingStrategy):
         * `trigger_callback` (`TriggerCallback`): the callback
           function to call when a drum pad is triggered. It should be used to
           trigger any functionality required for when the drum pad is hit. A
-          `TriggerCallback` should accept the following parameters:
+          `TriggerCallback` should return a `bool` representing whether the
+          event was handled, and should accept the following parameters:
 
               * `int`: the index of the drum pad, as determined by the width
                 and height specified when creating the drum pad strategy.
@@ -137,29 +138,147 @@ class DrumPadStrategy(IMappingStrategy):
         self.__height = height
         self.__do_update = do_property_update
         self.__trigger = trigger_callback
-        self.__color = color_callback
-        self.__annotate = annotation_callback
+        self.__color: ColorCallback = (
+            color_callback
+            if color_callback is not None
+            else defaultColorCallback
+        )
+        self.__annotate: AnnotationCallback = (
+            annotation_callback
+            if annotation_callback is not None
+            else defaultAnnotationCallback
+        )
+        self.__mappings: Optional[list[list[int]]] = None
+        self.__initialized_drums: Optional[list[list[bool]]] = None
+
+        # Error checking
+        if width == -1 and height != -1:
+            raise ValueError(f"height ({height}) must be -1 if width is -1")
         super().__init__()
 
+    def generateLayoutMapping(self, shadow: DeviceShadow) -> list[list[int]]:
+        """
+        Generate a mapping to use for the layout of the drum pads
+
+        ### Args:
+        * `shadow` (`DeviceShadow`): device to create the mapping for
+
+        ### Returns:
+        * `list[list[int]]`: mapping matrix
+        """
+        # Get the number of rows and columns
+        rows, cols = shadow.getDevice().getDrumPadSize()
+
+        # Determine the actual width and height of each chunk
+        full_width = self.__width if self.__width != -1 else cols
+        full_height = self.__height if self.__height != -1 else rows
+
+        # Determine the size of each subdivided chunk
+        chunk_size = full_width * full_height
+
+        # Calculate the number of rows and columns we'll actually be able to
+        # use
+        reduced_rows = rows // full_height * full_height
+        reduced_cols = cols // full_width * full_width
+
+        def calcIndex(r: int, c: int) -> int:
+            """
+            Calculate the index used for any particular cell
+            """
+            # Return early for out-of-range values
+            if (
+                r >= reduced_rows
+                or c >= reduced_cols
+            ):
+                return -1
+            # Outer values represent the coordinates of the chunk that the
+            # index lies in
+            outer_row = (
+                r // self.__height
+                if self.__height != -1
+                else 0
+            )
+            outer_col = (
+                c // self.__width
+                if self.__width != -1
+                else 0
+            )
+
+            # Inner values represent the coordinates within that chunk
+            inner_row = r - full_height * outer_row
+            inner_col = c - full_width * outer_col
+
+            # Indexes are the index of the chunk and the value within the
+            # chunk
+            outer_idx = outer_col + rows // self.__width * outer_row
+            inner_idx = inner_row * full_width + inner_col
+
+            # We can add those together to get the overall index
+            return outer_idx * chunk_size + inner_idx
+
+        # Now fill in the matrix
+        return [[calcIndex(r, c) for c in range(cols)] for r in range(rows)]
+
     def apply(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(
+        rows, cols = shadow.getDevice().getDrumPadSize()
+
+        drums = shadow.bindMatches(
             DrumPad,
             self.processTrigger,
             self.tick,
         )
+        if len(drums) == 0 and shadow.getDevice().getDrumPadSize() != (0, 0):
+            raise ValueError("Unable to bind drum pads. Perhaps they were "
+                             "already bound by another component of this "
+                             "plugin?")
+
+        self.__mappings = self.generateLayoutMapping(shadow)
+        self.__initialized_drums = [
+            [False for _ in range(cols)]
+            for _ in range(rows)
+        ]
+        pass
 
     def processTrigger(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
+        plug: UnsafeIndex,
         *args: Any
     ) -> bool:
-        return False
+        assert self.__mappings is not None
+
+        row, col = control.coordinate
+        index = self.__mappings[row][col]
+        if index == -1:
+            # Not mapped to anything
+            return True
+
+        # Use the callback
+        return self.__trigger(index, control, plug)
 
     def tick(
         self,
         control: ControlShadow,
-        index: UnsafeIndex,
+        plug: UnsafeIndex,
         *args: Any
     ):
-        ...
+        assert self.__mappings is not None
+        assert self.__initialized_drums is not None
+
+        row, col = control.coordinate
+
+        # If we're not updating the drums and they're already initialized, skip
+        # it
+        if not self.__do_update and self.__initialized_drums[row][col]:
+            return
+
+        index = self.__mappings[row][col]
+        if index == -1:
+            # Not mapped to anything
+            return True
+
+        # Use the callbacks
+        control.color = self.__color(index, control, plug)
+        control.annotation = self.__annotate(index, control, plug)
+
+        self.__initialized_drums[row][col] = True
