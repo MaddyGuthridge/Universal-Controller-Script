@@ -24,4 +24,7 @@ def test_drum_pad_dummy_device_generate_event():
 def test_drum_pad_dummy_device_generate_event_value():
     """Do events generated using getEventForDrumPad have the right velocity?"""
     d = DummyDeviceDrumPads(8, 8)
-    assert floatApproxEqRatio(0.5, d.matchEvent(getEventForDrumPad(5, 5, 0.5)).value)
+    assert floatApproxEqRatio(
+        0.5,
+        d.matchEvent(getEventForDrumPad(5, 5, 0.5)).value
+    )

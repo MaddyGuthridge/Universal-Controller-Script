@@ -154,12 +154,12 @@ class DrumPadStrategy(IMappingStrategy):
         index: UnsafeIndex,
         *args: Any
     ) -> bool:
-        ...
+        return False
 
     def tick(
         self,
         control: ControlShadow,
         index: UnsafeIndex,
         *args: Any
-    ) -> bool:
+    ):
         ...
