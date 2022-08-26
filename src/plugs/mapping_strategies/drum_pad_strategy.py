@@ -64,6 +64,7 @@ class DrumPadStrategy(IMappingStrategy):
         trigger_callback: TriggerCallback,
         color_callback: Optional[ColorCallback] = None,
         annotation_callback: Optional[AnnotationCallback] = None,
+        invert_rows: bool = False,
     ) -> None:
         """
         Create an instance of a drum pad strategy
@@ -133,6 +134,11 @@ class DrumPadStrategy(IMappingStrategy):
           callback function to determine the annotation for a drum pad. The
           parameter is the drum pad index. Defaults to `None`, meaning that the
           annotation for each drum pad will be unset.
+
+        * `invert_rows` (`bool`, optional): whether to have the rows invert, so
+          that the first row is at the bottom and the last is at the top. It
+          does not respect the groupings made by the `height` parameter.
+          Defaults to `False`
         """
         self.__width = width
         self.__height = height
@@ -148,6 +154,7 @@ class DrumPadStrategy(IMappingStrategy):
             if annotation_callback is not None
             else defaultAnnotationCallback
         )
+        self.__invert_rows = invert_rows
         self.__mappings: Optional[list[list[int]]] = None
         self.__initialized_drums: Optional[list[list[bool]]] = None
 
@@ -189,6 +196,7 @@ class DrumPadStrategy(IMappingStrategy):
             if (
                 r >= reduced_rows
                 or c >= reduced_cols
+                or r < 0  # handles reversed indexes
             ):
                 return -1
             # Outer values represent the coordinates of the chunk that the
@@ -216,8 +224,20 @@ class DrumPadStrategy(IMappingStrategy):
             # We can add those together to get the overall index
             return outer_idx * chunk_size + inner_idx
 
+        def row_mapper(r: int):
+            """
+            Function to account for the invert_rows property
+            """
+            return (reduced_rows - r - 1) if self.__invert_rows else r
+
         # Now fill in the matrix
-        return [[calcIndex(r, c) for c in range(cols)] for r in range(rows)]
+        return [
+            [
+                calcIndex(row_mapper(r), c)
+                for c in range(cols)
+            ]
+            for r in range(rows)
+        ]
 
     def apply(self, shadow: DeviceShadow) -> None:
         rows, cols = shadow.getDevice().getDrumPadSize()

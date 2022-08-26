@@ -310,11 +310,11 @@ def test_colorize_annotate():
     """
     device = DummyDeviceDrumPads(4, 4)
     layout = [
-            [0,  1,  2,  3],
-            [4,  5,  6,  7],
-            [8,  9,  10, 11],
-            [12, 13, 14, 15],
-        ]
+        [0,  1,  2,  3],
+        [4,  5,  6,  7],
+        [8,  9,  10, 11],
+        [12, 13, 14, 15],
+    ]
     flag = Flag()
     strategy = DrumPadStrategy(
         -1,
@@ -353,11 +353,11 @@ def test_colorize_annotate_ignore_unmapped():
     """
     device = DummyDeviceDrumPads(4, 4)
     layout = [
-            [0,  1,  2,  -1],
-            [3,  4,  5,  -1],
-            [6,  7,  8, -1],
-            [9, 10, 11, -1],
-        ]
+        [0,  1,  2,  -1],
+        [3,  4,  5,  -1],
+        [6,  7,  8, -1],
+        [9, 10, 11, -1],
+    ]
     flag = Flag()
     strategy = DrumPadStrategy(
         3,
@@ -478,11 +478,11 @@ def test_prevent_updates():
     """
     device = DummyDeviceDrumPads(4, 4)
     layout = [
-            [0,  1,  2,  3],
-            [4,  5,  6,  7],
-            [8,  9,  10, 11],
-            [12, 13, 14, 15],
-        ]
+        [0,  1,  2,  3],
+        [4,  5,  6,  7],
+        [8,  9,  10, 11],
+        [12, 13, 14, 15],
+    ]
     flag = Flag()
     strategy = DrumPadStrategy(
         -1,
@@ -528,3 +528,57 @@ def test_error_when_drums_already_assigned():
     )
     with pytest.raises(ValueError):
         strategy.apply(shadow)
+
+
+def test_invert_rows():
+    """
+    Can we invert rows correctly?
+    """
+    device = DummyDeviceDrumPads(4, 4)
+    layout = [
+        [12, 13, 14, 15],
+        [8,  9,  10, 11],
+        [4,  5,  6,  7],
+        [0,  1,  2,  3],
+    ]
+    strategy = DrumPadStrategy(
+        -1,
+        -1,
+        False,
+        triggerCallbackGenerator(0, Flag()),
+        colorizeCallbackGenerator(layout, Flag()),
+        invert_rows=True
+    )
+    # Create the bindings
+    shadow = DeviceShadow(device)
+    strategy.apply(shadow)
+
+    # Tick it, which will ensure the correct layout
+    shadow.tick(0)
+
+
+def test_invert_rows_ignores_empty():
+    """
+    When we invert the rows, does it leave empty rows at the bottom?
+    """
+    device = DummyDeviceDrumPads(4, 4)
+    layout = [
+        [8,   9, 10, 11],
+        [4,   5,  6,  7],
+        [0,   1,  2,  3],
+        [-1, -1, -1, -1],
+    ]
+    strategy = DrumPadStrategy(
+        4,
+        3,
+        False,
+        triggerCallbackGenerator(0, Flag()),
+        colorizeCallbackGenerator(layout, Flag()),
+        invert_rows=True
+    )
+    # Create the bindings
+    shadow = DeviceShadow(device)
+    strategy.apply(shadow)
+
+    # Tick it, which will ensure the correct layout
+    shadow.tick(0)
