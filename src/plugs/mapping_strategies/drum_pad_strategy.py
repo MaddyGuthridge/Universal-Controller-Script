@@ -276,7 +276,6 @@ class DrumPadStrategy(IMappingStrategy):
             return True
 
         # Use the callback
-        print(self.__trigger)
         return self.__trigger(control, plug, index)
 
     def tick(

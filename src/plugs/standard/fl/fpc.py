@@ -75,13 +75,6 @@ class FPC(StandardPlugin):
 
     @tick_filters.toGeneratorIndex()
     def tick(self, index: GeneratorIndex):
-        # for p in self._pads:
-        #     p.color = Color.fromInteger(
-        #         plugins.getPadInfo(
-        #             index[0], -1, 2, self._coordToIndex(*p.coordinate))
-        #     )
-        # Also update notes
-        # Hardcoded due to bug with plugins.getPadInfo() returning wrong values
         notes = set()
         for idx in range(32):
             # Get the note number
