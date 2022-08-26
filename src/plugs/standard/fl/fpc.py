@@ -37,12 +37,13 @@ def triggerPad(
     control: ControlShadowEvent,
     ch_idx: GeneratorIndex,
     pad_idx: int,
-) -> None:
+) -> bool:
     note = plugins.getPadInfo(*ch_idx, -1, 1, pad_idx)
     # Work-around for horrible bug where wrong note numbers are given
     if note > 127:
         note = note >> 16
     channels.midiNoteOn(*ch_idx, note, int(control.value*127))
+    return True
 
 
 class FPC(StandardPlugin):
