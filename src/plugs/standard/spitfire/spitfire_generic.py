@@ -19,27 +19,35 @@ from control_surfaces import Fader
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs import event_filters, tick_filters
-from plugs.mapping_strategies import DrumPadStrategy
+from plugs.mapping_strategies import DrumPadStrategy, IMappingStrategy
 
 # Generate list of supported plugins
+
 # HELP WANTED: I don't own all of these libraries, so the naming may be
 # incorrect. If something doesn't work, please create a bug report.
 # This is also far from an exhaustive list of all the available plugins, so
 # if any you use are missing, let me know!
+
+# Main plugins
 PRIMARY = [
-    'BBC Symphony Orchestra',  # Working
     'LABS',  # Working
+    'Polaris',
+    'Fink Signatures',
+]
+
+# Main plugins using keyswitches
+PRIMARY_KEYSWITCHES = [
+    'BBC Symphony Orchestra',  # Working
     'Abbey Road One',  # Working
     'Eric Whitacre Choir',
     'Hans Zimmer Strings',
     'Abbey Road Two',
     'Appassionata Strings',
-    'Polaris',
     'Heirloom',
     'Hammers',
-    'Fink Signatures',
 ]
 
+# Originals (as far as I know, none use keyswitches)
 ORIGINALS = [
     'Media Toolkit',  # Working
     'Cinematic Percussion',  # Working
@@ -61,6 +69,7 @@ ORIGINALS = [
 ORIGINALS = ['Originals - ' + ele for ele in ORIGINALS]
 
 SUPPORTED_PLUGINS = tuple(PRIMARY + ORIGINALS)
+SUPPORTED_KEYSWITCH_PLUGINS = tuple(PRIMARY_KEYSWITCHES)
 
 BOUND_COLOR = Color.fromRgb(127, 127, 127)
 
@@ -79,7 +88,11 @@ class SpitfireGeneric(StandardPlugin):
     """
     Used to interact with Spitfire Audio plugins, mapping faders to parameters
     """
-    def __init__(self, shadow: DeviceShadow) -> None:
+    def __init__(
+        self,
+        shadow: DeviceShadow,
+        mapping_strategies: list[IMappingStrategy]
+    ) -> None:
         self._faders = shadow.bindMatches(
             Fader,
             self.faders,
@@ -94,14 +107,11 @@ class SpitfireGeneric(StandardPlugin):
             self._faders[1] \
                 .annotate("Dynamics") \
                 .colorize(BOUND_COLOR)
-
-        # Drum pads
-        drums = DrumPadStrategy(4, 2, False, trigger)
-        super().__init__(shadow, [drums])
+        super().__init__(shadow, mapping_strategies)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
-        return cls(shadow)
+        return cls(shadow, [])
 
     @classmethod
     def getPlugIds(cls) -> tuple[str, ...]:
@@ -125,4 +135,22 @@ class SpitfireGeneric(StandardPlugin):
         return True
 
 
+class SpitfireKeyswitch(SpitfireGeneric):
+    """
+    A version of the Spitfire Audio generic plugin with support for
+    keyswitches.
+    """
+    def __init__(self, shadow: DeviceShadow) -> None:
+        super().__init__(shadow, [DrumPadStrategy(4, 2, False, trigger)])
+
+    @classmethod
+    def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
+        return cls(shadow)
+
+    @classmethod
+    def getPlugIds(cls) -> tuple[str, ...]:
+        return SUPPORTED_KEYSWITCH_PLUGINS
+
+
 ExtensionManager.plugins.register(SpitfireGeneric)
+ExtensionManager.plugins.register(SpitfireKeyswitch)
