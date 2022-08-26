@@ -138,7 +138,10 @@ def test_fade():
 )
 def test_fade_distance(c1, c2):
     fade = Color.fade(c1, c2)
-    assert floatApproxEqRatio(Color.distance(c1, fade), Color.distance(c2, fade))
+    assert floatApproxEqRatio(
+        Color.distance(c1, fade),
+        Color.distance(c2, fade)
+    )
 
 
 def test_fade_black():
