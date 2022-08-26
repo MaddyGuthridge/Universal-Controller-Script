@@ -4,37 +4,43 @@
 Mapping strategies are used to quickly map controls to pre-built functionality.
 
 ## Provided strategies
-Some strategies are provided within the script. Refer to each one's provided
-documentation.
+Some strategies are provided within the script, and can be used to simplify the
+creation of advanced plugins that work well for all devices. Refer to each
+one's provided documentation within the source code.
 
-## `DirectionStrategy`
+### `DirectionStrategy`
 Maps direction buttons to control FL Studio.
 
-## `JogStrategy`
+### `DrumPadStrategy`
+Maps drum pads into indexes, so that interfaces using drum pads can be designed
+adaptively.
+
+### `JogStrategy`
 Maps jog wheel to control FL Studio.
 
-## `ModXYStrategy`
+### `ModXYStrategy`
 Maps a mod-X/Y controller to mod-x/y parameters in a plugin.
 
-## `MuteSoloStrategy`
+### `MuteSoloStrategy`
 Creates a mapping for mute and solo buttons.
 
-## `NoteStrategy`
+### `NoteStrategy`
 Maps notes to note events on the channel rack.
 
-## `PedalStrategy`
+### `PedalStrategy`
 Maps pedals to required CC parameters.
 
-## `SimpleFaders`
-Maps fader controls to a given list of parameters.
+### `SimpleFaders`
+Maps fader controls to the given plugin parameters. This can be used to quickly
+link up faders for automation.
 
-## `WheelStrategy`
+### `WheelStrategy`
 Maps pitch and mod wheels to required parameters.
 
-## `IMappingStrategy`
+## Custom strategies
 
-The interface used by mapping strategies. This should be implemented by all
-mapping strategies.
+You can implement your own mapping strategy by extending the `IMappingStrategy`
+class, which provides the interface used by all mapping strategies. You should
+implement the following methods:
 
-### Methods to Implement
 * `apply(shadow: DeviceShadow)`: Apply the mapping to a device shadow.
