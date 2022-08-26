@@ -21,15 +21,15 @@ from control_surfaces import (
     ControlShadowEvent,
 )
 
-TriggerCallback = Callable[[int, ControlShadowEvent, UnsafeIndex], bool]
-ColorCallback = Callable[[int, ControlShadow, UnsafeIndex], Color]
-AnnotationCallback = Callable[[int, ControlShadow, UnsafeIndex], str]
+TriggerCallback = Callable[[ControlShadowEvent, UnsafeIndex, int], bool]
+ColorCallback = Callable[[ControlShadow, UnsafeIndex, int], Color]
+AnnotationCallback = Callable[[ControlShadow, UnsafeIndex, int], str]
 
 
 def defaultColorCallback(
-    index: int,
     control: ControlShadow,
     plug_index: UnsafeIndex,
+    index: int,
 ) -> Color:
     """
     Provides a default color for drum pads bound using the drum pad strategy.
@@ -38,9 +38,9 @@ def defaultColorCallback(
 
 
 def defaultAnnotationCallback(
-    index: int,
     control: ControlShadow,
     plug_index: UnsafeIndex,
+    index: int,
 ) -> str:
     """
     Provides a default annotation for drum pads bound using the drum pad
@@ -260,7 +260,6 @@ class DrumPadStrategy(IMappingStrategy):
             [False for _ in range(cols)]
             for _ in range(rows)
         ]
-        pass
 
     def processTrigger(
         self,
@@ -277,7 +276,8 @@ class DrumPadStrategy(IMappingStrategy):
             return True
 
         # Use the callback
-        return self.__trigger(index, control, plug)
+        print(self.__trigger)
+        return self.__trigger(control, plug, index)
 
     def tick(
         self,
@@ -301,7 +301,7 @@ class DrumPadStrategy(IMappingStrategy):
             return True
 
         # Use the callbacks
-        control.color = self.__color(index, control, plug)
-        control.annotation = self.__annotate(index, control, plug)
+        control.color = self.__color(control, plug, index)
+        control.annotation = self.__annotate(control, plug, index)
 
         self.__initialized_drums[row][col] = True

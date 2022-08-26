@@ -60,7 +60,7 @@ def triggerCallbackGenerator(expected_index: int, flag: Flag):
     ### Args:
     * `expected_index` (`int`): the index you're expecting
     """
-    def callback(index: int, event: ControlShadowEvent, plug: UnsafeIndex):
+    def callback(event: ControlShadowEvent, plug: UnsafeIndex, index: int):
         assert index == expected_index
         flag.set()
         return True
@@ -81,7 +81,7 @@ def colorizeCallbackGenerator(
     """
     index_lookup = matrixToDict(index_matrix)
 
-    def callback(index: int, event: ControlShadow, plug: UnsafeIndex):
+    def callback(event: ControlShadow, plug: UnsafeIndex, index: int):
         assert index_lookup[index] == event.coordinate
         flag.set()
         return Color.fromGrayscale(1)
@@ -102,7 +102,7 @@ def annotateCallbackGenerator(
     """
     index_lookup = matrixToDict(index_matrix)
 
-    def callback(index: int, event: ControlShadow, plug: UnsafeIndex):
+    def callback(event: ControlShadow, plug: UnsafeIndex, index: int):
         assert index_lookup[index] == event.coordinate
         flag.set()
         return "My annotation"
