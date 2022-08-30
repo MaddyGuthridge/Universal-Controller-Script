@@ -55,7 +55,7 @@ class FPC(StandardPlugin):
 
         drums = DrumPadStrategy(
             4,
-            2,
+            4,
             True,
             triggerPad,
             colorPad,
