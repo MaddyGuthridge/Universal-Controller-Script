@@ -15,7 +15,7 @@ from plugs.mapping_strategies import DrumPadStrategy
 from common.plug_indexes import UnsafeIndex
 from common.types import Color
 from control_surfaces import ControlShadowEvent, ControlShadow, DrumPad
-from tests.helpers.devices import DummyDeviceDrumPads, getEventForDrumPad
+from tests.helpers.devices import DummyDeviceDrumPads
 
 
 class Flag:
@@ -69,7 +69,7 @@ def triggerCallbackGenerator(expected_index: int, flag: Flag):
 
 def colorizeCallbackGenerator(
     index_matrix: list[list[int]],
-    flag: Flag
+    flag: Flag,
 ):
     """
     Generates a callback in order to check that indexes were created correctly.
@@ -90,7 +90,7 @@ def colorizeCallbackGenerator(
 
 def annotateCallbackGenerator(
     index_matrix: list[list[int]],
-    flag: Flag
+    flag: Flag,
 ):
     """
     Generates a callback in order to check that indexes were created correctly.
@@ -131,7 +131,7 @@ def test_callback_reached():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(getEventForDrumPad(0, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 0, 0)),
         0,
     )
     # And check that the callback was reached
@@ -159,7 +159,7 @@ def test_basic_coordinates_rows():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(getEventForDrumPad(0, 1, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 1, 0)),
         0,
     )
     # And check that the callback was reached
@@ -185,7 +185,7 @@ def test_basic_coordinates_cols():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(getEventForDrumPad(1, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(1, 0, 0)),
         0,
     )
     # And check that the callback was reached
@@ -211,7 +211,7 @@ def test_limited_width():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(getEventForDrumPad(1, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(1, 0, 0)),
         0,
     )
     # And check that the callback was reached
@@ -239,7 +239,7 @@ def test_limited_width_column_groups():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(getEventForDrumPad(0, 2, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 2, 0)),
         0,
     )
     # And check that the callback was reached
@@ -267,7 +267,7 @@ def test_limited_height():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(getEventForDrumPad(0, 2, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 2, 0)),
         0,
     )
     # And check that the callback was reached
@@ -293,7 +293,7 @@ def test_limited_height_wraps_around():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(getEventForDrumPad(2, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(2, 0, 0)),
         0,
     )
     # And check that the callback was reached
@@ -437,7 +437,7 @@ def test_unassigned_column():
     # Now process the event
     # Even though it is ignored, it should still be handled
     assert shadow.processEvent(
-        device.matchEvent(getEventForDrumPad(0, 3, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 3, 0)),
         0,
     )
     # And check that the callback was not reached
@@ -464,7 +464,7 @@ def test_unassigned_row():
     # Now process the event
     # Even though it is ignored, it should still be handled
     assert shadow.processEvent(
-        device.matchEvent(getEventForDrumPad(3, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(3, 0, 0)),
         0,
     )
     # And check that the callback was not reached
@@ -582,3 +582,67 @@ def test_invert_rows_ignores_empty():
 
     # Tick it, which will ensure the correct layout
     shadow.tick(0)
+
+
+def test_subdivide_when_lacking_height():
+    """
+    When we try to assign a 4x4 grid onto a 2x8 grid, does it wrap around so
+    that all the tiles can still be used correctly?
+
+    0  1  2  3
+    4  5  6  7   -->  0  1  2  3  8  9  10 11
+    8  9  10 11       4  5  6  7  12 13 14 15
+    12 13 14 15
+    """
+    flag = Flag()
+    device = DummyDeviceDrumPads(2, 8)
+    strategy = DrumPadStrategy(
+        4,
+        4,
+        True,
+        triggerCallbackGenerator(8, flag)
+    )
+    # Create the bindings
+    shadow = DeviceShadow(device)
+    strategy.apply(shadow)
+
+    # Now process the event
+    # Even though it is ignored, it should still be handled
+    assert shadow.processEvent(
+        device.matchEvent(device.getEventForDrumPad(0, 4, 0)),
+        0,
+    )
+    # And check that the callback was not reached
+    assert flag.is_set
+
+
+def test_subdivide_when_lacking_width():
+    """
+    When we try to assign a 2x8 grid onto a 4x4 grid, does it wrap around so
+    that all the tiles can still be used correctly?
+
+                                 0  1  2  3
+    0  1  2  3  4  5  6  7   ->  4  5  6  7
+    8  9  10 11 12 13 14 15      8  9  10 11
+                                 12 13 14 15
+    """
+    flag = Flag()
+    device = DummyDeviceDrumPads(2, 8)
+    strategy = DrumPadStrategy(
+        4,
+        4,
+        True,
+        triggerCallbackGenerator(8, flag)
+    )
+    # Create the bindings
+    shadow = DeviceShadow(device)
+    strategy.apply(shadow)
+
+    # Now process the event
+    # Even though it is ignored, it should still be handled
+    assert shadow.processEvent(
+        device.matchEvent(device.getEventForDrumPad(0, 4, 0)),
+        0,
+    )
+    # And check that the callback was not reached
+    assert flag.is_set

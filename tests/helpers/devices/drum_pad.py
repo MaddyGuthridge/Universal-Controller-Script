@@ -21,41 +21,59 @@ from .basic import DummyDeviceAbstract
 
 __all__ = [
     'DummyDeviceDrumPads',
-    'getEventForDrumPad',
 ]
 
 
-class DummyDeviceDrumPads(DummyDeviceAbstract):
+def DummyDeviceDrumPads(rows: int, cols: int) -> DummyDeviceAbstract:
     """
-    A dummy device containing a collection of drum pads of specified sizes
+    Generates a DummyDeviceDrumPads device with the given number of drum pads
+
+    ### Args:
+    * `rows` (`int`): number of rows
+
+    * `cols` (`int`): number of columns
+
+    ### Returns:
+    * `DummyDeviceAbstract`: an instance of the device
     """
 
-    def __init__(self, rows: int, cols: int) -> None:
-        matcher = BasicControlMatcher()
+    class DummyDeviceDrumPads(DummyDeviceAbstract):
+        """
+        A dummy device containing a collection of drum pads of specified sizes
+        """
 
-        self.drums = [[
-            DrumPad(
-                    BasicPattern(r, c, ...),
-                    Data2Strategy(),
-                    (r, c),
-                )
-            for c in range(cols)
-        ] for r in range(rows)]
+        def __init__(self) -> None:
+            matcher = BasicControlMatcher()
 
-        flattened: Sequence[ControlSurface] = sum(self.drums, [])
+            self.drums = [[
+                DrumPad(
+                        BasicPattern(r, c, ...),
+                        Data2Strategy(),
+                        (r, c),
+                    )
+                for c in range(cols)
+            ] for r in range(rows)]
 
-        matcher.addControls(flattened)
+            flattened: Sequence[ControlSurface] = sum(self.drums, [])
 
-        super().__init__(matcher)
+            matcher.addControls(flattened)
 
-    @staticmethod
-    def getDrumPadSize() -> tuple[int, int]:
-        return (4, 4)
+            super().__init__(matcher)
 
+        @staticmethod
+        def getEventForDrumPad(row: int, col: int, value: float) -> FlMidiMsg:
+            """
+            Returns a MIDI message that matches the drum pad at `(row, col)`
+            for a `DummyDeviceDrumPads` device.
+            """
+            return FlMidiMsg(row, col, int(value * 127))
 
-def getEventForDrumPad(row: int, col: int, value: float) -> FlMidiMsg:
-    """
-    Returns a MIDI message that matches the drum pad at `(row, col)` for a
-    `DummyDeviceDrumPads` device.
-    """
-    return FlMidiMsg(row, col, int(value * 127))
+        @staticmethod
+        def getDrumPadSize() -> tuple[int, int]:
+            return (rows, cols)
+
+        @classmethod
+        def create(cls, event: FlMidiMsg = None, id: str = None):
+            return super().create(event, id)
+
+    return DummyDeviceDrumPads()

@@ -180,13 +180,21 @@ class DrumPadStrategy(IMappingStrategy):
         full_width = self.__width if self.__width != -1 else cols
         full_height = self.__height if self.__height != -1 else rows
 
-        # Determine the size of each subdivided chunk
-        chunk_size = full_width * full_height
-
         # Calculate the number of rows and columns we'll actually be able to
         # use
         reduced_rows = rows // full_height * full_height
         reduced_cols = cols // full_width * full_width
+
+        # If we can't use any rows or columns, just use the maximum available
+        if reduced_rows == 0:
+            reduced_rows = rows
+            full_height = rows
+        if reduced_cols == 0:
+            reduced_cols = cols
+            full_width = cols
+
+        # Determine the size of each subdivided chunk
+        chunk_size = full_width * full_height
 
         def calcIndex(r: int, c: int) -> int:
             """
