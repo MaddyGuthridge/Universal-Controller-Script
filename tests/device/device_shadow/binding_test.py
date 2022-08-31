@@ -17,7 +17,7 @@ from control_surfaces import (
     Fader,
 )
 from devices import DeviceShadow
-from tests.helpers.devices import DummyDevice
+from tests.helpers.devices import DummyDeviceBasic
 
 
 def test_binding():
@@ -28,7 +28,7 @@ def test_binding():
     def _dummy(*args, **kwargs) -> bool:
         raise DummyException()
 
-    s = DeviceShadow(DummyDevice())
+    s = DeviceShadow(DummyDeviceBasic())
 
     m = s.getControlMatches(PlayButton)[0]
     s.bindControl(m, _dummy)
@@ -44,7 +44,7 @@ def test_bind_same():
     def _dummy(*args, **kwargs) -> bool:
         pass
 
-    s = DeviceShadow(DummyDevice())
+    s = DeviceShadow(DummyDeviceBasic())
 
     m = s.getControlMatches(PlayButton)
     s.bindControls(m, _dummy)
@@ -63,7 +63,7 @@ def test_bind_matches_all():
     def _dummy(*args, **kwargs) -> bool:
         raise DummyException()
 
-    s = DeviceShadow(DummyDevice())
+    s = DeviceShadow(DummyDeviceBasic())
 
     matches = s.bindMatches(Fader, _dummy)
 

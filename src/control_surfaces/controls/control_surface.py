@@ -97,7 +97,8 @@ class ControlSurface:
           used to determine a value from events. If not provided, the control
           won't get values.
 
-        * `coordinate`: the coordinate of the control. Defaults to `(0, 0)`.
+        * `coordinate`: the coordinate of the control in the format
+          `(row, column)`. Defaults to `(0, 0)`.
 
         * `annotation_manager`: a manager to provide functionality of sharing
           annotations with a device. This can be used to control text displays

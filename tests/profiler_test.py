@@ -1,7 +1,10 @@
 """
 tests > profiler_test
 
-Tests for the profiler system
+Tests for the profiler system.
+
+If these tests fail, it is likely due to PC performance, and the leeways may
+need to be increased.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -12,7 +15,7 @@ more details.
 import time
 from common import getContext, unsafeResetContext
 from common.profiler import ProfilerContext, profilerDecoration
-from tests.helpers import floatApproxEq
+from tests.helpers import floatApproxEqMagnitude
 
 
 def test_timing_context():
@@ -21,7 +24,7 @@ def test_timing_context():
     with ProfilerContext("test"):
         time.sleep(0.01)
     res = getContext().profiler.getTotals()
-    assert floatApproxEq(10.0, res["test"])
+    assert floatApproxEqMagnitude(10.0, res["test"], 0.6)
 
 
 def test_timing_decorator():
@@ -33,7 +36,7 @@ def test_timing_decorator():
         time.sleep(0.01)
     slowFunction()
     res = getContext().profiler.getTotals()
-    assert floatApproxEq(10.0, res["test"])
+    assert floatApproxEqMagnitude(10.0, res["test"], 1)
 
 
 def test_total_repeated():
@@ -43,7 +46,7 @@ def test_total_repeated():
         with ProfilerContext("test"):
             time.sleep(0.01)
     res = getContext().profiler.getTotals()
-    assert floatApproxEq(100.0, res["test"])
+    assert floatApproxEqMagnitude(100.0, res["test"], 5)
 
 
 def test_nested_profiles():
@@ -54,8 +57,8 @@ def test_nested_profiles():
         with ProfilerContext("test2"):
             time.sleep(0.01)
     res = getContext().profiler.getTotals()
-    assert floatApproxEq(20.0, res["test1"])
-    assert floatApproxEq(10.0, res["test1.test2"])
+    assert floatApproxEqMagnitude(20.0, res["test1"], 2)
+    assert floatApproxEqMagnitude(10.0, res["test1.test2"], 1)
 
 
 def test_numbers():
@@ -77,4 +80,4 @@ def test_maxes():
         with ProfilerContext("test"):
             time.sleep(t)
     res = getContext().profiler.getMaxes()
-    assert floatApproxEq(50.0, res["test"])
+    assert floatApproxEqMagnitude(50.0, res["test"], 1)

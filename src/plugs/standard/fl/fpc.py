@@ -12,12 +12,38 @@ import channels
 from typing import Any
 from common.types import Color
 from common.extension_manager import ExtensionManager
-from common.plug_indexes import GeneratorIndex
-from control_surfaces import DrumPad, Note
-from control_surfaces import ControlShadowEvent
+from common.plug_indexes import GeneratorIndex, UnsafeIndex
+from control_surfaces import Note
+from control_surfaces import ControlShadowEvent, ControlShadow
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs import event_filters, tick_filters
+from plugs.mapping_strategies import DrumPadStrategy
+
+
+def colorPad(
+    control: ControlShadow,
+    ch_idx: UnsafeIndex,
+    pad_idx: int,
+) -> Color:
+    if not isinstance(ch_idx, tuple):
+        return Color()
+    chan = ch_idx[0]
+    return Color.fromInteger(plugins.getPadInfo(chan, -1, 2, pad_idx))
+
+
+@event_filters.toGeneratorIndex(False)
+def triggerPad(
+    control: ControlShadowEvent,
+    ch_idx: GeneratorIndex,
+    pad_idx: int,
+) -> bool:
+    note = plugins.getPadInfo(*ch_idx, -1, 1, pad_idx)
+    # Work-around for horrible bug where wrong note numbers are given
+    if note > 127:
+        note = note >> 16
+    channels.midiNoteOn(*ch_idx, note, int(control.value*127))
+    return True
 
 
 class FPC(StandardPlugin):
@@ -27,23 +53,18 @@ class FPC(StandardPlugin):
     """
     def __init__(self, shadow: DeviceShadow) -> None:
 
-        # Bind a different callback depending on drum pad size
-        size = shadow.getDevice().getDrumPadSize()
-        if size[0] >= 4 and size[1] >= 8:
-            self._pads = shadow.bindMatches(DrumPad, self.drumPad4x8)
-            # TODO: Figure out the logic of this at some point
-            self._coordToIndex = lambda r, c: 16 - (c + 1) * 4 + r
-        if size[0] >= 4 and size[1] >= 4:
-            self._pads = shadow.bindMatches(DrumPad, self.drumPad4x4)
-            self._coordToIndex = lambda r, c: 16 - (c + 1) * 4 + r
-        elif size[0] >= 2 and size[1] >= 8:
-            self._pads = shadow.bindMatches(DrumPad, self.drumPad2x8)
-            self._coordToIndex = lambda r, c: 4 * (1-r) + c + 4 * (c >= 4)
+        drums = DrumPadStrategy(
+            4,
+            4,
+            True,
+            triggerPad,
+            colorPad,
+            invert_rows=True,
+        )
 
         self._notes = shadow.bindMatches(Note, self.noteEvent)
 
-        super().__init__(shadow, [
-        ])
+        super().__init__(shadow, [drums])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
@@ -55,13 +76,6 @@ class FPC(StandardPlugin):
 
     @tick_filters.toGeneratorIndex()
     def tick(self, index: GeneratorIndex):
-        for p in self._pads:
-            p.color = Color.fromInteger(
-                plugins.getPadInfo(
-                    index[0], -1, 2, self._coordToIndex(*p.coordinate))
-            )
-        # Also update notes
-        # Hardcoded due to bug with plugins.getPadInfo() returning wrong values
         notes = set()
         for idx in range(32):
             # Get the note number
@@ -81,60 +95,6 @@ class FPC(StandardPlugin):
             if i not in notes:
                 self._notes[i].color = Color()
                 self._notes[i].annotation = ""
-
-    @staticmethod
-    def triggerPad(
-        pad_idx: int,
-        control: ControlShadowEvent,
-        ch_idx: int
-    ) -> None:
-        note = plugins.getPadInfo(ch_idx, -1, 1, pad_idx)
-        # Work-around for horrible bug where wrong note numbers are given
-        if note > 127:
-            note = note >> 16
-        channels.midiNoteOn(ch_idx, note, int(control.value*127))
-
-    @event_filters.toGeneratorIndex()
-    def drumPad4x8(
-        self,
-        control: ControlShadowEvent,
-        index: GeneratorIndex,
-        *args: Any
-    ) -> bool:
-        row, col = control.getShadow().coordinate
-        # Handle pads out of bounds as well
-        if row >= 4 or col >= 8:
-            return True
-        self.triggerPad(self._coordToIndex(row, col), control, *index)
-        return True
-
-    @event_filters.toGeneratorIndex()
-    def drumPad4x4(
-        self,
-        control: ControlShadowEvent,
-        index: GeneratorIndex,
-        *args: Any
-    ) -> bool:
-        row, col = control.getShadow().coordinate
-        # Handle pads out of bounds as well
-        if row >= 4 or col >= 4:
-            return True
-        self.triggerPad(self._coordToIndex(row, col), control, *index)
-        return True
-
-    @event_filters.toGeneratorIndex()
-    def drumPad2x8(
-        self,
-        control: ControlShadowEvent,
-        index: GeneratorIndex,
-        *args: Any
-    ) -> bool:
-        row, col = control.getShadow().coordinate
-        # Handle pads out of bounds
-        if row >= 2 or col >= 8:
-            return True
-        self.triggerPad(self._coordToIndex(row, col), control, *index)
-        return True
 
     @event_filters.toGeneratorIndex()
     def noteEvent(

@@ -17,14 +17,14 @@ from control_surfaces import (
     PlayButton,
 )
 from devices import DeviceShadow
-from tests.helpers.devices import DummyDevice
+from tests.helpers.devices import DummyDeviceBasic
 
 
 def test_process_unbound():
     """Check that attempting to process events that aren't assigned doesn't
     give an error
     """
-    s = DeviceShadow(DummyDevice())
+    s = DeviceShadow(DummyDeviceBasic())
 
     m = s.getControlMatches(PlayButton)[0]
 

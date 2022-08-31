@@ -11,14 +11,16 @@ more details.
 """
 
 __all__ = [
-    'floatApproxEq',
+    'floatApproxEqRatio',
+    'floatApproxEqMagnitude',
     'combinations',
     'devices',
     'controls',
 ]
 
 from .tools import (
-    floatApproxEq,
+    floatApproxEqRatio,
+    floatApproxEqMagnitude,
     combinations,
 )
 from . import devices

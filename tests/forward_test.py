@@ -16,7 +16,7 @@ more details.
 import pytest
 from fl_context import FlContext
 
-from tests.helpers.devices import DummyDevice2, DummyDeviceContext
+from tests.helpers.devices import DummyDeviceBasic2, DummyDeviceContext
 
 from common.exceptions import (
     EventEncodeError,
@@ -83,7 +83,7 @@ def test_isEventForwardedHere():
     with DummyDeviceContext(1):
         assert isEventForwardedHere(e)
 
-    with DummyDeviceContext(2, DummyDevice2):
+    with DummyDeviceContext(2, DummyDeviceBasic2):
         assert not isEventForwardedHere(e)
 
 
