@@ -10,7 +10,32 @@ interact with FL Studio Windows, as well as generator and effect plugins.
 * `WindowPlugin`: Window plugins interact with FL Studio windows
 * `SpecialPlugin`: Plugins that can be active at any time
 
-## Creating a Plugin
+## Creating a Plugin: The Easy Way
+
+If the standard plugin you are binding to only needs to bind some parameters to
+faders, you can create one by using the `basicPluginBuilder` function. You can
+do this by specifying the names that should be matched for this plugin, as well
+as the list of parameters that should be bound, and a color or list of colors
+to use to represent each parameter.
+
+```py
+# Import the required components
+from common.types import Color
+from plugs.standard import basicPluginBuilder
+
+# Create and register the plugin
+basicPluginBuilder(
+    # You can add more names after the inner column if multiple plugins use
+    # this layout
+    ('My plugin name',),
+    # A list of parameter indexes
+    [45, 46, 35, 37, 218, 219, 220, 221],
+    # A color to represent the parameters (this can also be a list)
+    Color.fromInteger(0x206cc8)
+)
+```
+
+## Creating a Plugin: The Hard (But More Powerful) Way
 
 When a plugin is created, it should bind callback functions to a
 [`DeviceShadow`](device_shadow.md) object, that represents the plugin's own
@@ -37,28 +62,28 @@ match the following criteria:
   plugin supports. Only add support for the ones that are most used for live
   performance, or for general control (eg macros).
 
-## Methods to Implement
+### Methods to Implement
 
 * `@classmethod create(cls, shadow: DeviceShadow) -> Plugin`: Create and return
   an instance of this plugin.
 
-### Standard Plugins
+#### Standard Plugins
 
 * `@classmethod getPlugIds(cls) -> tuple[str, ...]`: Returns a tuple of the
   plugin IDs to associate this plugin with. Only for plugins of type
   `StandardPlugin`.
 
-### Window Plugins
+#### Window Plugins
 
 * `@classmethod getWindowId(cls) -> int`: Returns the ID of the window to
   associate this plugin with. Only for plugins of type `WindowPlugin`
 
-### Special Plugins
+#### Special Plugins
 
 * `@classmethod shouldBeActive(cls) -> bool`: Returns whether this plugin should
   be active. Only for plugins of type `SpecialPlugin`.
 
-### Optional Methods
+#### Optional Methods
 
 The following methods only need to be implemented if necessary.
 
@@ -66,7 +91,7 @@ The following methods only need to be implemented if necessary.
   update the plugin. Note that the index can be filtered as required using
   [tick filters](filters.md).
 
-## Control Binding
+### Control Binding
 
 Control surfaces should be bound to callback functions during the constructor
 method of the plugin. The bindings are made using the `DeviceShadow` that
@@ -135,7 +160,7 @@ else:
 Control bindings can be made in more advanced ways too. Refer to the manual
 page on [device shadows](device_shadow.md).
 
-## Example Plugin
+### Example Plugin
 
 ```py
 class MyPlugin(StandardPlugin):
@@ -164,15 +189,14 @@ class MyPlugin(StandardPlugin):
         # This plugin should map to plugins named MyPlugin
         return ("MyPlugin",)
 
-    @filterToGeneratorIndex # Filter out plugins when the active plugin isn't a generator
+    @filterToGeneratorIndex() # Filter out plugins when the active plugin isn't a generator
     def eventCallback(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
         # Set the parameter
         plugins.setParamValue(control.value control.coordinate[1], *index)
         # Handle the event
         return True
 
-    # TODO: Make sure that this filter works correctly
-    @filterToGeneratorIndex # Filter out plugins when the active plugin isn't a generator
+    @filterToGeneratorIndex() # Filter out plugins when the active plugin isn't a generator
     def tickCallback(self, control: ControlShadow, index: GeneratorIndex, *args: Any) -> None:
         # Set the color of the control randomly
         control.color = Color.fromInteger(random.random() & 0xFFFFFF)

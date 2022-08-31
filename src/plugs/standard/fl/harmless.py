@@ -8,7 +8,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from common.types import Color
-from plugs.standard import basicFaderBuilder
+from plugs.standard import basicPluginBuilder
 
 PARAMS = [
     31,  # Pluck
@@ -23,4 +23,4 @@ PARAMS = [
 
 COLOR = Color.fromInteger(0x47353f)
 
-basicFaderBuilder(("Harmless",), PARAMS, COLOR)
+basicPluginBuilder(("Harmless",), PARAMS, COLOR)

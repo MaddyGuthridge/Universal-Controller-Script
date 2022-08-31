@@ -8,9 +8,9 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from common.types import Color
-from plugs.standard import basicFaderBuilder
+from plugs.standard import basicPluginBuilder
 
 MACRO_START = 211
 VITAL_COLOR = Color.fromInteger(0xAA88FF)
 
-basicFaderBuilder(('Vital',), [MACRO_START + i for i in range(4)], VITAL_COLOR)
+basicPluginBuilder(('Vital',), [MACRO_START + i for i in range(4)], VITAL_COLOR)

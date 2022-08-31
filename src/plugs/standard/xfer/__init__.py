@@ -13,20 +13,20 @@ more details.
 """
 
 from common.types import Color
-from plugs.standard import basicFaderBuilder
+from plugs.standard import basicPluginBuilder
 
 
-SERUM_COLOR = Color.fromInteger(0x206cc8)
-basicFaderBuilder(
+# Serum
+basicPluginBuilder(
     ('Serum',),
     [45, 46, 35, 37, 218, 219, 220, 221],
-    SERUM_COLOR
+    Color.fromInteger(0x206cc8)
 )
 
 
-OTT_COLOR = Color.fromInteger(0xb1c1cf)
-basicFaderBuilder(
+# OTT
+basicPluginBuilder(
     ('OTT',),
     list(range(4)),
-    OTT_COLOR
+    Color.fromInteger(0xb1c1cf)
 )

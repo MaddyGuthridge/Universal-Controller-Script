@@ -8,7 +8,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from common.types import Color
-from plugs.standard import basicFaderBuilder
+from plugs.standard import basicPluginBuilder
 
 PARAMS = [
     0,  # Tuning
@@ -23,4 +23,4 @@ PARAMS = [
 
 COLOR = Color.fromInteger(0x455765)
 
-basicFaderBuilder(("Transistor Bass",), PARAMS, COLOR)
+basicPluginBuilder(("Transistor Bass",), PARAMS, COLOR)

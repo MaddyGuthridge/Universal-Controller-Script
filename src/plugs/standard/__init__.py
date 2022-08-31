@@ -8,7 +8,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 __all__ = [
-    'basicFaderBuilder',
+    'basicPluginBuilder',
     'fallback',
     'fl',
     'matt_tytel',
@@ -16,7 +16,7 @@ __all__ = [
     'xfer',
 ]
 
-from .basic_faders import basicFaderBuilder
+from .basic_faders import basicPluginBuilder
 from . import fallback
 
 from . import fl

@@ -17,7 +17,7 @@ from plugs import StandardPlugin
 from plugs.mapping_strategies import SimpleFaders
 
 
-def basicFaderBuilder(
+def basicPluginBuilder(
     plugin_names: tuple[str],
     params: list[int],
     color: Union[Color, list[Color]],
@@ -26,6 +26,8 @@ def basicFaderBuilder(
     Build and register a basic fader plugin
 
     ### Args:
+    * `plugin_names` (`tuple[str]`): the plugin names should be matched
+
     * `params` (`list[int]`): list of parameter indexes
 
     * `color` (`Union[Color, list[Color]]`): color or list of colors to use for
