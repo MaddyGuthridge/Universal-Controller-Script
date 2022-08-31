@@ -3,8 +3,8 @@ tests > profiler_test
 
 Tests for the profiler system.
 
-If these tests fail, it is likely due to performance issues, and the leeways
-may need to be increased.
+If these tests fail, it is likely due to PC performance, and the leeways may
+need to be increased.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -57,7 +57,7 @@ def test_nested_profiles():
         with ProfilerContext("test2"):
             time.sleep(0.01)
     res = getContext().profiler.getTotals()
-    assert floatApproxEqMagnitude(20.0, res["test1"], 1)
+    assert floatApproxEqMagnitude(20.0, res["test1"], 2)
     assert floatApproxEqMagnitude(10.0, res["test1.test2"], 1)
 
 
@@ -80,4 +80,4 @@ def test_maxes():
         with ProfilerContext("test"):
             time.sleep(t)
     res = getContext().profiler.getMaxes()
-    assert floatApproxEqMagnitude(50.0, res["test"], 0.5)
+    assert floatApproxEqMagnitude(50.0, res["test"], 1)

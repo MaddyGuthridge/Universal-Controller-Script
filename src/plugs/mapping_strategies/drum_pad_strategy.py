@@ -9,6 +9,8 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+import mixer
+import channels
 from typing import Callable, Optional, Any
 from . import IMappingStrategy
 from common.plug_indexes import UnsafeIndex
@@ -26,27 +28,62 @@ ColorCallback = Callable[[ControlShadow, UnsafeIndex, int], Color]
 AnnotationCallback = Callable[[ControlShadow, UnsafeIndex, int], str]
 
 
-def defaultColorCallback(
-    control: ControlShadow,
-    plug_index: UnsafeIndex,
-    index: int,
-) -> Color:
+class color_callbacks:
     """
-    Provides a default color for drum pads bound using the drum pad strategy.
+    A collection of simple callbacks for generating colors that can be used
+    to color drum pads
     """
-    return Color.fromGrayscale(0.3)
+    @staticmethod
+    def white(
+        control: ControlShadow,
+        plug_index: UnsafeIndex,
+        index: int,
+    ) -> Color:
+        """
+        Colors all drum pads white with brightness 0.3
+        """
+        return Color.fromGrayscale(0.3)
+
+    @staticmethod
+    def channelColor(
+        control: ControlShadow,
+        plug_index: UnsafeIndex,
+        index: int,
+    ) -> Color:
+        """
+        Colors all drum pads white with the channel or mixer track color
+
+        Leaves FL Studio windows as white
+        """
+
+        # FL Studio windows should use white
+        if isinstance(plug_index, int) or plug_index is None:
+            return Color.fromGrayscale(0.3)
+
+        # Effect plugins use the color of their mixer track
+        if len(plug_index) == 2:
+            return Color.fromInteger(mixer.getTrackColor(plug_index[0]))
+
+        # Channel plugins use their color
+        return Color.fromInteger(channels.getChannelColor(*plug_index))
 
 
-def defaultAnnotationCallback(
-    control: ControlShadow,
-    plug_index: UnsafeIndex,
-    index: int,
-) -> str:
+class annotation_callbacks:
     """
-    Provides a default annotation for drum pads bound using the drum pad
-    strategy.
+    A collection of simple callbacks for generating colors that can be used to
+    color drum pads
     """
-    return ""
+    @staticmethod
+    def empty(
+        control: ControlShadow,
+        plug_index: UnsafeIndex,
+        index: int,
+    ) -> str:
+        """
+        Provides a default annotation for drum pads bound using the drum pad
+        strategy.
+        """
+        return ""
 
 
 class DrumPadStrategy(IMappingStrategy):
@@ -62,8 +99,8 @@ class DrumPadStrategy(IMappingStrategy):
         height: int,
         do_property_update: bool,
         trigger_callback: TriggerCallback,
-        color_callback: Optional[ColorCallback] = None,
-        annotation_callback: Optional[AnnotationCallback] = None,
+        color_callback: ColorCallback = color_callbacks.channelColor,
+        annotation_callback: AnnotationCallback = annotation_callbacks.empty,
         invert_rows: bool = False,
     ) -> None:
         """
@@ -116,9 +153,10 @@ class DrumPadStrategy(IMappingStrategy):
                 with this strategy.
 
         * `color_callback` (`ColorCallback`, optional): the callback
-          function to determine the color of a drum pad. Defaults to `None`,
-          meaning that the color for each drum pad will be gray. The callback
-          should return a `Color` object, and accept the following parameters:
+          function to determine the color of a drum pad. Defaults to
+          `color_callbacks.channelColor`, meaning that the color for each drum
+          pad will be gray. The callback should return a `Color` object, and
+          accept the following parameters:
 
               * `int`: the index of the drum pad, as determined by the width
                 and height specified when creating the drum pad strategy.
@@ -132,8 +170,9 @@ class DrumPadStrategy(IMappingStrategy):
 
         * `annotation_callback` (`Callable[[int], str]`, optional): the
           callback function to determine the annotation for a drum pad. The
-          parameter is the drum pad index. Defaults to `None`, meaning that the
-          annotation for each drum pad will be unset.
+          parameter is the drum pad index. Defaults to
+          `annotation_callbacks.empty`, meaning that the annotation for each
+          drum pad will be unset.
 
         * `invert_rows` (`bool`, optional): whether to have the rows invert, so
           that the first row is at the bottom and the last is at the top. It
@@ -144,16 +183,8 @@ class DrumPadStrategy(IMappingStrategy):
         self.__height = height
         self.__do_update = do_property_update
         self.__trigger = trigger_callback
-        self.__color: ColorCallback = (
-            color_callback
-            if color_callback is not None
-            else defaultColorCallback
-        )
-        self.__annotate: AnnotationCallback = (
-            annotation_callback
-            if annotation_callback is not None
-            else defaultAnnotationCallback
-        )
+        self.__color = color_callback
+        self.__annotate: AnnotationCallback = annotation_callback
         self.__invert_rows = invert_rows
         self.__mappings: Optional[list[list[int]]] = None
         self.__initialized_drums: Optional[list[list[bool]]] = None
