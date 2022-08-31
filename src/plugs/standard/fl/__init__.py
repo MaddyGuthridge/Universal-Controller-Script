@@ -15,6 +15,7 @@ __all__ = [
     'parametric_eq',
     'transistor_bass',
     'harmless',
+    'slicers',
 ]
 
 from . import (
@@ -23,4 +24,5 @@ from . import (
     parametric_eq,
     transistor_bass,
     harmless,
+    slicers
 )
