@@ -13,4 +13,8 @@ from plugs.standard import basicPluginBuilder
 MACRO_START = 211
 VITAL_COLOR = Color.fromInteger(0xAA88FF)
 
-basicPluginBuilder(('Vital',), [MACRO_START + i for i in range(4)], VITAL_COLOR)
+basicPluginBuilder(
+    ('Vital',),
+    [MACRO_START + i for i in range(4)],
+    VITAL_COLOR,
+)
