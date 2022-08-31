@@ -12,7 +12,10 @@ __all__ = [
     'spitfire',
     'matt_tytel',
     'fallback',
+    'basicFaderBuilder',
 ]
+
+from .basic_faders import basicFaderBuilder
 
 from . import fallback
 from . import fl
