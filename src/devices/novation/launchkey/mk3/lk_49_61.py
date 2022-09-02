@@ -18,6 +18,7 @@ from fl_classes import FlMidiMsg
 from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
+    SustainPedal,
 )
 from devices import Device
 from control_surfaces.matchers import (
@@ -92,6 +93,7 @@ class LaunchkeyMk3_49_61(Device):
         matcher.addControl(Mk3DirectionRight())
         matcher.addControl(StandardPitchWheel.create())
         matcher.addControl(StandardModWheel.create())
+        matcher.addControl(SustainPedal.create())
         matcher.addControl(LkPauseActive())
         # Note after-touch for drum pad
         # TODO: Create custom type for it

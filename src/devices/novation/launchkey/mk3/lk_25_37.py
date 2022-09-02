@@ -18,6 +18,7 @@ from fl_classes import FlMidiMsg
 from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
+    SustainPedal,
 )
 from control_surfaces.matchers import (
     BasicControlMatcher,
@@ -73,6 +74,7 @@ class LaunchkeyMk3_25_37(Device):
         matcher.addControl(LkMk3RecordButton())
         matcher.addControl(StandardPitchWheel.create())
         matcher.addControl(StandardModWheel.create())
+        matcher.addControl(SustainPedal.create())
         matcher.addControl(LkMk3ControlSwitchButton())
         matcher.addControl(LkMk3CaptureMidiButton())
         matcher.addControl(Mk3DirectionUp())
