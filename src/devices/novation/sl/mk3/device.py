@@ -18,6 +18,7 @@ from fl_classes import FlMidiMsg
 from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
+    SustainPedal,
 )
 from devices import Device
 from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
@@ -69,6 +70,7 @@ class SlMk3(Device):
         matcher.addControl(SlRecordButton())
         matcher.addControl(StandardPitchWheel.create())
         matcher.addControl(StandardModWheel.create())
+        matcher.addControl(SustainPedal.create())
 
         super().__init__(matcher)
 
