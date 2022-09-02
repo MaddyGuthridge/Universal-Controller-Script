@@ -18,6 +18,7 @@ from fl_classes import FlMidiMsg
 from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
+    SustainPedal,
 )
 from devices import Device
 from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
@@ -52,6 +53,7 @@ class LaunchkeyMiniMk3(Device):
         matcher.addControl(LkMk3PlayButton())
         matcher.addControl(StandardPitchWheel.create())
         matcher.addControl(StandardModWheel.create())
+        matcher.addControl(SustainPedal.create())
 
         # Shift controls
         matcher.addSubMatcher(getShiftControls())

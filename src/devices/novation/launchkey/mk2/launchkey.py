@@ -18,6 +18,7 @@ from fl_classes import FlMidiMsg
 from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
+    SustainPedal,
 )
 from devices import Device
 from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
@@ -75,6 +76,7 @@ class LaunchkeyMk2(Device):
         matcher.addControl(LkFastForwardButton())
         matcher.addControl(StandardPitchWheel.create())
         matcher.addControl(StandardModWheel.create())
+        matcher.addControl(SustainPedal.create())
 
         super().__init__(matcher)
 
