@@ -11,7 +11,7 @@ more details.
 """
 
 # Version info
-VERSION = (1, 0, 1)
+VERSION = (1, 0, 2)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
