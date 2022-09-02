@@ -12,12 +12,15 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+import pytest
 import time
 from common import getContext, unsafeResetContext
 from common.profiler import ProfilerContext, profilerDecoration
 from tests.helpers import floatApproxEqMagnitude
+from tests.helpers.performance import perfTestsSkipped
 
 
+@pytest.mark.skipif(**perfTestsSkipped())
 def test_timing_context():
     unsafeResetContext()
     getContext().enableProfiler()
@@ -27,6 +30,7 @@ def test_timing_context():
     assert floatApproxEqMagnitude(10.0, res["test"], 0.6)
 
 
+@pytest.mark.skipif(**perfTestsSkipped())
 def test_timing_decorator():
     unsafeResetContext()
     getContext().enableProfiler()
@@ -39,6 +43,7 @@ def test_timing_decorator():
     assert floatApproxEqMagnitude(10.0, res["test"], 1)
 
 
+@pytest.mark.skipif(**perfTestsSkipped())
 def test_total_repeated():
     unsafeResetContext()
     getContext().enableProfiler()
@@ -49,6 +54,7 @@ def test_total_repeated():
     assert floatApproxEqMagnitude(100.0, res["test"], 5)
 
 
+@pytest.mark.skipif(**perfTestsSkipped())
 def test_nested_profiles():
     unsafeResetContext()
     getContext().enableProfiler()
@@ -72,6 +78,7 @@ def test_numbers():
     }
 
 
+@pytest.mark.skipif(**perfTestsSkipped())
 def test_maxes():
     times = [0.01, 0.03, 0.05, 0.02]
     unsafeResetContext()
