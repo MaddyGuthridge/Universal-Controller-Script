@@ -106,6 +106,7 @@ class ControlEvent(IControlHash):
         """MIDI message associated with the event, which can be used to modify
         the original event if required.
         """
+        return self._midi
 
     @property
     def value(self) -> float:
@@ -164,6 +165,13 @@ class ControlShadowEvent(IControlHash):
 
     def getShadow(self) -> 'ControlShadow':
         return self._map_to
+
+    @property
+    def midi(self) -> FlMidiMsg:
+        """MIDI message associated with the event, which can be used to modify
+        the original event if required.
+        """
+        return self._map_from.midi
 
     @property
     def channel(self) -> int:
