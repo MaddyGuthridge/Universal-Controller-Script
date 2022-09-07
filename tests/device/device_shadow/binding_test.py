@@ -34,7 +34,7 @@ def test_binding():
     s.bindControl(m, _dummy)
 
     with pytest.raises(DummyException):
-        s.processEvent(ControlEvent(m.getControl(), 0.0, 0, False), None)
+        s.processEvent(ControlEvent(..., m.getControl(), 0.0, 0, False), None)
 
 
 def test_bind_same():
@@ -70,4 +70,4 @@ def test_bind_matches_all():
     # Check each match is assigned
     for m in matches:
         with pytest.raises(DummyException):
-            s.processEvent(ControlEvent(m.getControl(), 0.0, 0, False), None)
+            s.processEvent(ControlEvent(..., m.getControl(), 0.0, 0, False), None)
