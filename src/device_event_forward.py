@@ -30,6 +30,7 @@ from common import log, verbosity
 from common import getContext
 from common.consts import getVersionString
 
+
 class OverallDevice:
     @catchContextResetException
     def onInit(self) -> None:

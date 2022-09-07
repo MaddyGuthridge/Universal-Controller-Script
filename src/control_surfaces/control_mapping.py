@@ -13,6 +13,7 @@ more details.
 # from __future__ import annotations
 
 from abc import abstractmethod
+from fl_classes import FlMidiMsg
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -76,11 +77,13 @@ class ControlEvent(IControlHash):
 
     def __init__(
         self,
+        midi: FlMidiMsg,
         map_to: 'ControlSurface',
         value: float,
         channel: int,
         double: bool,
     ) -> None:
+        self._midi = midi
         self._map_to = map_to
         self._value = value
         self._channel = channel
@@ -97,6 +100,12 @@ class ControlEvent(IControlHash):
 
     def getControl(self) -> 'ControlSurface':
         return self._map_to
+
+    @property
+    def midi(self) -> FlMidiMsg:
+        """MIDI message associated with the event, which can be used to modify
+        the original event if required.
+        """
 
     @property
     def value(self) -> float:
