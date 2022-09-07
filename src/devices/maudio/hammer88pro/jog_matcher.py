@@ -109,11 +109,16 @@ class JogMatcher(IControlMatcher):
         if self._jog_press_pattern.matchEvent(event):
             if self._value_strat.getValueFromEvent(event, 0.0) == 0.0:
                 self._pressed = True
-                return ControlEvent(self._null, 0.0, -1, False)
+                return ControlEvent(event, self._null, 0.0, -1, False)
             else:
                 if self._used_since_press:
                     ret: Optional[ControlEvent] = ControlEvent(
-                        self._null, 0.0, -1, False)
+                        event,
+                        self._null,
+                        0.0,
+                        -1,
+                        False
+                    )
                 else:
                     ret = self._jog_standard.match(event)
                 self._pressed = False

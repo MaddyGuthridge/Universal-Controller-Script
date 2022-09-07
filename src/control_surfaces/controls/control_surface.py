@@ -207,7 +207,7 @@ class ControlSurface:
                 self.__last_press_time = t
             else:
                 double_press = False
-            return ControlEvent(self, self.value, channel, double_press)
+            return ControlEvent(event, self, self.value, channel, double_press)
         else:
             return None
 

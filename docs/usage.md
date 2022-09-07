@@ -53,6 +53,21 @@ can be sure you're getting the most out of the script.
 * Capture MIDI button writes the last 2 minutes of MIDI data to the selected
   pattern.
 
+## Manual Mappings
+
+By default, the program will automatically map your device's controls to any
+plugin which it supports. However, as not all plugins are supported, it is
+possible to create manual links when no event handling is active.
+
+To do this, activate an the plugin and choose your selected parameter.
+For FL Studio plugins, you can right click and choose the "Link to controller"
+button. For VST plugins, you can find the parameter in the "Current project"
+section of the FL Studio browser and choose the "Link to controller" option in
+the parameter's right click menu from there.
+
+Note that if the script is automatically linking a control to a plugin
+parameter already, it is impossible to manually create the mapping.
+
 # Activity Management
 
 The script tracks the active plugin and FL Studio window so that it can
