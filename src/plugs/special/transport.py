@@ -25,14 +25,6 @@ from control_surfaces import (
     StopButton,
     FastForwardButton,
     RewindButton,
-    DirectionNext,
-    DirectionPrevious,
-    NavigationButton,
-    DirectionUp,
-    DirectionDown,
-    DirectionRight,
-    DirectionLeft,
-    DirectionSelect,
     RecordButton,
     LoopButton,
     MetronomeButton,
@@ -42,7 +34,6 @@ from control_surfaces.control_shadow import ControlShadow
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 from plugs.event_filters import filterButtonLift
-from plugs.mapping_strategies import DirectionStrategy, JogStrategy
 
 # Constants
 FAST_FORWARDING = 1

@@ -103,6 +103,7 @@ class DeviceShadow:
         ] = {}
         self._minimal = False
         self._transparent = False
+        self._debug = False
 
     def __repr__(self) -> str:
         """
@@ -187,6 +188,17 @@ class DeviceShadow:
         * `value` (`bool`): new transparent value
         """
         self._transparent = value
+
+    def setDebug(self, value: bool) -> None:
+        """
+        Control whether this device shadow is in debug mode
+
+        If it is, then information will be printed when a control is processed.
+
+        ### Args:
+        * `value` (`bool`): new debug value
+        """
+        self._debug = value
 
     def _getMatches(
         self,
@@ -710,11 +722,15 @@ class DeviceShadow:
         except KeyError:
             # If we get a KeyError, the control isn't assigned and we should do
             # nothing
+            if self._debug:
+                print(f"[DEVICE SHADOW DEBUG] {control} is not assigned")
             return False
         # Set the value of the control as required
         control_shadow.value = control.value
         # Generate a control shadow mapping to send to the device
         mapping = ControlShadowEvent(control, control_shadow)
+        if self._debug:
+            print(f"[DEVICE SHADOW DEBUG] {control} is assigned to {fn}")
         # Call the bound function with any extra required args
         return fn(mapping, index, *args)
 

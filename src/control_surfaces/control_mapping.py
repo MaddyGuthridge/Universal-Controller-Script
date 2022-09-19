@@ -89,6 +89,9 @@ class ControlEvent(IControlHash):
         self._channel = channel
         self._double = double
 
+    def __repr__(self) -> str:
+        return f"ControlEvent({self._map_to}, {self._value})"
+
     def __hash__(self) -> int:
         return hash(self._map_to)
 
@@ -150,6 +153,9 @@ class ControlShadowEvent(IControlHash):
     ) -> None:
         self._map_from = map_from
         self._map_to = map_to
+
+    def __repr__(self) -> str:
+        return f"ControlShadowEvent({self._map_to})"
 
     def __hash__(self) -> int:
         return hash(self._map_from)
