@@ -9,7 +9,7 @@ from control_surfaces import (
     ControlShadowEvent,
 )
 from devices import DeviceShadow
-from plugs.event_filters import toPluginIndex
+from plugs.event_filters import toPluginIndex, filterButtonLift
 from .mapping_strategy import IMappingStrategy
 
 
@@ -24,6 +24,7 @@ class PresetNavigationStrategy(IMappingStrategy):
         shadow.bindMatch(DirectionNext, self.eDirectionNext)
         shadow.bindMatch(DirectionPrevious, self.eDirectionPrev)
 
+    @filterButtonLift()
     @toPluginIndex()
     def eDirectionNext(
         self,
@@ -34,6 +35,7 @@ class PresetNavigationStrategy(IMappingStrategy):
         plugins.nextPreset(*index)
         return True
 
+    @filterButtonLift()
     @toPluginIndex()
     def eDirectionPrev(
         self,

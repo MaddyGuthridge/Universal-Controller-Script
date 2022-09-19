@@ -107,13 +107,9 @@ class Transport(SpecialPlugin):
         shadow.bindMatch(HintMsg, self.nullEvent, self.tickHint)
         shadow.bindMatch(FastForwardButton, self.fastForward, self.tickFf)
         shadow.bindMatch(RewindButton, self.rewind, self.tickRw)
-        shadow.bindMatches(NavigationButton, self.navButtons)
         # Whether we're fast forwarding or rewinding
         self._playback_ff_rw = 0
-        super().__init__(shadow, [
-            DirectionStrategy(),
-            JogStrategy(),
-        ])
+        super().__init__(shadow, [])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
@@ -156,27 +152,6 @@ class Transport(SpecialPlugin):
     def nullEvent(self, *args: Any) -> bool:
         """Handle NullEvents for which no action should be taken
         """
-        return True
-
-    @filterButtonLift()
-    def navButtons(self, control: ControlShadowEvent, *args: Any) -> bool:
-        c_type = type(control.getControl())
-        if c_type == DirectionUp:
-            ui.up()
-        elif c_type == DirectionDown:
-            ui.down()
-        elif c_type == DirectionLeft:
-            ui.left()
-        elif c_type == DirectionRight:
-            ui.right()
-        elif c_type == DirectionNext:
-            ui.next()
-        elif c_type == DirectionPrevious:
-            ui.previous()
-        elif c_type == DirectionSelect:
-            ui.enter()
-        else:
-            return False
         return True
 
     def fastForward(self, control: ControlShadowEvent, *args: Any,) -> bool:
