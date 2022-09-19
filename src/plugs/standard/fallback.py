@@ -34,7 +34,6 @@ class Defaults(StandardPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.setDebug(True)
         super().__init__(shadow, [
             PedalStrategy(),
             WheelStrategy(),
