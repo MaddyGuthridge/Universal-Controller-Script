@@ -311,37 +311,28 @@ class DeviceShadow:
         ### Returns:
         * `ControlShadowList`: List of matches
         """
-
-        # Determine what lambda to use depending on if we are allowing control
-        # substitution
-        def no_subs(x): return isinstance(x, control)
-
-        def subs(x): return isinstance(
-            x, control.getControlAssignmentPriorities()
-        ) or isinstance(x, control)
-
+        # If we allow substitution, then search through all available types in
+        # order
         if allow_substitution:
-            ret = self._getMatches(
-                no_subs,
-                target_num,
-                one_type,
-            )
-            t = target_num if target_num is not None else 1
-            # If we didn't get enough matches, then we should try substitution
-            # TODO: Improve the efficiency of this
-            if len(ret) < t:
-                ret = self._getMatches(
-                    subs,
-                    target_num,
-                    one_type,
-                )
-
+            sub_types = (control, *control.getControlAssignmentPriorities())
         else:
-            ret = self._getMatches(
-                no_subs,
+            sub_types = (control,)
+
+        # List of the returned control surfaces
+        ret: list[ControlShadow] = []
+        # Final all the matches for each type one by one
+        for t in sub_types:
+            matches = self._getMatches(
+                lambda x: isinstance(x, t),
                 target_num,
                 one_type,
             )
+            # If this is the most matches we've found so far, set it as such
+            if len(matches) > len(ret):
+                ret = matches
+            # And if we reached our target
+            if target_num is not None and len(matches) >= target_num:
+                break
 
         # Sort the matches based on coordinate
         def sort_key(c): return c.coordinate
