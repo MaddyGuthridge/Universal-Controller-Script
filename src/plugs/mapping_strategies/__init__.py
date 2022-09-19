@@ -22,6 +22,7 @@ __all__ = [
     'ModXYStrategy',
     'MuteSoloStrategy',
     'DrumPadStrategy',
+    'PresetNavigationStrategy',
 ]
 
 from .mapping_strategy import IMappingStrategy
@@ -35,3 +36,4 @@ from .simple_faders import SimpleFaders
 from .mod_xy import ModXYStrategy
 from .mute_solo import MuteSoloStrategy
 from .drum_pad_strategy import DrumPadStrategy
+from .preset_navigation import PresetNavigationStrategy
