@@ -23,4 +23,4 @@ PARAMS = [
 
 COLOR = Color.fromInteger(0x47353f)
 
-basicPluginBuilder(("Harmless",), PARAMS, COLOR)
+basicPluginBuilder(("Harmless",), PARAMS, COLOR, uses_presets=True)

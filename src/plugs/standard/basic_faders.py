@@ -14,13 +14,18 @@ from common.types import Color
 from common.extension_manager import ExtensionManager
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.mapping_strategies import SimpleFaders
+from plugs.mapping_strategies import (
+    IMappingStrategy,
+    SimpleFaders,
+    PresetNavigationStrategy,
+)
 
 
 def basicPluginBuilder(
     plugin_names: tuple[str],
     params: list[int],
     color: Union[Color, list[Color]],
+    uses_presets: bool = False,
 ):
     """
     Build and register a basic fader plugin
@@ -32,6 +37,9 @@ def basicPluginBuilder(
 
     * `color` (`Union[Color, list[Color]]`): color or list of colors to use for
       the parameters
+
+    * `uses_presets` (`bool`, optional): whether the plugin uses presets
+      (displayed in the top right of the plugin window). Defaults to `False`.
     """
     class BuiltPlugin(StandardPlugin):
         """
@@ -40,8 +48,11 @@ def basicPluginBuilder(
         """
 
         def __init__(self, shadow: DeviceShadow) -> None:
-            faders = SimpleFaders(params, colors=color)
-            super().__init__(shadow, [faders])
+            mappings: list[IMappingStrategy] = []
+            mappings.append(SimpleFaders(params, colors=color))
+            if uses_presets:
+                mappings.append(PresetNavigationStrategy())
+            super().__init__(shadow, mappings)
 
         @classmethod
         def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':

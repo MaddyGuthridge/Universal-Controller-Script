@@ -11,7 +11,7 @@ from common.types import Color
 from common.extension_manager import ExtensionManager
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.mapping_strategies import SimpleFaders
+from plugs.mapping_strategies import SimpleFaders, PresetNavigationStrategy
 
 FADER_START = 10
 NUM_FADERS = 8
@@ -32,6 +32,7 @@ class Flex(StandardPlugin):
         )
         super().__init__(shadow, [
             faders,
+            PresetNavigationStrategy(),
         ])
 
     @classmethod

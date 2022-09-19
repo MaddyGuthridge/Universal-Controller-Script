@@ -17,6 +17,7 @@ from plugs.mapping_strategies import (
     PedalStrategy,
     WheelStrategy,
     NoteStrategy,
+    PresetNavigationStrategy,
 )
 
 
@@ -29,6 +30,7 @@ class Defaults(StandardPlugin):
     * Pedals
     * Mod and pitch wheels
     * Notes
+    * Direction buttons (for preset navigation)
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
@@ -36,6 +38,7 @@ class Defaults(StandardPlugin):
             PedalStrategy(),
             WheelStrategy(),
             NoteStrategy(),
+            PresetNavigationStrategy(),
         ])
 
     @classmethod

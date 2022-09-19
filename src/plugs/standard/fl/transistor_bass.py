@@ -23,4 +23,4 @@ PARAMS = [
 
 COLOR = Color.fromInteger(0x455765)
 
-basicPluginBuilder(("Transistor Bass",), PARAMS, COLOR)
+basicPluginBuilder(("Transistor Bass",), PARAMS, COLOR, uses_presets=True)
