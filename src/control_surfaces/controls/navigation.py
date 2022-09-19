@@ -85,10 +85,24 @@ class NextPrevButton(NavigationButton):
 class DirectionNext(NextPrevButton):
     """
     A next button
+
+    ### Falls back to:
+    * `DirectionRight`
+    * `DirectionDown`
     """
+    @staticmethod
+    def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
+        return (DirectionRight, DirectionDown)
 
 
 class DirectionPrevious(NextPrevButton):
     """
     A previous button
+
+    ### Falls back to:
+    * `DirectionLeft`
+    * `DirectionUp`
     """
+    @staticmethod
+    def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
+        return (DirectionLeft, DirectionUp)

@@ -19,14 +19,18 @@ class GenericKnob(ControlSurface):
     to the rotational position of the knob. They should be assigned to
     non-linear parameters such as pans, or mix levels.
 
-    WARNING: Generally, you want to bind to either a generic knob or the
+    WARNING: Generally, you want to bind to either a standard knob or the
     master knob.
     """
 
 
 class Knob(GenericKnob):
     """
-    Defines a knob (as opposed to the master knob)
+    Defines a standard knob (as opposed to the master knob)
+
+    ### Falls back to:
+    * `Fader`
+    * `Encoder`
     """
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
@@ -40,6 +44,9 @@ class MasterKnob(GenericKnob):
     Defines a master knob (as opposed to a normal knob). A controller should
     only have one master knob, which will be bound independently to the normal
     knobs.
+
+    ### Falls back to:
+    * `MasterFader`
     """
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:

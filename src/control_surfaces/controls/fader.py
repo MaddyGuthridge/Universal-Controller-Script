@@ -25,6 +25,10 @@ class GenericFader(ControlSurface):
 class Fader(GenericFader):
     """
     Defines a fader (as opposed to the master fader)
+
+    ### Falls back to:
+    * `Knob`
+    * `Encoder`
     """
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:
@@ -37,6 +41,9 @@ class MasterFader(GenericFader):
     Defines a master fader (as opposed to a normal fader). A controller should
     only have one master fader, which will be bound independently to the normal
     faders.
+
+    ### Falls back to:
+    * `MasterKnob`
     """
     @staticmethod
     def getControlAssignmentPriorities() -> tuple[type[ControlSurface], ...]:

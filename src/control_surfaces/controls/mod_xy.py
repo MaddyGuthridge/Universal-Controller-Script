@@ -22,6 +22,11 @@ class ModXY(ControlSurface):
 
     ModXY is an abstract class. Devices should implement a ModX and a ModY
     control separately.
+
+    ### Falls back to:
+    * `Fader`
+    * `Knob`
+    * `Encoder`
     """
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
