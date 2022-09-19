@@ -14,7 +14,7 @@ more details.
 """
 
 import pytest
-from fl_context import FlContext
+from fl_model import FlContext
 
 from tests.helpers.devices import DummyDeviceBasic2, DummyDeviceContext
 
@@ -107,5 +107,6 @@ def test_isEventForwardedHereFrom_target():
 def testForwardChecking():
     """Make sure checks are put into place before we forward an event"""
     with DummyDeviceContext(2):
-        with FlContext({"dispatch_targets": [1]}):
+        with FlContext() as fl:
+            fl.device.dispatch_targets = [1]
             forwardEvent(FlMidiMsg(7, 8, 9))

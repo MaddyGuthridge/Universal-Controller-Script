@@ -11,7 +11,7 @@ more details.
 """
 
 import pytest
-from fl_context import FlContext
+from fl_model import FlContext
 from common import getContext, ExtensionManager, unsafeResetContext
 from common.states import WaitingForDevice, DeviceState
 from fl_classes import FlMidiMsg
@@ -44,6 +44,7 @@ def test_manual_mapping(dev: Device):
     for id in dev.getSupportedIds():
         unsafeResetContext()
         getContext().settings.set("bootstrap.name_associations", [(id, id)])
-        with FlContext({"device_name": id}):
+        with FlContext() as fl:
+            fl.device.name = id
             getContext().initialize(WaitingForDevice(DummyState))
             assert getContext().getDeviceId() == id
