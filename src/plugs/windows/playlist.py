@@ -37,9 +37,9 @@ INDEX = 2
 TOOL_COLORS = [
     Color.fromInteger(0xffc43f),  # Pencil
     Color.fromInteger(0x7bcefd),  # Paint
-    Color.fromInteger(0xad90fe),  # Paint drums
     Color.fromInteger(0xfe5750),  # Delete
     Color.fromInteger(0xff54b0),  # Mute
+    Color.fromInteger(0xffa64a),  # Slip
     Color.fromInteger(0x85b3f2),  # Slice
     Color.fromInteger(0xff9354),  # Select
     Color.fromInteger(0x80acff),  # Zoom
