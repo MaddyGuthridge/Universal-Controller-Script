@@ -217,7 +217,7 @@ class ControlSurface:
     @property
     def coordinate(self) -> tuple[int, int]:
         """
-        Coordinate of the control. Read only.
+        Coordinate of the control (row, column). Read only.
         """
         return self.__coord
 
