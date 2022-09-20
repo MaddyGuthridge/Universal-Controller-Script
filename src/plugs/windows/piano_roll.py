@@ -21,7 +21,7 @@ from control_surfaces import ToolSelector, ControlShadowEvent
 INDEX = 3
 
 
-COLORS = [
+TOOL_COLORS = [
     Color.fromInteger(0xffc43f),  # Pencil
     Color.fromInteger(0x7bcefd),  # Paint
     Color.fromInteger(0xad90fe),  # Paint drums
@@ -43,7 +43,7 @@ class PianoRoll(WindowPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.bindMatches(ToolSelector, self.eSelectTool, args_generator=...)\
-            .colorize(COLORS)
+            .colorize(TOOL_COLORS)
         super().__init__(shadow, [])
 
     @classmethod
@@ -62,7 +62,10 @@ class PianoRoll(WindowPlugin):
         idx: int,
     ) -> bool:
         # FIXME: This uses keyboard shortcuts which are extremely unreliable
-        if idx < 9:
+        if idx < len(TOOL_COLORS):
+            # If we're already in a menu, close it
+            if ui.isInPopupMenu():
+                ui.closeActivePopupMenu()
             # Open menu
             transport.globalTransport(90, 1)
             # Navigate to tool selection
