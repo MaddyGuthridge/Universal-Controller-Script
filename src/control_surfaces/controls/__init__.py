@@ -71,6 +71,7 @@ __all__ = [
     'ModX',
     'ModY',
     'DrumPad',
+    'ToolSelector',
     'MacroButton',
     'SaveButton',
     'UndoRedoButton',
@@ -157,6 +158,7 @@ from .knob import Knob, MasterKnob
 from .encoder import Encoder
 from .mod_xy import ModXY, ModX, ModY
 from .drum_pad import DrumPad
+from .tool_selector import ToolSelector
 
 from .macro_button import (
     MacroButton,

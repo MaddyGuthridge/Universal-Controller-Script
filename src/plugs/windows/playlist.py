@@ -15,17 +15,36 @@ import playlist
 import transport
 import general
 from common import getContext
+from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import UnsafeIndex
 from common.util.api_fixes import getFirstPlaylistSelection
 from control_surfaces import consts
 from control_surfaces import ControlShadowEvent
-from control_surfaces import MoveJogWheel, StandardJogWheel, JogWheel
+from control_surfaces import (
+    MoveJogWheel,
+    StandardJogWheel,
+    JogWheel,
+    ToolSelector,
+)
 from devices import DeviceShadow
 from plugs import WindowPlugin
+from plugs.event_filters import filterButtonLift
 from plugs.mapping_strategies import MuteSoloStrategy
 
 INDEX = 2
+
+TOOL_COLORS = [
+    Color.fromInteger(0xffc43f),  # Pencil
+    Color.fromInteger(0x7bcefd),  # Paint
+    Color.fromInteger(0xfe5750),  # Delete
+    Color.fromInteger(0xff54b0),  # Mute
+    Color.fromInteger(0xffa64a),  # Slip
+    Color.fromInteger(0x85b3f2),  # Slice
+    Color.fromInteger(0xff9354),  # Select
+    Color.fromInteger(0x80acff),  # Zoom
+    Color.fromInteger(0xffa64a),  # Preview
+]
 
 
 def getNumDrumCols() -> int:
@@ -48,6 +67,8 @@ class Playlist(WindowPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.bindMatches(JogWheel, self.jogWheel)
+        shadow.bindMatches(ToolSelector, self.eSelectTool, args_generator=...)\
+            .colorize(TOOL_COLORS)
         mute_solo = MuteSoloStrategy(
             getSelection,
             playlist.muteTrack,
@@ -99,6 +120,28 @@ class Playlist(WindowPlugin):
             ui.scrollWindow(INDEX, bar, 1)
             # TODO: Make this work with time signature markers
             transport.setSongPos(bar * general.getRecPPB(), 2)
+        return True
+
+    @filterButtonLift()
+    def eSelectTool(
+        self,
+        control: ControlShadowEvent,
+        window,
+        idx: int,
+    ) -> bool:
+        # FIXME: This uses keyboard shortcuts which are extremely unreliable
+        if idx < len(TOOL_COLORS):
+            # If we're already in a menu, close it
+            if ui.isInPopupMenu():
+                ui.closeActivePopupMenu()
+            # Open menu
+            transport.globalTransport(90, 1)
+            # Move down until we reach the required tool (including initial
+            # downwards navigation)
+            for _ in range(idx + 1):
+                ui.down()
+            # Select it
+            ui.enter()
         return True
 
 

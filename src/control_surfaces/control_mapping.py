@@ -132,7 +132,7 @@ class ControlEvent(IControlHash):
 
     @property
     def coordinate(self) -> tuple[int, int]:
-        """Coordinate of the control
+        """Coordinate of the control (row, column)
         """
         return self._map_to.coordinate
 
@@ -200,6 +200,6 @@ class ControlShadowEvent(IControlHash):
 
     @property
     def coordinate(self) -> tuple[int, int]:
-        """Coordinate of the control
+        """Coordinate of the control (row, column)
         """
         return self._map_to.coordinate
