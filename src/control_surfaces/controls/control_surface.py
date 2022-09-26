@@ -278,6 +278,30 @@ class ControlSurface:
             self.__got_update = False
 
     @property
+    def value_midi(self) -> int:
+        """
+        The value of the control, represented as a MIDI value between `0` and
+        `127`.
+        """
+        return round(self.value * 127)
+
+    @value_midi.setter
+    def value_midi(self, val: int) -> None:
+        self.value = val / 127
+
+    @property
+    def value_rec(self) -> int:
+        """
+        The value of the control, represented as a REC event value between `0`
+        and `2 ** 16`.
+        """
+        return round(self.value * (2 ** 16))
+
+    @value_rec.setter
+    def value_rec(self, val: int) -> None:
+        self.value = val / (2 ** 16)
+
+    @property
     def needs_update(self) -> bool:
         """
         Represents whether the value of the control has changed since the last
