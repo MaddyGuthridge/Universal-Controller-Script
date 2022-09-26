@@ -94,9 +94,6 @@ class ManualMapper(SpecialPlugin):
         Studio
         """
         channel, cc = cls.getChannelAndCc(start + control.coordinate[1])
-        control.midi.status = (0xB << 4) + channel
-        control.midi.data1 = cc
-        control.midi.data2 = int(control.value * 127)
         # Find the associated event ID
         event_id = device.findEventID(
             midi.EncodeRemoteControlID(device.getPortNumber(), channel, cc)
@@ -106,12 +103,16 @@ class ManualMapper(SpecialPlugin):
             # Process it and prevent further processing
             general.processRECEvent(
                 event_id,
-                int(control.value * 2 ** 16),
+                control.value_rec,
                 midi.REC_Control
             )
             return True
         else:
             # Otherwise, let other plugins process it
+            # but only after editing it so it can be assigned
+            control.midi.status = (0xB << 4) + channel
+            control.midi.data1 = cc
+            control.midi.data2 = control.value_midi
             return False
 
     def eFaders(self, control: ControlShadowEvent, *args) -> bool:
