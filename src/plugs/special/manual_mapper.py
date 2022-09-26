@@ -21,6 +21,7 @@ from common.extension_manager import ExtensionManager
 from control_surfaces import (
     Fader,
     Knob,
+    Encoder,
     ModXY,
     ControlShadowEvent,
     ControlShadow,
@@ -56,12 +57,18 @@ class ManualMapper(SpecialPlugin):
             self.tFaders,
             allow_substitution=False
         ))
+        self._encoders_start = len(shadow.bindMatches(
+            Encoder,
+            self.eEncoders,
+            self.tEncoders,
+            allow_substitution=False
+        )) + self._knobs_start
         self._mods_start = len(shadow.bindMatches(
             Knob,
             self.eKnobs,
             self.tKnobs,
             allow_substitution=False
-        )) + self._knobs_start
+        )) + self._encoders_start
         shadow.bindMatches(
             ModXY,
             self.eMods,
@@ -151,6 +158,7 @@ class ManualMapper(SpecialPlugin):
         # If that event ID isn't invalid
         if event_id is not None:
             control.annotation = device.getLinkedParamName(event_id)
+            control.value = device.getLinkedValue(event_id)
 
     def eFaders(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._faders_start)
@@ -163,6 +171,12 @@ class ManualMapper(SpecialPlugin):
 
     def tKnobs(self, control: ControlShadow, *args):
         return self.tickEvent(control, self._knobs_start)
+
+    def eEncoders(self, control: ControlShadowEvent, *args) -> bool:
+        return self.editEvent(control, self._encoders_start)
+
+    def tEncoders(self, control: ControlShadow, *args):
+        return self.tickEvent(control, self._encoders_start)
 
     def eMods(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._mods_start)
