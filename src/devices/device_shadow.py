@@ -102,8 +102,7 @@ class DeviceShadow:
             tuple[ControlShadow, EventCallback, TickCallback, tuple]
         ] = {}
         self._minimal = False
-        self._transparent = False
-        self._debug = False
+        self._debug: Optional[str] = None
 
     def __repr__(self) -> str:
         """
@@ -177,26 +176,14 @@ class DeviceShadow:
         """
         self._minimal = value
 
-    def setTransparent(self, value: bool) -> None:
-        """
-        Control whether this device shadow is "transparent"
-
-        If it is, then any controls where the color is set to off will be
-        ignored during updating
-
-        ### Args:
-        * `value` (`bool`): new transparent value
-        """
-        self._transparent = value
-
-    def setDebug(self, value: bool) -> None:
+    def setDebug(self, value: Optional[str]) -> None:
         """
         Control whether this device shadow is in debug mode
 
         If it is, then information will be printed when a control is processed.
 
         ### Args:
-        * `value` (`bool`): new debug value
+        * `value` (`str`, optional): new debug name. Defaults to `None`.
         """
         self._debug = value
 
@@ -713,15 +700,15 @@ class DeviceShadow:
         except KeyError:
             # If we get a KeyError, the control isn't assigned and we should do
             # nothing
-            if self._debug:
-                print(f"[DEVICE SHADOW DEBUG] {control} is not assigned")
+            if self._debug is not None:
+                print(f"[DEBUG={self._debug}] {control} is not assigned")
             return False
         # Set the value of the control as required
         control_shadow.value = control.value
         # Generate a control shadow mapping to send to the device
         mapping = ControlShadowEvent(control, control_shadow)
-        if self._debug:
-            print(f"[DEVICE SHADOW DEBUG] {control} is assigned to {fn}")
+        if self._debug is not None:
+            print(f"[DEBUG={self._debug}] {control} is assigned to {fn}")
         # Call the bound function with any extra required args
         return fn(mapping, index, *args)
 
@@ -750,4 +737,4 @@ class DeviceShadow:
         else:
             controls = (c for c in self._all_controls)
         for c in controls:
-            c.apply(thorough, self._transparent)
+            c.apply()

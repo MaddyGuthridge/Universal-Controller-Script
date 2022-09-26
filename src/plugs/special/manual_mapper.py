@@ -13,13 +13,18 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-
+from typing import Optional
+import device
+import general
+import midi
 from common.extension_manager import ExtensionManager
 from control_surfaces import (
     Fader,
     Knob,
+    Encoder,
     ModXY,
     ControlShadowEvent,
+    ControlShadow,
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
@@ -49,16 +54,25 @@ class ManualMapper(SpecialPlugin):
         self._knobs_start = len(shadow.bindMatches(
             Fader,
             self.eFaders,
+            self.tFaders,
             allow_substitution=False
         ))
+        self._encoders_start = len(shadow.bindMatches(
+            Encoder,
+            self.eEncoders,
+            self.tEncoders,
+            allow_substitution=False
+        )) + self._knobs_start
         self._mods_start = len(shadow.bindMatches(
             Knob,
             self.eKnobs,
+            self.tKnobs,
             allow_substitution=False
-        )) + self._knobs_start
+        )) + self._encoders_start
         shadow.bindMatches(
             ModXY,
             self.eMods,
+            self.tMods,
             allow_substitution=False
         )
         super().__init__(shadow, [])
@@ -85,6 +99,28 @@ class ManualMapper(SpecialPlugin):
         """
         return (index // NUM_CCS), (AVAILABLE_CCS[index % NUM_CCS])
 
+    @staticmethod
+    def calcEventId(channel: int, cc: int) -> Optional[int]:
+        """
+        Calculates and returns the event ID associated with an event, or
+        `None` if it isn't linked.
+
+        ### Args:
+        * `channel` (`int`): channel
+
+        * `cc` (`int`): control change number
+
+        ### Returns:
+        * `int`: event id
+        """
+        event_id = device.findEventID(
+            midi.EncodeRemoteControlID(device.getPortNumber(), channel, cc)
+        )
+        if event_id == midi.REC_InvalidID:
+            return None
+        else:
+            return event_id
+
     @classmethod
     def editEvent(cls, control: ControlShadowEvent, start: int) -> bool:
         """
@@ -92,19 +128,64 @@ class ManualMapper(SpecialPlugin):
         Studio
         """
         channel, cc = cls.getChannelAndCc(start + control.coordinate[1])
-        control.midi.status = (0xB << 4) + channel
-        control.midi.data1 = cc
-        control.midi.data2 = int(control.value * 127)
-        return False
+        # Find the associated event ID
+        event_id = cls.calcEventId(channel, cc)
+        # If that event ID isn't invalid
+        if event_id is not None:
+            # Process it and prevent further processing
+            general.processRECEvent(
+                event_id,
+                control.value_rec,
+                midi.REC_Control
+            )
+            return True
+        else:
+            # Otherwise, let other plugins process it
+            # but only after editing it so it can be assigned
+            control.midi.status = (0xB << 4) + channel
+            control.midi.data1 = cc
+            control.midi.data2 = control.value_midi
+            return False
+
+    @classmethod
+    def tickEvent(cls, control: ControlShadow, start: int):
+        """
+        Applies properties to the event if it is assigned as a REC event
+        """
+        channel, cc = cls.getChannelAndCc(start + control.coordinate[1])
+        # Find the associated event ID
+        event_id = cls.calcEventId(channel, cc)
+        # If that event ID isn't invalid
+        if event_id is not None:
+            control.connected = True
+            control.annotation = device.getLinkedParamName(event_id)
+            control.value = device.getLinkedValue(event_id)
+        else:
+            control.connected = False
 
     def eFaders(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._faders_start)
 
+    def tFaders(self, control: ControlShadow, *args):
+        return self.tickEvent(control, self._faders_start)
+
     def eKnobs(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._knobs_start)
+
+    def tKnobs(self, control: ControlShadow, *args):
+        return self.tickEvent(control, self._knobs_start)
+
+    def eEncoders(self, control: ControlShadowEvent, *args) -> bool:
+        return self.editEvent(control, self._encoders_start)
+
+    def tEncoders(self, control: ControlShadow, *args):
+        return self.tickEvent(control, self._encoders_start)
 
     def eMods(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._mods_start)
 
+    def tMods(self, control: ControlShadow, *args) -> bool:
+        return self.tickEvent(control, self._mods_start)
 
-ExtensionManager.special.register(ManualMapper)
+
+ExtensionManager.super_special.register(ManualMapper)

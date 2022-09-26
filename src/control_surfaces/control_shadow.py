@@ -45,9 +45,35 @@ class IControlShadow:
         Represents the value that will be applied to the control after
         the event has been processed, as a float between 0-1
         """
+        return 0.0
+
     @value.setter
-    def value(self, newVal: float) -> None:
+    def value(self, val: float) -> None:
         ...
+
+    @property
+    def value_midi(self) -> int:
+        """
+        The value that will be applied to the control, represented as a MIDI
+        value between `0` and `127`.
+        """
+        return round(self.value * 127)
+
+    @value_midi.setter
+    def value_midi(self, val: int) -> None:
+        self.value = val / 127
+
+    @property
+    def value_rec(self) -> int:
+        """
+        The value that will be applied to the control, represented as a REC
+        event value between `0` and `2 ** 16`.
+        """
+        return round(self.value * (2 ** 16))
+
+    @value_rec.setter
+    def value_rec(self, val: int) -> None:
+        self.value = val / (2 ** 16)
 
     @property
     def color(self) -> Color:
@@ -149,6 +175,7 @@ class ControlShadow(IControlShadow):
         self._color = Color()
         self._annotation = ""
         self._changed = False
+        self._connected = True
 
     def __repr__(self) -> str:
         return f"Shadow of {self._control}"
@@ -167,6 +194,18 @@ class ControlShadow(IControlShadow):
         Returns a ControlMapping to the control that this object shadows
         """
         return self._control.getMapping()
+
+    @property
+    def connected(self) -> bool:
+        """
+        Represents whether this control is connected. If this is set to False,
+        the control will not push its properties to the control when applying.
+        """
+        return self._connected
+
+    @connected.setter
+    def connected(self, val: bool):
+        self._connected = val
 
     @property
     def value(self) -> float:
@@ -280,36 +319,19 @@ class ControlShadow(IControlShadow):
         self.annotation = newAnnotation
         return self
 
-    def apply(self, thorough: bool, transparent: bool) -> None:
+    def apply(self) -> None:
         """
         Apply the configuration of the control shadow to the control it
         representsApply the configuration of the control shadow to the control
         it represents
-
-        ### Args:
-        * `thorough` (`bool`): whether we should always apply the values,
-          regardless of whether they changed or not
-        * `transparent` (`bool`): whether we should only set colors, and treat
-          black as transparent
         """
-        # If our device shadow is transparent, we should only set the color
-        if transparent:
-            if self.color != Color():
-                # IDEA: Superimpose the added color
-                # Requires smarter updating of plugins and stuff
-                self._control.color = self.color
-                self._changed = False
-            elif self._changed:
-                if not self._control.got_update:
-                    self._control.color = self.color
-                self._changed = False
-        # If we're being thorough, or the shadow has changed since last time,
-        # or if the control needs an update
-        elif thorough or self._changed or self._control.needs_update:
-            self._control.color = self.color
-            self._control.annotation = self.annotation
-            self._control.value = self.value
-            self._changed = False
+        # If this control shadow is disconnected, don't do anything
+        if not self._connected:
+            return
+        self._control.color = self.color
+        self._control.annotation = self.annotation
+        self._control.value = self.value
+        self._changed = False
 
 
 class NullControlShadow(IControlShadow):

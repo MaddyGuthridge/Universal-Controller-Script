@@ -223,4 +223,4 @@ class Macro(SpecialPlugin):
         return True
 
 
-ExtensionManager.special.register(Macro)
+ExtensionManager.super_special.register(Macro)

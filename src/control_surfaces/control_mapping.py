@@ -118,6 +118,22 @@ class ControlEvent(IControlHash):
         return self._value
 
     @property
+    def value_midi(self) -> int:
+        """
+        The value associated with the event, represented as a MIDI value
+        between `0` and `127`.
+        """
+        return round(self.value * 127)
+
+    @property
+    def value_rec(self) -> int:
+        """
+        The value associated with the event, represented as a REC event value
+        between `0` and `2 ** 16`.
+        """
+        return round(self.value * (2 ** 16))
+
+    @property
     def channel(self) -> int:
         """Channel that this event was fired from.
         `-1` if not an event, or not associated with a channel
@@ -174,23 +190,42 @@ class ControlShadowEvent(IControlHash):
 
     @property
     def midi(self) -> FlMidiMsg:
-        """MIDI message associated with the event, which can be used to modify
+        """
+        MIDI message associated with the event, which can be used to modify
         the original event if required.
         """
         return self._map_from.midi
 
     @property
     def channel(self) -> int:
-        """Channel that this event was fired from.
+        """
+        Channel that this event was sent from.
         `-1` if not an event, or not associated with a channel
         """
         return self._map_from.channel
 
     @property
     def value(self) -> float:
-        """Value of this event, between `0-1.0`
+        """
+        The value associated with this event, between `0-1.0`
         """
         return self._map_from.value
+
+    @property
+    def value_midi(self) -> int:
+        """
+        The value associated with the event, represented as a MIDI value
+        between `0` and `127`.
+        """
+        return round(self.value * 127)
+
+    @property
+    def value_rec(self) -> int:
+        """
+        The value associated with the event, represented as a REC event value
+        between `0` and `2 ** 16`.
+        """
+        return round(self.value * (2 ** 16))
 
     @property
     def double(self) -> bool:
