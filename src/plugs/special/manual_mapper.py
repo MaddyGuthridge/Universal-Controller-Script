@@ -50,6 +50,7 @@ class ManualMapper(SpecialPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
+        shadow.setTransparent(True)
         self._faders_start = 0
         self._knobs_start = len(shadow.bindMatches(
             Fader,
@@ -157,8 +158,11 @@ class ManualMapper(SpecialPlugin):
         event_id = cls.calcEventId(channel, cc)
         # If that event ID isn't invalid
         if event_id is not None:
+            control.connected = True
             control.annotation = device.getLinkedParamName(event_id)
             control.value = device.getLinkedValue(event_id)
+        else:
+            control.connected = False
 
     def eFaders(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._faders_start)

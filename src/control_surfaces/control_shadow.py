@@ -175,6 +175,7 @@ class ControlShadow(IControlShadow):
         self._color = Color()
         self._annotation = ""
         self._changed = False
+        self._connected = True
 
     def __repr__(self) -> str:
         return f"Shadow of {self._control}"
@@ -193,6 +194,18 @@ class ControlShadow(IControlShadow):
         Returns a ControlMapping to the control that this object shadows
         """
         return self._control.getMapping()
+
+    @property
+    def connected(self) -> bool:
+        """
+        Represents whether this control is connected. If this is set to False,
+        the control will not push its properties to the control when applying.
+        """
+        return self._connected
+
+    @connected.setter
+    def connected(self, val: bool):
+        self._connected = val
 
     @property
     def value(self) -> float:
@@ -318,6 +331,9 @@ class ControlShadow(IControlShadow):
         * `transparent` (`bool`): whether we should only set colors, and treat
           black as transparent
         """
+        # If this control shadow is disconnected, don't do anything
+        if not self._connected:
+            return
         # If our device shadow is transparent, we should only set the color
         if transparent:
             if self.color != Color():
