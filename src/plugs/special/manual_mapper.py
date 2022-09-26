@@ -95,6 +95,15 @@ class ManualMapper(SpecialPlugin):
         control.midi.status = (0xB << 4) + channel
         control.midi.data1 = cc
         control.midi.data2 = int(control.value * 127)
+        # HELP WANTED: The fact that we're returning False means that events
+        # will be processed by later plugins, meaning the manual mappings won't
+        # work as the script's built-in mappings will be applied instead.
+        # We can't just return True either, as that would prevent other plugins
+        # from processing events, including the ones that aren't actually bound
+        # to controllers.
+        # The solution is to determine whether the event we're mapping to has
+        # been manually mapped to a control from the user, however, I'm not
+        # sure if it's possible to do that.
         return False
 
     def eFaders(self, control: ControlShadowEvent, *args) -> bool:
@@ -107,4 +116,4 @@ class ManualMapper(SpecialPlugin):
         return self.editEvent(control, self._mods_start)
 
 
-ExtensionManager.special.register(ManualMapper)
+ExtensionManager.super_special.register(ManualMapper)
