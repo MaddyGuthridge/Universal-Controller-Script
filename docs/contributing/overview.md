@@ -48,13 +48,8 @@ it. If a plugin has bound that control surface, then the associated callback
 function is triggered, allowing for the plugin to perform any required actions
 given the event.
 
-The plugins are checked in the following order:
-
-* Special plugins
-
-* The plugin matching the active FL Studio plugin or window
-
-* Final plugins
+The plugins are checked in the order defined
+[here](plugins/event_processing.md).
 
 ### Tick Processing
 
@@ -71,18 +66,10 @@ running smoothly. The following steps are taken.
 * The current state is ticked. This is usually the main state. In the main
   state:
 
-    * Special plugins are ticked and applied.
+  * Plugins are ticked using [this order](plugins/event_processing.md).
 
-    * The current plugin is ticked and applied.
+  * The device is ticked.
 
-        * The plugin object is ticked.
+    * Control matchers are ticked.
 
-        * Tick callback functions are called.
-
-    * Final special plugins are ticked and applied.
-
-    * The device is ticked.
-
-        * Control matchers are ticked.
-
-            * Control surfaces are ticked.
+      * Control surfaces are ticked.
