@@ -23,6 +23,7 @@ from control_surfaces import (
     Knob,
     ModXY,
     ControlShadowEvent,
+    ControlShadow,
 )
 from devices import DeviceShadow
 from plugs import SpecialPlugin
@@ -52,16 +53,19 @@ class ManualMapper(SpecialPlugin):
         self._knobs_start = len(shadow.bindMatches(
             Fader,
             self.eFaders,
+            self.tFaders,
             allow_substitution=False
         ))
         self._mods_start = len(shadow.bindMatches(
             Knob,
             self.eKnobs,
+            self.tKnobs,
             allow_substitution=False
         )) + self._knobs_start
         shadow.bindMatches(
             ModXY,
             self.eMods,
+            self.tMods,
             allow_substitution=False
         )
         super().__init__(shadow, [])
@@ -120,7 +124,7 @@ class ManualMapper(SpecialPlugin):
         # Find the associated event ID
         event_id = cls.calcEventId(channel, cc)
         # If that event ID isn't invalid
-        if event_id is None:
+        if event_id is not None:
             # Process it and prevent further processing
             general.processRECEvent(
                 event_id,
@@ -136,14 +140,35 @@ class ManualMapper(SpecialPlugin):
             control.midi.data2 = control.value_midi
             return False
 
+    @classmethod
+    def tickEvent(cls, control: ControlShadow, start: int):
+        """
+        Applies properties to the event if it is assigned as a REC event
+        """
+        channel, cc = cls.getChannelAndCc(start + control.coordinate[1])
+        # Find the associated event ID
+        event_id = cls.calcEventId(channel, cc)
+        # If that event ID isn't invalid
+        if event_id is not None:
+            control.annotation = device.getLinkedParamName(event_id)
+
     def eFaders(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._faders_start)
+
+    def tFaders(self, control: ControlShadow, *args):
+        return self.tickEvent(control, self._faders_start)
 
     def eKnobs(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._knobs_start)
 
+    def tKnobs(self, control: ControlShadow, *args):
+        return self.tickEvent(control, self._knobs_start)
+
     def eMods(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._mods_start)
+
+    def tMods(self, control: ControlShadow, *args) -> bool:
+        return self.tickEvent(control, self._mods_start)
 
 
 ExtensionManager.super_special.register(ManualMapper)
