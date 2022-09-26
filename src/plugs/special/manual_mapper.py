@@ -50,7 +50,6 @@ class ManualMapper(SpecialPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
-        shadow.setTransparent(True)
         self._faders_start = 0
         self._knobs_start = len(shadow.bindMatches(
             Fader,
