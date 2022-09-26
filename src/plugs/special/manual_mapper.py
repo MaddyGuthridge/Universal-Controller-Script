@@ -13,6 +13,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from typing import Optional
 import device
 import general
 import midi
@@ -87,6 +88,28 @@ class ManualMapper(SpecialPlugin):
         """
         return (index // NUM_CCS), (AVAILABLE_CCS[index % NUM_CCS])
 
+    @staticmethod
+    def calcEventId(channel: int, cc: int) -> Optional[int]:
+        """
+        Calculates and returns the event ID associated with an event, or
+        `None` if it isn't linked.
+
+        ### Args:
+        * `channel` (`int`): channel
+
+        * `cc` (`int`): control change number
+
+        ### Returns:
+        * `int`: event id
+        """
+        event_id = device.findEventID(
+            midi.EncodeRemoteControlID(device.getPortNumber(), channel, cc)
+        )
+        if event_id == midi.REC_InvalidID:
+            return None
+        else:
+            return event_id
+
     @classmethod
     def editEvent(cls, control: ControlShadowEvent, start: int) -> bool:
         """
@@ -95,11 +118,9 @@ class ManualMapper(SpecialPlugin):
         """
         channel, cc = cls.getChannelAndCc(start + control.coordinate[1])
         # Find the associated event ID
-        event_id = device.findEventID(
-            midi.EncodeRemoteControlID(device.getPortNumber(), channel, cc)
-        )
+        event_id = cls.calcEventId(channel, cc)
         # If that event ID isn't invalid
-        if event_id != midi.REC_InvalidID:
+        if event_id is None:
             # Process it and prevent further processing
             general.processRECEvent(
                 event_id,
