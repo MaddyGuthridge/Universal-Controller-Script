@@ -73,9 +73,6 @@ class PluginPager:
         ### Args:
         * `shadow` (`DeviceShadow`): device shadow to work with
         """
-        # PluginPagers are always transparent, so that they won't interfere
-        # with the pages
-        shadow.setTransparent(True)
         self.__shadow = shadow
         self.__controlSwitch = shadow.bindMatch(ControlSwitchButton,
                                                 self.controlSwitch)

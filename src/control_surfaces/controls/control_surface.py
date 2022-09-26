@@ -358,6 +358,9 @@ class ControlSurface:
             self.__needs_update = False
             self.__got_update = False
         self.__prev_color = self.__color
+        # Set color back to off, so that we don't have to worry about things
+        # not getting updated correctly
+        self.__color = Color()
         self.__prev_annotation = self.__annotation
         self.__prev_value = self.__value
 
