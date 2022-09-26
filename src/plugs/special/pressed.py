@@ -121,4 +121,4 @@ class Press(SpecialPlugin):
             c.color = Color.fade(OFF, ON, fadeOverTime(control))
 
 
-ExtensionManager.final.register(Press)
+ExtensionManager.super_special.register(Press)

@@ -48,4 +48,4 @@ class FallbackTransport(SpecialPlugin):
         return True
 
 
-ExtensionManager.final.register(FallbackTransport)
+ExtensionManager.special.register(FallbackTransport)

@@ -12,14 +12,14 @@ more details.
 """
 
 __all__ = [
-    'final_transport',
+    'fallback_transport',
     'macro',
     'manual_mapper',
     'pressed',
     'transport',
 ]
 
-from . import final_transport
+from . import fallback_transport
 from . import macro
 from . import manual_mapper
 from . import pressed

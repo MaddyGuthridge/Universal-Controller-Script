@@ -95,7 +95,7 @@ class MainState(DeviceState):
                         window.apply(thorough=changed)
 
         # Tick final special plugins
-        for p in common.ExtensionManager.final.get(self._device):
+        for p in common.ExtensionManager.super_special.get(self._device):
             if p.shouldBeActive():
                 with ProfilerContext(f"tick-{type(p).__name__}"):
                     p.doTick(plug_idx)
@@ -131,8 +131,18 @@ class MainState(DeviceState):
                 verbosity.EVENT,
                 detailed_msg=eventToString(event)
             )
+
         # Get active standard plugin
         plug_idx = common.getContext().activity.getActive()
+
+        # Process for super special plugins
+        for p in (common.ExtensionManager.super_special.get(self._device)):
+            if p.shouldBeActive():
+                with ProfilerContext(f"process-{type(p).__name__}"):
+                    if p.processEvent(mapping, plug_idx):
+                        event.handled = True
+                        return
+
         if plug_idx is not None:
             if isinstance(plug_idx, tuple):
                 try:
@@ -158,11 +168,8 @@ class MainState(DeviceState):
                             event.handled = True
                             return
 
-        # Get special plugins
-        for p in (
-            common.ExtensionManager.special.get(self._device)
-            + common.ExtensionManager.final.get(self._device)
-        ):
+        # Process for special plugins
+        for p in (common.ExtensionManager.special.get(self._device)):
             if p.shouldBeActive():
                 with ProfilerContext(f"process-{type(p).__name__}"):
                     if p.processEvent(mapping, plug_idx):

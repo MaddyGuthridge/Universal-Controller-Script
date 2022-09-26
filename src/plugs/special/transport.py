@@ -206,4 +206,4 @@ class Transport(SpecialPlugin):
             control.color = GRAY
 
 
-ExtensionManager.special.register(Transport)
+ExtensionManager.super_special.register(Transport)

@@ -37,18 +37,30 @@ class ExtensionManager:
 
     # Standard plugins
     plugins = StandardPluginCollection()
+    """Contains standard plugins
+    """
 
     # Window plugins
     windows = WindowPluginCollection()
+    """Contains plugins that handle FL Studio windows
+    """
 
     # Special plugins
     special = SpecialPluginCollection()
+    """Special plugins are plugins that can be active at any time they specify
+    """
 
     # Final special plugins
-    final = SpecialPluginCollection()
+    super_special = SpecialPluginCollection()
+    """Super special plugins process events first and draw lights last, meaning
+    that they get the first opportunity to process events, and the final say on
+    lighting behavior.
+    """
 
     # Devices
     devices = DeviceCollection()
+    """Hardware device definitions
+    """
 
     def __init__(self) -> None:
         raise TypeError(
@@ -64,7 +76,7 @@ class ExtensionManager:
         cls.plugins.reset()
         cls.windows.reset()
         cls.special.reset()
-        cls.final.reset()
+        cls.super_special.reset()
 
     @classmethod
     def getInfo(cls) -> str:
@@ -97,10 +109,10 @@ class ExtensionManager:
         # Number of instantiated special plugins
         nis_plug = instantiated(cls.special.instantiated())
         # Number of final special plugins
-        nfs_plug = f"{len(cls.final)} "\
-            f"final special plugin{plural(cls.final)}"
+        nfs_plug = f"{len(cls.super_special)} "\
+            f"final special plugin{plural(cls.super_special)}"
         # Number of instantiated final special plugins
-        nifs_plug = instantiated(cls.final)
+        nifs_plug = instantiated(cls.super_special)
         # Compile all that info into one string
         return (
             f"{n_dev}, "
@@ -127,7 +139,7 @@ class ExtensionManager:
         # Number of plugins
         n_plug = (
             len(cls.plugins) + len(cls.windows)
-            + len(cls.special) + len(cls.final)
+            + len(cls.special) + len(cls.super_special)
         )
         return (
             f"{n_dev} devices, {n_plug} plugins"
