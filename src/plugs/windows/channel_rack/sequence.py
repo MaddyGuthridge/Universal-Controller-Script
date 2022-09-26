@@ -52,10 +52,10 @@ class StepSequencer(WindowPlugin):
         self._scroll = 0
         self._left = shadow.bindMatch(DirectionLeft, self.left)
         self._right = shadow.bindMatch(DirectionRight, self.right)
-        self._prev = shadow.bindMatch(DirectionPrevious, self.left)
-        self._next = shadow.bindMatch(DirectionNext, self.right)
         self._up = shadow.bindMatch(DirectionUp, self.up)
         self._down = shadow.bindMatch(DirectionDown, self.down)
+        self._prev = shadow.bindMatch(DirectionPrevious, self.left)
+        self._next = shadow.bindMatch(DirectionNext, self.right)
         super().__init__(shadow, [])
 
     @classmethod
