@@ -45,9 +45,35 @@ class IControlShadow:
         Represents the value that will be applied to the control after
         the event has been processed, as a float between 0-1
         """
+        return 0.0
+
     @value.setter
-    def value(self, newVal: float) -> None:
+    def value(self, val: float) -> None:
         ...
+
+    @property
+    def value_midi(self) -> int:
+        """
+        The value that will be applied to the control, represented as a MIDI
+        value between `0` and `127`.
+        """
+        return round(self.value * 127)
+
+    @value_midi.setter
+    def value_midi(self, val: int) -> None:
+        self.value = val / 127
+
+    @property
+    def value_rec(self) -> int:
+        """
+        The value that will be applied to the control, represented as a REC
+        event value between `0` and `2 ** 16`.
+        """
+        return round(self.value * (2 ** 16))
+
+    @value_rec.setter
+    def value_rec(self, val: int) -> None:
+        self.value = val / (2 ** 16)
 
     @property
     def color(self) -> Color:
