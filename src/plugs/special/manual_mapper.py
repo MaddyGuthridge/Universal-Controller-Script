@@ -13,7 +13,9 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-
+import device
+import general
+import midi
 from common.extension_manager import ExtensionManager
 from control_surfaces import (
     Fader,
@@ -95,16 +97,22 @@ class ManualMapper(SpecialPlugin):
         control.midi.status = (0xB << 4) + channel
         control.midi.data1 = cc
         control.midi.data2 = int(control.value * 127)
-        # HELP WANTED: The fact that we're returning False means that events
-        # will be processed by later plugins, meaning the manual mappings won't
-        # work as the script's built-in mappings will be applied instead.
-        # We can't just return True either, as that would prevent other plugins
-        # from processing events, including the ones that aren't actually bound
-        # to controllers.
-        # The solution is to determine whether the event we're mapping to has
-        # been manually mapped to a control from the user, however, I'm not
-        # sure if it's possible to do that.
-        return False
+        # Find the associated event ID
+        event_id = device.findEventID(
+            midi.EncodeRemoteControlID(device.getPortNumber(), channel, cc)
+        )
+        # If that event ID isn't invalid
+        if event_id != midi.REC_InvalidID:
+            # Process it and prevent further processing
+            general.processRECEvent(
+                event_id,
+                int(control.value * 2 ** 16),
+                midi.REC_Control
+            )
+            return True
+        else:
+            # Otherwise, let other plugins process it
+            return False
 
     def eFaders(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._faders_start)
