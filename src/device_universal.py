@@ -22,6 +22,9 @@ more details.
 # Add our additional includes to the Python environment
 import fl_typing
 
+# Add support for fl_param_checker
+from fl_param_checker import idleCallback, pluginParamCheck
+
 # Get context, and context reset wrapper
 from common import getContext, catchContextResetException, getVersionString
 # Function to allow user to reset context
@@ -54,6 +57,7 @@ class OverallDevice:
 
     @catchContextResetException
     def onIdle(self) -> None:
+        idleCallback()
         getContext().tick()
 
     @catchContextResetException
