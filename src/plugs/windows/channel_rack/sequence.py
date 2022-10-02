@@ -34,8 +34,6 @@ from .helpers import INDEX, getChannelRows
 SCROLL_MULTIPLIER = 4
 
 DISABLED_COLOR = Color()
-LEAD_BEAT_COLOR = Color.fromInteger(0x333333)
-BACK_BEAT_COLOR = Color.fromInteger(0x332233)
 
 
 class StepSequencer(WindowPlugin):
@@ -163,13 +161,14 @@ class StepSequencer(WindowPlugin):
             col += SCROLL_MULTIPLIER * self._scroll
 
             # Determine color to use for when the grid bit isn't set
-            if (col // SCROLL_MULTIPLIER) % 2:
-                false_color = BACK_BEAT_COLOR
-            else:
-                false_color = LEAD_BEAT_COLOR
+            # if (col // SCROLL_MULTIPLIER) % 2:
+            #     false_color = BACK_BEAT_COLOR
+            # else:
+            #     false_color = LEAD_BEAT_COLOR
+            on_color = Color.fromGrayscale(1)
 
-            c = Color.fromInteger(channels.getChannelColor(ch_idx))
+            off_color = Color.fromInteger(channels.getChannelColor(ch_idx))
             if channels.getGridBit(ch_idx, col):
-                control.color = c
+                control.color = on_color
             else:
-                control.color = false_color
+                control.color = off_color
