@@ -51,9 +51,13 @@ know in the Discord and we can work to improve things further.
 The following plugins have full support with the script.
 
 ## FL Studio Windows
-* Channel Rack
+* Channel Rack (step sequencer and omni preview)
 
 * Mixer
+
+* Playlist (tool selection)
+
+* Piano Roll (tool selection)
 
 ## FL Studio Plugins
 * FLEX
@@ -66,7 +70,17 @@ The following plugins have full support with the script.
 
 * Transistor Bass
 
+* Fruity Slicer
+
+* Slicex
+
 ## VST Plugins
 * Vital by Matt Tytel
 
 * Spitfire Audio plugins
+
+* XFER
+
+    * OTT
+
+    * Serum
