@@ -1,3 +1,6 @@
 [submodule "fl_typing"]
 	path = src/fl_typing
 	url = git@github.com:MiguelGuthridge/fl_typing.git
+[submodule "src/fl_param_checker"]
+	path = src/fl_param_checker
+	url = git@github.com:MiguelGuthridge/fl_param_checker.git

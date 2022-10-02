@@ -21,6 +21,9 @@ more details.
 # Add our additional includes to the Python environment
 import fl_typing
 
+# Add support for fl_param_checker
+from fl_param_checker import idleCallback, pluginParamCheck
+
 from common import consts
 from common.context_manager import catchContextResetException
 from common.extension_manager import ExtensionManager
