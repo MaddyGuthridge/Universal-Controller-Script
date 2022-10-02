@@ -39,7 +39,7 @@ The following devices have full support with the script.
 ## Devices with Preliminary Support
 
 These devices have preliminary support, meaning that some aspects may not work
-correctly. If you want to see more support for one of these devices, let us
+correctly. If you want to see more support for one of these devices, let me
 know in the Discord and we can work to improve things further.
 
 ### Novation
@@ -84,3 +84,24 @@ The following plugins have full support with the script.
     * OTT
 
     * Serum
+
+# Want to help out?
+
+I'd love to have your support! Here's what you can do to help:
+
+* Contribute code to the project: see [the documentation](docs/contributing) for 
+  detailed instructions, and feel free to reach out on the 
+  [Discord server](https://discord.gg/6vpfJUF) if you need a hand.
+
+* Help with plugin support: join the [Discord server](https://discord.gg/6vpfJUF)
+  and let me know! You'll just need to follow some simple instructions.
+
+* Help with device support: join the [Discord server](https://discord.gg/6vpfJUF)
+  and let me know! You'll probably need to spend some time in a video call with me
+  so we can try and get things working together.
+
+* Help fund my work: you don't have to, but 
+  [buying me some pasta](https://www.buymeacoffee.com/miguelguthridge) is a great
+  way to show some love! I want to try to give everyone the same high quality 
+  software so don't expect much more than a thankyou, but I really would appreciate 
+  it!
