@@ -83,7 +83,7 @@ class Log:
                 else:
                     verbosity = context.settings.get("logger.max_verbosity")
 
-        assert(verbosity is not None)
+        assert verbosity is not None
         if item.verbosity <= verbosity:
             return True
         else:

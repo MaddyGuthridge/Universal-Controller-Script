@@ -70,7 +70,7 @@ class LaunchkeyMiniMk3(Device):
         return 2, 8
 
     def getDeviceNumber(self) -> int:
-        return 2 if'2' in device.getName() else 1
+        return 2 if '2' in device.getName() else 1
 
     @classmethod
     def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
