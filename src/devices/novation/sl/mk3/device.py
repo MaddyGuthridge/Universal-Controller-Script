@@ -19,6 +19,7 @@ from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
     SustainPedal,
+    ChannelAfterTouch,
 )
 from devices import Device
 from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
@@ -56,6 +57,7 @@ class SlMk3(Device):
 
         # Notes
         matcher.addSubMatcher(NoteMatcher())
+        matcher.addControl(ChannelAfterTouch.fromChannel(...))
 
         matcher.addSubMatcher(SlDrumPadMatcher())
         matcher.addSubMatcher(SlEncoderSet())
