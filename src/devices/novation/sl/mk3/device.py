@@ -48,9 +48,6 @@ class SlMk3(Device):
 
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
-        # InControl manager
-        # self._incontrol = InControl(matcher)
-        # matcher.addSubMatcher(InControlMatcher(self._incontrol))
 
         matcher.addControl(SlNotifMsg())
 

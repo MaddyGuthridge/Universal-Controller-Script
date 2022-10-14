@@ -39,105 +39,73 @@ __all__ = [
 ]
 
 
-class SlStopButton(SlColorSurface, StopButton):
+class SlStopButton(StopButton):
     def __init__(self) -> None:
-        StopButton.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x72, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        SlColorSurface.__init__(
-            self,
-            0x23,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x23)
         )
 
 
-class SlPlayButton(SlColorSurface, PlayButton):
+class SlPlayButton(PlayButton):
     def __init__(self) -> None:
-        PlayButton.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x73, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        SlColorSurface.__init__(
-            self,
-            0x24,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x24)
         )
 
 
-class SlLoopButton(SlColorSurface, LoopButton):
+class SlLoopButton(LoopButton):
     def __init__(self) -> None:
-        LoopButton.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x74, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        SlColorSurface.__init__(
-            self,
-            0x25,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x25)
         )
 
 
-class SlRecordButton(SlColorSurface, RecordButton):
+class SlRecordButton(RecordButton):
     def __init__(self) -> None:
-        RecordButton.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        SlColorSurface.__init__(
-            self,
-            0x20,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x20)
         )
 
 
-class SlDirectionNext(SlColorSurface, DirectionNext):
+class SlDirectionNext(DirectionNext):
     def __init__(self) -> None:
-        DirectionNext.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        SlColorSurface.__init__(
-            self,
-            0x1E,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x1E)
         )
 
 
-class SlDirectionPrevious(SlColorSurface, DirectionPrevious):
+class SlDirectionPrevious(DirectionPrevious):
     def __init__(self) -> None:
-        DirectionPrevious.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        SlColorSurface.__init__(
-            self,
-            0x1F,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x1F)
         )
 
 
-class SlRewindButton(SlColorSurface, RewindButton):
+class SlRewindButton(RewindButton):
     def __init__(self) -> None:
-        RewindButton.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x70, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        SlColorSurface.__init__(
-            self,
-            0x21,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x21)
         )
 
 
-class SlFastForwardButton(SlColorSurface, FastForwardButton):
+class SlFastForwardButton(FastForwardButton):
     def __init__(self) -> None:
-        FastForwardButton.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x71, ...)),
-            ForwardedStrategy(ButtonData2Strategy())
-        )
-        SlColorSurface.__init__(
-            self,
-            0x22,
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x22)
         )
