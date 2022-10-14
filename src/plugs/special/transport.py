@@ -46,7 +46,7 @@ OFF = Color()
 GRAY = Color.fromInteger(0x606060, 0.3, False)
 ON = Color.fromInteger(0xFFFFFF, 1.0, True)
 
-SONG_COLOR = Color.fromInteger(0x45A147, 0.6, True)
+SONG_COLOR = Color.fromInteger(0x45F147, 0.6, True)
 PAT_COLOR = Color.fromInteger(0xF78F41, 0.6, True)
 REC_COLOR = Color.fromInteger(0xAF0000, 1.0, True)
 STOP_COLOR = Color.fromInteger(0xB9413E, 1.0, True)
