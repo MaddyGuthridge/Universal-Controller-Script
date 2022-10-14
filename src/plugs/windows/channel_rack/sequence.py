@@ -167,7 +167,10 @@ class StepSequencer(WindowPlugin):
             #     false_color = LEAD_BEAT_COLOR
             on_color = Color.fromGrayscale(1)
 
-            off_color = Color.fromInteger(channels.getChannelColor(ch_idx))
+            off_color = Color.fromInteger(
+                channels.getChannelColor(ch_idx),
+                enabled=False
+            )
             if channels.getGridBit(ch_idx, col):
                 control.color = on_color
             else:

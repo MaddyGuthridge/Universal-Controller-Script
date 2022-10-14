@@ -28,7 +28,10 @@ class SlColorSurface(IColorManager):
 
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
-        new = new.fadeGray(-0.5)
+        new = new.fadeGray(-0.5, enabled=new.enabled)
+        # Ignore whenever the light isn't enabled, as a fix for bad contrast
+        if not new.enabled:
+            new = Color()
         forwardEvent(
             FlMidiMsg([
                 0xF0,
