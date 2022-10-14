@@ -20,6 +20,7 @@ from control_surfaces import (
     RecordButton,
     RewindButton,
     StopButton,
+    ControlSwitchButton
 )
 from control_surfaces.value_strategies import (
     ButtonData2Strategy,
@@ -108,4 +109,13 @@ class SlFastForwardButton(FastForwardButton):
             ForwardedPattern(2, BasicPattern(0xBF, 0x71, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
             color_manager=SlColorSurface(0x22)
+        )
+
+
+class SlControlSwitchButton(ControlSwitchButton):
+    def __init__(self) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0xBF, 0x5A, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x41)
         )

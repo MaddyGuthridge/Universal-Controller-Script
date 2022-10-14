@@ -32,6 +32,7 @@ from .controls.transport import (
     SlDirectionPrevious,
     SlRewindButton,
     SlFastForwardButton,
+    SlControlSwitchButton,
 )
 from .controls import (
     SlFaderSet,
@@ -72,6 +73,7 @@ class SlMk3(Device):
         matcher.addControl(SlDirectionNext())
         matcher.addControl(SlDirectionPrevious())
         matcher.addControl(SlRecordButton())
+        matcher.addControl(SlControlSwitchButton())
         matcher.addControl(StandardPitchWheel.create())
         matcher.addControl(StandardModWheel.create())
         matcher.addControl(SustainPedal.create())
