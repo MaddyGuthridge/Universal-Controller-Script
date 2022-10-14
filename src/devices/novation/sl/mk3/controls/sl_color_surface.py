@@ -28,6 +28,7 @@ class SlColorSurface(IColorManager):
 
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
+        new = new.fadeGray(-0.5)
         forwardEvent(
             FlMidiMsg([
                 0xF0,
