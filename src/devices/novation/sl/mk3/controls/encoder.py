@@ -38,7 +38,7 @@ class SlEncoder(Encoder):
     def __init__(self, index: int) -> None:
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, E_START + index, ...)),
-            ForwardedStrategy(TwosComplimentDeltaStrategy()),
+            ForwardedStrategy(TwosComplimentDeltaStrategy(scaling=0.3)),
             (0, index),
             # color_manager=SlColorSurface(E_COLOR_START + index)
         )
