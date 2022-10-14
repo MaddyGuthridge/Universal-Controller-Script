@@ -35,6 +35,7 @@ from .controls.transport import (
 from .controls import (
     SlFaderSet,
     SlEncoderSet,
+    SlToolSelectorSet,
     SlDrumPadMatcher,
     SlNotifMsg,
 )
@@ -57,6 +58,7 @@ class SlMk3(Device):
 
         matcher.addSubMatcher(SlDrumPadMatcher())
         matcher.addSubMatcher(SlEncoderSet())
+        matcher.addSubMatcher(SlToolSelectorSet())
         matcher.addSubMatcher(SlFaderSet())
         matcher.addControl(SlStopButton())
         matcher.addControl(SlPlayButton())
