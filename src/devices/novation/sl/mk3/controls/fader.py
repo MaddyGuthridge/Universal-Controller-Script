@@ -36,17 +36,13 @@ F_COLOR_START = 0x36
 FB_START = 0x33
 
 
-class SlFader(SlColorSurface, Fader):
+class SlFader(Fader):
     def __init__(self, index: int) -> None:
-        Fader.__init__(
-            self,
+        super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, F_START + index, ...)),
             ForwardedStrategy(Data2Strategy()),
-            (0, index)
-        )
-        SlColorSurface.__init__(
-            self,
-            F_COLOR_START + index,
+            (0, index),
+            color_manager=SlColorSurface(F_COLOR_START + index)
         )
 
 
