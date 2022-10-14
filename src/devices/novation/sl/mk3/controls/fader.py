@@ -32,8 +32,6 @@ __all__ = [
 # Fader start
 F_START = 0x29
 F_COLOR_START = 0x36
-# Fader button start
-FB_START = 0x33
 
 
 class SlFader(Fader):
