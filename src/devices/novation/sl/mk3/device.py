@@ -41,6 +41,7 @@ from .controls import (
     SlMuteSet,
     SlDrumPadMatcher,
     SlNotifMsg,
+    SlAmbientKeys,
 )
 
 DEVICE_ID = "Novation.SL.Mk3"
@@ -77,6 +78,7 @@ class SlMk3(Device):
         matcher.addControl(StandardPitchWheel.create())
         matcher.addControl(StandardModWheel.create())
         matcher.addControl(SustainPedal.create())
+        matcher.addControl(SlAmbientKeys())
 
         super().__init__(matcher)
 

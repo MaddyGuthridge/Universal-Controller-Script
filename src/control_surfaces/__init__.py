@@ -103,6 +103,7 @@ __all__ = [
     'ControlSwitchButton',
     'HintMsg',
     'NotifMsg',
+    'Ambient',
 ]
 
 from .controls import (
@@ -181,6 +182,7 @@ from .controls import (
     PauseActiveButton,
     HintMsg,
     NotifMsg,
+    Ambient,
 )
 
 from .control_shadow import (

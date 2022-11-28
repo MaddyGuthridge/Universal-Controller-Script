@@ -17,6 +17,7 @@ __all__ = [
     'SlToolSelectorSet',
     'SlMuteSet',
     'SlNotifMsg',
+    'SlAmbientKeys',
 ]
 
 from .sl_color_surface import SlColorSurface
@@ -26,3 +27,4 @@ from .encoder import SlEncoderSet
 from .tool_select import SlToolSelectorSet
 from .mutes import SlMuteSet
 from .notif_msg import SlNotifMsg
+from .keys import SlAmbientKeys

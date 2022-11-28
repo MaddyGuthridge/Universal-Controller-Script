@@ -87,6 +87,7 @@ __all__ = [
     'ControlSwitchButton',
     'HintMsg',
     'NotifMsg',
+    'Ambient',
 ]
 
 from .control_surface import ControlSurface
@@ -178,3 +179,4 @@ from .activity_button import (
 )
 from .hint_msg import HintMsg
 from .notif_msg import NotifMsg
+from .ambient import Ambient
