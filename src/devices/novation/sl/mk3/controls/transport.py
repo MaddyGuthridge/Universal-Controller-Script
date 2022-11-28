@@ -79,7 +79,7 @@ class SlRecordButton(RecordButton):
 class SlDirectionNext(DirectionNext):
     def __init__(self) -> None:
         super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
             color_manager=SlColorSurface(0x1E)
         )
@@ -88,7 +88,7 @@ class SlDirectionNext(DirectionNext):
 class SlDirectionPrevious(DirectionPrevious):
     def __init__(self) -> None:
         super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
             color_manager=SlColorSurface(0x1F)
         )
