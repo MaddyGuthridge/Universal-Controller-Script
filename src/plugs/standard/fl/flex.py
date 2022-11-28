@@ -16,7 +16,7 @@ from plugs.mapping_strategies import SimpleFaders, PresetNavigationStrategy
 FADER_START = 10
 NUM_FADERS = 8
 
-FLEX_COLOR = Color.fromRgb(255, 140, 0)
+FLEX_COLOR = Color.fromRgb(255, 100, 50)
 
 
 class Flex(StandardPlugin):
