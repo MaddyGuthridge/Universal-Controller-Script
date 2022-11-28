@@ -42,7 +42,12 @@ class PianoRoll(WindowPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(ToolSelector, self.eSelectTool, args_generator=...)\
+        shadow.bindMatches(
+            ToolSelector,
+            self.eSelectTool,
+            args_generator=...,
+            target_num=len(TOOL_COLORS),
+        )\
             .colorize(TOOL_COLORS)
         super().__init__(shadow, [])
 
