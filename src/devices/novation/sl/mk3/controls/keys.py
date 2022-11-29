@@ -28,7 +28,8 @@ class AmbientColors(IColorManager):
     def __init__(self) -> None:
         self.managers = [
             SlColorSurface(i)
-            for i in range(36, 73)
+            # FIXME: These values aren't working correctly - find out what does
+            for i in range(0x36, 0x73)
         ]
 
     def onColorChange(self, new_color: Color) -> None:
@@ -48,5 +49,5 @@ class SlAmbientKeys(Ambient):
         super().__init__(
             NullPattern(),
             NullStrategy(),
-            color_manager=AmbientColors()
+            # color_manager=AmbientColors()
         )
