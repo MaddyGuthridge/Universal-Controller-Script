@@ -99,7 +99,7 @@ class DeviceShadow:
         self._free_controls = self._all_controls.copy()
         self._assigned_controls: dict[
             IControlHash,
-            tuple[ControlShadow, EventCallback, TickCallback, tuple]
+            tuple[ControlShadow, Optional[EventCallback], TickCallback, tuple]
         ] = {}
         self._minimal = False
         self._debug: Optional[str] = None
@@ -384,7 +384,7 @@ class DeviceShadow:
     def bindControl(
         self,
         control: ControlShadow,
-        on_event: EventCallback,
+        on_event: Optional[EventCallback],
         on_tick: TickCallback = None,
         args: tuple = None
     ) -> None:
@@ -513,7 +513,7 @@ class DeviceShadow:
     def bindMatch(
         self,
         control: type[ControlSurface],
-        on_event: EventCallback,
+        on_event: Optional[EventCallback],
         on_tick: TickCallback = None,
         args: tuple = None,
         allow_substitution: bool = True,
@@ -702,6 +702,9 @@ class DeviceShadow:
             # nothing
             if self._debug is not None:
                 print(f"[DEBUG={self._debug}] {control} is not assigned")
+            return False
+        # If there is no callback, cancel
+        if fn is None:
             return False
         # Set the value of the control as required
         control_shadow.value = control.value

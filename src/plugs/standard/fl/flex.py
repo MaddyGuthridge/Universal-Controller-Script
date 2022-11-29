@@ -9,6 +9,7 @@ more details.
 """
 from common.types import Color
 from common.extension_manager import ExtensionManager
+from control_surfaces import Ambient
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs.mapping_strategies import SimpleFaders, PresetNavigationStrategy
@@ -30,6 +31,7 @@ class Flex(StandardPlugin):
             [FADER_START + i for i in range(NUM_FADERS)],
             colors=FLEX_COLOR,
         )
+        shadow.bindMatch(Ambient, None).colorize(FLEX_COLOR)
         super().__init__(shadow, [
             faders,
             PresetNavigationStrategy(),
