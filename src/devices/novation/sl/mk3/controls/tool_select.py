@@ -1,7 +1,7 @@
 """
-devices > novation > sl > mk3 > controls > fader
+devices > novation > sl > mk3 > controls > tool_select
 
-Definitions for fader controls used by the SL Mk3 device
+Definitions for tool select controls used by the SL Mk3 device
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -12,7 +12,7 @@ more details.
 
 from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
 from control_surfaces import (
-    Fader,
+    ToolSelector,
 )
 from control_surfaces.value_strategies import (
     Data2Strategy,
@@ -25,16 +25,16 @@ from control_surfaces.matchers import (
 from .sl_color_surface import SlColorSurface
 
 __all__ = [
-    'SlFader',
-    'SlFaderSet',
+    'SlToolSelector',
+    'SlToolSelectorSet',
 ]
 
-# Fader start
-F_START = 0x29
-F_COLOR_START = 0x36
+# Start values
+F_START = 0x33
+F_COLOR_START = 0x04
 
 
-class SlFader(Fader):
+class SlToolSelector(ToolSelector):
     def __init__(self, index: int) -> None:
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, F_START + index, ...)),
@@ -44,9 +44,9 @@ class SlFader(Fader):
         )
 
 
-class SlFaderSet(BasicControlMatcher):
+class SlToolSelectorSet(BasicControlMatcher):
     def __init__(self) -> None:
         super().__init__()
         self.addSubMatcher(IndexedMatcher(0xBF, F_START, [
-            SlFader(i) for i in range(8)
+            SlToolSelector(i) for i in range(8)
         ], 2))

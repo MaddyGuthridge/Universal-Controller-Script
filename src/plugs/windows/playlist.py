@@ -43,7 +43,7 @@ TOOL_COLORS = [
     Color.fromInteger(0x85b3f2),  # Slice
     Color.fromInteger(0xff9354),  # Select
     Color.fromInteger(0x80acff),  # Zoom
-    Color.fromInteger(0xffa64a),  # Preview
+    # Color.fromInteger(0xffa64a),  # Preview
 ]
 
 
@@ -67,7 +67,12 @@ class Playlist(WindowPlugin):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.bindMatches(JogWheel, self.jogWheel)
-        shadow.bindMatches(ToolSelector, self.eSelectTool, args_generator=...)\
+        shadow.bindMatches(
+            ToolSelector,
+            self.eSelectTool,
+            args_generator=...,
+            target_num=len(TOOL_COLORS),
+        )\
             .colorize(TOOL_COLORS)
         mute_solo = MuteSoloStrategy(
             getSelection,

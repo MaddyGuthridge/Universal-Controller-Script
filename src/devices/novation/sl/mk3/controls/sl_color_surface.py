@@ -11,11 +11,12 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from fl_classes import FlMidiMsg
+from control_surfaces.managers import IColorManager
 from common.types import Color
 from common.util.events import forwardEvent
 
 
-class SlColorSurface:
+class SlColorSurface(IColorManager):
     """Forwarder to manage sending color events to Launchkey controls
     """
 
@@ -27,6 +28,10 @@ class SlColorSurface:
 
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
+        new = new.fadeGray(-0.5, enabled=new.enabled)
+        # Ignore whenever the light isn't enabled, as a fix for bad contrast
+        if not new.enabled:
+            new = Color()
         forwardEvent(
             FlMidiMsg([
                 0xF0,
@@ -46,3 +51,6 @@ class SlColorSurface:
             ]),
             2,
         )
+
+    def tick(self) -> None:
+        return

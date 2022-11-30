@@ -29,7 +29,7 @@ DRUM_LIGHTS = [
 ]
 
 
-class SlDrumPad(SlColorSurface, DrumPad):
+class SlDrumPad(DrumPad):
     """
     Custom drum pad implementation used by SL Mk3 controllers
     to provide RGB functionality
@@ -39,16 +39,11 @@ class SlDrumPad(SlColorSurface, DrumPad):
         coordinate: tuple[int, int]
     ) -> None:
         r, c = coordinate
-        SlColorSurface.__init__(
-            self,
-            DRUM_LIGHTS[r][c],
-        )
-        DrumPad.__init__(
-            self,
-            # TODO: Make sure it's actually channel F?
+        super().__init__(
             ForwardedPattern(2, NotePattern(DRUM_NOTES[r][c], 0xF)),
             ForwardedStrategy(NoteStrategy()),
-            coordinate
+            coordinate,
+            color_manager=SlColorSurface(DRUM_LIGHTS[r][c])
         )
 
 

@@ -146,7 +146,7 @@ class MuteSoloStrategy(IMappingStrategy):
         if self.is_mute(track):
             control.color = COLOR_DISABLED
         else:
-            control.color = Color.fromInteger(self.color(track))
+            control.color = Color.fromInteger(self.color(track), enabled=True)
         return True
 
     @filterButtonLift()
@@ -178,7 +178,7 @@ class MuteSoloStrategy(IMappingStrategy):
             control.color = Color()
             return
         if self.is_mute(track):
-            control.color = Color.fromInteger(self.color(track))
+            control.color = Color.fromInteger(self.color(track), enabled=True)
         else:
             control.color = COLOR_DISABLED
         return True
@@ -217,5 +217,5 @@ class MuteSoloStrategy(IMappingStrategy):
         if self.is_mute(track):
             control.color = COLOR_DISABLED
         else:
-            control.color = Color.fromInteger(self.color(track))
+            control.color = Color.fromInteger(self.color(track), enabled=True)
         return True

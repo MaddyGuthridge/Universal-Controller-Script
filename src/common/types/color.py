@@ -534,7 +534,12 @@ class Color:
     # Operators
 
     @staticmethod
-    def fade(start: 'Color', end: 'Color', position: float = 0.5) -> 'Color':
+    def fade(
+        start: 'Color',
+        end: 'Color',
+        position: float = 0.5,
+        enabled: Optional[bool] = None,
+    ) -> 'Color':
         """
         Fade between two colors, using the HSV color space to ensure that
         intermediate colors remain vibrant.
@@ -547,6 +552,8 @@ class Color:
         * `end` (`Color`): color to fade to
         * `position` (`float`, optional): position of the fade to use (0-1.0).
           Defaults to `0.5`.
+        * `enabled` (`bool`, optional): whether the color should be considered
+          enabled. Defaults to `None` to determine based on the result.
 
         ### Returns:
         * `Color`: faded color
@@ -567,9 +574,14 @@ class Color:
             end.saturation * position + start.saturation * rev_pos,
             end.value * position + start.value * rev_pos,
             start.grayscale * position + end.grayscale * rev_pos,
+            enabled,
         )
 
-    def fadeBlack(self: 'Color', position: float = 0.5) -> 'Color':
+    def fadeBlack(
+        self: 'Color',
+        position: float = 0.5,
+        enabled: Optional[bool] = None,
+    ) -> 'Color':
         """
         Fade between this color and black
 
@@ -579,14 +591,20 @@ class Color:
         ### Args:
         * `position` (`float`, optional): position of the fade to use (0-1.0).
           Defaults to `0.5`.
+        * `enabled` (`bool`, optional): whether the color should be considered
+          enabled. Defaults to `None` to determine based on the result.
 
         ### Returns:
         * `Color`: Faded color
         """
         black = Color()
-        return Color.fade(self, black, position)
+        return Color.fade(self, black, position, enabled)
 
-    def fadeGray(self: 'Color', position: float = 0.5) -> 'Color':
+    def fadeGray(
+        self: 'Color',
+        position: float = 0.5,
+        enabled: Optional[bool] = None,
+    ) -> 'Color':
         """
         Fade between this color and gray
 
@@ -596,6 +614,8 @@ class Color:
         ### Args:
         * `position` (`float`, optional): position of the fade to use (0-1.0).
           Defaults to `0.5`.
+        * `enabled` (`bool`, optional): whether the color should be considered
+          enabled. Defaults to `None` to determine based on the result.
 
         ### Returns:
         * `Color`: Faded color
@@ -605,7 +625,7 @@ class Color:
             0.0,
             self.value
         )
-        return Color.fade(self, gray, position)
+        return Color.fade(self, gray, position, enabled)
 
     @staticmethod
     def distance(start: 'Color', end: 'Color') -> float:

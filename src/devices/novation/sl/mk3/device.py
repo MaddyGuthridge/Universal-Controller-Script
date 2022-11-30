@@ -19,6 +19,7 @@ from control_surfaces import (
     StandardModWheel,
     StandardPitchWheel,
     SustainPedal,
+    ChannelAfterTouch,
 )
 from devices import Device
 from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
@@ -31,11 +32,16 @@ from .controls.transport import (
     SlDirectionPrevious,
     SlRewindButton,
     SlFastForwardButton,
+    SlControlSwitchButton,
 )
 from .controls import (
     SlFaderSet,
+    SlEncoderSet,
+    SlToolSelectorSet,
+    SlMuteSet,
     SlDrumPadMatcher,
     SlNotifMsg,
+    SlAmbientKeys,
 )
 
 DEVICE_ID = "Novation.SL.Mk3"
@@ -48,17 +54,17 @@ class SlMk3(Device):
 
     def __init__(self) -> None:
         matcher = BasicControlMatcher()
-        # InControl manager
-        # self._incontrol = InControl(matcher)
-        # matcher.addSubMatcher(InControlMatcher(self._incontrol))
 
         matcher.addControl(SlNotifMsg())
 
         # Notes
         matcher.addSubMatcher(NoteMatcher())
+        matcher.addControl(ChannelAfterTouch.fromChannel(...))
 
         matcher.addSubMatcher(SlDrumPadMatcher())
-        # matcher.addSubMatcher(LkKnobSet())
+        matcher.addSubMatcher(SlEncoderSet())
+        matcher.addSubMatcher(SlMuteSet())
+        matcher.addSubMatcher(SlToolSelectorSet())
         matcher.addSubMatcher(SlFaderSet())
         matcher.addControl(SlStopButton())
         matcher.addControl(SlPlayButton())
@@ -68,9 +74,11 @@ class SlMk3(Device):
         matcher.addControl(SlDirectionNext())
         matcher.addControl(SlDirectionPrevious())
         matcher.addControl(SlRecordButton())
+        matcher.addControl(SlControlSwitchButton())
         matcher.addControl(StandardPitchWheel.create())
         matcher.addControl(StandardModWheel.create())
         matcher.addControl(SustainPedal.create())
+        matcher.addControl(SlAmbientKeys())
 
         super().__init__(matcher)
 

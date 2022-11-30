@@ -16,3 +16,5 @@
 * [LaunchKey Mk3](novation/launchkey.mk3.md)
 
 * [LaunchKey Mk3 Mini](novation/launchkey.mk3_mini.md)
+
+* [SL Mk3](novation/sl.mk3.md)
