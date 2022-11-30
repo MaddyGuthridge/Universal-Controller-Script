@@ -14,7 +14,7 @@ most code editors.
     of the project, so that you can work without the risk of breaking the
     existing project.
 
-3.  Run a `git clone --recursive git@github.com:MiguelGuthridge/Universal-Controller-Script.git`
+3.  Run a `git clone --recursive git@github.com:[YourUsername]/Universal-Controller-Script.git`
     command with your terminal inside a directory of your choosing (perhaps
     create a `Source` directory in your user data folder).
 
