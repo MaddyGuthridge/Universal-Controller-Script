@@ -24,7 +24,18 @@ __all__ = [
 ]
 
 
-def DummyDeviceDrumPads(rows: int, cols: int) -> DummyDeviceAbstract:
+class IDummyDeviceDrumPads(DummyDeviceAbstract):
+
+    @staticmethod
+    def getEventForDrumPad(row: int, col: int, value: float) -> FlMidiMsg:
+        """
+        Returns a MIDI message that matches the drum pad at `(row, col)`
+        for a `DummyDeviceDrumPads` device.
+        """
+        raise NotImplementedError()
+
+
+def DummyDeviceDrumPads(rows: int, cols: int) -> IDummyDeviceDrumPads:
     """
     Generates a DummyDeviceDrumPads device with the given number of drum pads
 
@@ -37,7 +48,7 @@ def DummyDeviceDrumPads(rows: int, cols: int) -> DummyDeviceAbstract:
     * `DummyDeviceAbstract`: an instance of the device
     """
 
-    class DummyDeviceDrumPads(DummyDeviceAbstract):
+    class DummyDeviceDrumPads(IDummyDeviceDrumPads):
         """
         A dummy device containing a collection of drum pads of specified sizes
         """
@@ -62,10 +73,6 @@ def DummyDeviceDrumPads(rows: int, cols: int) -> DummyDeviceAbstract:
 
         @staticmethod
         def getEventForDrumPad(row: int, col: int, value: float) -> FlMidiMsg:
-            """
-            Returns a MIDI message that matches the drum pad at `(row, col)`
-            for a `DummyDeviceDrumPads` device.
-            """
             return FlMidiMsg(row, col, int(value * 127))
 
         @staticmethod
