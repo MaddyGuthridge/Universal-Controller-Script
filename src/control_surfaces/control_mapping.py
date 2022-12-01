@@ -223,9 +223,9 @@ class ControlShadowEvent(IControlHash):
     def value_rec(self) -> int:
         """
         The value associated with the event, represented as a REC event value
-        between `0` and `2 ** 16`.
+        between `0` and `2 ** 30`.
         """
-        return round(self.value * (2 ** 16))
+        return round(self.value * (2 ** 30))
 
     @property
     def double(self) -> bool:
