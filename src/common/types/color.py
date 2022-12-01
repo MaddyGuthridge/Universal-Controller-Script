@@ -192,8 +192,8 @@ class Color:
     @staticmethod
     def fromInteger(
         rgb: int,
-        grayscale: float = None,
-        enabled: bool = None,
+        grayscale: Optional[float] = None,
+        enabled: Optional[bool] = None,
     ) -> 'Color':
         """
         Create a color object from an FL Studio color int
@@ -227,8 +227,8 @@ class Color:
         r: int,
         g: int,
         b: int,
-        grayscale: float = None,
-        enabled: bool = None,
+        grayscale: Optional[float] = None,
+        enabled: Optional[bool] = None,
     ) -> 'Color':
         """
         Create a color object from RGB values
@@ -264,8 +264,8 @@ class Color:
         hue: float,
         saturation: float,
         value: float,
-        grayscale: float = None,
-        enabled: bool = None,
+        grayscale: Optional[float] = None,
+        enabled: Optional[bool] = None,
     ) -> 'Color':
         """
         Create a color object from hue, saturation and value values
@@ -301,7 +301,7 @@ class Color:
     @staticmethod
     def fromGrayscale(
         grayscale: float,
-        enabled: bool = None,
+        enabled: Optional[bool] = None,
     ) -> 'Color':
         """
         Create a color object from a grayscale value

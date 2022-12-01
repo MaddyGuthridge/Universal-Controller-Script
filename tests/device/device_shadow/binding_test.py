@@ -42,7 +42,7 @@ def test_bind_same():
     Make sure we can't bind the same control twice
     """
     def _dummy(*args, **kwargs) -> bool:
-        pass
+        return True
 
     s = DeviceShadow(DummyDeviceBasic())
 

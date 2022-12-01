@@ -9,7 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from typing import Sequence
+from typing import Optional, Sequence
 from control_surfaces.event_patterns import BasicPattern
 from fl_classes import FlMidiMsg
 from control_surfaces.matchers import BasicControlMatcher
@@ -73,7 +73,11 @@ def DummyDeviceDrumPads(rows: int, cols: int) -> DummyDeviceAbstract:
             return (rows, cols)
 
         @classmethod
-        def create(cls, event: FlMidiMsg = None, id: str = None):
+        def create(
+            cls,
+            event: Optional[FlMidiMsg] = None,
+            id: Optional[str] = None,
+        ):
             return super().create(event, id)
 
     return DummyDeviceDrumPads()

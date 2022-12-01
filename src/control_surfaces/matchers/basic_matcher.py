@@ -101,7 +101,7 @@ class BasicControlMatcher(IControlMatcher):
                         return m
         return None
 
-    def getControls(self, group: str = None) -> list[ControlSurface]:
+    def getControls(self, group: Optional[str] = None) -> list[ControlSurface]:
         controls = []
         for p in self._controls:
             controls += self._controls[p]
