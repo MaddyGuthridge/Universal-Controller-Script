@@ -113,7 +113,11 @@ class DummyDeviceBasic(DummyDeviceAbstract):
         super().__init__(matcher)
 
     @classmethod
-    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
+    def create(
+        cls,
+        event: Optional[FlMidiMsg] = None,
+        id: Optional[str] = None,
+    ) -> 'Device':
         return cls()
 
     def getDeviceNumber(self) -> int:

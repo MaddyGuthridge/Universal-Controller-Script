@@ -190,7 +190,7 @@ class DeviceShadow:
     def _getMatches(
         self,
         expr: Callable[[ControlSurface], bool],
-        target_num: int = None,
+        target_num: Optional[int] = None,
         one_type: bool = True,
     ) -> list[ControlShadow]:
         """
@@ -248,7 +248,7 @@ class DeviceShadow:
         self,
         control: type[ControlSurface],
         allow_substitution: bool = True,
-        target_num: int = None,
+        target_num: Optional[int] = None,
         trim: bool = True,
         exact: bool = True,
         raise_on_zero: bool = False,
@@ -386,7 +386,7 @@ class DeviceShadow:
         control: ControlShadow,
         on_event: Optional[EventCallback],
         on_tick: TickCallback = None,
-        args: tuple = None
+        args: Optional[tuple] = None
     ) -> None:
         """
         Binds a callback function to a control, so the function will be called
@@ -515,7 +515,7 @@ class DeviceShadow:
         control: type[ControlSurface],
         on_event: Optional[EventCallback],
         on_tick: TickCallback = None,
-        args: tuple = None,
+        args: Optional[tuple] = None,
         allow_substitution: bool = True,
         raise_on_failure: bool = False,
     ) -> IControlShadow:
@@ -570,7 +570,7 @@ class DeviceShadow:
         on_tick: TickCallback = None,
         args_generator: ArgGenerator = None,
         allow_substitution: bool = True,
-        target_num: int = None,
+        target_num: Optional[int] = None,
         trim: bool = True,
         exact: bool = True,
         raise_on_failure: bool = False,

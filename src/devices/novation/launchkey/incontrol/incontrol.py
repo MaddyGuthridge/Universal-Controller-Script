@@ -92,7 +92,7 @@ class InControlMatcher(IControlMatcher):
     def getGroups(self) -> set[str]:
         return {"null"}
 
-    def getControls(self, group: str = None) -> list[ControlSurface]:
+    def getControls(self, group: Optional[str] = None) -> list[ControlSurface]:
         if group is not None and group != "InControl":
             return []
         else:

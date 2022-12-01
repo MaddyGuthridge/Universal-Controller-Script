@@ -30,6 +30,7 @@ class IControlShadow:
     class, but is separate so that a NullControlShadow can be defined, which
     simplifies performing quick assignments of control properties.
     """
+
     def isBound(self) -> TypeGuard['ControlShadow']:
         """
         Return whether this control shadow is bound to an actual control
@@ -81,6 +82,8 @@ class IControlShadow:
         Represents the color that will be applied to the control after the
         event has been processed.
         """
+        return Color()
+
     @color.setter
     def color(self, newColor: Color) -> None:
         ...
@@ -91,6 +94,8 @@ class IControlShadow:
         Represents the annotation that will be applied to the control after the
         event has been processed.
         """
+        return ''
+
     @annotation.setter
     def annotation(self, newAnnotation: str) -> None:
         ...
@@ -386,6 +391,7 @@ class ControlShadowList:
     """
     A list of control shadows
     """
+
     def __init__(self, controls: list[ControlShadow]) -> None:
         """Create a list of controls"""
         self.controls = controls

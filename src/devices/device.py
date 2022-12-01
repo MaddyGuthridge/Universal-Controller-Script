@@ -82,7 +82,11 @@ class Device:
 
     @classmethod
     @abstractmethod
-    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
+    def create(
+        cls,
+        event: Optional[FlMidiMsg] = None,
+        id: Optional[str] = None,
+    ) -> 'Device':
         """
         Create an instance of this device
 

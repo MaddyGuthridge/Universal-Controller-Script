@@ -131,7 +131,7 @@ class JogMatcher(IControlMatcher):
             else:
                 return self._jog_standard.match(event)
 
-    def getControls(self, group: str = None) -> list[ControlSurface]:
+    def getControls(self, group: Optional[str] = None) -> list[ControlSurface]:
         if group is not None and group != "navigation":
             return []
         else:

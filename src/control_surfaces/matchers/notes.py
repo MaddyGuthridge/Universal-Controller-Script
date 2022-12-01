@@ -58,7 +58,7 @@ class NoteMatcher(IControlMatcher):
     def getGroups(self) -> set[str]:
         return {"notes"}
 
-    def getControls(self, group: str = None) -> list[ControlSurface]:
+    def getControls(self, group: Optional[str] = None) -> list[ControlSurface]:
         return self._notes
 
     def tick(self, thorough: bool) -> None:
@@ -90,7 +90,7 @@ class NoteAfterTouchMatcher(IControlMatcher):
     def getGroups(self) -> set[str]:
         return {"after touch"}
 
-    def getControls(self, group: str = None) -> list[ControlSurface]:
+    def getControls(self, group: Optional[str] = None) -> list[ControlSurface]:
         return self._touches
 
     def tick(self, thorough: bool) -> None:
