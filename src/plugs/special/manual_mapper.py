@@ -136,7 +136,7 @@ class ManualMapper(SpecialPlugin):
             general.processRECEvent(
                 event_id,
                 control.value_rec,
-                midi.REC_Control
+                midi.REC_MIDIController,
             )
             return True
         else:
