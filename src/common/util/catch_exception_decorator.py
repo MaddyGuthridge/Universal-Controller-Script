@@ -24,7 +24,7 @@ def catchExceptionDecorator(
     ### Args:
     * `exc_type` (`type[Exception]`): type of exception to catch
     * `callback` (`Callable`, optional): callback function for when exceptions
-      are caught. Should accept
+      are caught. Should accept a reference to the exception that was raised.
 
     ### Usage
 
