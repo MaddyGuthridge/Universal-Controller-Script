@@ -10,6 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
+from typing import Optional
 import device
 
 from control_surfaces.event_patterns import BasicPattern
@@ -121,7 +122,11 @@ class LaunchkeyMk3_49_61(Device):
             return 1
 
     @classmethod
-    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
+    def create(
+        cls,
+        event: Optional[FlMidiMsg] = None,
+        id: Optional[str] = None,
+    ) -> 'Device':
         return cls()
 
     def getId(self) -> str:

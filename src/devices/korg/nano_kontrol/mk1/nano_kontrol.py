@@ -116,7 +116,11 @@ class NanoKontrol(Device):
         ])
 
     @classmethod
-    def create(cls, event: FlMidiMsg = None, id: str = None) -> 'Device':
+    def create(
+        cls,
+        event: Optional[FlMidiMsg] = None,
+        id: Optional[str] = None,
+    ) -> 'Device':
         return cls()
 
     def getId(self) -> str:

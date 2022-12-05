@@ -14,7 +14,7 @@ more details.
 __all__ = [
     'log'
 ]
-
+from typing import Optional
 from .log_item import LogItem
 from .verbosity import Verbosity, DEFAULT, ERROR, NOTE
 
@@ -33,8 +33,8 @@ class Log:
     @staticmethod
     def _shouldPrint(
         item: LogItem,
-        category: str = None,
-        verbosity: Verbosity = None
+        category: Optional[str] = None,
+        verbosity: Optional[Verbosity] = None
     ) -> bool:
         """Returns whether the logger should print an item
 
@@ -116,8 +116,8 @@ class Log:
     @staticmethod
     def _conditionalPrint(
         item: LogItem,
-        category: str = None,
-        verbosity: Verbosity = None
+        category: Optional[str] = None,
+        verbosity: Optional[Verbosity] = None
     ) -> bool:
         """If the logger should print this particular item, prints it. It does
         a detailed print if required.
@@ -168,8 +168,8 @@ class Log:
 
     def recall(
         self,
-        category: str = None,
-        verbosity: Verbosity = None,
+        category: Optional[str] = None,
+        verbosity: Optional[Verbosity] = None,
         number: int = -1
     ):
         """

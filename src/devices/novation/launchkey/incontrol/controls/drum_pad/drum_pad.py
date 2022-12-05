@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 from control_surfaces.event_patterns import ForwardedPattern,  NotePattern
 from common.types import Color
 from control_surfaces.value_strategies import NoteStrategy, ForwardedStrategy
@@ -41,11 +41,11 @@ class ILkDrumPad(ControlSurface):  # pragma: no cover
 
     @classmethod
     def create(cls, row: int, col: int) -> 'ILkDrumPad':
-        ...
+        raise NotImplementedError()
 
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
-        ...
+        raise NotImplementedError()
 
 
 def createLkDrumPadBase(
@@ -108,7 +108,7 @@ class LkDrumPadMatcher(BasicControlMatcher):
     def __init__(
         self,
         drum_type: type[ILkDrumPad],
-        row_2_type: type[ILkDrumPad] = None,
+        row_2_type: Optional[type[ILkDrumPad]] = None,
     ) -> None:
         super().__init__()
         if row_2_type is None:

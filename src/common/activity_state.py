@@ -11,6 +11,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
+from typing import Optional
 import ui
 from common.profiler import profilerDecoration
 from common.logger import log, verbosity
@@ -190,7 +191,7 @@ class ActivityState:
         """
         return self._window
 
-    def playPause(self, value: bool = None) -> BoolS:
+    def playPause(self, value: Optional[bool] = None) -> BoolS:
         """
         Pause or resume updating the active plugin
 
@@ -228,7 +229,7 @@ class ActivityState:
         """
         self._split = value
 
-    def toggleWindowsPlugins(self, value: bool = None) -> bool:
+    def toggleWindowsPlugins(self, value: Optional[bool] = None) -> bool:
         """
         Toggles whether we are currently addressing windows or plugins.
 
