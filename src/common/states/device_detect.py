@@ -87,21 +87,13 @@ class WaitingForDevice(IScriptState):
         Fallback method for device detection, using device name
         """
         name = device.getName()
-        try:
-            dev = common.ExtensionManager.devices.get(name)
-            log(
-                LOG_CAT,
-                f"Recognized device via fallback: {dev.getId()}",
-                verbosity.INFO
-            )
-            common.getContext().setState(self._to.create(dev))
-        except DeviceRecognizeError as e:
-            log(
-                LOG_CAT,
-                "Failed to recognize device via fallback method",
-                verbosity.WARNING
-            )
-            common.getContext().setState(ErrorState(e))
+        dev = common.ExtensionManager.devices.get(name)
+        log(
+            LOG_CAT,
+            f"Recognized device via fallback: {dev.getId()}",
+            verbosity.INFO
+        )
+        common.getContext().setState(self._to.create(dev))
 
     def sendEnquiry(self) -> None:
         self._sent_enquiry = True
@@ -168,11 +160,14 @@ class WaitingForDevice(IScriptState):
                     eventToString(event)
                 )
                 common.getContext().setState(self._to.create(dev))
-            except DeviceRecognizeError:
+            except DeviceRecognizeError as e:
                 log(
                     LOG_CAT,
                     f"Failed to recognize device via sysex, using fallback "
                     f"method {eventToString(event)}",
-                    verbosity.WARNING,
+                    verbosity.INFO,
                 )
-                self.detectFallback()
+                try:
+                    self.detectFallback()
+                except DeviceRecognizeError:
+                    common.getContext().setState(ErrorState(e))

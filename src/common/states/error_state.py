@@ -118,7 +118,7 @@ class ErrorState(IScriptState):
         log(
             "general",
             f"Error details: {self.__exception}",
-            verbosity.WARNING,
+            verbosity.CRITICAL,
         )
         ui.setHintMsg("[UCS] error: see script output")
 
