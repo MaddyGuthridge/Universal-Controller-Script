@@ -185,7 +185,7 @@ class ControlShadow(IControlShadow):
     def __repr__(self) -> str:
         return f"Shadow of {self._control}"
 
-    def getControl(self):
+    def getControl(self) -> 'ControlSurface':
         """
         Get a reference to the control surface associated with the event
 

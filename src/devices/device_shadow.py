@@ -216,7 +216,7 @@ class DeviceShadow:
             if one_type:
                 t = type(c.getControl())
             else:
-                t = ControlSurface
+                t = ControlSurface  # type: ignore
             # If we want to assign this control
             if expr(c.getControl()):
                 num_type_matches[t] = \

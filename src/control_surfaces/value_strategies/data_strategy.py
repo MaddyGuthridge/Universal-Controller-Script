@@ -31,7 +31,10 @@ class DataStrategy(IValueStrategy):
         self._prop = prop
 
     def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
-        return getattr(event, self._prop) / 127
+        val = getattr(event, self._prop)
+        if not isinstance(val, int):
+            raise TypeError("Property value must be an int")
+        return val / 127
 
     def getChannelFromEvent(self, event: FlMidiMsg) -> int:
         assert isMidiMsgStandard(event)

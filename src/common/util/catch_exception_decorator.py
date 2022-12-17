@@ -9,8 +9,8 @@ from typing_extensions import ParamSpec
 
 
 P = ParamSpec("P")
-T = TypeVar("T", bound=Exception)
-ExcType = TypeVar("ExcType")
+T = TypeVar("T")
+ExcType = TypeVar("ExcType", bound=Exception)
 
 
 def catchExceptionDecorator(
