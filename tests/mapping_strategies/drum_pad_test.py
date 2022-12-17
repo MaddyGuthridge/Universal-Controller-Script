@@ -156,7 +156,7 @@ def test_callback_reached():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(0, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 0, 0)),  # type: ignore
         0,
     )
     # And check that the callback was reached
@@ -184,7 +184,7 @@ def test_basic_coordinates_rows():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(0, 1, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 1, 0)),  # type: ignore
         0,
     )
     # And check that the callback was reached
@@ -209,7 +209,7 @@ def test_basic_coordinates_cols():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(1, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(1, 0, 0)),  # type: ignore
         0,
     )
     # And check that the callback was reached
@@ -235,7 +235,7 @@ def test_limited_width():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(1, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(1, 0, 0)),  # type: ignore
         0,
     )
     # And check that the callback was reached
@@ -263,7 +263,7 @@ def test_limited_width_column_groups():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(0, 2, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 2, 0)),  # type: ignore
         0,
     )
     # And check that the callback was reached
@@ -291,7 +291,7 @@ def test_limited_height():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(0, 2, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 2, 0)),  # type: ignore
         0,
     )
     # And check that the callback was reached
@@ -317,7 +317,7 @@ def test_limited_height_wraps_around():
 
     # Now process the event
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(2, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(2, 0, 0)),  # type: ignore
         0,
     )
     # And check that the callback was reached
@@ -461,7 +461,7 @@ def test_unassigned_column():
     # Now process the event
     # Even though it is ignored, it should still be handled
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(0, 3, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 3, 0)),  # type: ignore
         0,
     )
     # And check that the callback was not reached
@@ -488,7 +488,7 @@ def test_unassigned_row():
     # Now process the event
     # Even though it is ignored, it should still be handled
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(3, 0, 0)),
+        device.matchEvent(device.getEventForDrumPad(3, 0, 0)),  # type: ignore
         0,
     )
     # And check that the callback was not reached
@@ -633,7 +633,7 @@ def test_subdivide_when_lacking_height():
     # Now process the event
     # Even though it is ignored, it should still be handled
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(0, 4, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 4, 0)),  # type: ignore
         0,
     )
     # And check that the callback was not reached
@@ -665,7 +665,7 @@ def test_subdivide_when_lacking_width():
     # Now process the event
     # Even though it is ignored, it should still be handled
     assert shadow.processEvent(
-        device.matchEvent(device.getEventForDrumPad(0, 4, 0)),
+        device.matchEvent(device.getEventForDrumPad(0, 4, 0)),  # type: ignore
         0,
     )
     # And check that the callback was not reached

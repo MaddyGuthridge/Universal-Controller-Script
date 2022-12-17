@@ -9,6 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from abc import abstractmethod
 from typing import Optional, Sequence
 from control_surfaces.event_patterns import BasicPattern
 from fl_classes import FlMidiMsg
@@ -25,8 +26,13 @@ __all__ = [
 
 
 class IDummyDeviceDrumPads(DummyDeviceAbstract):
+    """
+    A dummy device containing a collection of drum pads of specified sizes
+    """
+    drums: list[list[DrumPad]]
 
     @staticmethod
+    @abstractmethod
     def getEventForDrumPad(row: int, col: int, value: float) -> FlMidiMsg:
         """
         Returns a MIDI message that matches the drum pad at `(row, col)`

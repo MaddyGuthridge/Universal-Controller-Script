@@ -47,6 +47,9 @@ class ILkDrumPad(ControlSurface):  # pragma: no cover
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
         raise NotImplementedError()
 
+    def onColorChange(self, *args):
+        pass
+
 
 def createLkDrumPadBase(
     extends: type[ControlSurface]

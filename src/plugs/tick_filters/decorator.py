@@ -55,7 +55,7 @@ def do_filter(callback: TickCallback):
                     index: UnsafeIndex,
                 ) -> bool:
                     if callback(index):
-                        return func(self, index)
+                        return func(self, index)  # type: ignore
                     if enforce:
                         raise TypeError("Index not filtered correctly")
                     return filtered_return
@@ -66,7 +66,7 @@ def do_filter(callback: TickCallback):
                     index: UnsafeIndex,
                 ) -> bool:
                     if callback(index):
-                        return func(index)
+                        return func(index)  # type: ignore
                     if enforce:
                         raise TypeError("Index not filtered correctly")
                     return filtered_return

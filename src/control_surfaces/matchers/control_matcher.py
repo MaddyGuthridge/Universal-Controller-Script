@@ -10,7 +10,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from typing import Optional
+from typing import Optional, Sequence
 from abc import abstractmethod
 from fl_classes import FlMidiMsg
 from common.util.abstract_method_error import AbstractMethodError
@@ -39,7 +39,7 @@ class IControlMatcher:
         raise AbstractMethodError(self)
 
     @abstractmethod
-    def getControls(self) -> list[ControlSurface]:
+    def getControls(self) -> Sequence[ControlSurface]:
         """
         Returns a list of controls contained by the control matcher.
 

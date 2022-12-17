@@ -28,4 +28,10 @@ def test_process_unbound():
 
     m = s.getControlMatches(PlayButton)[0]
 
-    s.processEvent(ControlEvent(..., m.getControl(), 0.0, 0, False), None)
+    s.processEvent(ControlEvent(
+        ...,  # type: ignore
+        m.getControl(),
+        0.0,
+        0,
+        False,
+    ), None)
