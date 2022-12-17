@@ -725,7 +725,9 @@ class Color:
 
     def __radd__(self, other) -> 'Color':
         # Addition is commutative
-        return self + other
+        if isinstance(other, (int, Color)):
+            return self + other
+        return NotImplemented
 
     def __sub__(self, other) -> 'Color':
         if isinstance(other, Color):

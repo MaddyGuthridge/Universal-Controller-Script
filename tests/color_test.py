@@ -84,7 +84,7 @@ def test_assign_out_of_bounds_rgb():
     assert Color.fromRgb(270, 0, 0) == Color.fromRgb(255, 0, 0)
 
     with pytest.raises(TypeError):
-        Color.fromRgb(1.5, 0, 0)
+        Color.fromRgb(1.5, 0, 0)  # type: ignore
 
 
 def test_assign_out_of_bounds():

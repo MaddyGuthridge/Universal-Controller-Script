@@ -184,8 +184,8 @@ class ManualMapper(SpecialPlugin):
     def eMods(self, control: ControlShadowEvent, *args) -> bool:
         return self.editEvent(control, self._mods_start)
 
-    def tMods(self, control: ControlShadow, *args) -> bool:
-        return self.tickEvent(control, self._mods_start)
+    def tMods(self, control: ControlShadow, *args):
+        self.tickEvent(control, self._mods_start)
 
 
 ExtensionManager.super_special.register(ManualMapper)

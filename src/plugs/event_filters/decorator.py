@@ -58,7 +58,13 @@ def do_filter(callback: EventCallback):
                     **kwargs: Any
                 ) -> bool:
                     if callback(control, index, *args, **kwargs):
-                        return func(self, control, index, *args, **kwargs)
+                        return func(  # type: ignore
+                            self,
+                            control,
+                            index,
+                            *args,
+                            **kwargs,
+                        )
                     if enforce:
                         raise TypeError("Index not filtered correctly")
                     return filtered_return
@@ -72,7 +78,12 @@ def do_filter(callback: EventCallback):
                     **kwargs: Any
                 ) -> bool:
                     if callback(control, index, *args, **kwargs):
-                        return func(control, index, *args, **kwargs)
+                        return func(  # type: ignore
+                            control,
+                            index,
+                            *args,
+                            **kwargs,
+                        )
                     if enforce:
                         raise TypeError("Index not filtered correctly")
                     return filtered_return

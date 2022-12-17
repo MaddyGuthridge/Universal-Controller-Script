@@ -26,7 +26,7 @@ def test_timing_context():
     getContext().enableProfiler()
     with ProfilerContext("test"):
         time.sleep(0.01)
-    res = getContext().profiler.getTotals()
+    res = getContext().profiler.getTotals()  # type: ignore
     assert floatApproxEqMagnitude(10.0, res["test"], 0.6)
 
 
@@ -39,7 +39,7 @@ def test_timing_decorator():
     def slowFunction():
         time.sleep(0.01)
     slowFunction()
-    res = getContext().profiler.getTotals()
+    res = getContext().profiler.getTotals()  # type: ignore
     assert floatApproxEqMagnitude(10.0, res["test"], 1)
 
 
@@ -50,7 +50,7 @@ def test_total_repeated():
     for _ in range(10):
         with ProfilerContext("test"):
             time.sleep(0.01)
-    res = getContext().profiler.getTotals()
+    res = getContext().profiler.getTotals()  # type: ignore
     assert floatApproxEqMagnitude(100.0, res["test"], 5)
 
 
@@ -62,7 +62,7 @@ def test_nested_profiles():
         time.sleep(0.01)
         with ProfilerContext("test2"):
             time.sleep(0.01)
-    res = getContext().profiler.getTotals()
+    res = getContext().profiler.getTotals()  # type: ignore
     assert floatApproxEqMagnitude(20.0, res["test1"], 2)
     assert floatApproxEqMagnitude(10.0, res["test1.test2"], 1)
 
@@ -73,7 +73,7 @@ def test_numbers():
     for _ in range(10):
         with ProfilerContext("test"):
             pass
-    assert getContext().profiler.getNumbers() == {
+    assert getContext().profiler.getNumbers() == {  # type: ignore
         "test": 10
     }
 
@@ -86,5 +86,5 @@ def test_maxes():
     for t in times:
         with ProfilerContext("test"):
             time.sleep(t)
-    res = getContext().profiler.getMaxes()
+    res = getContext().profiler.getMaxes()  # type: ignore
     assert floatApproxEqMagnitude(50.0, res["test"], 1)

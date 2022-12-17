@@ -99,8 +99,8 @@ class ShiftMatcher(IControlMatcher):
     def getControls(self) -> list[ControlSurface]:
         return (
             [self.__shift]
-            + self.__enabled.getControls()
-            + self.__disabled.getControls()
+            + list(self.__enabled.getControls())
+            + list(self.__disabled.getControls())
         )
 
     def tick(self, thorough: bool) -> None:

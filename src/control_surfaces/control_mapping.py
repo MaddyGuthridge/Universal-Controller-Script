@@ -165,7 +165,7 @@ class ControlShadowEvent(IControlHash):
     def __init__(
         self,
         map_from: ControlEvent,
-        map_to: 'ControlShadow'
+        map_to: 'ControlShadow',
     ) -> None:
         self._map_from = map_from
         self._map_to = map_to
