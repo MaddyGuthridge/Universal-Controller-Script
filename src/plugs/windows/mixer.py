@@ -29,6 +29,7 @@ from control_surfaces import (
     MasterKnob,
     ArmButton,
     SelectButton,
+    ControlSwitchButton,
 )
 from devices import DeviceShadow
 from plugs.event_filters import filterButtonLift
@@ -97,6 +98,10 @@ class Mixer(WindowPlugin):
             SelectButton,
             self.select,
         )
+        self._control_switch = shadow.bindMatch(
+            ControlSwitchButton,
+            self.controlSwitch,
+        ).annotate("Show selected").colorize(Color.fromGrayscale(0.5))
 
         # Create bindings for mute, solo and generic buttons
         mutes_solos = MuteSoloStrategy(
@@ -157,7 +162,14 @@ class Mixer(WindowPlugin):
             or last > self._selection[0] + self._len - 1
         ):
             self._selection = list(range(first, first+self._len))
-            ui.miDisplayRect(first, first+self._len-1, 2000)
+            self.displayRect()
+
+    def displayRect(self):
+        """
+        Display the UI rectangle
+        """
+        first = self._selection[0]
+        ui.miDisplayRect(first, first+self._len-1, 2000)
 
     def tick(self, *args):
         self.updateSelected()
@@ -289,6 +301,14 @@ class Mixer(WindowPlugin):
         """Select track"""
         index = self._selection[control.getControl().coordinate[1]]
         mixer.selectTrack(index)
+        return True
+
+    @filterButtonLift()
+    def controlSwitch(
+        self,
+        *args: Any
+    ) -> bool:
+        self.displayRect()
         return True
 
 
