@@ -19,7 +19,10 @@ def test_match_note():
     """Can we match note events for our device"""
     d = DummyDeviceBasic()
 
-    assert isinstance(d.matchEvent(FlMidiMsg(0x9F, 0, 127)).getControl(), Note)
+    assert isinstance(
+        d.matchEvent(FlMidiMsg(0x9F, 0, 127)).getControl(),  # type: ignore
+        Note,
+    )
 
 
 def test_match_button():
@@ -27,7 +30,7 @@ def test_match_button():
     d = DummyDeviceBasic()
 
     assert isinstance(
-        d.matchEvent(FlMidiMsg(0, 0, 0)).getControl(),
+        d.matchEvent(FlMidiMsg(0, 0, 0)).getControl(),  # type: ignore
         PlayButton
     )
 
@@ -37,5 +40,6 @@ def test_match_faders():
     d = DummyDeviceBasic()
     for i in range(4):
         match = d.matchEvent(FlMidiMsg(1, i, 0))
+        assert match is not None
         assert isinstance(match.getControl(), Fader)
         assert match.getControl() == d.faders[i]

@@ -26,8 +26,8 @@ def test_index():
         controls=controls,
     )
     for i in range(10):
-        assert matcher.matchEvent(FlMidiMsg(0, i, 0)).getControl()\
-            is controls[i]
+        assert matcher.matchEvent(  # type: ignore
+            FlMidiMsg(0, i, 0)).getControl() is controls[i]
 
 
 def test_no_match():

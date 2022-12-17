@@ -23,9 +23,11 @@ def test_match():
     c2 = SimpleControl(2)
     matcher.addControl(c2)
 
-    assert matcher.matchEvent(FlMidiMsg(0, 1, 0)).getControl() is c1
+    assert matcher.matchEvent(  # type: ignore
+        FlMidiMsg(0, 1, 0)).getControl() is c1
 
-    assert matcher.matchEvent(FlMidiMsg(0, 2, 0)).getControl() is c2
+    assert matcher.matchEvent(  # type: ignore
+        FlMidiMsg(0, 2, 0)).getControl() is c2
 
     assert matcher.matchEvent(FlMidiMsg(0, 3, 0)) is None
 
@@ -39,6 +41,7 @@ def test_sub_matchers():
     main.addSubMatcher(sub)
 
     match = main.matchEvent(FlMidiMsg(0, 1, 0))
+    assert match is not None
     assert match.getControl() is c1
 
 
@@ -50,5 +53,7 @@ def test_priorities():
     c2 = SimplerControl(1)
     matcher.addControl(c2, priority=2)
 
-    assert matcher.matchEvent(FlMidiMsg(0, 1, 0)).getControl() is c2
-    assert matcher.matchEvent(FlMidiMsg(0, 1, 1)).getControl() is c1
+    assert matcher.matchEvent(  # type: ignore
+        FlMidiMsg(0, 1, 0)).getControl() is c2
+    assert matcher.matchEvent(  # type: ignore
+        FlMidiMsg(0, 1, 1)).getControl() is c1

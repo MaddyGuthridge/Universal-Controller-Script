@@ -26,6 +26,10 @@ class SimpleControl(ControlSurface):
             Data2Strategy(),
         )
 
+    @staticmethod
+    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
+        return tuple()
+
 
 class SimplerControl(ControlSurface):
     """Another simple control surface for testing
@@ -37,6 +41,10 @@ class SimplerControl(ControlSurface):
             BasicPattern(0, i, 0),
             Data2Strategy(),
         )
+
+    @staticmethod
+    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
+        return tuple()
 
 
 class SimpleForwardedControl(ControlSurface):
@@ -50,3 +58,7 @@ class SimpleForwardedControl(ControlSurface):
             ForwardedPattern(2, BasicPattern(0, i, ...)),
             ForwardedStrategy(Data2Strategy()),
         )
+
+    @staticmethod
+    def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
+        return tuple()

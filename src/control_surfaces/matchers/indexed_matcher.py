@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from typing import Optional
+from typing import Optional, Sequence
 from control_surfaces.event_patterns import (
     IEventPattern,
     BasicPattern,
@@ -35,7 +35,7 @@ class IndexedMatcher(IControlMatcher):
         self,
         status: int,
         data1_start: int,
-        controls: list[ControlSurface],
+        controls: Sequence[ControlSurface],
         device: int = 1,
     ) -> None:
         """
@@ -92,7 +92,7 @@ class IndexedMatcher(IControlMatcher):
         assert match is not None
         return match
 
-    def getControls(self) -> list[ControlSurface]:
+    def getControls(self) -> Sequence[ControlSurface]:
         return self.__controls
 
     def tick(self, thorough: bool) -> None:

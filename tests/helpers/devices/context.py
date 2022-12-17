@@ -39,7 +39,7 @@ class DummyDeviceContext:
         self._num = num
 
     def __enter__(self):
-        getContext().registerDevice(self._dev(self._num))
+        getContext().registerDevice(self._dev(self._num))  # type: ignore
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
         unsafeResetContext()

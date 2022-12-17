@@ -9,6 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from abc import abstractmethod
 from typing import Optional, Sequence
 from control_surfaces.event_patterns import BasicPattern
 from fl_classes import FlMidiMsg
@@ -24,7 +25,22 @@ __all__ = [
 ]
 
 
-def DummyDeviceDrumPads(rows: int, cols: int) -> DummyDeviceAbstract:
+class IDummyDeviceDrumPads(DummyDeviceAbstract):
+    """
+    A dummy device containing a collection of drum pads of specified sizes
+    """
+    drums: list[list[DrumPad]]
+
+    @staticmethod
+    @abstractmethod
+    def getEventForDrumPad(row: int, col: int, value: float) -> FlMidiMsg:
+        """
+        Returns a MIDI message that matches the drum pad at `(row, col)`
+        for a `DummyDeviceDrumPads` device.
+        """
+
+
+def DummyDeviceDrumPads(rows: int, cols: int) -> IDummyDeviceDrumPads:
     """
     Generates a DummyDeviceDrumPads device with the given number of drum pads
 
@@ -37,7 +53,7 @@ def DummyDeviceDrumPads(rows: int, cols: int) -> DummyDeviceAbstract:
     * `DummyDeviceAbstract`: an instance of the device
     """
 
-    class DummyDeviceDrumPads(DummyDeviceAbstract):
+    class DummyDeviceDrumPads(IDummyDeviceDrumPads):
         """
         A dummy device containing a collection of drum pads of specified sizes
         """
@@ -62,10 +78,6 @@ def DummyDeviceDrumPads(rows: int, cols: int) -> DummyDeviceAbstract:
 
         @staticmethod
         def getEventForDrumPad(row: int, col: int, value: float) -> FlMidiMsg:
-            """
-            Returns a MIDI message that matches the drum pad at `(row, col)`
-            for a `DummyDeviceDrumPads` device.
-            """
             return FlMidiMsg(row, col, int(value * 127))
 
         @staticmethod
