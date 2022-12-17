@@ -11,7 +11,12 @@ more details.
 """
 import pytest
 from devices import DeviceShadow
-from plugs.mapping_strategies import DrumPadStrategy
+from plugs.mapping_strategies.drum_pad_strategy import (
+    DrumPadStrategy,
+    TriggerCallback,
+    ColorCallback,
+    AnnotationCallback,
+)
 from common.plug_indexes import UnsafeIndex
 from common.types import Color
 from control_surfaces import ControlShadowEvent, ControlShadow, DrumPad
@@ -34,43 +39,53 @@ class Flag:
         self.count += 1
 
 
-def matrixToDict(matrix: list[list[int]]) -> dict[int, tuple[int, int]]:
+def matrixToDict(
+    matrix: list[list[tuple[int, int]]],
+) -> dict[tuple[int, int], tuple[int, int]]:
     """
     Convert a matrix of indexes to a reverse lookup dictionary
 
     ### Args:
-    * `matrix` (`list[list[int]]`): matrix to convert
+    * `matrix` (`list[list[tuple[int, int]]]`): matrix to convert
 
     ### Returns:
-    * `dict[int, tuple[int, int]]`: converted values
+    * `dict[tuple[int, int], tuple[int, int]]`: converted values
     """
-    mappings: dict[int, tuple[int, int]] = {}
+    mappings: dict[tuple[int, int], tuple[int, int]] = {}
     for r in range(len(matrix)):
         for c in range(len(matrix[r])):
             mappings[matrix[r][c]] = (r, c)
     return mappings
 
 
-def triggerCallbackGenerator(expected_index: int, flag: Flag):
+def triggerCallbackGenerator(
+    expected_mapping: tuple[int, int],
+    flag: Flag,
+) -> TriggerCallback:
     """
     Generates a callback in order to check that indexes were created correctly.
 
     The callback will check that the index matches, and then set the flag.
 
     ### Args:
-    * `expected_index` (`int`): the index you're expecting
+    * `expected_mapping` (`tuple[int, int]`): the mapping you're expecting
     """
-    def callback(event: ControlShadowEvent, plug: UnsafeIndex, index: int):
-        assert index == expected_index
+    def callback(
+        event: ControlShadowEvent,
+        plug: UnsafeIndex,
+        index: tuple[int, int],
+        dimensions: tuple[int, int],
+    ):
+        assert index == expected_mapping
         flag.set()
         return True
     return callback
 
 
 def colorizeCallbackGenerator(
-    index_matrix: list[list[int]],
+    index_matrix: list[list[tuple[int, int]]],
     flag: Flag,
-):
+) -> ColorCallback:
     """
     Generates a callback in order to check that indexes were created correctly.
 
@@ -81,7 +96,12 @@ def colorizeCallbackGenerator(
     """
     index_lookup = matrixToDict(index_matrix)
 
-    def callback(event: ControlShadow, plug: UnsafeIndex, index: int):
+    def callback(
+        event: ControlShadow,
+        plug: UnsafeIndex,
+        index: tuple[int, int],
+        dimensions: tuple[int, int],
+    ):
         assert index_lookup[index] == event.coordinate
         flag.set()
         return Color.fromGrayscale(1)
@@ -89,9 +109,9 @@ def colorizeCallbackGenerator(
 
 
 def annotateCallbackGenerator(
-    index_matrix: list[list[int]],
+    index_matrix: list[list[tuple[int, int]]],
     flag: Flag,
-):
+) -> AnnotationCallback:
     """
     Generates a callback in order to check that indexes were created correctly.
 
@@ -102,7 +122,12 @@ def annotateCallbackGenerator(
     """
     index_lookup = matrixToDict(index_matrix)
 
-    def callback(event: ControlShadow, plug: UnsafeIndex, index: int):
+    def callback(
+        event: ControlShadow,
+        plug: UnsafeIndex,
+        index: tuple[int, int],
+        dimensions: tuple[int, int],
+    ):
         assert index_lookup[index] == event.coordinate
         flag.set()
         return "My annotation"
@@ -143,12 +168,12 @@ def test_basic_coordinates_rows():
     When we create the bindings with no specific constraints, do the
     controls bind from left to right, top to bottom?
 
-       |
-       V
-    0  1  2  3
-    4  5  6  7
-    8  9  10 11
-    12 13 14 15
+          |
+          V
+    0,0  0,1  0,2  0,3
+    1,0  1,1  1,2  1,3
+    2,0  2,1  2,2  2,3
+    3,0  3,1  3,2  3,3
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
@@ -168,13 +193,12 @@ def test_basic_coordinates_rows():
 
 def test_basic_coordinates_cols():
     """
-    When we create the bindings with no specific constraints, do the
-    controls bind from left to right, top to bottom?
+    When we create the bindings with no specific constra
 
-        0  1  2  3
-    --> 4  5  6  7
-        8  9  10 11
-        12 13 14 15
+        0,0  0,1  0,2  0,3
+    --> 1,0  1,1  1,2  1,3
+        2,0  2,1  2,2  2,3
+        3,0  3,1  3,2  3,3
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()

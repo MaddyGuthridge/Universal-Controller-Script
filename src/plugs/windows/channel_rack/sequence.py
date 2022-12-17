@@ -25,6 +25,7 @@ from control_surfaces import (
     DirectionUp,
     DirectionDown,
 )
+from plugs.mapping_strategies import DrumPadStrategy
 from devices import DeviceShadow
 from plugs import WindowPlugin
 from plugs.event_filters import filterButtonLift
@@ -42,18 +43,12 @@ class StepSequencer(WindowPlugin):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        self._drums = \
-            shadow.bindMatches(DrumPad, self.drumPads)
-        # Number of rows and cols
-        self._height, self._width = shadow.getDevice().getDrumPadSize()
-        # How far they scrolled
-        self._scroll = 0
-        self._left = shadow.bindMatch(DirectionLeft, self.left)
-        self._right = shadow.bindMatch(DirectionRight, self.right)
-        self._up = shadow.bindMatch(DirectionUp, self.up)
-        self._down = shadow.bindMatch(DirectionDown, self.down)
-        self._prev = shadow.bindMatch(DirectionPrevious, self.left)
-        self._next = shadow.bindMatch(DirectionNext, self.right)
+        drum_pads = DrumPadStrategy(
+            width=16,
+            height=-1,
+            do_property_update=True,
+            
+        )
         super().__init__(shadow, [])
 
     @classmethod

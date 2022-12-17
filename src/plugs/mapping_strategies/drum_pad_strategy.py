@@ -23,9 +23,62 @@ from control_surfaces import (
     ControlShadowEvent,
 )
 
-TriggerCallback = Callable[[ControlShadowEvent, UnsafeIndex, int], bool]
-ColorCallback = Callable[[ControlShadow, UnsafeIndex, int], Color]
-AnnotationCallback = Callable[[ControlShadow, UnsafeIndex, int], str]
+TriggerCallback = Callable[
+    [ControlShadowEvent, UnsafeIndex, tuple[int, int], tuple[int, int]],
+    bool,
+]
+"""
+A callback function for when a drum pad is triggered
+
+## Args:
+* `ControlShadowEvent`: event that caused the call
+* `UnsafeIndex`: index of the active plugin
+* `tuple[int, int]`: coordinates of the hit (in terms of the plugin, not the
+  device). As `(row, col)`.
+* `tuple[int, int]`: dimensions of the drum pads (in terms of the plugin, not
+  the device). As `(rows, cols)`.
+
+## Returns:
+* `bool`: whether the event was handled
+"""
+
+ColorCallback = Callable[
+    [ControlShadow, UnsafeIndex, tuple[int, int], tuple[int, int]],
+    Color,
+]
+"""
+A callback function for updating the color of a drum pad
+
+## Args:
+* `ControlShadow`: drum pad control to update
+* `UnsafeIndex`: index of the active plugin
+* `tuple[int, int]`: coordinates of the drum pad (in terms of the plugin, not
+  the device). As `(row, col)`.
+* `tuple[int, int]`: dimensions of the drum pads (in terms of the plugin, not
+  the device). As `(rows, cols)`.
+
+## Returns:
+* `Color`: color of the drum pad
+"""
+
+AnnotationCallback = Callable[
+    [ControlShadow, UnsafeIndex, tuple[int, int], tuple[int, int]],
+    str,
+]
+"""
+A callback function for updating the annotation of a drum pad
+
+## Args:
+* `ControlShadow`: drum pad control to update
+* `UnsafeIndex`: index of the active plugin
+* `tuple[int, int]`: coordinates of the drum pad (in terms of the plugin, not
+  the device). As `(row, col)`.
+* `tuple[int, int]`: dimensions of the drum pads (in terms of the plugin, not
+  the device). As `(rows, cols)`.
+
+## Returns:
+* `str`: annotation of the drum pad
+"""
 
 
 class color_callbacks:
@@ -37,7 +90,8 @@ class color_callbacks:
     def white(
         control: ControlShadow,
         plug_index: UnsafeIndex,
-        index: int,
+        index: tuple[int, int],
+        dimensions: tuple[int, int],
     ) -> Color:
         """
         Colors all drum pads white with brightness 0.3
@@ -48,7 +102,8 @@ class color_callbacks:
     def channelColor(
         control: ControlShadow,
         plug_index: UnsafeIndex,
-        index: int,
+        index: tuple[int, int],
+        dimensions: tuple[int, int],
     ) -> Color:
         """
         Colors all drum pads white with the channel or mixer track color
@@ -77,7 +132,8 @@ class annotation_callbacks:
     def empty(
         control: ControlShadow,
         plug_index: UnsafeIndex,
-        index: int,
+        index: tuple[int, int],
+        dimensions: tuple[int, int],
     ) -> str:
         """
         Provides a default annotation for drum pads bound using the drum pad
@@ -194,7 +250,10 @@ class DrumPadStrategy(IMappingStrategy):
             raise ValueError(f"height ({height}) must be -1 if width is -1")
         super().__init__()
 
-    def generateLayoutMapping(self, shadow: DeviceShadow) -> list[list[int]]:
+    def generateLayoutMapping(
+        self,
+        shadow: DeviceShadow,
+    ) -> list[list[tuple[int, int]]]:
         """
         Generate a mapping to use for the layout of the drum pads
 
@@ -227,7 +286,7 @@ class DrumPadStrategy(IMappingStrategy):
         # Determine the size of each subdivided chunk
         chunk_size = full_width * full_height
 
-        def calcIndex(r: int, c: int) -> int:
+        def calcIndex(r: int, c: int) -> Optional[tuple[int, int]]:
             """
             Calculate the index used for any particular cell
             """
@@ -237,7 +296,7 @@ class DrumPadStrategy(IMappingStrategy):
                 or c >= reduced_cols
                 or r < 0  # handles reversed indexes
             ):
-                return -1
+                return None
             # Outer values represent the coordinates of the chunk that the
             # index lies in
             outer_row = (
