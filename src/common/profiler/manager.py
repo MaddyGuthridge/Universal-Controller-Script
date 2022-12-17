@@ -140,12 +140,12 @@ class ProfilerManager:
         ### Raises:
         * `ValueError`: no profile to close
         """
+        if self._current is None:
+            raise ValueError("No profile to close")
         if self._print:
             print("-"*self._depth + self._current.name)
         self._depth -= 1
         self._current.close()
-        if self._current is None:
-            raise ValueError("No profile to close")
         parent = self._current.parent
         name = self._getProfileName(self._current)
         t = self._current.getTime() / 1_000_000

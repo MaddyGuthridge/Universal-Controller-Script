@@ -106,7 +106,7 @@ class Log:
         # They will still (hopefully) be recallable later
         import common
         try:
-            verbosity = common.getContext().settings.get(
+            verbosity: Verbosity = common.getContext().settings.get(
                 "logger.critical_verbosity"
             )
         except common.context_manager.MissingContextException:
