@@ -39,6 +39,9 @@ from devices.novation.launchkey.incontrol.controls import (
     LkKnobSet,
     LkMk3ControlSwitchButton,
     LkMk3CaptureMidiButton,
+    LkQuantizeButton,
+    LkMk3MetronomeButton,
+    LkUndoRedoButton,
     Mk3DirectionUp,
     Mk3DirectionDown,
     Mk3DirectionLeft,
@@ -84,6 +87,9 @@ class LaunchkeyMk3_25_37(Device):
         matcher.addControl(Mk3DirectionDownSilenced())
         matcher.addControl(Mk3DirectionLeft())
         matcher.addControl(Mk3DirectionRight())
+        matcher.addControl(LkQuantizeButton())
+        matcher.addControl(LkMk3MetronomeButton())
+        matcher.addControl(LkUndoRedoButton())
         # Note after-touch for drum pad
         # TODO: Create custom type for it
         matcher.addSubMatcher(NoteAfterTouchMatcher(...))
