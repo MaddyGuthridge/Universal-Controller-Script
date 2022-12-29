@@ -23,6 +23,7 @@ __all__ = [
     'MuteSoloStrategy',
     'DrumPadStrategy',
     'PresetNavigationStrategy',
+    'CcForwardStrategy',
 ]
 
 from .mapping_strategy import IMappingStrategy
