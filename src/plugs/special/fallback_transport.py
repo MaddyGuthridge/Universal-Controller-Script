@@ -15,6 +15,7 @@ from common.extension_manager import ExtensionManager
 from devices import DeviceShadow
 from plugs import SpecialPlugin
 from plugs.mapping_strategies import (
+    CcForwardStrategy,
     DirectionStrategy,
     JogStrategy,
     NoteStrategy,
@@ -37,6 +38,7 @@ class FallbackTransport(SpecialPlugin):
             NoteStrategy(),
             WheelStrategy(),
             PedalStrategy(raise_on_error=False),
+            CcForwardStrategy(),
         ])
 
     @classmethod
