@@ -26,7 +26,7 @@ The following devices have full support with the script.
 
 ### M-Audio
 
-* Hammer 88 Pro
+* Hammer 88 Pro (no LED support, because M-Audio refuses to provide documentation)
 
 ### Novation
 
@@ -36,15 +36,7 @@ The following devices have full support with the script.
 
 * Launchkey Mini Mk3
 
-## Devices with Preliminary Support
-
-These devices have preliminary support, meaning that some aspects may not work
-correctly. If you want to see more support for one of these devices, let me
-know in the Discord and we can work to improve things further.
-
-### Novation
-
-* SL Mk3: Support for basic controls and some LEDs, but no screen support.
+* SL Mk3 (no screen support yet, but most other things work)
 
 # Supported Plugins
 
@@ -84,6 +76,8 @@ The following plugins have full support with the script.
     * OTT
 
     * Serum
+    
+* Any plugins with MIDI learn support (CC messages will be automatically forwarded)
 
 # Want to help out?
 
