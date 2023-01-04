@@ -769,3 +769,24 @@ class Color:
             return self == Color.fromInteger(other)
         else:
             return NotImplemented
+
+    RED: 'Color'
+    GREEN: 'Color'
+    BLUE: 'Color'
+    WHITE: 'Color'
+    GRAY: 'Color'
+    BLACK: 'Color'
+
+    ENABLED: 'Color'
+    DISABLED: 'Color'
+
+
+Color.RED = Color.fromRgb(255, 0, 0)
+Color.GREEN = Color.fromRgb(0, 255, 0)
+Color.BLUE = Color.fromRgb(0, 0, 255)
+Color.WHITE = Color.fromGrayscale(1)
+Color.GRAY = Color.fromGrayscale(0.5)
+Color.BLACK = Color()
+
+Color.ENABLED = Color.fromGrayscale(0.7)
+Color.DISABLED = Color.fromGrayscale(0.3, enabled=False)
