@@ -29,5 +29,6 @@ class LkPauseActive(PauseActiveButton):
                 0,
                 0x69,
                 COLORS,
+                event_num=0xB,
             )
         )
