@@ -102,8 +102,11 @@ class ActivityState:
         self._changed = False
         # If the current plugin name has changed, we should unpause the updates
         if self._plug_active and not self._do_update:
-            if self._plugin_name != plugins.getPluginName(*self._plugin):
-                self._do_update = True
+            try:
+                if self._plugin_name != plugins.getPluginName(*self._plugin):
+                    self._do_update = True
+            except TypeError:
+                pass
         if self._do_update:
             # Manually update plugin using selection
             if (window := getFocusedWindowIndex()) is not None:
