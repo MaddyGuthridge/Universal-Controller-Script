@@ -9,7 +9,7 @@ more details.
 """
 from control_surfaces import PauseActiveButton
 from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
-from control_surfaces.value_strategies import NoteStrategy, ForwardedStrategy
+from control_surfaces.value_strategies import Data2Strategy, ForwardedStrategy
 from . import ColorInControlSurface
 from ..colors.mk3 import COLORS
 
@@ -23,11 +23,11 @@ class LkPauseActive(PauseActiveButton):
     def __init__(self) -> None:
         PauseActiveButton.__init__(
             self,
-            ForwardedPattern(2, BasicPattern(0xB0, 0x78, ...)),
-            ForwardedStrategy(NoteStrategy()),
+            ForwardedPattern(2, BasicPattern(0xB0, 0x69, ...)),
+            ForwardedStrategy(Data2Strategy()),
             color_manager=ColorInControlSurface(
                 0,
-                0x78,
+                0x69,
                 COLORS,
             )
         )
