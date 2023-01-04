@@ -17,6 +17,7 @@ from typing import Optional
 import device
 import general
 import midi
+from common.types import Color
 from common.extension_manager import ExtensionManager
 from control_surfaces import (
     Fader,
@@ -159,6 +160,7 @@ class ManualMapper(SpecialPlugin):
         if event_id is not None:
             control.connected = True
             control.annotation = device.getLinkedParamName(event_id)
+            control.color = Color.ENABLED
             control.value = device.getLinkedValue(event_id)
         else:
             control.connected = False

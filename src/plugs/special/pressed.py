@@ -33,9 +33,6 @@ from plugs import SpecialPlugin
 # How much time to fade buttons to black
 FADE_TIME = 1.0
 
-OFF = Color()
-ON = Color.fromInteger(0xFFFFFF)
-
 
 def fadeOverTime(control: ControlSurface) -> float:
     """Fade to black over time"""
@@ -105,7 +102,8 @@ class Press(SpecialPlugin):
             if c.value:
                 c.connected = True
                 c.color = Color.fade(
-                    OFF, ON, control.value  # * fadeOverTime(control)
+                    Color.BLACK, Color.WHITE, control.value
+                    # * fadeOverTime(control)
                 )
             else:
                 c.connected = False
@@ -115,7 +113,8 @@ class Press(SpecialPlugin):
             control = c.getControl()
             if control.value:
                 c.connected = True
-                c.color = ON  # Color.fade(OFF, ON, fadeOverTime(control))
+                c.color = Color.WHITE
+                # Color.fade(Color.BLACK, Color.WHITE, fadeOverTime(control))
             else:
                 c.connected = False
 
@@ -125,7 +124,7 @@ class Press(SpecialPlugin):
             fade = fadeOverTime(control)
             if fade:
                 c.connected = True
-                c.color = Color.fade(OFF, ON, fade)
+                c.color = Color.fade(Color.BLACK, Color.WHITE, fade)
             else:
                 c.connected = False
 
