@@ -66,7 +66,7 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     # If a mixer plugin is focused
     if ui_6:
         # HACK: Error checking to hopefully avoid a crash due to bugs in FL
-        # Studio
+        # Studio <= 20.9.1
         if generator_previously_active:
             log(
                 "state.active",
