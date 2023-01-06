@@ -223,8 +223,11 @@ class Mixer(WindowPlugin):
         control: ControlShadowEvent,
         *args: Any
     ) -> bool:
-        track = mixer.trackNumber()
-        mixer.setTrackVolume(track, snapFaders(control.value))
+        if len(self._faders) == 0:
+            track = mixer.trackNumber()
+            mixer.setTrackVolume(track, snapFaders(control.value))
+        else:
+            mixer.setTrackVolume(0, snapFaders(control.value))
         return True
 
     def updateColors(self):
@@ -275,8 +278,11 @@ class Mixer(WindowPlugin):
         control: ControlShadowEvent,
         *args: Any
     ) -> bool:
-        track = mixer.trackNumber()
-        mixer.setTrackPan(track, snapKnobs(control.value))
+        if len(self._knobs) == 0:
+            track = mixer.trackNumber()
+            mixer.setTrackPan(track, snapKnobs(control.value))
+        else:
+            mixer.setTrackPan(0, snapKnobs(control.value))
         return True
 
     @filterButtonLift()

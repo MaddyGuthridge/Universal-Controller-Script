@@ -19,8 +19,8 @@ import general
 import midi
 from common.extension_manager import ExtensionManager
 from control_surfaces import (
-    Fader,
-    Knob,
+    GenericFader,
+    GenericKnob,
     Encoder,
     ModXY,
     ControlShadowEvent,
@@ -52,22 +52,27 @@ class ManualMapper(SpecialPlugin):
         shadow.setMinimal(True)
         self._faders_start = 0
         self._knobs_start = len(shadow.bindMatches(
-            Fader,
+            # https://github.com/python/mypy/issues/4717 is the bane of my
+            # existence
+            GenericFader,  # type: ignore
             self.eFaders,
             self.tFaders,
-            allow_substitution=False
+            allow_substitution=False,
+            one_type=False,
         ))
         self._encoders_start = len(shadow.bindMatches(
             Encoder,
             self.eEncoders,
             self.tEncoders,
-            allow_substitution=False
+            allow_substitution=False,
+            one_type=False,
         )) + self._knobs_start
         self._mods_start = len(shadow.bindMatches(
-            Knob,
+            GenericKnob,  # type: ignore
             self.eKnobs,
             self.tKnobs,
-            allow_substitution=False
+            allow_substitution=False,
+            one_type=False,
         )) + self._encoders_start
         shadow.bindMatches(
             ModXY,
