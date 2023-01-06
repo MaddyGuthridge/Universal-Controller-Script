@@ -10,8 +10,10 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from typing import Any
+import arrangement
 import ui
 import playlist
+import patterns
 import transport
 import general
 from common import getContext
@@ -26,6 +28,12 @@ from control_surfaces import (
     StandardJogWheel,
     JogWheel,
     ToolSelector,
+    DirectionNext,
+    DirectionPrevious,
+    DirectionLeft,
+    DirectionRight,
+    DirectionUp,
+    DirectionDown,
 )
 from devices import DeviceShadow
 from plugs import WindowPlugin
@@ -82,6 +90,65 @@ class Playlist(WindowPlugin):
             playlist.isTrackSolo,
             playlist.getTrackColor,
         )
+
+        # Navigation mappings
+        # FIXME: This is super yucky, come up with a better system for it
+        # at some point
+        try:
+            next = shadow.getControlMatches(
+                DirectionNext, False, 1, raise_on_zero=True)[0]
+            prev = shadow.getControlMatches(
+                DirectionPrevious, False, 1, raise_on_zero=True)[0]
+            prev_next = (prev, next)
+        except ValueError:
+            prev_next = None
+        try:
+            left = shadow.getControlMatches(
+                DirectionLeft, False, 1, raise_on_zero=True)[0]
+            right = shadow.getControlMatches(
+                DirectionRight, False, 1, raise_on_zero=True)[0]
+            left_right = (left, right)
+        except ValueError:
+            left_right = None
+        try:
+            up = shadow.getControlMatches(
+                DirectionUp, False, 1, raise_on_zero=True)[0]
+            down = shadow.getControlMatches(
+                DirectionDown, False, 1, raise_on_zero=True)[0]
+            up_down = (up, down)
+        except ValueError:
+            up_down = None
+
+        # Pattern selection
+        if prev_next is not None:
+            shadow.bindControl(prev_next[0], self.ePrevPattern)
+            shadow.bindControl(prev_next[1], self.eNextPattern)
+            prev_next = None
+        elif up_down is not None:
+            shadow.bindControl(up_down[0], self.ePrevPattern)
+            shadow.bindControl(up_down[1], self.eNextPattern)
+            up_down = None
+        elif left_right is not None:
+            shadow.bindControl(left_right[0], self.ePrevPattern)
+            shadow.bindControl(left_right[1], self.eNextPattern)
+            left_right = None
+
+        # Marker selection
+        if left_right is not None:
+            shadow.bindControl(left_right[0], self.ePrevMarker)
+            shadow.bindControl(left_right[1], self.eNextMarker)
+            left_right = None
+        elif up_down is not None:
+            shadow.bindControl(up_down[0], self.ePrevMarker)
+            shadow.bindControl(up_down[1], self.eNextMarker)
+            up_down = None
+
+        # Track selection
+        if up_down is not None:
+            shadow.bindControl(up_down[0], self.ePrevTrack)
+            shadow.bindControl(up_down[1], self.eNextTrack)
+            up_down = None
+
         super().__init__(shadow, [mute_solo])
 
     @classmethod
@@ -147,6 +214,79 @@ class Playlist(WindowPlugin):
                 ui.down()
             # Select it
             ui.enter()
+        return True
+
+    def jumpPattern(self, delta: int):
+        if patterns.patternCount() == 0:
+            return
+        pat = patterns.patternNumber()
+        new_pat = (pat + delta - 1) % patterns.patternCount() + 1
+        patterns.jumpToPattern(new_pat)
+
+    @filterButtonLift()
+    def eNextPattern(
+        self,
+        *args,
+    ) -> bool:
+        self.jumpPattern(1)
+        return True
+
+    @filterButtonLift()
+    def ePrevPattern(
+        self,
+        *args,
+    ) -> bool:
+        self.jumpPattern(-1)
+        return True
+
+    def jumpTracks(self, delta: int):
+        for i in range(1, playlist.trackCount() + 1):
+            if playlist.isTrackSelected(i):
+                break
+        else:
+            playlist.selectTrack(1)
+            return
+        # Apply the delta
+        i += delta
+        i %= playlist.trackCount()
+        if i == 0:
+            # Wrap around
+            # TODO: When API supports, wrap around to the last track that's in
+            # use
+            i = playlist.trackCount()
+        playlist.deselectAll()
+        playlist.selectTrack(i)
+
+    @filterButtonLift()
+    def eNextTrack(
+        self,
+        *args,
+    ) -> bool:
+        self.jumpTracks(1)
+        return True
+
+    @filterButtonLift()
+    def ePrevTrack(
+        self,
+        *args,
+    ) -> bool:
+        self.jumpTracks(-1)
+        return True
+
+    @filterButtonLift()
+    def eNextMarker(
+        self,
+        *args,
+    ) -> bool:
+        arrangement.jumpToMarker(1, False)
+        return True
+
+    @filterButtonLift()
+    def ePrevMarker(
+        self,
+        *args,
+    ) -> bool:
+        arrangement.jumpToMarker(-1, False)
         return True
 
 

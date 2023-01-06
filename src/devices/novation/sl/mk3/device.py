@@ -29,6 +29,10 @@ from .controls.transport import (
     SlStopButton,
     SlLoopButton,
     SlRecordButton,
+    SlDirectionRight,
+    SlDirectionLeft,
+    SlDirectionDown,
+    SlDirectionUp,
     SlDirectionNext,
     SlDirectionPrevious,
     SlRewindButton,
@@ -72,8 +76,12 @@ class SlMk3(Device):
         matcher.addControl(SlLoopButton())
         matcher.addControl(SlRewindButton())
         matcher.addControl(SlFastForwardButton())
-        matcher.addControl(SlDirectionNext())
+        matcher.addControl(SlDirectionRight())
+        matcher.addControl(SlDirectionLeft())
+        matcher.addControl(SlDirectionDown())
+        matcher.addControl(SlDirectionUp())
         matcher.addControl(SlDirectionPrevious())
+        matcher.addControl(SlDirectionNext())
         matcher.addControl(SlRecordButton())
         matcher.addControl(SlControlSwitchButton())
         matcher.addControl(StandardPitchWheel.create())

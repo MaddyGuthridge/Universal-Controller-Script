@@ -43,44 +43,37 @@ class DirectionStrategy(IMappingStrategy):
         shadow.bindMatch(
             DirectionNext,
             self.next,
-            raise_on_failure=False,
-        ).color = BOUND_COLOR
+        ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionPrevious,
             self.previous,
-            raise_on_failure=False,
-        ).color = BOUND_COLOR
+        ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionRight,
             self.next,
-            raise_on_failure=False,
-        ).color = BOUND_COLOR
+        ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionLeft,
             self.previous,
-            raise_on_failure=False,
-        ).color = BOUND_COLOR
+        ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionDown,
             self.next,
-            raise_on_failure=False,
-        ).color = BOUND_COLOR
+        ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionUp,
             self.previous,
-            raise_on_failure=False,
-        ).color = BOUND_COLOR
+        ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionSelect,
             self.select,
-            raise_on_failure=False,
-        ).color = BOUND_COLOR
+        ).colorize(BOUND_COLOR)
 
     @filterButtonLift()
     def next(self, control, index, *args, **kwargs):

@@ -266,6 +266,14 @@ class ControlShadow(IControlShadow):
         """
         return self._control.coordinate
 
+    @property
+    def press_length(self) -> float:
+        """
+        How long the control has been pressed for, or 0 if the control isn't
+        currently pressed.
+        """
+        return self._control.press_length
+
     def colorize(self, newColor: Color) -> 'ControlShadow':
         """
         Add a color to this control shadow

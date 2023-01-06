@@ -15,6 +15,7 @@ more details.
 from abc import abstractmethod
 from fl_classes import FlMidiMsg
 from typing import TYPE_CHECKING
+from time import time
 
 if TYPE_CHECKING:
     from . import ControlSurface
@@ -88,6 +89,11 @@ class ControlEvent(IControlHash):
         self._value = value
         self._channel = channel
         self._double = double
+        self._press_length = (
+            0.0
+            if map_to.isPress(value)
+            else time() - map_to.last_pressed
+        )
 
     def __repr__(self) -> str:
         return f"ControlEvent({self._map_to}, {self._value})"
@@ -151,6 +157,14 @@ class ControlEvent(IControlHash):
         """Coordinate of the control (row, column)
         """
         return self._map_to.coordinate
+
+    @property
+    def press_length(self) -> float:
+        """
+        How long the control was pressed for, or 0 if the control isn't
+        currently pressed.
+        """
+        return self._press_length
 
 
 class ControlShadowEvent(IControlHash):
@@ -238,3 +252,11 @@ class ControlShadowEvent(IControlHash):
         """Coordinate of the control (row, column)
         """
         return self._map_to.coordinate
+
+    @property
+    def press_length(self) -> float:
+        """
+        How long the control was pressed for, or 0 if the control isn't
+        currently pressed.
+        """
+        return self._map_from.press_length
