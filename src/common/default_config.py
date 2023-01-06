@@ -18,6 +18,10 @@ CONFIG = {
     "controls": {
         # The time for which a double press is valid in seconds
         "double_press_time": 0.3,
+        # The time required to register a long press
+        "long_press_time": 0.5,
+        # How fast to navigate when long pressing a button, lower is faster
+        "navigation_speed": 3,
         # Whether an undo/redo button should always undo, rather than acting as
         # an undo/redo toggle
         "disable_undo_toggle": False,
