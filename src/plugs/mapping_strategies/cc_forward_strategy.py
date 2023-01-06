@@ -40,11 +40,13 @@ class CcForwardStrategy(IMappingStrategy):
             # to get fixed
             GenericFader,  # type: ignore
             self.process,
+            allow_substitution=False,
             one_type=False,
         )
         shadow.bindMatches(
             GenericKnob,  # type: ignore
             self.process,
+            allow_substitution=False,
             one_type=False,
         )
         shadow.bindMatches(Encoder, self.process)
