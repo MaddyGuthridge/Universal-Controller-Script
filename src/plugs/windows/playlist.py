@@ -239,12 +239,30 @@ class Playlist(WindowPlugin):
         self.jumpPattern(-1)
         return True
 
+    def jumpTracks(self, delta: int):
+        for i in range(1, playlist.trackCount() + 1):
+            if playlist.isTrackSelected(i):
+                break
+        else:
+            playlist.selectTrack(1)
+            return
+        # Apply the delta
+        i += delta
+        i %= playlist.trackCount()
+        if i == 0:
+            # Wrap around
+            # TODO: When API supports, wrap around to the last track that's in
+            # use
+            i = playlist.trackCount()
+        playlist.deselectAll()
+        playlist.selectTrack(i)
+
     @filterButtonLift()
     def eNextTrack(
         self,
         *args,
     ) -> bool:
-        ui.next()
+        self.jumpTracks(1)
         return True
 
     @filterButtonLift()
@@ -252,7 +270,7 @@ class Playlist(WindowPlugin):
         self,
         *args,
     ) -> bool:
-        ui.previous()
+        self.jumpTracks(-1)
         return True
 
     @filterButtonLift()
