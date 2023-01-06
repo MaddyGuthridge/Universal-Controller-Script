@@ -28,6 +28,12 @@ from control_surfaces import (
     StandardJogWheel,
     JogWheel,
     ToolSelector,
+    DirectionNext,
+    DirectionPrevious,
+    DirectionLeft,
+    DirectionRight,
+    DirectionUp,
+    DirectionDown,
 )
 from devices import DeviceShadow
 from plugs import WindowPlugin
@@ -84,6 +90,65 @@ class Playlist(WindowPlugin):
             playlist.isTrackSolo,
             playlist.getTrackColor,
         )
+
+        # Navigation mappings
+        # FIXME: This is super yucky, come up with a better system for it
+        # at some point
+        try:
+            next = shadow.getControlMatches(
+                DirectionNext, False, 1, raise_on_zero=True)[0]
+            prev = shadow.getControlMatches(
+                DirectionPrevious, False, 1, raise_on_zero=True)[0]
+            prev_next = (prev, next)
+        except ValueError:
+            prev_next = None
+        try:
+            left = shadow.getControlMatches(
+                DirectionLeft, False, 1, raise_on_zero=True)[0]
+            right = shadow.getControlMatches(
+                DirectionRight, False, 1, raise_on_zero=True)[0]
+            left_right = (left, right)
+        except ValueError:
+            left_right = None
+        try:
+            up = shadow.getControlMatches(
+                DirectionUp, False, 1, raise_on_zero=True)[0]
+            down = shadow.getControlMatches(
+                DirectionDown, False, 1, raise_on_zero=True)[0]
+            up_down = (up, down)
+        except ValueError:
+            up_down = None
+
+        # Pattern selection
+        if prev_next is not None:
+            shadow.bindControl(prev_next[0], self.ePrevPattern)
+            shadow.bindControl(prev_next[1], self.eNextPattern)
+            prev_next = None
+        elif up_down is not None:
+            shadow.bindControl(up_down[0], self.ePrevPattern)
+            shadow.bindControl(up_down[1], self.eNextPattern)
+            up_down = None
+        elif left_right is not None:
+            shadow.bindControl(left_right[0], self.ePrevPattern)
+            shadow.bindControl(left_right[1], self.eNextPattern)
+            left_right = None
+
+        # Marker selection
+        if left_right is not None:
+            shadow.bindControl(left_right[0], self.ePrevMarker)
+            shadow.bindControl(left_right[1], self.eNextMarker)
+            left_right = None
+        elif up_down is not None:
+            shadow.bindControl(up_down[0], self.ePrevMarker)
+            shadow.bindControl(up_down[1], self.eNextMarker)
+            up_down = None
+
+        # Track selection
+        if up_down is not None:
+            shadow.bindControl(up_down[0], self.ePrevTrack)
+            shadow.bindControl(up_down[1], self.eNextTrack)
+            up_down = None
+
         super().__init__(shadow, [mute_solo])
 
     @classmethod
