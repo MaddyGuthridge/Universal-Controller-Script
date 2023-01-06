@@ -14,6 +14,10 @@ from control_surfaces.event_patterns import BasicPattern, ForwardedPattern
 from control_surfaces import (
     DirectionNext,
     DirectionPrevious,
+    DirectionLeft,
+    DirectionRight,
+    DirectionUp,
+    DirectionDown,
     FastForwardButton,
     LoopButton,
     PlayButton,
@@ -29,6 +33,10 @@ from control_surfaces.value_strategies import (
 from .sl_color_surface import SlColorSurface
 
 __all__ = [
+    'SlDirectionRight',
+    'SlDirectionLeft',
+    'SlDirectionDown',
+    'SlDirectionUp',
     'SlDirectionNext',
     'SlDirectionPrevious',
     'SlFastForwardButton',
@@ -76,21 +84,57 @@ class SlRecordButton(RecordButton):
         )
 
 
-class SlDirectionNext(DirectionNext):
+class SlDirectionRight(DirectionRight):
     def __init__(self) -> None:
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x67, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x1F)
+        )
+
+
+class SlDirectionLeft(DirectionLeft):
+    def __init__(self) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
             color_manager=SlColorSurface(0x1E)
+        )
+
+
+class SlDirectionNext(DirectionNext):
+    def __init__(self) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0xBF, 0x56, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x1)
         )
 
 
 class SlDirectionPrevious(DirectionPrevious):
     def __init__(self) -> None:
         super().__init__(
-            ForwardedPattern(2, BasicPattern(0xBF, 0x66, ...)),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x55, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
-            color_manager=SlColorSurface(0x1F)
+            color_manager=SlColorSurface(0x0)
+        )
+
+
+class SlDirectionDown(DirectionDown):
+    def __init__(self) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0xBF, 0x52, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x3F)
+        )
+
+
+class SlDirectionUp(DirectionUp):
+    def __init__(self) -> None:
+        super().__init__(
+            ForwardedPattern(2, BasicPattern(0xBF, 0x51, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+            color_manager=SlColorSurface(0x3E)
         )
 
 
