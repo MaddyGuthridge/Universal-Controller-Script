@@ -19,8 +19,8 @@ from common.util.api_fixes import isPluginVst
 
 from control_surfaces import (
     ControlShadowEvent,
-    Fader,
-    Knob,
+    GenericFader,
+    GenericKnob,
     Encoder,
 )
 
@@ -35,8 +35,18 @@ class CcForwardStrategy(IMappingStrategy):
         super().__init__()
 
     def apply(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(Fader, self.process)
-        shadow.bindMatches(Knob, self.process)
+        shadow.bindMatches(
+            # God I cannot wait for https://github.com/python/mypy/issues/4717
+            # to get fixed
+            GenericFader,  # type: ignore
+            self.process,
+            one_type=False,
+        )
+        shadow.bindMatches(
+            GenericKnob,  # type: ignore
+            self.process,
+            one_type=False,
+        )
         shadow.bindMatches(Encoder, self.process)
 
     @filterButtonLift()
