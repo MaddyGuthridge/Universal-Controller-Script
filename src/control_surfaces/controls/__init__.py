@@ -51,6 +51,7 @@ __all__ = [
     'StandardJogWheel',
     'ShiftedJogWheel',
     'MoveJogWheel',
+    'GenericFader',
     'Fader',
     'MasterFader',
     'FaderButton',
@@ -64,6 +65,7 @@ __all__ = [
     'MasterArmButton',
     'SelectButton',
     'MasterSelectButton',
+    'GenericKnob',
     'Knob',
     'MasterKnob',
     'Encoder',
@@ -141,7 +143,7 @@ from .jog import (
     ShiftedJogWheel,
     MoveJogWheel,
 )
-from .fader import Fader, MasterFader
+from .fader import GenericFader, Fader, MasterFader
 from .fader_button import (
     FaderButton,
     GenericFaderButton,
@@ -155,7 +157,7 @@ from .fader_button import (
     SelectButton,
     MasterSelectButton,
 )
-from .knob import Knob, MasterKnob
+from .knob import GenericKnob, Knob, MasterKnob
 from .encoder import Encoder
 from .mod_xy import ModXY, ModX, ModY
 from .drum_pad import DrumPad
