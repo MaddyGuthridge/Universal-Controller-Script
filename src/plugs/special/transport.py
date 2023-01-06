@@ -11,10 +11,12 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
+import arrangement
 import transport
 import ui
 
 from typing import Any
+from common.context_manager import getContext
 
 from common.extension_manager import ExtensionManager
 from common.types import Color
@@ -149,12 +151,27 @@ class Transport(SpecialPlugin):
         val = control.value != 0
         transport.fastForward(2 if val else 0)
         self._playback_ff_rw = FAST_FORWARDING if val else 0
+        # If it was a short press, jump between markers
+        if (
+            not val
+            and control.press_length
+            < getContext().settings.get("controls.short_press_time")
+        ):
+            arrangement.jumpToMarker(1, False)
+
         return True
 
     def rewind(self, control: ControlShadowEvent, *args: Any,) -> bool:
         val = control.value != 0
         transport.rewind(2 if val else 0)
         self._playback_ff_rw = REWINDING if val else 0
+        # If it was a short press, jump between markers
+        if (
+            not val
+            and control.press_length
+            < getContext().settings.get("controls.short_press_time")
+        ):
+            arrangement.jumpToMarker(-1, False)
         return True
 
     def tickPlay(self, control: ControlShadow, *args):
