@@ -10,6 +10,8 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 import ui
+
+from common.context_manager import getContext
 from . import IMappingStrategy
 from devices import DeviceShadow
 from plugs.event_filters import filterButtonLift
@@ -17,6 +19,7 @@ from common.types import Color
 
 from control_surfaces import (
     IControlShadow,
+    ControlShadow,
     DirectionNext,
     DirectionPrevious,
     DirectionLeft,
@@ -42,51 +45,79 @@ class DirectionStrategy(IMappingStrategy):
         # TODO: Find nicer way to bind colors like this
         shadow.bindMatch(
             DirectionNext,
-            self.next,
+            self.eNext,
+            self.tNext,
         ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionPrevious,
-            self.previous,
+            self.ePrev,
+            self.tPrev,
         ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionRight,
-            self.next,
+            self.eNext,
+            self.tNext,
         ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionLeft,
-            self.previous,
+            self.ePrev,
+            self.tPrev,
         ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionDown,
-            self.next,
+            self.eNext,
+            self.tNext,
         ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionUp,
-            self.previous,
+            self.ePrev,
+            self.tPrev,
         ).colorize(BOUND_COLOR)
 
         shadow.bindMatch(
             DirectionSelect,
-            self.select,
+            self.eSelect,
         ).colorize(BOUND_COLOR)
 
     @filterButtonLift()
-    def next(self, control, index, *args, **kwargs):
+    def eNext(self, control, index, *args, **kwargs):
         ui.next()
         return True
 
+    def tNext(self, control: ControlShadow, *args):
+        if (
+            control.press_length
+            > getContext().settings.get("controls.long_press_time")
+        ):
+            if not (
+                getContext().getTickNumber()
+                % getContext().settings.get("controls.navigation_speed")
+            ):
+                ui.next()
+
     @filterButtonLift()
-    def previous(self, control, index, *args, **kwargs):
+    def ePrev(self, control, index, *args, **kwargs):
         ui.previous()
         return True
 
+    def tPrev(self, control: ControlShadow, *args):
+        if (
+            control.press_length
+            > getContext().settings.get("controls.long_press_time")
+        ):
+            if not (
+                getContext().getTickNumber()
+                % getContext().settings.get("controls.navigation_speed")
+            ):
+                ui.previous()
+
     @filterButtonLift()
-    def select(self, control, index, *args, **kwargs):
+    def eSelect(self, control, index, *args, **kwargs):
         # BUG: Will just echo enter - improve this
         ui.enter()
         return True
