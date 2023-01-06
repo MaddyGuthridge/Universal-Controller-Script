@@ -10,8 +10,10 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from typing import Any
+import arrangement
 import ui
 import playlist
+import patterns
 import transport
 import general
 from common import getContext
@@ -147,6 +149,61 @@ class Playlist(WindowPlugin):
                 ui.down()
             # Select it
             ui.enter()
+        return True
+
+    def jumpPattern(self, delta: int):
+        if patterns.patternCount() == 0:
+            return
+        pat = patterns.patternNumber()
+        new_pat = (pat + delta - 1) % patterns.patternCount() + 1
+        patterns.jumpToPattern(new_pat)
+
+    @filterButtonLift()
+    def eNextPattern(
+        self,
+        *args,
+    ) -> bool:
+        self.jumpPattern(1)
+        return True
+
+    @filterButtonLift()
+    def ePrevPattern(
+        self,
+        *args,
+    ) -> bool:
+        self.jumpPattern(-1)
+        return True
+
+    @filterButtonLift()
+    def eNextTrack(
+        self,
+        *args,
+    ) -> bool:
+        ui.next()
+        return True
+
+    @filterButtonLift()
+    def ePrevTrack(
+        self,
+        *args,
+    ) -> bool:
+        ui.previous()
+        return True
+
+    @filterButtonLift()
+    def eNextMarker(
+        self,
+        *args,
+    ) -> bool:
+        arrangement.jumpToMarker(1, False)
+        return True
+
+    @filterButtonLift()
+    def ePrevMarker(
+        self,
+        *args,
+    ) -> bool:
+        arrangement.jumpToMarker(-1, False)
         return True
 
 
