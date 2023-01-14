@@ -171,14 +171,13 @@ def getSelectedDockMixerTracks() -> dict[int, list[int]]:
 
 def getSelectedMixerTracks() -> list[int]:
     """
-    Returns a list of the selected mixer tracks, not including master or
-    current
+    Returns a list of the selected mixer tracks, not including current
 
     ### Returns:
     * `list[int]`: track selections
     """
     tracks: list[int] = []
-    for i in range(1, mixer.trackCount() - 1):
+    for i in range(mixer.trackCount() - 1):
         if mixer.isTrackSelected(i):
             tracks.append(i)
 
