@@ -25,6 +25,7 @@ from common.util.snap import snap
 from control_surfaces import consts
 from control_surfaces import ControlShadowEvent
 from control_surfaces import (
+    ControlSurface,
     JogWheel,
     StandardJogWheel,
     Fader,
@@ -46,7 +47,7 @@ COLOR_DISABLED = Color.fromGrayscale(0.3, False)
 COLOR_ARMED = Color.fromInteger(0xAF0000, 1.0, True)
 
 
-def snapFaders(value: float, force_range: bool = False) -> float:
+def snapFaders(value: float, control: ControlSurface) -> float:
     """
     Return the snapped value of a fader, so that getting volumes to 100% is
     easier
@@ -60,15 +61,29 @@ def snapFaders(value: float, force_range: bool = False) -> float:
     """
     if (
         getContext().settings.get("plugins.mixer.allow_extended_volume")
-        or force_range
+        or isinstance(control, Encoder)
     ):
         return snap(value, 0.8)
     else:
         return value * 0.8
 
 
+def unsnapFaders(value: float, control: ControlSurface) -> float:
+    """
+    Convert a mixer track volume to a fader value
+    """
+    if isinstance(control, Encoder):
+        return value
+    else:
+        return value / 0.8
+
+
 def snapKnobs(value: float) -> float:
     return snap(value, 0.5) * 2 - 1
+
+
+def unsnapKnobs(value: float) -> float:
+    return (value + 1) / 2
 
 
 class Mixer(WindowPlugin):
@@ -238,11 +253,8 @@ class Mixer(WindowPlugin):
     ) -> bool:
         """Faders -> volume"""
         index = self._selection[control.getControl().coordinate[1]]
-        if isinstance(control.getControl(), Encoder):
-            encoder = True
-        else:
-            encoder = False
-        mixer.setTrackVolume(index, snapFaders(control.value, encoder))
+        mixer.setTrackVolume(index, snapFaders(
+            control.value, control.getControl()))
         return True
 
     def masterFader(
@@ -252,9 +264,11 @@ class Mixer(WindowPlugin):
     ) -> bool:
         if len(self._faders) == 0:
             track = mixer.trackNumber()
-            mixer.setTrackVolume(track, snapFaders(control.value))
+            mixer.setTrackVolume(track, snapFaders(
+                control.value, control.getControl()))
         else:
-            mixer.setTrackVolume(0, snapFaders(control.value))
+            mixer.setTrackVolume(0, snapFaders(
+                control.value, control.getControl()))
         return True
 
     def updateColors(self):
@@ -270,13 +284,18 @@ class Mixer(WindowPlugin):
         for n, i in enumerate(self._selection):
             c = Color.fromInteger(mixer.getTrackColor(i))
             name = mixer.getTrackName(i)
+            vol = mixer.getTrackVolume(i)
+            pan = mixer.getTrackPan(i)
             # Only apply to controls that are within range
             if len(self._faders) > n:
                 self._faders[n].color = c
                 self._faders[n].annotation = name
+                self._faders[n].value = unsnapFaders(
+                    vol, self._faders[n].getControl())
             if len(self._knobs) > n:
                 self._knobs[n].color = c
                 self._knobs[n].annotation = name
+                self._knobs[n].value = unsnapKnobs(pan)
             # Select buttons
             if len(self._selects) > n:
                 if mixer.isTrackSelected(i):
