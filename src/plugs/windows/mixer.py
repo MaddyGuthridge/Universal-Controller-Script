@@ -25,6 +25,7 @@ from control_surfaces import (
     StandardJogWheel,
     Fader,
     Knob,
+    Encoder,
     MasterFader,
     MasterKnob,
     ArmButton,
@@ -41,18 +42,22 @@ COLOR_DISABLED = Color.fromGrayscale(0.3, False)
 COLOR_ARMED = Color.fromInteger(0xAF0000, 1.0, True)
 
 
-def snapFaders(value: float) -> float:
+def snapFaders(value: float, force_range: bool = False) -> float:
     """
     Return the snapped value of a fader, so that getting volumes to 100% is
     easier
 
     ### Args:
     * `value` (`float`): value to snap
+    * `force_range` (`bool`): whether to force the full ranger (for encoders)
 
     ### Returns:
     * `float`: snapped value
     """
-    if getContext().settings.get("plugins.mixer.allow_extended_volume"):
+    if (
+        getContext().settings.get("plugins.mixer.allow_extended_volume")
+        or force_range
+    ):
         return snap(value, 0.8)
     else:
         return value * 0.8
@@ -215,7 +220,11 @@ class Mixer(WindowPlugin):
     ) -> bool:
         """Faders -> volume"""
         index = self._selection[control.getControl().coordinate[1]]
-        mixer.setTrackVolume(index, snapFaders(control.value))
+        if isinstance(control.getControl(), Encoder):
+            encoder = True
+        else:
+            encoder = False
+        mixer.setTrackVolume(index, snapFaders(control.value, encoder))
         return True
 
     def masterFader(
