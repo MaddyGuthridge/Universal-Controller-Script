@@ -19,7 +19,8 @@ HIERARCHY = {
             "create": {}
         },
         "device": {
-            "type_detect": {}
+            "type_detect": {},
+            "initialize": {},
         }
     },
     "device": {
