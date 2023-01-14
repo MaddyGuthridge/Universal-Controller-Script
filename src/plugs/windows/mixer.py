@@ -16,7 +16,11 @@ from common import getContext
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import (UnsafeIndex)
-from common.util.api_fixes import getSelectedMixerTracks
+from common.util.api_fixes import (
+    getSelectedDockMixerTracks,
+    getMixerDockSides,
+    getSelectedMixerTracks,
+)
 from common.util.snap import snap
 from control_surfaces import consts
 from control_surfaces import ControlShadowEvent
@@ -122,6 +126,10 @@ class Mixer(WindowPlugin):
 
         # List of mapped channels
         self._selection: list[int] = []
+        # List of mapped channels, respecting the dock side
+        self._selection_docked: list[int] = []
+        # Dock side that we're mapping to
+        self._dock_side = 1
         # Length of mapped channels
         self._len = max(map(len, [self._faders, self._knobs]))
         super().__init__(shadow, [mutes_solos])
@@ -137,44 +145,54 @@ class Mixer(WindowPlugin):
     def updateSelected(self):
         """
         Update the list of selected tracks
-
-        KNOWN ISSUES:
-        * This doesn't respect docking sides: as soon as the mixer rectangle
-          can be displayed in a way that respects them, change this
         """
-        selected = getSelectedMixerTracks()
+        dock_side = mixer.getTrackDockSide(mixer.trackNumber())
+        selected = getSelectedDockMixerTracks()[dock_side]
+        dock_sides = getMixerDockSides()[dock_side]
 
         if len(selected) == 0:
             # No selection, we need to generate one
             if not len(self._selection):
-                selected = [1]
+                selected = [dock_sides[0]]
             else:
                 return
 
-        first = selected[0]
-        last = first
-        for i in selected:
-            if i - first < self._len:
-                last = i
+        # Find index of first selected track on that docking side
+        for index, track_index in enumerate(dock_sides):
+            if track_index == selected[0]:
+                break
 
-        if first + self._len >= mixer.trackCount() - 1:
-            first = (mixer.trackCount() - 1) - self._len
+        # Calculate first track that should be selected
+        if index + self._len >= len(dock_sides):
+            first = max(len(dock_sides) - self._len, 0)
+        else:
+            first = index
+        # And last track that should be selected
+        last = min(len(dock_sides), first + self._len)
 
         # If we need to change selection
         if (
-            len(self._selection) == 0
-            or first < self._selection[0]
-            or last > self._selection[0] + self._len - 1
+            dock_side != self._dock_side
+            or len(self._selection) == 0
+            or first < self._selection_docked[0]
+            or index > self._selection_docked[-1]
         ):
-            self._selection = list(range(first, first+self._len))
+            self._selection = [dock_sides[i] for i in range(first, last)]
+            self._selection_docked = list(range(first, last))
+            self._dock_side = dock_side
             self.displayRect()
 
     def displayRect(self):
         """
         Display the UI rectangle
         """
-        first = self._selection[0]
-        ui.miDisplayRect(first, first+self._len-1, 2000)
+        first = self._selection_docked[0]
+        ui.miDisplayDockRect(
+            first + 1,
+            len(self._selection),
+            self._dock_side,
+            2000,
+        )
 
     def tick(self, *args):
         self.updateSelected()
