@@ -59,6 +59,7 @@ class ManualMapper(SpecialPlugin):
             self.tFaders,
             allow_substitution=False,
             one_type=False,
+            args_generator=...,
         ))
         self._encoders_start = len(shadow.bindMatches(
             Encoder,
@@ -66,6 +67,7 @@ class ManualMapper(SpecialPlugin):
             self.tEncoders,
             allow_substitution=False,
             one_type=False,
+            args_generator=...,
         )) + self._knobs_start
         self._mods_start = len(shadow.bindMatches(
             GenericKnob,  # type: ignore
@@ -73,12 +75,14 @@ class ManualMapper(SpecialPlugin):
             self.tKnobs,
             allow_substitution=False,
             one_type=False,
+            args_generator=...,
         )) + self._encoders_start
         shadow.bindMatches(
             ModXY,
             self.eMods,
             self.tMods,
-            allow_substitution=False
+            allow_substitution=False,
+            args_generator=...,
         )
         super().__init__(shadow, [])
 
@@ -127,12 +131,12 @@ class ManualMapper(SpecialPlugin):
             return event_id
 
     @classmethod
-    def editEvent(cls, control: ControlShadowEvent, start: int) -> bool:
+    def editEvent(cls, control: ControlShadowEvent, c_index: int) -> bool:
         """
         Edits the event to make it into a CC event that can be processed by FL
         Studio
         """
-        channel, cc = cls.getChannelAndCc(start + control.coordinate[1])
+        channel, cc = cls.getChannelAndCc(c_index)
         # Find the associated event ID
         event_id = cls.calcEventId(channel, cc)
         # If that event ID isn't invalid
@@ -153,11 +157,11 @@ class ManualMapper(SpecialPlugin):
             return False
 
     @classmethod
-    def tickEvent(cls, control: ControlShadow, start: int):
+    def tickEvent(cls, control: ControlShadow, c_index: int):
         """
         Applies properties to the event if it is assigned as a REC event
         """
-        channel, cc = cls.getChannelAndCc(start + control.coordinate[1])
+        channel, cc = cls.getChannelAndCc(c_index)
         # Find the associated event ID
         event_id = cls.calcEventId(channel, cc)
         # If that event ID isn't invalid
@@ -168,29 +172,29 @@ class ManualMapper(SpecialPlugin):
         else:
             control.connected = False
 
-    def eFaders(self, control: ControlShadowEvent, *args) -> bool:
-        return self.editEvent(control, self._faders_start)
+    def eFaders(self, control: ControlShadowEvent, _, c_index: int) -> bool:
+        return self.editEvent(control, self._faders_start + c_index)
 
-    def tFaders(self, control: ControlShadow, *args):
-        return self.tickEvent(control, self._faders_start)
+    def tFaders(self, control: ControlShadow, _, c_index: int):
+        return self.tickEvent(control, self._faders_start + c_index)
 
-    def eKnobs(self, control: ControlShadowEvent, *args) -> bool:
-        return self.editEvent(control, self._knobs_start)
+    def eKnobs(self, control: ControlShadowEvent, _, c_index: int) -> bool:
+        return self.editEvent(control, self._knobs_start + c_index)
 
-    def tKnobs(self, control: ControlShadow, *args):
-        return self.tickEvent(control, self._knobs_start)
+    def tKnobs(self, control: ControlShadow, _, c_index: int):
+        return self.tickEvent(control, self._knobs_start + c_index)
 
-    def eEncoders(self, control: ControlShadowEvent, *args) -> bool:
-        return self.editEvent(control, self._encoders_start)
+    def eEncoders(self, control: ControlShadowEvent, _, c_index: int) -> bool:
+        return self.editEvent(control, self._encoders_start + c_index)
 
-    def tEncoders(self, control: ControlShadow, *args):
-        return self.tickEvent(control, self._encoders_start)
+    def tEncoders(self, control: ControlShadow, _, c_index: int):
+        return self.tickEvent(control, self._encoders_start + c_index)
 
-    def eMods(self, control: ControlShadowEvent, *args) -> bool:
-        return self.editEvent(control, self._mods_start)
+    def eMods(self, control: ControlShadowEvent, _, c_index: int) -> bool:
+        return self.editEvent(control, self._mods_start + c_index)
 
-    def tMods(self, control: ControlShadow, *args):
-        self.tickEvent(control, self._mods_start)
+    def tMods(self, control: ControlShadow, _, c_index: int):
+        self.tickEvent(control, self._mods_start + c_index)
 
 
 ExtensionManager.super_special.register(ManualMapper)
