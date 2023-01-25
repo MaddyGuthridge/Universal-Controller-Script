@@ -19,7 +19,11 @@ from control_surfaces import (
     NullControl,
     CaptureMidiButton,
 )
-from control_surfaces.matchers import ShiftMatcher, BasicControlMatcher
+from control_surfaces.matchers import (
+    ShiftMatcher,
+    ShiftView,
+    BasicControlMatcher,
+)
 from devices.novation.launchkey.incontrol.controls import (
     LkMk3ControlSwitchButton,
     LkMk3RecordButton,
@@ -38,18 +42,18 @@ def getShiftControls() -> ShiftMatcher:
     )
 
     # Non shifted events
-    non_shift_matcher = BasicControlMatcher()
-    non_shift_matcher.addControl(LkMk3RecordButton())
-    non_shift_matcher.addControl(LkMk3ControlSwitchButton())
-    non_shift_matcher.addSubMatcher(getMk3MiniMuteControls())
+    main_view = BasicControlMatcher()
+    main_view.addControl(LkMk3RecordButton())
+    main_view.addControl(LkMk3ControlSwitchButton())
+    main_view.addSubMatcher(getMk3MiniMuteControls())
 
     # Shifted events
-    shift_matcher = BasicControlMatcher()
-    shift_matcher.addControl(CaptureMidiButton(
+    shift_view = BasicControlMatcher()
+    shift_view.addControl(CaptureMidiButton(
         ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
         ForwardedStrategy(ButtonData2Strategy()),
     ))
-    shift_matcher.addControls([
+    shift_view.addControls([
         MiniMk3DirectionUp(),
         MiniMk3DirectionDown(),
         Mk3DirectionLeft(),
@@ -57,7 +61,6 @@ def getShiftControls() -> ShiftMatcher:
     ])
 
     return ShiftMatcher(
-        shift,
-        non_shift_matcher,
-        shift_matcher,
+        main_view,
+        [ShiftView(shift, shift_view)]
     )
