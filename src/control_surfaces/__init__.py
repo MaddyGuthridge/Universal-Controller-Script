@@ -106,6 +106,7 @@ __all__ = [
     'HintMsg',
     'NotifMsg',
     'Ambient',
+    'WindowSwitcher',
 ]
 
 from .controls import (
@@ -187,6 +188,7 @@ from .controls import (
     HintMsg,
     NotifMsg,
     Ambient,
+    WindowSwitcher,
 )
 
 from .control_shadow import (
