@@ -35,7 +35,7 @@ from devices.novation.launchkey.incontrol.controls import (
     LkDrumPadMatcher,
     LkMk3DrumPadSolo,
     LkMk3DrumPadMute,
-    LkDrumPadActivity,
+    LkMk3DrumPadActivity,
     LkMk3PlayButton,
 )
 
@@ -72,7 +72,7 @@ def getShiftControls() -> ShiftMatcher:
     )
     activity_switchers = ShiftView(
         LkMk3PlayButton(),
-        LkDrumPadMatcher(LkDrumPadActivity),
+        LkDrumPadMatcher(LkMk3DrumPadActivity),
     )
 
     return ShiftMatcher(

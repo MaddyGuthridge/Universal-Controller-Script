@@ -129,16 +129,23 @@ class ErrorState(IScriptState):
         log(**error_info)
         log(
             "general",
-            f"Error details: {self.__exception}",
+            f"Error details: {repr(self.__exception)}",
             verbosity.CRITICAL,
         )
+        if self.__exception.__cause__ is not None:
+            log(
+                "general",
+                f"Error caused by: {repr(self.__exception.__cause__)}",
+                verbosity.CRITICAL,
+            )
         ui.setHintMsg("[UCS] error: see script output")
+        raise self.__exception
 
     def deinitialize(self) -> None:
         pass
 
     def tick(self) -> None:
-        ui.setHintMsg("[UCS] error: see script output")
+        # ui.setHintMsg("[UCS] error: see script output")
         pass
 
     def processEvent(self, event: FlMidiMsg) -> None:
