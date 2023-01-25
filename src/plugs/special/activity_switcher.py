@@ -87,7 +87,12 @@ class ActivitySwitcher(SpecialPlugin):
         return cls(shadow)
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatches(ActivitySwitchControl, self.eActivity)
+        shadow.bindMatches(
+            ActivitySwitchControl,
+            self.eActivity,
+            self.tActivity,
+            args_generator=...,
+        )
         super().__init__(shadow, [])
 
     @filterButtonLift()
@@ -97,7 +102,10 @@ class ActivitySwitcher(SpecialPlugin):
         _,
         c_index: int,
     ) -> bool:
-        triggerActivity(getContext().activity.getHistoryActivity(c_index))
+        try:
+            triggerActivity(getContext().activity.getHistoryActivity(c_index))
+        except IndexError:
+            pass
         return True
 
     def tActivity(
@@ -106,9 +114,12 @@ class ActivitySwitcher(SpecialPlugin):
         _,
         c_index: int,
     ):
-        activity = getContext().activity.getHistoryActivity(c_index)
-        control.color = getActivityColor(activity)
-        control.annotation = getActivityName(activity)
+        try:
+            activity = getContext().activity.getHistoryActivity(c_index)
+            control.color = getActivityColor(activity)
+            control.annotation = getActivityName(activity)
+        except IndexError:
+            pass
 
 
 ExtensionManager.super_special.register(ActivitySwitcher)
