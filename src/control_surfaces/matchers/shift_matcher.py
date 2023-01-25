@@ -106,7 +106,6 @@ class ShiftMatcher(IControlMatcher):
                 and self.__active_view is not view
                 and view.disable_in_other_views
             ):
-                print("skip view", view)
                 continue
             if (control := view.trigger.match(event)) is not None:
                 # If it's a lift, match the event
@@ -115,13 +114,11 @@ class ShiftMatcher(IControlMatcher):
                     if self.__active_view is view:
                         # Only deactivate if we're not sustaining it
                         if self.__sustained:
-                            print("sustain")
                             self.__sustained = False
                             # Keep the value enabled
                             view.trigger.value = 1.0
                             view.trigger.color = ENABLED
                         else:
-                            print("deactivate")
                             self.__changed = True
                             self.__active_view = None
                             view.trigger.color = DISABLED
@@ -142,14 +139,11 @@ class ShiftMatcher(IControlMatcher):
                 self.__active_view = view
                 view.trigger.color = ENABLED
                 self.__changed = True
-                print("activate")
                 return control
 
         if self.__active_view is None:
-            print("process main")
             return self.__main.matchEvent(event)
         else:
-            print("process view")
             return self.__active_view.view.matchEvent(event)
 
     def getControls(self) -> list[ControlSurface]:
