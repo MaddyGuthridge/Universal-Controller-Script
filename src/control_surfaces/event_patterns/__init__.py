@@ -22,6 +22,7 @@ __all__ = [
     'ForwardedPattern',
     'ForwardedUnionPattern',
     'NullPattern',
+    'TruePattern',
     'NotePattern',
 ]
 
@@ -30,5 +31,5 @@ from .event_pattern import IEventPattern
 from .union_pattern import UnionPattern
 from .basic_pattern import BasicPattern
 from .forwarded_pattern import ForwardedPattern, ForwardedUnionPattern
-from .null_pattern import NullPattern
+from .null_pattern import NullPattern, TruePattern
 from .note_pattern import NotePattern
