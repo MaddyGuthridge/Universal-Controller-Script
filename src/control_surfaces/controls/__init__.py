@@ -90,7 +90,7 @@ __all__ = [
     'HintMsg',
     'NotifMsg',
     'Ambient',
-    'WindowSwitcher',
+    'ActivitySwitcher',
 ]
 
 from .control_surface import ControlSurface
@@ -183,4 +183,4 @@ from .activity_button import (
 from .hint_msg import HintMsg
 from .notif_msg import NotifMsg
 from .ambient import Ambient
-from .window_switcher import WindowSwitcher
+from .activity_switcher import ActivitySwitcher

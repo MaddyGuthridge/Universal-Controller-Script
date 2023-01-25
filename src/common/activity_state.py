@@ -13,6 +13,7 @@ more details.
 
 from typing import Optional
 import ui
+from common.consts import WINDOW_NAMES
 from common.profiler import profilerDecoration
 from common.logger import log, verbosity
 from common.plug_indexes import (
@@ -30,9 +31,6 @@ from common.util.api_fixes import (
 )
 from common.types.bool_s import BoolS
 import plugins
-
-
-WINDOW_NAMES = ['Mixer', 'Channel Rack', 'Playlist', 'Piano Roll', 'Browser']
 
 
 class ActivityState:
@@ -205,6 +203,19 @@ class ActivityState:
         * `UnsafeWindowIndex`: active window
         """
         return self._window
+
+    def getHistoryActivity(self, index: int) -> SafeIndex:
+        """
+        Returns the activity entry at the given index, where 0 is the most
+        recent (but not current) activity.
+
+        ### Args:
+        * `index` (`int`): index
+
+        ### Returns:
+        * `SafeIndex`: activity
+        """
+        return self._history[index + 1]
 
     def playPause(self, value: Optional[bool] = None) -> BoolS:
         """

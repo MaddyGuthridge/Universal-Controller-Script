@@ -12,7 +12,7 @@ more details.
 from .control_surface import ControlSurface
 
 
-class WindowSwitcher(ControlSurface):
+class ActivitySwitcher(ControlSurface):
     """
     Allows users to switch between FL Studio windows and recent plugins
     """
