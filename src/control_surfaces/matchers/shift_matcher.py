@@ -152,6 +152,8 @@ class ShiftMatcher(IControlMatcher):
             else:
                 if view.allow_fallback_match:
                     return self.__main.matchEvent(event)
+                else:
+                    return None
         else:
             return self.__main.matchEvent(event)
 
