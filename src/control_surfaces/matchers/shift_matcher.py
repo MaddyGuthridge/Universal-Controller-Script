@@ -13,7 +13,8 @@ more details.
 from typing import Optional
 from fl_classes import FlMidiMsg
 from common.types import Color
-from control_surfaces import ControlEvent, ControlSurface
+from control_surfaces import ControlEvent, ControlSurface, NullControl
+from ..event_patterns import TruePattern
 from . import IControlMatcher
 
 ENABLED = Color.fromGrayscale(1.0)
@@ -85,6 +86,7 @@ class ShiftMatcher(IControlMatcher):
         * `views` (`list[ShiftView]`): list of views to control with this
           matcher
         """
+        self.__null = NullControl(TruePattern())
         self.__main = main_view
         self.__views = views
         self.__active_view: Optional[ShiftView] = None
@@ -125,6 +127,10 @@ class ShiftMatcher(IControlMatcher):
                             view.trigger.color = DISABLED
                     return control
 
+                # If the menu is already open, this should be a null event
+                if self.__active_view is view:
+                    return self.__null.match(event)
+
                 # If it's a double press, trigger the sustained menu
                 if control.double:
                     self.__sustained = True
@@ -132,7 +138,7 @@ class ShiftMatcher(IControlMatcher):
                     # If this menu requires a double press, don't use it
                     if view.ignore_single_press:
                         return control
-                # Either way open the menu
+                # Open the menu
                 self.__active_view = view
                 view.trigger.color = ENABLED
                 self.__changed = True
@@ -159,6 +165,13 @@ class ShiftMatcher(IControlMatcher):
             self.__changed = False
         # Colorize and tick each view trigger
         for view in self.__views:
+            # Skip this view if required
+            if (
+                self.__active_view is not None
+                and self.__active_view is not view
+                and view.disable_in_other_views
+            ):
+                continue
             view.trigger.color = \
                 ENABLED if self.__active_view is view else DISABLED
             view.trigger.doTick(thorough)
