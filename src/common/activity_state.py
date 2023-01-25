@@ -18,7 +18,6 @@ from common.profiler import profilerDecoration
 from common.logger import log, verbosity
 from common.plug_indexes import (
     PluginIndex,
-    UnsafeIndex,
     GeneratorIndex,
     EffectIndex,
     WindowIndex,
@@ -54,6 +53,15 @@ class ActivityState:
         self._plug_unsafe = False
         self._history: list[SafeIndex] = []
 
+    def __repr__(self) -> str:
+        return (
+            f"ActivityState("
+            f"updating: {self._do_update}, "
+            f"split: {self._split}, "
+            f"active: {self.getActive()}"
+            f")"
+        )
+
     def inspect(self):
         """
         Inspect details about the activity state.
@@ -84,15 +92,14 @@ class ActivityState:
             return
         if self._plugin != plugin:
             self._plugin = plugin
-            self._history.append(plugin)
         try:
             self._plugin_name = plugins.getPluginName(*plugin)
         except TypeError:
             self._plugin_name = ""
         if len(plugin) == 1:
-            self._generator = plugin  # type: ignore
+            self._generator = plugin
         else:
-            self._effect = plugin  # type: ignore
+            self._effect = plugin
 
     @profilerDecoration("activity.tick")
     def tick(self) -> None:
@@ -116,7 +123,6 @@ class ActivityState:
                 if window != self._window:
                     self._changed = True
                     self._window = window
-                    self._history.insert(0, window)
                 if not self._split:
                     if self._plug_active:
                         self._changed = True
@@ -127,7 +133,6 @@ class ActivityState:
                 if plugin != self._plugin:
                     self._changed = True
                     self._plugin = plugin
-                    self._history.insert(0, plugin)
                 try:
                     self._plugin_name = plugins.getPluginName(*plugin)
                 except TypeError:
@@ -135,15 +140,18 @@ class ActivityState:
                 # Ignore typing because len(plugin) doesn't narrow types in
                 # mypy
                 if len(plugin) == 1:
-                    self._generator = plugin  # type: ignore
+                    self._generator = plugin
                 else:
-                    self._effect = plugin  # type: ignore
+                    self._effect = plugin
                 if not self._split:
                     if not self._plug_active:
                         self._changed = True
                     self._plug_active = True
             else:
                 self._forcePlugUpdate()
+            # Add to history
+            if self._changed:
+                self._history.insert(0, self.getActive())
             # If there are too many things in the history
             hist_len = \
                 getContext().settings.get("advanced.activity_history_length")
@@ -159,7 +167,7 @@ class ActivityState:
         """
         return self._changed
 
-    def getActive(self) -> UnsafeIndex:
+    def getActive(self) -> SafeIndex:
         """
         Returns the currently active window or plugin
         """

@@ -109,7 +109,6 @@ class ActivitySwitcher(SpecialPlugin):
         _,
         c_index: int,
     ) -> bool:
-        print(control.value)
         try:
             triggerActivity(getContext().activity.getHistoryActivity(c_index))
         except IndexError:
