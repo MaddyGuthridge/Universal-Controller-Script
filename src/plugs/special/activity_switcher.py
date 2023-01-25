@@ -94,6 +94,7 @@ class ActivitySwitcher(SpecialPlugin):
         return cls(shadow)
 
     def __init__(self, shadow: DeviceShadow) -> None:
+        shadow.setMinimal(True)
         shadow.bindMatches(
             ActivitySwitchControl,
             self.eActivity,
