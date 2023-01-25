@@ -29,6 +29,7 @@ class ShiftView:
         trigger: ControlSurface,
         view: IControlMatcher,
         ignore_single_press: bool = False,
+        disable_in_other_views: bool = False,
     ) -> None:
         """
         Create a ShiftView for use within a ShiftMatcher
@@ -43,11 +44,16 @@ class ShiftView:
         * `ignore_single_press` (`bool`, optional): whether to ignore single
           press triggers. If this is `True`, a double press will be used to
           open the shift view. Defaults to `False`.
+
+        * `disable_in_other_views` (`bool`, optional): whether to prevent this
+          view from being activated if another view is active. This should be
+          used if its trigger is also a control in another view. Defaults to
+          `False`.
         """
         self.trigger = trigger
         self.view = view
         self.ignore_single_press = ignore_single_press
-        self.sustained = False
+        self.disable_in_other_views = disable_in_other_views
         """Whether the view is active due to a double press"""
 
 
@@ -92,6 +98,14 @@ class ShiftMatcher(IControlMatcher):
     def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
         # Check to see if we can trigger a view
         for view in self.__views:
+            # Skip this view if required
+            if (
+                self.__active_view is not None
+                and self.__active_view is not view
+                and view.disable_in_other_views
+            ):
+                print("skip view", view)
+                continue
             if (control := view.trigger.match(event)) is not None:
                 # If it's a lift, match the event
                 # but only deactivate a view if it's the right view
@@ -114,6 +128,10 @@ class ShiftMatcher(IControlMatcher):
                 # If it's a double press, trigger the sustained menu
                 if control.double:
                     self.__sustained = True
+                else:
+                    # If this menu requires a double press, don't use it
+                    if view.ignore_single_press:
+                        return control
                 # Either way open the menu
                 self.__active_view = view
                 view.trigger.color = ENABLED
@@ -124,9 +142,9 @@ class ShiftMatcher(IControlMatcher):
         if self.__active_view is None:
             print("process main")
             return self.__main.matchEvent(event)
-
-        print("process view")
-        return self.__active_view.view.matchEvent(event)
+        else:
+            print("process view")
+            return self.__active_view.view.matchEvent(event)
 
     def getControls(self) -> list[ControlSurface]:
         controls = list(self.__main.getControls())
