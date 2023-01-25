@@ -14,7 +14,13 @@ from typing import TYPE_CHECKING, Optional
 from control_surfaces.event_patterns import ForwardedPattern,  NotePattern
 from common.types import Color
 from control_surfaces.value_strategies import NoteStrategy, ForwardedStrategy
-from control_surfaces import ControlSurface, DrumPad, MuteButton, SoloButton
+from control_surfaces import (
+    ControlSurface,
+    DrumPad,
+    MuteButton,
+    SoloButton,
+    ActivitySwitcher,
+)
 from .. import ColorInControlSurface
 from ...consts import DRUM_ROWS, DRUM_COLS
 from control_surfaces.matchers import (
@@ -100,10 +106,12 @@ if not TYPE_CHECKING:
     LkDrumPad = createLkDrumPadBase(DrumPad)
     LkDrumPadMute = createLkDrumPadBase(MuteButton)
     LkDrumPadSolo = createLkDrumPadBase(SoloButton)
+    LkDrumPadActivity = createLkDrumPadBase(ActivitySwitcher)
 else:
     LkDrumPad = ILkDrumPad
     LkDrumPadMute = ILkDrumPad
     LkDrumPadSolo = ILkDrumPad
+    LkDrumPadActivity = ILkDrumPad
 
 
 class LkDrumPadMatcher(BasicControlMatcher):
