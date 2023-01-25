@@ -11,6 +11,7 @@ more details.
 """
 import channels
 import mixer
+import ui
 
 from common.extension_manager import ExtensionManager
 from common import getContext
@@ -74,7 +75,13 @@ def triggerActivity(activity: SafeIndex):
     ### Args:
     * `activity` (`SafeIndex`): activity to open
     """
-    print("Would trigger", activity)
+    if isinstance(activity, int):
+        ui.showWindow(activity)
+    else:
+        if len(activity) == 1:
+            channels.focusEditor(activity[0])
+        else:
+            print("Would select effects")
 
 
 class ActivitySwitcher(SpecialPlugin):
@@ -102,6 +109,7 @@ class ActivitySwitcher(SpecialPlugin):
         _,
         c_index: int,
     ) -> bool:
+        print(control.value)
         try:
             triggerActivity(getContext().activity.getHistoryActivity(c_index))
         except IndexError:
