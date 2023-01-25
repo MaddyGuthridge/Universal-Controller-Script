@@ -10,11 +10,9 @@ more details.
 __all__ = [
     'StopSoloMuteButton',
     'getMk3SmallMuteControls',
-    'getMk3MiniMuteControls',
 ]
 
 from .stop_solo_mute import (
     StopSoloMuteButton,
     getMk3SmallMuteControls,
-    getMk3MiniMuteControls,
 )

@@ -22,6 +22,7 @@ from ..drum_pad import (
     LkMk3DrumPad,
     LkMk3DrumPadSolo,
     LkMk3DrumPadMute,
+    # LkDrumPadActivity,
 )
 
 
@@ -51,21 +52,6 @@ def getMk3SmallMuteControls() -> ShiftMatcher:
     """
     Returns a control matcher used to get mappings for the drum pads and
     stop/solo/mute button on smaller launchkey mk3 models (25, 37).
-    """
-    mutes = ShiftView(
-        StopSoloMuteButton(),
-        LkDrumPadMatcher(LkMk3DrumPadSolo, LkMk3DrumPadMute),
-    )
-    return ShiftMatcher(
-        LkDrumPadMatcher(LkMk3DrumPad),
-        [mutes],
-    )
-
-
-def getMk3MiniMuteControls() -> ShiftMatcher:
-    """
-    Returns a control matcher used to get mappings for the drum pads and
-    stop/solo/mute button on LaunchKey mk3 Mini
     """
     mutes = ShiftView(
         StopSoloMuteButton(),

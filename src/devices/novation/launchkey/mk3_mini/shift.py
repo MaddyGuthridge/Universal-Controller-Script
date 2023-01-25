@@ -31,12 +31,17 @@ from devices.novation.launchkey.incontrol.controls import (
     Mk3DirectionRight,
     MiniMk3DirectionUp,
     MiniMk3DirectionDown,
-    getMk3MiniMuteControls,
+    StopSoloMuteButton,
+    LkDrumPadMatcher,
+    LkMk3DrumPadSolo,
+    LkMk3DrumPadMute,
+    LkDrumPadActivity,
+    LkMk3PlayButton,
 )
 
 
 def getShiftControls() -> ShiftMatcher:
-    shift = NullControl(
+    shift_button = NullControl(
         ForwardedPattern(2, BasicPattern(0xB0, 0x6C, ...)),
         ForwardedStrategy(ButtonData2Strategy()),
     )
@@ -45,7 +50,6 @@ def getShiftControls() -> ShiftMatcher:
     main_view = BasicControlMatcher()
     main_view.addControl(LkMk3RecordButton())
     main_view.addControl(LkMk3ControlSwitchButton())
-    main_view.addSubMatcher(getMk3MiniMuteControls())
 
     # Shifted events
     shift_view = BasicControlMatcher()
@@ -60,7 +64,18 @@ def getShiftControls() -> ShiftMatcher:
         Mk3DirectionRight(),
     ])
 
+    shift = ShiftView(shift_button, shift_view)
+
+    mutes = ShiftView(
+        StopSoloMuteButton(),
+        LkDrumPadMatcher(LkMk3DrumPadSolo, LkMk3DrumPadMute),
+    )
+    activity_switchers = ShiftView(
+        LkMk3PlayButton(),
+        LkDrumPadMatcher(LkDrumPadActivity),
+    )
+
     return ShiftMatcher(
         main_view,
-        [ShiftView(shift, shift_view)]
+        [shift, mutes, activity_switchers],
     )

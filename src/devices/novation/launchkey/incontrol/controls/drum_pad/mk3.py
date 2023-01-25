@@ -9,7 +9,12 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from .drum_pad import LkDrumPad, LkDrumPadMute, LkDrumPadSolo
+from .drum_pad import (
+    LkDrumPad,
+    LkDrumPadMute,
+    LkDrumPadSolo,
+    LkDrumPadActivity,
+)
 from ...colors.mk3 import COLORS
 
 DRUM_PADS = [
@@ -58,4 +63,18 @@ class LkMk3DrumPadSolo(LkDrumPadSolo):
 
     @classmethod
     def create(cls, row: int, col: int) -> 'LkMk3DrumPadSolo':
+        return cls(row, col)
+
+
+class LkMk3DrumPadActivity(LkDrumPadActivity):
+    def __init__(self, row: int, col: int) -> None:
+        super().__init__(
+            (row, col),
+            0x0,
+            DRUM_PADS[row][col],
+            COLORS,
+        )
+
+    @classmethod
+    def create(cls, row: int, col: int) -> 'LkMk3DrumPadActivity':
         return cls(row, col)
