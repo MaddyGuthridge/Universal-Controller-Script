@@ -66,7 +66,7 @@ def getShiftControls() -> ShiftMatcher:
         Mk3DirectionRight(),
     ])
 
-    shift = ShiftView(shift_button, shift_view)
+    shift = ShiftView(shift_button, shift_view, allow_fallback_match=False)
 
     mutes = ShiftView(
         StopSoloMuteButton(),
