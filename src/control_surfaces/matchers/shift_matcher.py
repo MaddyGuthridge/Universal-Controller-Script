@@ -99,11 +99,13 @@ class ShiftMatcher(IControlMatcher):
                     if self.__active_view is view:
                         # Only deactivate if we're not sustaining it
                         if self.__sustained:
+                            print("sustain")
                             self.__sustained = False
                             # Keep the value enabled
                             view.trigger.value = 1.0
                             view.trigger.color = ENABLED
                         else:
+                            print("deactivate")
                             self.__changed = True
                             self.__active_view = None
                             view.trigger.color = DISABLED
@@ -116,11 +118,14 @@ class ShiftMatcher(IControlMatcher):
                 self.__active_view = view
                 view.trigger.color = ENABLED
                 self.__changed = True
+                print("activate")
                 return control
 
         if self.__active_view is None:
+            print("process main")
             return self.__main.matchEvent(event)
 
+        print("process view")
         return self.__active_view.view.matchEvent(event)
 
     def getControls(self) -> list[ControlSurface]:
