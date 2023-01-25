@@ -101,6 +101,7 @@ class ActivityState:
         """
         Called frequently when we need to update the current window
         """
+        from common.context_manager import getContext
         # HACK: Fix FL Studio bugs
         reset_generator_active()
         self._changed = False
@@ -145,6 +146,11 @@ class ActivityState:
                     self._plug_active = True
             else:
                 self._forcePlugUpdate()
+            # If there are too many things in the history
+            hist_len = \
+                getContext().settings.get("advanced.activity_history_length")
+            if len(self._history) >= hist_len:
+                self._history = self._history[:hist_len]
 
     def hasChanged(self) -> bool:
         """
