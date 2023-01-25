@@ -20,14 +20,45 @@ ENABLED = Color.fromGrayscale(1.0)
 DISABLED = Color.fromGrayscale(0.3, False)
 
 
+class ShiftView:
+    """
+    Represents a view within the shift matcher
+    """
+    def __init__(
+        self,
+        trigger: ControlSurface,
+        view: IControlMatcher,
+        ignore_single_press: bool = False,
+    ) -> None:
+        """
+        Create a ShiftView for use within a ShiftMatcher
+
+        ### Args:
+        * `trigger` (`ControlSurface`): control to use when triggering the
+          shift view
+
+        * `view` (`IControlMatcher`): the view to trigger when the shift button
+          is active
+
+        * `ignore_single_press` (`bool`, optional): whether to ignore single
+          press triggers. If this is `True`, a double press will be used to
+          open the shift view. Defaults to `False`.
+        """
+        self.trigger = trigger
+        self.view = view
+        self.ignore_single_press = ignore_single_press
+        self.sustained = False
+        """Whether the view is active due to a double press"""
+
+
 class ShiftMatcher(IControlMatcher):
     """
-    Allows a control to be designated as a "shift" button, so that pressing
-    it switches between two sub control matchers.
+    Allows controls to be designated as a "shift" button, so that pressing
+    them switches between various sub control matchers.
 
-    Note that this button is still matched normally, so its events can still be
-    used. If no action should be taken when pressing the button, it should be
-    registered as a NullEvent.
+    Note that these buttons are still matched normally, so their events can
+    still be handled by plugins. If no action should be taken when pressing a
+    button, it should be registered as a NullEvent.
 
     In order to modify the LED of the shift button, ControlSurfaces should
     determine whether the button is pressed using the onValueChange callback.
@@ -35,85 +66,83 @@ class ShiftMatcher(IControlMatcher):
     """
     def __init__(
         self,
-        shift: ControlSurface,
-        disabled: IControlMatcher,
-        enabled: IControlMatcher,
+        main_view: IControlMatcher,
+        views: list[ShiftView],
     ) -> None:
         """
         Create a shift control matcher
 
         ### Args:
-        * `shift` (`ControlSurface`): control surface to control whether the
-          shift layer should be active.
+        * `main_view` (`IControlMatcher`): layer to use when no shift menus are
+          active
 
-        * `disabled` (`IControlMatcher`): layer to use when shift menu is
-          disabled
-
-        * `enabled` (`IControlMatcher`): layer to used when shift menu is
-          enabled
+        * `views` (`list[ShiftView]`): list of views to control with this
+          matcher
         """
-        # Shift button
-        self.__shift = shift
-        # Sub-matchers
-        self.__disabled = disabled
-        self.__enabled = enabled
-        # Whether we're currently in the shift menu
-        self.__shifted = False
+        self.__main = main_view
+        self.__views = views
+        self.__active_view: Optional[ShiftView] = None
+
         # Whether the previous press was a double press
-        self.__double = False
+        self.__sustained = False
         # Whether we need to do a thorough tick
         self.__changed = True
         super().__init__()
 
     def matchEvent(self, event: FlMidiMsg) -> Optional[ControlEvent]:
-        # If it's the shift button
-        if (control_event := self.__shift.match(event)) is not None:
-            # If we're pressing the shift button
-            if control_event.value:
-                # Update double press
-                self.__double = control_event.double
-                self.__shifted = True
+        # Check to see if we can trigger a view
+        for view in self.__views:
+            if (control := view.trigger.match(event)) is not None:
+                # If it's a lift, match the event
+                # but only deactivate a view if it's the right view
+                if control.value == 0:
+                    if self.__active_view is view:
+                        # Only deactivate if we're not sustaining it
+                        if self.__sustained:
+                            self.__sustained = False
+                            # Keep the value enabled
+                            view.trigger.value = 1.0
+                            view.trigger.color = ENABLED
+                        else:
+                            self.__changed = True
+                            self.__active_view = None
+                            view.trigger.color = DISABLED
+                    return control
+
+                # If it's a double press, trigger the sustained menu
+                if control.double:
+                    self.__sustained = True
+                # Either way open the menu
+                self.__active_view = view
+                view.trigger.color = ENABLED
                 self.__changed = True
-                self.__shift.color = ENABLED
-            else:
-                # Only disable if it wasn't a double press
-                if not self.__double:
-                    self.__shifted = False
-                    self.__changed = True
-                    self.__shift.color = DISABLED
-                # If it was a double press, set the value such that the control
-                # is enabled (since the shift button is enabled)
-                # NOTE: This may cause flickering since it is set to 0.0
-                # earlier - if this is an issue some major refactoring might
-                # need to be done to determine how control surface update
-                # callbacks are called when that control is matched.
-                else:
-                    self.__shift.value = 1.0
-            return control_event
-        # Otherwise delegate to the required sub-matcher
-        if self.__shifted:
-            return self.__enabled.matchEvent(event)
-        else:
-            return self.__disabled.matchEvent(event)
+                return control
+
+        if self.__active_view is None:
+            return self.__main.matchEvent(event)
+
+        return self.__active_view.view.matchEvent(event)
 
     def getControls(self) -> list[ControlSurface]:
-        return (
-            [self.__shift]
-            + list(self.__enabled.getControls())
-            + list(self.__disabled.getControls())
-        )
+        controls = list(self.__main.getControls())
+        for view in self.__views:
+            controls.append(view.trigger)
+            controls.extend(view.view.getControls())
+        return controls
 
     def tick(self, thorough: bool) -> None:
         if self.__changed:
             thorough = True
             self.__changed = False
-        # Colorize the shift button
-        self.__shift.color = ENABLED if self.__shifted else DISABLED
-        # Tick the shift button
-        self.__shift.doTick(thorough)
+        # Colorize and tick each view trigger
+        for view in self.__views:
+            view.trigger.color = \
+                ENABLED if self.__active_view is view else DISABLED
+            view.trigger.doTick(thorough)
+
         # Tick whichever sub-matcher is active (but don't tick the non-active
         # one or we might cause clashing colors)
-        if self.__shifted:
-            self.__enabled.tick(thorough)
+        if self.__active_view is None:
+            self.__main.tick(thorough)
         else:
-            self.__disabled.tick(thorough)
+            self.__active_view.view.tick(thorough)
