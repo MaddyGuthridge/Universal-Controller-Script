@@ -21,6 +21,7 @@ from common.plug_indexes import (
     GeneratorIndex,
     EffectIndex,
     WindowIndex,
+    SafeIndex,
 )
 from common.util.api_fixes import (
     getFocusedPluginIndex,
@@ -53,6 +54,7 @@ class ActivityState:
         self._plug_active = True if self._plugin is not None else False
         self._changed = False
         self._plug_unsafe = False
+        self._history: list[SafeIndex] = []
 
     def inspect(self):
         """
@@ -82,7 +84,9 @@ class ActivityState:
                 self._plugin_name = ""
                 self._generator = (-1,)
             return
-        self._plugin = plugin
+        if self._plugin != plugin:
+            self._plugin = plugin
+            self._history.append(plugin)
         try:
             self._plugin_name = plugins.getPluginName(*plugin)
         except TypeError:
@@ -112,7 +116,8 @@ class ActivityState:
             if (window := getFocusedWindowIndex()) is not None:
                 if window != self._window:
                     self._changed = True
-                self._window = window
+                    self._window = window
+                    self._history.insert(0, window)
                 if not self._split:
                     if self._plug_active:
                         self._changed = True
@@ -122,7 +127,8 @@ class ActivityState:
                 self._plug_unsafe = False
                 if plugin != self._plugin:
                     self._changed = True
-                self._plugin = plugin
+                    self._plugin = plugin
+                    self._history.insert(0, plugin)
                 try:
                     self._plugin_name = plugins.getPluginName(*plugin)
                 except TypeError:
