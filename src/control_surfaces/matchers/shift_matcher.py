@@ -31,6 +31,7 @@ class ShiftView:
         view: IControlMatcher,
         ignore_single_press: bool = False,
         disable_in_other_views: bool = False,
+        allow_fallback_match: bool = True,
     ) -> None:
         """
         Create a ShiftView for use within a ShiftMatcher
@@ -50,12 +51,16 @@ class ShiftView:
           view from being activated if another view is active. This should be
           used if its trigger is also a control in another view. Defaults to
           `False`.
+
+        * `allow_fallback_match` (`bool`, optional): whether to allow events to
+          match with the main view if they don't match with this view. Defaults
+          to `True`.
         """
         self.trigger = trigger
         self.view = view
         self.ignore_single_press = ignore_single_press
         self.disable_in_other_views = disable_in_other_views
-        """Whether the view is active due to a double press"""
+        self.allow_fallback_match = allow_fallback_match
 
 
 class ShiftMatcher(IControlMatcher):
@@ -141,10 +146,14 @@ class ShiftMatcher(IControlMatcher):
                 self.__changed = True
                 return control
 
-        if self.__active_view is None:
-            return self.__main.matchEvent(event)
+        if self.__active_view is not None:
+            if (m := self.__active_view.view.matchEvent(event)) is not None:
+                return m
+            else:
+                if view.allow_fallback_match:
+                    return self.__main.matchEvent(event)
         else:
-            return self.__active_view.view.matchEvent(event)
+            return self.__main.matchEvent(event)
 
     def getControls(self) -> list[ControlSurface]:
         controls = list(self.__main.getControls())
