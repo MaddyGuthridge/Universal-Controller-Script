@@ -39,7 +39,7 @@ def getActivityColor(activity: SafeIndex) -> Color:
     * `Color`: color
     """
     if isinstance(activity, int):
-        return Color.fromGrayscale(0.3)
+        return Color.ENABLED
     else:
         if len(activity) == 1:
             # Generator -> channel color
