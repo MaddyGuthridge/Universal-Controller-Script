@@ -39,10 +39,6 @@ from plugs import SpecialPlugin
 from plugs.event_filters import filterButtonLift
 
 
-ENABLED = Color.fromGrayscale(0.7)
-DISABLED = Color.fromGrayscale(0.3, False)
-
-
 class Macro(SpecialPlugin):
     """
     The macro plugin handles macro commands.
@@ -54,11 +50,13 @@ class Macro(SpecialPlugin):
         # Macro buttons
         shadow.bindMatch(UndoButton, self.eUndo, self.tUndo)
         shadow.bindMatch(RedoButton, self.eRedo, self.tRedo)
-        shadow.bindMatch(UndoRedoButton, self.eUndoRedo).colorize(ENABLED)
+        shadow.bindMatch(UndoRedoButton, self.eUndoRedo)\
+            .colorize(Color.ENABLED)
         shadow.bindMatch(SaveButton, self.eSave, self.tSave)
-        shadow.bindMatch(QuantizeButton, self.eQuantize).colorize(ENABLED)
+        shadow.bindMatch(QuantizeButton, self.eQuantize)\
+            .colorize(Color.ENABLED)
         shadow.bindMatch(CaptureMidiButton, self.eCaptureMidi)\
-            .colorize(ENABLED)
+            .colorize(Color.ENABLED)
         shadow.bindMatches(
             SwitchActiveButton,
             self.eSwitchActive,
@@ -92,9 +90,9 @@ class Macro(SpecialPlugin):
         pos, num = getUndoPosition()
         if pos == num - 1:
             # Nothing to undo
-            control.color = DISABLED
+            control.color = Color.DISABLED
         else:
-            control.color = ENABLED
+            control.color = Color.ENABLED
 
     @filterButtonLift()
     def eRedo(
@@ -109,9 +107,9 @@ class Macro(SpecialPlugin):
         pos = general.getUndoHistoryLast()
         if pos == 0:
             # Nothing to redo
-            control.color = DISABLED
+            control.color = Color.DISABLED
         else:
-            control.color = ENABLED
+            control.color = Color.ENABLED
 
     @filterButtonLift()
     def eUndoRedo(
@@ -140,9 +138,9 @@ class Macro(SpecialPlugin):
         *args,
     ):
         if general.getChangedFlag():
-            control.color = ENABLED
+            control.color = Color.ENABLED
         else:
-            control.color = DISABLED
+            control.color = Color.DISABLED
 
     @filterButtonLift()
     def eQuantize(
@@ -177,16 +175,16 @@ class Macro(SpecialPlugin):
         c = control.getControl()
         if isinstance(c, SwitchActivePluginButton):
             if getContext().activity.isPlugActive():
-                control.color = ENABLED
+                control.color = Color.ENABLED
             else:
-                control.color = DISABLED
+                control.color = Color.DISABLED
         elif isinstance(c, SwitchActiveWindowButton):
             if not getContext().activity.isPlugActive():
-                control.color = ENABLED
+                control.color = Color.ENABLED
             else:
-                control.color = DISABLED
+                control.color = Color.DISABLED
         elif isinstance(c, SwitchActiveToggleButton):
-            control.color = ENABLED
+            control.color = Color.ENABLED
         return True
 
     @filterButtonLift()
@@ -206,9 +204,9 @@ class Macro(SpecialPlugin):
         *args,
     ):
         if getContext().activity.isUpdating():
-            control.color = DISABLED
+            control.color = Color.DISABLED
         else:
-            control.color = ENABLED
+            control.color = Color.ENABLED
 
     @filterButtonLift()
     def eCaptureMidi(
