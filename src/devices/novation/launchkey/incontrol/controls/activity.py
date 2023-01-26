@@ -44,10 +44,4 @@ class LkDeviceSelect(NullControl):
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xB0, 0x33, ...)),
             ForwardedStrategy(Data2Strategy()),
-            color_manager=ColorInControlSurface(
-                0,
-                0x33,
-                COLORS,
-                event_num=0xB,
-            )
         )

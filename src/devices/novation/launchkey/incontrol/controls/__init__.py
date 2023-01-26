@@ -59,7 +59,6 @@ __all__ = [
     'LkMk3DrumPadMute',
     'LkMk3DrumPadSolo',
     'LkMk3DrumPadActivity',
-    'getMk3SmallMuteControls',
     'LkPauseActive',
     'LkDeviceSelect',
 ]
@@ -125,6 +124,5 @@ from .navigation import (
 )
 from .mutes import (
     StopSoloMuteButton,
-    getMk3SmallMuteControls,
 )
 from .activity import LkPauseActive, LkDeviceSelect
