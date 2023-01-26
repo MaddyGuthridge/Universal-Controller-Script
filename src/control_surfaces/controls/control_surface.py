@@ -318,6 +318,16 @@ class ControlSurface:
         return self.__got_update
 
     @property
+    def last_pressed(self) -> float:
+        """
+        Returns the last time that the control was pressed
+
+        ### Returns:
+        * `float`: unix time of last tweak
+        """
+        return self.__last_press_time
+
+    @property
     def last_tweaked(self) -> float:
         """
         Returns the last time that the control was tweaked
@@ -326,6 +336,16 @@ class ControlSurface:
         * `float`: unix time of last tweak
         """
         return self.__last_tweak_time
+
+    @property
+    def press_length(self) -> float:
+        """
+        How long the control has been pressed for, or 0 if the control isn't
+        currently pressed.
+        """
+        if self.value:
+            return time() - self.__last_press_time
+        return 0.0
 
     ###########################################################################
     # Events
