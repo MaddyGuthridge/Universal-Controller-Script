@@ -38,8 +38,6 @@ from devices.novation.launchkey.incontrol.controls import (
     LkMk3RecordButton,
     LkKnobSet,
     LkMk3FaderSet,
-    LkMk3DrumPad,
-    LkDrumPadMatcher,
     LkMk3ControlSwitchButton,
     LkQuantizeButton,
     LkMk3MetronomeButton,
@@ -53,6 +51,7 @@ from devices.novation.launchkey.incontrol.controls import (
     Mk3DirectionRight,
     LkPauseActive,
 )
+from .shift import getActivitySwitcherLarge
 
 DEVICE_ID_49 = "Novation.Launchkey.Mk3.49"
 DEVICE_ID_61 = "Novation.Launchkey.Mk3.61"
@@ -74,7 +73,7 @@ class LaunchkeyMk3_49_61(Device):
         # Notes
         matcher.addSubMatcher(NoteMatcher())
 
-        matcher.addSubMatcher(LkDrumPadMatcher(LkMk3DrumPad))
+        matcher.addSubMatcher(getActivitySwitcherLarge())
         matcher.addSubMatcher(LkKnobSet())
         matcher.addSubMatcher(LkMk3FaderSet())
         matcher.addControl(LkMk3StopButton())

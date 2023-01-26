@@ -61,6 +61,7 @@ __all__ = [
     'LkMk3DrumPadActivity',
     'getMk3SmallMuteControls',
     'LkPauseActive',
+    'LkDeviceSelect',
 ]
 
 from .incontrol_surface import ColorInControlSurface, GrayscaleInControlSurface
@@ -126,4 +127,4 @@ from .mutes import (
     StopSoloMuteButton,
     getMk3SmallMuteControls,
 )
-from .pause_active import LkPauseActive
+from .activity import LkPauseActive, LkDeviceSelect
