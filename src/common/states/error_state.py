@@ -139,7 +139,7 @@ class ErrorState(IScriptState):
                 verbosity.CRITICAL,
             )
         ui.setHintMsg("[UCS] error: see script output")
-        raise self.__exception
+        # raise self.__exception
 
     def deinitialize(self) -> None:
         pass
