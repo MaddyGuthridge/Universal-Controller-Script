@@ -52,6 +52,7 @@ class ActivityState:
         self._changed = False
         self._plug_unsafe = False
         self._history: list[SafeIndex] = []
+        self._ignore_next_history = False
 
     def __repr__(self) -> str:
         return (
@@ -151,7 +152,10 @@ class ActivityState:
                 self._forcePlugUpdate()
             # Add to history
             if self._changed:
-                self._history.insert(0, self.getActive())
+                if self._ignore_next_history:
+                    self._ignore_next_history = False
+                else:
+                    self._history.insert(0, self.getActive())
             # If there are too many things in the history
             hist_len = \
                 getContext().settings.get("advanced.activity_history_length")
@@ -214,8 +218,8 @@ class ActivityState:
 
     def getHistoryActivity(self, index: int) -> SafeIndex:
         """
-        Returns the activity entry at the given index, where 0 is the most
-        recent (but not current) activity.
+        Returns the activity entry at the given index, where 0 is the current
+        activity.
 
         ### Args:
         * `index` (`int`): index
@@ -223,7 +227,13 @@ class ActivityState:
         ### Returns:
         * `SafeIndex`: activity
         """
-        return self._history[index + 1]
+        return self._history[index]
+
+    def ignoreNextHistory(self):
+        """
+        Don't add the next activity change to the history
+        """
+        self._ignore_next_history
 
     def playPause(self, value: Optional[bool] = None) -> BoolS:
         """
