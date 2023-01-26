@@ -17,9 +17,6 @@ from control_surfaces import ControlEvent, ControlSurface, NullControl
 from ..event_patterns import TruePattern
 from . import IControlMatcher
 
-ENABLED = Color.fromGrayscale(1.0)
-DISABLED = Color.fromGrayscale(0.3, False)
-
 
 class ShiftView:
     """
@@ -32,6 +29,7 @@ class ShiftView:
         ignore_single_press: bool = False,
         disable_in_other_views: bool = False,
         allow_fallback_match: bool = True,
+        debug: bool = False,
     ) -> None:
         """
         Create a ShiftView for use within a ShiftMatcher
@@ -55,12 +53,16 @@ class ShiftView:
         * `allow_fallback_match` (`bool`, optional): whether to allow events to
           match with the main view if they don't match with this view. Defaults
           to `True`.
+
+        * `debug` (`bool`, optional): whether to print out debugging
+          information about this view.
         """
         self.trigger = trigger
         self.view = view
         self.ignore_single_press = ignore_single_press
         self.disable_in_other_views = disable_in_other_views
         self.allow_fallback_match = allow_fallback_match
+        self.debug = debug
 
 
 class ShiftMatcher(IControlMatcher):
@@ -122,11 +124,11 @@ class ShiftMatcher(IControlMatcher):
                             self.__sustained = False
                             # Keep the value enabled
                             view.trigger.value = 1.0
-                            view.trigger.color = ENABLED
+                            view.trigger.color = Color.ENABLED
                         else:
                             self.__changed = True
                             self.__active_view = None
-                            view.trigger.color = DISABLED
+                            view.trigger.color = Color.DISABLED
                     return control
 
                 # If the menu is already open, this should be a null event
@@ -142,7 +144,7 @@ class ShiftMatcher(IControlMatcher):
                         return control
                 # Open the menu
                 self.__active_view = view
-                view.trigger.color = ENABLED
+                view.trigger.color = Color.ENABLED
                 self.__changed = True
                 return control
 
@@ -173,8 +175,13 @@ class ShiftMatcher(IControlMatcher):
             # Skip this view if required
             if self.__active_view is not view and view.disable_in_other_views:
                 continue
-            view.trigger.color = \
-                ENABLED if self.__active_view is view else DISABLED
+            # Only color NullControls
+            if isinstance(view.trigger, NullControl):
+                view.trigger.color = (
+                    Color.ENABLED
+                    if self.__active_view is view
+                    else Color.DISABLED
+                )
             view.trigger.doTick(thorough)
 
         # Tick whichever sub-matcher is active (but don't tick the non-active
