@@ -136,6 +136,7 @@ class Color:
     NOTE: colors are stored as separate red, green and blue components
     internally. Calculations for HSV representations are made when required
     """
+    __slots__ = ['__red', '__green', '__blue', '__grayscale', '__enabled']
 
     def __init__(self) -> None:
         """
