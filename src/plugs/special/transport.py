@@ -162,13 +162,13 @@ class Transport(SpecialPlugin):
 
     def tickPlay(self, control: ControlShadow, *args):
         if transport.isPlaying():
-            control.color = getBeatColor(off=Color.GRAY)
+            control.color = getBeatColor(off=Color.DISABLED)
         else:
-            control.color = Color.GRAY
+            control.color = Color.DISABLED
 
     def tickStop(self, control: ControlShadow, *args):
         if transport.isPlaying():
-            control.color = Color.GRAY
+            control.color = Color.DISABLED
         else:
             control.color = Color.FL_STOP
 
@@ -181,18 +181,18 @@ class Transport(SpecialPlugin):
         control.color = (
             Color.FL_RECORD
             if transport.isRecording()
-            else Color.GRAY
+            else Color.DISABLED
         )
 
     def tickMetro(self, control: ControlShadow, *args):
         """Color metronome button"""
         if ui.isMetronomeEnabled():
             if transport.isPlaying():
-                control.color = getBeatColor(Color.GRAY)
+                control.color = getBeatColor(Color.DISABLED)
             else:
                 control.color = Color.WHITE
         else:
-            control.color = Color.GRAY
+            control.color = Color.DISABLED
 
     def tickHint(self, control: ControlShadow, *args):
         """Set hint message"""
@@ -203,14 +203,14 @@ class Transport(SpecialPlugin):
         if self._playback_ff_rw == FAST_FORWARDING:
             control.color = Color.WHITE
         else:
-            control.color = Color.GRAY
+            control.color = Color.DISABLED
 
     def tickRw(self, control: ControlShadow, *args):
         """Rewind"""
         if self._playback_ff_rw == REWINDING:
             control.color = Color.WHITE
         else:
-            control.color = Color.GRAY
+            control.color = Color.DISABLED
 
 
 ExtensionManager.super_special.register(Transport)
