@@ -76,9 +76,11 @@ def triggerActivity(activity: SafeIndex):
     * `activity` (`SafeIndex`): activity to open
     """
     if isinstance(activity, int):
+        getContext().activity.ignoreNextHistory()
         ui.showWindow(activity)
     else:
         if len(activity) == 1:
+            getContext().activity.ignoreNextHistory()
             channels.focusEditor(activity[0])
         else:
             print("Would select effects")
