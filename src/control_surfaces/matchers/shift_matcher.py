@@ -171,11 +171,7 @@ class ShiftMatcher(IControlMatcher):
         # Colorize and tick each view trigger
         for view in self.__views:
             # Skip this view if required
-            if (
-                self.__active_view is not None
-                and self.__active_view is not view
-                and view.disable_in_other_views
-            ):
+            if self.__active_view is not view and view.disable_in_other_views:
                 continue
             view.trigger.color = \
                 ENABLED if self.__active_view is view else DISABLED
