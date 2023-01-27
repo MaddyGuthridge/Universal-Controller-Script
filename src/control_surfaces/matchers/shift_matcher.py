@@ -64,6 +64,9 @@ class ShiftView:
         self.allow_fallback_match = allow_fallback_match
         self.debug = debug
 
+    def __repr__(self) -> str:
+        return f"ShiftView({self.trigger})"
+
 
 class ShiftMatcher(IControlMatcher):
     """
@@ -125,10 +128,14 @@ class ShiftMatcher(IControlMatcher):
                             # Keep the value enabled
                             view.trigger.value = 1.0
                             view.trigger.color = Color.ENABLED
+                            if view.debug:
+                                print(f"sustain {view}")
                         else:
                             self.__changed = True
                             self.__active_view = None
                             view.trigger.color = Color.DISABLED
+                            if view.debug:
+                                print(f"disable {view}")
                     return control
 
                 # If the menu is already open, this should be a null event
@@ -137,11 +144,18 @@ class ShiftMatcher(IControlMatcher):
 
                 # If it's a double press, trigger the sustained menu
                 if control.double:
+                    if view.debug:
+                        print(f"enable (sustained) {view}")
                     self.__sustained = True
                 else:
                     # If this menu requires a double press, don't use it
                     if view.ignore_single_press:
+                        if view.debug:
+                            print(f"ignored (required double press) {view}")
                         return control
+                    else:
+                        if view.debug:
+                            print(f"enable {view}")
                 # Open the menu
                 self.__active_view = view
                 view.trigger.color = Color.ENABLED
@@ -150,13 +164,18 @@ class ShiftMatcher(IControlMatcher):
 
         if self.__active_view is not None:
             if (m := self.__active_view.view.matchEvent(event)) is not None:
+                if self.__active_view.debug:
+                    print(f"event matched by {view}")
                 return m
             else:
                 if view.allow_fallback_match:
+                    if self.__active_view.debug:
+                        print("event matched by main view (fallback)")
                     return self.__main.matchEvent(event)
                 else:
                     return None
         else:
+            print("event matched by main view (fallback)")
             return self.__main.matchEvent(event)
 
     def getControls(self) -> list[ControlSurface]:
