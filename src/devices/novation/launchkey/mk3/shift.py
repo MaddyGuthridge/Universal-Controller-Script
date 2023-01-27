@@ -9,7 +9,9 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from typing import Callable
 from control_surfaces.matchers import (
+    BasicControlMatcher,
     ShiftMatcher,
     ShiftView,
 )
@@ -22,8 +24,30 @@ from devices.novation.launchkey.incontrol.controls import (
     LkMk3DrumPadSolo,
     LkMk3DrumPadMute,
 )
+from devices.novation.launchkey.incontrol.controls.activity import (
+    LkDeviceSelectExtras,
+)
 
 
+def addNullControl(
+    func: Callable[[], ShiftMatcher],
+) -> Callable[[], BasicControlMatcher]:
+    """
+    Add an extra NullControl to fix some weirdness with the controllers
+
+    Doing this as a decorator, since it may need to be used for the smaller
+    variants too
+    """
+    def wrapper() -> BasicControlMatcher:
+        matcher = BasicControlMatcher()
+        matcher.addSubMatcher(func())
+        matcher.addControl(LkDeviceSelectExtras())
+        return matcher
+
+    return wrapper
+
+
+@addNullControl
 def getActivitySwitcherLarge():
     """
     Get shift menu for activity switcher
