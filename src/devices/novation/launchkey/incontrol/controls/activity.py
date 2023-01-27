@@ -42,6 +42,6 @@ class LkDeviceSelect(NullControl):
     """
     def __init__(self) -> None:
         super().__init__(
-            ForwardedPattern(2, BasicPattern(0xB0, 0x33, ...)),
+            ForwardedPattern(2, BasicPattern(0xBF, 0x33, ...)),
             ForwardedStrategy(Data2Strategy()),
         )
