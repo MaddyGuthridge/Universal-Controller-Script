@@ -233,7 +233,7 @@ class ActivityState:
         """
         Don't add the next activity change to the history
         """
-        self._ignore_next_history
+        self._ignore_next_history = True
 
     def playPause(self, value: Optional[bool] = None) -> BoolS:
         """
