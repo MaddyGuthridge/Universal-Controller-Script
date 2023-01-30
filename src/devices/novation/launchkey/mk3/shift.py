@@ -57,7 +57,7 @@ def getActivitySwitcherLarge():
     activity_switchers = ShiftView(
         LkDeviceSelect(),
         LkDrumPadMatcher(LkMk3DrumPadActivity),
-        debug=True
+        # debug=True
     )
 
     return ShiftMatcher(
