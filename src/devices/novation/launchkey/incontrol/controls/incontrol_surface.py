@@ -74,7 +74,7 @@ class ColorInControlSurface(InControlSurface):
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
         if self.__debug is not None:
-            print(self.__debug)
+            print(self.__debug, new)
         self.setColor(self.__colors[new.closest(list(self.__colors.keys()))])
         self.updateColor()
 
