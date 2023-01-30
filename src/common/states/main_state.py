@@ -125,6 +125,7 @@ class MainState(DeviceState):
             return
 
         else:
+            print(mapping.getControl(), eventToString(event))
             log(
                 "device.event.in",
                 f"Recognized event: {mapping.getControl()}",
