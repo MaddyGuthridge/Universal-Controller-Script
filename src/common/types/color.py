@@ -771,23 +771,38 @@ class Color:
         else:
             return NotImplemented
 
-    RED: 'Color'
-    GREEN: 'Color'
-    BLUE: 'Color'
     WHITE: 'Color'
     GRAY: 'Color'
     BLACK: 'Color'
 
+    RED: 'Color'
+    GREEN: 'Color'
+    BLUE: 'Color'
+
     ENABLED: 'Color'
     DISABLED: 'Color'
+
+    FL_SONG: 'Color'
+    FL_SONG_ALT: 'Color'
+    FL_PATTERN: 'Color'
+    FL_PATTERN_ALT: 'Color'
+    FL_RECORD: 'Color'
+    FL_STOP: 'Color'
 
 
 Color.RED = Color.fromRgb(255, 0, 0)
 Color.GREEN = Color.fromRgb(0, 255, 0)
 Color.BLUE = Color.fromRgb(0, 0, 255)
 Color.WHITE = Color.fromGrayscale(1)
-Color.GRAY = Color.fromGrayscale(0.5)
+Color.GRAY = Color.fromGrayscale(0.5, enabled=False)
 Color.BLACK = Color()
 
 Color.ENABLED = Color.fromGrayscale(0.7)
 Color.DISABLED = Color.fromGrayscale(0.3, enabled=False)
+
+Color.FL_SONG = Color.fromInteger(0x45F147, 0.6, True)
+Color.FL_SONG_ALT = Color.fromInteger(0x00A0F0, 1.0, True)
+Color.FL_PATTERN = Color.fromInteger(0xF78F41, 0.6, True)
+Color.FL_PATTERN_ALT = Color.fromInteger(0xA43A37, 1.0, True)
+Color.FL_RECORD = Color.fromInteger(0xAF0000, 1.0, True)
+Color.FL_STOP = Color.fromInteger(0xB9413E, 1.0, True)

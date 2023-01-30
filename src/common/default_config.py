@@ -110,5 +110,7 @@ CONFIG = {
         # ticking FL Studio takes longer than this, it will be recorded,
         # regardless of whether profiling is enabled.
         "slow_tick_time": 50,
+        # The maximum length of the plugin/window tracking history
+        "activity_history_length": 25,
     },
 }

@@ -48,8 +48,8 @@ from devices.novation.launchkey.incontrol.controls import (
     Mk3DirectionRight,
     Mk3DirectionUpSilenced,
     Mk3DirectionDownSilenced,
-    getMk3SmallMuteControls,
 )
+from .shift import getActivitySwitcherSmall
 
 DEVICE_ID_25 = "Novation.Launchkey.Mk3.25"
 DEVICE_ID_37 = "Novation.Launchkey.Mk3.37"
@@ -70,7 +70,7 @@ class LaunchkeyMk3_25_37(Device):
         # Notes
         matcher.addSubMatcher(NoteMatcher())
 
-        matcher.addSubMatcher(getMk3SmallMuteControls())
+        matcher.addSubMatcher(getActivitySwitcherSmall())
         matcher.addSubMatcher(LkKnobSet())
         matcher.addControl(LkMk3StopButton())
         matcher.addControl(LkMk3PlayButton())
