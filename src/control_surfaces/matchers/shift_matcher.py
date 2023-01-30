@@ -206,6 +206,10 @@ class ShiftMatcher(IControlMatcher):
         # Tick whichever sub-matcher is active (but don't tick the non-active
         # one or we might cause clashing colors)
         if self.__active_view is None:
+            if thorough:
+                print("tick main thorough")
             self.__main.tick(thorough)
         else:
+            if thorough:
+                print("tick active thorough")
             self.__active_view.view.tick(thorough)
