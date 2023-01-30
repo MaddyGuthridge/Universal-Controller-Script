@@ -41,20 +41,21 @@ class ILkDrumPad(ControlSurface):  # pragma: no cover
         coordinate: tuple[int, int],
         channel: int,
         note_num: int,
-        colors: dict[Color, int]
+        colors: dict[Color, int],
+        debug: Optional[str] = None,
     ) -> None:
-        ...
+        raise NotImplementedError("ILkDrumPad")
 
     @classmethod
     def create(cls, row: int, col: int) -> 'ILkDrumPad':
-        raise NotImplementedError()
+        raise NotImplementedError("ILkDrumPad")
 
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
-        raise NotImplementedError()
+        raise NotImplementedError("ILkDrumPad")
 
     def onColorChange(self, *args):
-        pass
+        raise NotImplementedError("ILkDrumPad")
 
 
 def createLkDrumPadBase(
@@ -78,19 +79,25 @@ def createLkDrumPadBase(
         coordinate: tuple[int, int],
         channel: int,
         note_num: int,
-        colors: dict[Color, int]
+        colors: dict[Color, int],
+        debug: Optional[str] = None,
     ) -> None:
         extends.__init__(
             self,
             ForwardedPattern(2, NotePattern(note_num, channel)),
             ForwardedStrategy(NoteStrategy()),
             coordinate,
-            color_manager=ColorInControlSurface(channel, note_num, colors)
+            color_manager=ColorInControlSurface(
+                channel,
+                note_num,
+                colors,
+                debug=debug,
+            )
         )
 
     @classmethod  # type: ignore
     def create(cls, row: int, col: int) -> 'ILkDrumPad':
-        raise NotImplementedError()
+        raise NotImplementedError("Bruh")
 
     return type(
         name,

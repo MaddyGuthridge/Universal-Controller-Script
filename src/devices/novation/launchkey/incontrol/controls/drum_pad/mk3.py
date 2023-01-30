@@ -31,6 +31,7 @@ class LkMk3DrumPad(LkDrumPad):
             0x0,
             DRUM_PADS[row][col],
             COLORS,
+            debug=f"Main[{row}, {col}]",
         )
 
     @classmethod
@@ -73,6 +74,7 @@ class LkMk3DrumPadActivity(LkDrumPadActivity):
             0x0,
             DRUM_PADS[row][col],
             COLORS,
+            debug=f"Activity[{row}, {col}]",
         )
 
     @classmethod

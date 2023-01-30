@@ -9,6 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+from typing import Optional
 from common import profilerDecoration
 from fl_classes import FlMidiMsg
 from common.types import Color
@@ -62,14 +63,18 @@ class ColorInControlSurface(InControlSurface):
         note_num: int,
         colors: dict[Color, int],
         event_num: int = 0x9,
+        debug: Optional[str] = None,
     ) -> None:
         status = (event_num << 4) + channel
         self.__colors = colors
+        self.__debug = debug
         super().__init__(status, note_num)
 
     @profilerDecoration("lk-color-change")
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
+        if self.__debug is not None:
+            print(self.__debug)
         self.setColor(self.__colors[new.closest(list(self.__colors.keys()))])
         self.updateColor()
 
