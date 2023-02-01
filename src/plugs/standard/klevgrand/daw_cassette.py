@@ -20,10 +20,9 @@ from plugs import StandardPlugin
 from plugs.mapping_strategies import SimpleFaders, DrumPadStrategy
 from plugs.event_filters import toEffectIndex as eEffectIndex
 from plugs.tick_filters import toEffectIndex as tEffectIndex
-from plugs import event_filters, tick_filters
 
 
-PLUG_COLOR = Color.fromInteger(0xd9d9c4)
+PLUG_COLOR = Color.fromInteger(0xccccb7)
 
 
 VALS = [0.0, 0.1, 0.2]
@@ -48,7 +47,13 @@ class DawCassette(StandardPlugin):
             ],
             PLUG_COLOR,
         )
-        drums = DrumPadStrategy(3, 2, True, self.triggerDrumPads)
+        drums = DrumPadStrategy(
+            3,
+            2,
+            True,
+            self.triggerDrumPads,
+            self.colorDrumPads,
+        )
 
         self.__active_pads = [0, 0]
 
@@ -61,24 +66,29 @@ class DawCassette(StandardPlugin):
         plug_index: EffectIndex,
         pad: int,
     ) -> bool:
-        param = PARAMS[pad // 3]
-        val = VALS[pad % 3]
+        try:
+            param = PARAMS[pad // 3]
+            val = VALS[pad % 3]
+        except IndexError:
+            return False
         plugins.setParamValue(val, param, *plug_index)
-        return False
+        return True
 
-    @tEffectIndex()
     def colorDrumPads(
         self,
         control: ControlShadow,
-        plug_index: EffectIndex,
+        _,
         pad: int,
     ) -> Color:
         pad_row = pad // 3
         pad_col = pad % 3
-        if pad_col == self.__active_pads[pad_row]:
-            return Color.WHITE
-        else:
-            return PLUG_COLOR
+        try:
+            if pad_col == self.__active_pads[pad_row]:
+                return Color.WHITE
+            else:
+                return PLUG_COLOR
+        except IndexError:
+            return Color.BLACK
 
     @tEffectIndex()
     def tick(self, index: EffectIndex) -> None:
@@ -94,3 +104,10 @@ class DawCassette(StandardPlugin):
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
         return cls(shadow)
+
+    @classmethod
+    def getPlugIds(cls) -> tuple[str, ...]:
+        return ("DAW Cassette",)
+
+
+ExtensionManager.plugins.register(DawCassette)
