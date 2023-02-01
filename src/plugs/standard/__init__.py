@@ -11,15 +11,18 @@ __all__ = [
     'basicPluginBuilder',
     'fallback',
     'fl',
+    'klevgrand',
     'matt_tytel',
     'spitfire',
     'xfer',
 ]
 
 from .basic_faders import basicPluginBuilder
-from . import fallback
-
-from . import fl
-from . import matt_tytel
-from . import spitfire
-from . import xfer
+from . import (
+    fallback,
+    fl,
+    klevgrand,
+    matt_tytel,
+    spitfire,
+    xfer,
+)
