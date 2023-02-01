@@ -20,6 +20,10 @@ integration between hardware controllers and software.
 
 The following devices have full support with the script.
 
+### Akai
+
+* MPK Mini Mk3
+
 ### Korg
 
 * NanoKontrol

@@ -17,12 +17,17 @@ Continuing from the primary setup instructions.
   pads to mute and solo tracks on the mixer, channel rack, and playlist.
 
 * Holding the shift button enabled alternate controls:
-    * Right-facing arrow and stop/solo/mute are up and down
 
-    * Arp and fixed chord are left and right
+  * Right-facing arrow and stop/solo/mute are up and down
 
-    * Record is capture MIDI
+  * Arp and fixed chord are left and right
+
+  * Record is capture MIDI
+
+* Double pressing the play button opens a menu that allows the drum pads to
+  switch between recent activities.
 
 ## Who to contact
+
 This device is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
 Discord: ***HDSQ#2154***.
