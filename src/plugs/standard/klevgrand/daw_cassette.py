@@ -10,7 +10,6 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 import plugins
-from typing import Any
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import EffectIndex
