@@ -13,6 +13,9 @@ Continuing from the primary setup instructions.
 * In FPC, the banks of drums are the wrong way around. There sadly isn't much
   I can do about this.
 
+* Currently, there is no distinction between notes, CCs and Program Changes on 
+  the drum pads. Let me know if you want me to implement something for this.
+
 ## Who to contact
 
 This device is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
