@@ -22,6 +22,7 @@ from common.util.api_fixes import (
     getSelectedMixerTracks,
 )
 from common.util.snap import snap
+from common.util.misc import clamp
 from control_surfaces import consts
 from control_surfaces import ControlShadowEvent
 from control_surfaces import (
@@ -75,7 +76,7 @@ def unsnapFaders(value: float, control: ControlSurface) -> float:
     if isinstance(control, Encoder):
         return value
     else:
-        return value / 0.8
+        return clamp(value / 0.8, 0, 1)
 
 
 def snapKnobs(value: float) -> float:
