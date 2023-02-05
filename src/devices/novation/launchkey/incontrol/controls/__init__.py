@@ -59,6 +59,7 @@ __all__ = [
     'LkMk3DrumPadMute',
     'LkMk3DrumPadSolo',
     'LkMk3DrumPadActivity',
+    'LkMk3MiniDrumPadActivity',
     'LkPauseActive',
     'LkDeviceSelect',
 ]
@@ -86,6 +87,7 @@ from .drum_pad import (
     LkMk3DrumPadMute,
     LkMk3DrumPadSolo,
     LkMk3DrumPadActivity,
+    LkMk3MiniDrumPadActivity,
 )
 from .faders import (
     LkMk2Fader,

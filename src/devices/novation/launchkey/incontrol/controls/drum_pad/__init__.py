@@ -18,6 +18,7 @@ __all__ = [
     'LkMk3DrumPadMute',
     'LkMk3DrumPadSolo',
     'LkMk3DrumPadActivity',
+    'LkMk3MiniDrumPadActivity',
 ]
 
 from .drum_pad import LkDrumPad, LkDrumPadMatcher
@@ -27,4 +28,5 @@ from .mk3 import (
     LkMk3DrumPadMute,
     LkMk3DrumPadSolo,
     LkMk3DrumPadActivity,
+    LkMk3MiniDrumPadActivity,
 )
