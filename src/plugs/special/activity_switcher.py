@@ -43,7 +43,11 @@ def getActivityColor(activity: SafeIndex) -> Color:
     else:
         if len(activity) == 1:
             # Generator -> channel color
-            return Color.fromInteger(channels.getChannelColor(*activity))
+            try:
+                return Color.fromInteger(channels.getChannelColor(*activity))
+            except TypeError:
+                # Prevent issues if we deleted stuff
+                return Color.BLACK
         else:
             # Effect -> track color
             return Color.fromInteger(mixer.getTrackColor(activity[0]))
@@ -63,7 +67,11 @@ def getActivityName(activity: SafeIndex) -> str:
         return WINDOW_NAMES[activity]
     else:
         if len(activity) == 1:
-            return channels.getChannelName(*activity)
+            try:
+                return channels.getChannelName(*activity)
+            except TypeError:
+                # Prevent issues if we deleted stuff
+                return ""
         else:
             return mixer.getTrackName(activity[0])
 
