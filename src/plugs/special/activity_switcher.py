@@ -3,6 +3,11 @@ plugs > special > activity_switcher
 
 Contains the definition for the activity switcher plugin
 
+## Limitations
+
+Currently doesn't handle cases where plugins have been rearranged, which may
+lead to confusing behavior.
+
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
 
@@ -12,6 +17,7 @@ more details.
 import channels
 import mixer
 import ui
+import plugins
 
 from common.extension_manager import ExtensionManager
 from common import getContext
@@ -50,7 +56,10 @@ def getActivityColor(activity: SafeIndex) -> Color:
                 return Color.BLACK
         else:
             # Effect -> track color
-            return Color.fromInteger(mixer.getTrackColor(activity[0]))
+            try:
+                return Color.fromInteger(mixer.getTrackColor(activity[0]))
+            except TypeError:
+                return Color.BLACK
 
 
 def getActivityName(activity: SafeIndex) -> str:
@@ -73,7 +82,15 @@ def getActivityName(activity: SafeIndex) -> str:
                 # Prevent issues if we deleted stuff
                 return ""
         else:
-            return mixer.getTrackName(activity[0])
+            try:
+                return (
+                    # Mypy really should support tuple unpacking properly
+                    f"{mixer.getTrackName(activity[0])}: "  # type: ignore
+                    f"{plugins.getPluginName(*activity, True)}"
+                )
+            except TypeError:
+                # Prevent issues if we deleted stuff
+                return ""
 
 
 def triggerActivity(activity: SafeIndex):
