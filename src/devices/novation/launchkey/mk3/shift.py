@@ -57,7 +57,7 @@ def getActivitySwitcherLarge():
     activity_switchers = ShiftView(
         LkDeviceSelect(),
         LkDrumPadMatcher(LkMk3DrumPadActivity),
-        # debug=True
+        latch=True,
     )
 
     return ShiftMatcher(
@@ -75,11 +75,13 @@ def getActivitySwitcherSmall():
     activity_switchers = ShiftView(
         LkDeviceSelect(),
         LkDrumPadMatcher(LkMk3DrumPadActivity),
+        latch=True,
     )
 
     mutes = ShiftView(
         StopSoloMuteButton(),
         LkDrumPadMatcher(LkMk3DrumPadSolo, LkMk3DrumPadMute),
+        latch=True,
     )
 
     return ShiftMatcher(

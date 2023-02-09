@@ -72,6 +72,7 @@ def getShiftControls() -> ShiftMatcher:
         StopSoloMuteButton(),
         LkDrumPadMatcher(LkMk3DrumPadSolo, LkMk3DrumPadMute),
         disable_in_other_views=True,
+        latch=True,
     )
     activity_switchers = ShiftView(
         LkMk3PlayButton(),
