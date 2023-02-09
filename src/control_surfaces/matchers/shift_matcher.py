@@ -26,6 +26,8 @@ class ShiftView:
         self,
         trigger: ControlSurface,
         view: IControlMatcher,
+        /,
+        latch: bool = False,
         ignore_single_press: bool = False,
         disable_in_other_views: bool = False,
         allow_fallback_match: bool = True,
@@ -41,9 +43,14 @@ class ShiftView:
         * `view` (`IControlMatcher`): the view to trigger when the shift button
           is active
 
+        * `latch` (`bool`, options): whether to make the view be a toggle
+          rather than a pulse. This is incompatible with the
+          `ignore_single_press` flag. Defaults to `False`.
+
         * `ignore_single_press` (`bool`, optional): whether to ignore single
           press triggers. If this is `True`, a double press will be used to
-          open the shift view. Defaults to `False`.
+          open the shift view. This is incompatible with the `latch` flag.
+          Defaults to `False`.
 
         * `disable_in_other_views` (`bool`, optional): whether to prevent this
           view from being activated if another view is active. This should be
@@ -57,8 +64,13 @@ class ShiftView:
         * `debug` (`bool`, optional): whether to print out debugging
           information about this view.
         """
+        if latch and ignore_single_press:
+            raise ValueError(
+                "latch and ignore_single_press parameters are incompatible")
+
         self.trigger = trigger
         self.view = view
+        self.latch = latch
         self.ignore_single_press = ignore_single_press
         self.disable_in_other_views = disable_in_other_views
         self.allow_fallback_match = allow_fallback_match
@@ -117,7 +129,21 @@ class ShiftMatcher(IControlMatcher):
                 and view.disable_in_other_views
             ):
                 continue
+
+            # If it matches the view's trigger
             if (control := view.trigger.match(event)) is not None:
+                # If the view should latch, handle that
+                if view.latch:
+                    if control.value != 0:
+                        if self.__active_view is view:
+                            self.__active_view = None
+                            view.trigger.color = Color.DISABLED
+                        else:
+                            self.__active_view = view
+                            view.trigger.color = Color.ENABLED
+                        self.__changed = True
+                    return control
+
                 # If it's a lift, match the event
                 # but only deactivate a view if it's the right view
                 if control.value == 0:

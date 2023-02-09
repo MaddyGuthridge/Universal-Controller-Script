@@ -67,7 +67,7 @@ def getDrumPads():
     activity = SlDrumPadMatcher(ActivitySwitcher)
     return ShiftMatcher(
         main,
-        [ShiftView(SlActivitySwitchButton(), activity)]
+        [ShiftView(SlActivitySwitchButton(), activity, latch=True)]
     )
 
 
