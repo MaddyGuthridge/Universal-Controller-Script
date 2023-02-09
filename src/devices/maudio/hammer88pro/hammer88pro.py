@@ -50,6 +50,7 @@ from control_surfaces import (
     SoloButton,
     ArmButton,
     SelectButton,
+    ControlSwitchButton,
 )
 from control_surfaces.value_strategies import (
     ForwardedStrategy,
@@ -190,6 +191,11 @@ class Hammer88Pro(Device):
         ))
         matcher.addControl(StandardModWheel())
         matcher.addControl(HammerPitchWheel())
+
+        matcher.addControl(ControlSwitchButton(
+            ForwardedPattern(3, BasicPattern(0xB9, 0x44, ...)),
+            ForwardedStrategy(ButtonData2Strategy()),
+        ))
 
         super().__init__(matcher)
 
