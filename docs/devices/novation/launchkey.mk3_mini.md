@@ -8,6 +8,10 @@ Continuing from the primary setup instructions.
 1. Assign the second MIDI port for your device to the Universal Event
    Forwarder.
 
+### Example configuration
+
+![A screenshot of FL Studio's MIDI Settings window, showing a correct configuration](./images/launchkey_mk3_mini_setup.png)
+
 ## Device Details
 
 * The right-facing arrow button next to the drum pads is mapped to be a
