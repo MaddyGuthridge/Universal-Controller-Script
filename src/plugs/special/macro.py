@@ -217,7 +217,7 @@ class Macro(SpecialPlugin):
         # Find out how much length to write
         time = \
             getContext().settings.get("plugins.general.score_log_dump_length")
-        general.dumpScoreLog(time, 0)
+        general.dumpScoreLog(time, False)
         return True
 
 
