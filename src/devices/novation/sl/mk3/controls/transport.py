@@ -162,7 +162,7 @@ class SlControlSwitchButton(ControlSwitchButton):
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x5A, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
-            color_manager=SlColorSurface(0x41)
+            color_manager=SlColorSurface(0x41, contrast_fix=False)
         )
 
 
@@ -171,5 +171,5 @@ class SlActivitySwitchButton(NullControl):
         super().__init__(
             ForwardedPattern(2, BasicPattern(0xBF, 0x59, ...)),
             ForwardedStrategy(ButtonData2Strategy()),
-            color_manager=SlColorSurface(0x40)
+            color_manager=SlColorSurface(0x40, contrast_fix=False)
         )
