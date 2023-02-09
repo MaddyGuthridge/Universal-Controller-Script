@@ -21,9 +21,15 @@ from control_surfaces import (
     StandardPitchWheel,
     SustainPedal,
     ChannelAfterTouch,
+    ActivitySwitcher,
 )
 from devices import Device
-from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
+from control_surfaces.matchers import (
+    BasicControlMatcher,
+    NoteMatcher,
+    ShiftMatcher,
+    ShiftView,
+)
 from .controls.transport import (
     SlPlayButton,
     SlStopButton,
@@ -38,6 +44,7 @@ from .controls.transport import (
     SlRewindButton,
     SlFastForwardButton,
     SlControlSwitchButton,
+    SlActivitySwitchButton,
 )
 from .controls import (
     SlFaderSet,
@@ -50,6 +57,18 @@ from .controls import (
 )
 
 DEVICE_ID = "Novation.SL.Mk3"
+
+
+def getDrumPads():
+    """
+    Create drum pad definition
+    """
+    main = SlDrumPadMatcher()
+    activity = SlDrumPadMatcher(ActivitySwitcher)
+    return ShiftMatcher(
+        main,
+        [ShiftView(SlActivitySwitchButton(), activity)]
+    )
 
 
 class SlMk3(Device):
@@ -66,7 +85,7 @@ class SlMk3(Device):
         matcher.addSubMatcher(NoteMatcher())
         matcher.addControl(ChannelAfterTouch.fromChannel(...))
 
-        matcher.addSubMatcher(SlDrumPadMatcher())
+        matcher.addSubMatcher(getDrumPads())
         matcher.addSubMatcher(SlEncoderSet())
         matcher.addSubMatcher(SlMuteSet())
         matcher.addSubMatcher(SlToolSelectorSet())
