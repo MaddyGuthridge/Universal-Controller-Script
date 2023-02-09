@@ -33,7 +33,7 @@ class ILkDrumPad(ControlSurface):  # pragma: no cover
     Interface representing the methods used by classes created by the
     createLkDrumPadBase() function
 
-    Note that these function are never called, they only serve to keep mypy
+    Note that these functions are never called, they only serve to keep mypy
     happy
     """
     def __init__(
