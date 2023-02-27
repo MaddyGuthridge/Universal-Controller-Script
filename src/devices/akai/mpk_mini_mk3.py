@@ -121,9 +121,6 @@ class MpkMiniMk3(Device):
                 0x00,
                 0x19,
                 0x00,
-                0x01,
-                0x01,
-                0x08,
             ]
         )
 
