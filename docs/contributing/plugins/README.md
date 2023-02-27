@@ -1,9 +1,9 @@
-
 # Plugins
+
 When discussing plugins in the context of this script, "Plugins" refers not
 to plugins in the VST sense, but extensions the Universal Controller Script
-uses to define how the program should handle events and interact with 
-FL Studio Windows, as well as generator and effects. 
+uses to define how the program should handle events and interact with
+FL Studio Windows, as well as generator and effects.
 
 ## Types of Plugins
 
@@ -29,56 +29,70 @@ basicPluginBuilder(
     # You can add more names after the inner column if multiple plugins use
     # this layout
     ('My plugin name',),
-    # A list of parameter indexes - these will map left to write to the 
+
+    # A list of parameter indexes - these will map left to right to the
     # relevant faders on your device, so in this example tuning will be
     # fader 1, Waveform will be fader 2, Cutoff will be Fader 3, Resonance
     # will be Fader 4 and so on.
     [
-    0,  # Tuning
-    1,  # Waveform
-    2,  # Cutoff
-    4,  # Resonance
-    5,  # Envelope Modulation
-    6,  # Decay
-    7,  # Accent
-    8,  # Volume
+        0,  # Tuning
+        1,  # Waveform
+        2,  # Cutoff
+        4,  # Resonance
+        5,  # Envelope Modulation
+        6,  # Decay
+        7,  # Accent
+        8,  # Volume
     ]
+
     # A color to represent the parameters (this can also be a list, to do so you
-    # would need to list the colour parameters in square brackets with commas between
-    # each parameter - ie ([0x206cc8,0x222222,0x888888,0x206cc8,0x222222])
-    
+    # would need to list the color parameters in square brackets with commas between
+    # each parameter - ie [
+    #     Color.fromInteger(0x206cc8),
+    #     Color.fromInteger(0x222222),
+    #     Color.fromInteger(0x888888),
+    #     Color.fromInteger(0x206cc8),
+    #     Color.fromInteger(0x222222),
+    # ]
     Color.fromInteger(0x206cc8) # this would map all parameters to a single color
-    
 )
 ```
 
 ## Creating a Plugin Binding: The Hard (But More Powerful) Way
+
 Plugins can also be bound manually to a [`DeviceShadow`](device_shadow.md)
 object, which represents the plugin's own private copy of the device being
 mapped to. This can be done one of two ways:
 
 * Binding manually - this will be covered in more detail later
 
-* Using <a href="https://github.com/MiguelGuthridge/Universal-Controller-Script/blob/main/docs/contributing/plugins/mapping_strategy.md">mapping strategies</a> given as arguments to the 'super' constructor. 
-  
-  * super().__init__(shadow, [PedalStrategy()]) for example, would map your
+* Using [mapping strategies](./mapping_strategy.md) given as arguments to the 'super' constructor.
+
+  * `super().__init__(shadow, [PedalStrategy()])` for example, would map your
   pedal input automatically to the VST it's applied to.
-  
-  * super().init(shadow, [SimpleFaders(0,1,2,4,5,6,7,8, colors=(0x206cc8))])
+
+  * `super().init(shadow, [SimpleFaders(0,1,2,4,5,6,7,8, colors=Color.fromInteger(0x206cc8))])`
   would be equivalent to the "basicPluginBuilder" function example above
-  
+
   Consult ['Mapping Strategy'](mapping_strategy.md) for more options.
-  
 
 Callbacks can be also be decorated using [event filters](filters.md)
 to filter out unwanted events. For example:
 
-    @filterToGeneratorIndex() # Filter out plugins when the active plugin isn't a generator
-    def eventCallback(self, control: ControlShadowEvent, index: GeneratorIndex, *args: Any) -> bool:
-        # Set the parameter
-        plugins.setParamValue(control.value control.coordinate[1], *index)
-        # Handle the event
-        return True
+```py
+# Filter out plugins when the active plugin isn't a generator
+@filterToGeneratorIndex()
+def eventCallback(
+  self,
+  control: ControlShadowEvent,
+  index: GeneratorIndex,
+  *args: Any,
+) -> bool:
+    # Set the parameter
+    plugins.setParamValue(control.value control.coordinate[1], *index)
+    # Handle the event
+    return True
+```
 
 ### Design Ideals for Plugin Interfaces
 
@@ -128,7 +142,6 @@ The following methods only need to be implemented if necessary.
   update the plugin. Note that the index can be filtered as required using
   [tick filters](filters.md).
 
-
 ### Control Binding
 
 Control surfaces should be bound to callback functions during the constructor
@@ -144,8 +157,9 @@ aspects of the control surface dynamically.
 This binding is usually made using the `bindMatch` method of the provided
 `DeviceShadow` object. This method returns a `ControlShadow` representing the
 control that was bound to the given callbacks. If multiple bindings are needed,
-`bindMatches` can be used. It returns a list of `ControlShadow` objects. For a 
-list of applicable ControlShadow objects, consult [Control Surfaces](control.surface.md).
+`bindMatches` can be used. It returns a list of `ControlShadow` objects. For
+information on how control shadows work, consult
+[their documentation](./control_shadow.md)
 
 ```py
 # Bind a play button to the plugin's `play` method
@@ -166,8 +180,6 @@ a reference to the same control so that they can be used in a pipeline pattern.
 ```py
 # Bind a play button, set its color to black, then annotate it as "My control"
 shadow.bindMatch(PlayButton, ...).colorize(Color()).annotate("My control")
-
-
 ```
 
 If binding multiple controls, the same functions can be used to apply
