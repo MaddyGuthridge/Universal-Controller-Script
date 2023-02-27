@@ -1,8 +1,9 @@
-
 # Plugins
 
-Plugins are extensions that define how the program should handle events and
-interact with FL Studio Windows, as well as generator and effect plugins.
+When discussing plugins in the context of this script, "Plugins" refers not
+to plugins in the VST sense, but extensions the Universal Controller Script
+uses to define how the program should handle events and interact with
+FL Studio Windows, as well as generator and effects.
 
 ## Types of Plugins
 
@@ -10,9 +11,9 @@ interact with FL Studio Windows, as well as generator and effect plugins.
 * `WindowPlugin`: Window plugins interact with FL Studio windows
 * `SpecialPlugin`: Plugins that can be active at any time
 
-## Creating a Plugin: The Easy Way
+## Creating Plugin Bindings: The Easy Way
 
-If the standard plugin you are binding to only needs to bind some parameters to
+If the standard plugin you are binding to only needs to bind parameters to
 faders, you can create one by using the `basicPluginBuilder` function. You can
 do this by specifying the names that should be matched for this plugin, as well
 as the list of parameters that should be bound, and a color or list of colors
@@ -28,26 +29,76 @@ basicPluginBuilder(
     # You can add more names after the inner column if multiple plugins use
     # this layout
     ('My plugin name',),
-    # A list of parameter indexes
-    [45, 46, 35, 37, 218, 219, 220, 221],
-    # A color to represent the parameters (this can also be a list)
-    Color.fromInteger(0x206cc8)
+
+    # A list of parameter indexes - these will map left to right to the
+    # relevant faders on your device, so in this example tuning will be
+    # fader 1, Waveform will be fader 2, Cutoff will be Fader 3, Resonance
+    # will be Fader 4 and so on.
+    [
+        0,  # Tuning
+        1,  # Waveform
+        2,  # Cutoff
+        4,  # Resonance
+        5,  # Envelope Modulation
+        6,  # Decay
+        7,  # Accent
+        8,  # Volume
+    ]
+
+    # A color to represent the parameters (this can also be a list, to do so you
+    # would need to list the color parameters in square brackets with commas between
+    # each parameter - ie [
+    #     Color.fromInteger(0x206cc8),
+    #     Color.fromInteger(0x222222),
+    #     Color.fromInteger(0x888888),
+    #     Color.fromInteger(0x206cc8),
+    #     Color.fromInteger(0x222222),
+    # ]
+    Color.fromInteger(0x206cc8) # this would map all parameters to a single color
 )
 ```
 
-## Creating a Plugin: The Hard (But More Powerful) Way
+## Creating a Plugin Binding: The Hard (But More Powerful) Way
 
-When a plugin is created, it should bind callback functions to a
-[`DeviceShadow`](device_shadow.md) object, that represents the plugin's own
-private copy of the device that is being mapped to. This can either be done
-manually, or with [mapping strategies](mapping_strategy.md), given as arguments
-to the `super` constructor. Callbacks can be decorated using
-[event filters](filters.md) to filter out unwanted events.
+Plugins can also be bound manually to a [`DeviceShadow`](device_shadow.md)
+object, which represents the plugin's own private copy of the device being
+mapped to. This can be done one of two ways:
+
+* Binding manually - this will be covered in more detail later
+
+* Using [mapping strategies](./mapping_strategy.md) given as arguments to the 'super' constructor.
+
+  * `super().__init__(shadow, [PedalStrategy()])` for example, would map your
+  pedal input automatically to the VST it's applied to.
+
+  * `super().init(shadow, [SimpleFaders(0,1,2,4,5,6,7,8, colors=Color.fromInteger(0x206cc8))])`
+  would be equivalent to the "basicPluginBuilder" function example above
+
+  Consult ['Mapping Strategy'](mapping_strategy.md) for more options.
+
+Callbacks can be also be decorated using [event filters](filters.md)
+to filter out unwanted events. For example:
+
+```py
+# Filter out plugins when the active plugin isn't a generator
+@filterToGeneratorIndex()
+def eventCallback(
+  self,
+  control: ControlShadowEvent,
+  index: GeneratorIndex,
+  *args: Any,
+) -> bool:
+    # Set the parameter
+    plugins.setParamValue(control.value control.coordinate[1], *index)
+    # Handle the event
+    return True
+```
 
 ### Design Ideals for Plugin Interfaces
 
 When designing a plugin interface, you should strive to make your interface
 match the following criteria:
+
 * Simple: although documentation should be available, the control mappings
   should be simple enough that users don't need to think about what controls
   control what.
@@ -106,7 +157,9 @@ aspects of the control surface dynamically.
 This binding is usually made using the `bindMatch` method of the provided
 `DeviceShadow` object. This method returns a `ControlShadow` representing the
 control that was bound to the given callbacks. If multiple bindings are needed,
-`bindMatches` can be used. It returns a list of `ControlShadow` objects.
+`bindMatches` can be used. It returns a list of `ControlShadow` objects. For
+information on how control shadows work, consult
+[their documentation](./control_shadow.md)
 
 ```py
 # Bind a play button to the plugin's `play` method
@@ -127,8 +180,6 @@ a reference to the same control so that they can be used in a pipeline pattern.
 ```py
 # Bind a play button, set its color to black, then annotate it as "My control"
 shadow.bindMatch(PlayButton, ...).colorize(Color()).annotate("My control")
-
-
 ```
 
 If binding multiple controls, the same functions can be used to apply
@@ -176,7 +227,8 @@ class MyPlugin(StandardPlugin):
             target_num=5, # Number of controls to bind
         )
         # Call the super function, and use the pedal strategy to handle pedal
-        # events
+        # events - you could use a different strategy for your plugin dependant
+        # on the needs of the VST you are applying to
         super().__init__(shadow, [PedalStrategy()])
 
     @classmethod
