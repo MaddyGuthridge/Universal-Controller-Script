@@ -140,7 +140,7 @@ class ManualMapper(SpecialPlugin):
         channel, cc = cls.getChannelAndCc(c_index)
         # Find the associated event ID
         event_id = cls.calcEventId(channel, cc)
-        # If that event ID isn't invalid
+        # If that event ID is valid
         if event_id is not None:
             # Process it and prevent further processing
             general.processRECEvent(
