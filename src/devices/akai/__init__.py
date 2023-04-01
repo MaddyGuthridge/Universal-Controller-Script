@@ -1,5 +1,7 @@
 """
-devices > novation > launchkey > incontrol > controls > mutes
+devices > akai
+
+Device definitions for Akai Pro
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -7,10 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-__all__ = [
-    'StopSoloMuteButton',
-]
 
-from .stop_solo_mute import (
-    StopSoloMuteButton,
-)
+from . import mpk_mini_mk3
+
+__all__ = ['mpk_mini_mk3']

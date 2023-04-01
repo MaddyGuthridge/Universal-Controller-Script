@@ -15,6 +15,7 @@ from fl_classes import FlMidiMsg
 from common.exceptions import (
     UcsError,
     DeviceRecognizeError,
+    DeviceInitializeError,
     EventInspectError,
     EventEncodeError,
     EventDecodeError,
@@ -38,6 +39,17 @@ ERROR_MAPPINGS: dict[type[Exception], dict] = {
             f"If there is no definition available, you could help by "
             f"contributing one. Visit the GitHub page for details: "
             f"{consts.WEBSITE}"
+        )
+    },
+    DeviceInitializeError: {
+        "category": "bootstrap.device.initialize",
+        "msg": "Failed to initialize device",
+        "verbosity": verbosity.CRITICAL,
+        "detailed_msg": (
+            f"The device was unable to be initialized. This is likely a bug "
+            f"with the script. Please create an issue on GitHub by visiting "
+            f"{consts.ISSUES_PAGE}, or join the Discord server and ask for "
+            f"help at {consts.DISCORD}"
         )
     },
     EventDispatchError: {
@@ -117,16 +129,23 @@ class ErrorState(IScriptState):
         log(**error_info)
         log(
             "general",
-            f"Error details: {self.__exception}",
+            f"Error details: {repr(self.__exception)}",
             verbosity.CRITICAL,
         )
+        if self.__exception.__cause__ is not None:
+            log(
+                "general",
+                f"Error caused by: {repr(self.__exception.__cause__)}",
+                verbosity.CRITICAL,
+            )
         ui.setHintMsg("[UCS] error: see script output")
+        # raise self.__exception
 
     def deinitialize(self) -> None:
         pass
 
     def tick(self) -> None:
-        ui.setHintMsg("[UCS] error: see script output")
+        # ui.setHintMsg("[UCS] error: see script output")
         pass
 
     def processEvent(self, event: FlMidiMsg) -> None:

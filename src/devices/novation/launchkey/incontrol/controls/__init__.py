@@ -58,8 +58,10 @@ __all__ = [
     'StopSoloMuteButton',
     'LkMk3DrumPadMute',
     'LkMk3DrumPadSolo',
-    'getMk3SmallMuteControls',
+    'LkMk3DrumPadActivity',
+    'LkMk3MiniDrumPadActivity',
     'LkPauseActive',
+    'LkDeviceSelect',
 ]
 
 from .incontrol_surface import ColorInControlSurface, GrayscaleInControlSurface
@@ -84,6 +86,8 @@ from .drum_pad import (
     LkDrumPadMatcher,
     LkMk3DrumPadMute,
     LkMk3DrumPadSolo,
+    LkMk3DrumPadActivity,
+    LkMk3MiniDrumPadActivity,
 )
 from .faders import (
     LkMk2Fader,
@@ -122,6 +126,5 @@ from .navigation import (
 )
 from .mutes import (
     StopSoloMuteButton,
-    getMk3SmallMuteControls,
 )
-from .pause_active import LkPauseActive
+from .activity import LkPauseActive, LkDeviceSelect

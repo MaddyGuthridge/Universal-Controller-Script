@@ -21,11 +21,13 @@ from .device_shadow import DeviceShadow, EventCallback
 
 # Device manufacturers
 from . import (
+    akai,
     novation,
     maudio,
     korg,
 )
 del (
+    akai,
     novation,
     maudio,
     korg,

@@ -1,5 +1,7 @@
 """
-devices > novation > launchkey > incontrol > controls > mutes
+plugs > standard > klevgrand
+
+Plugins from Klevgrand
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
@@ -7,10 +9,10 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-__all__ = [
-    'StopSoloMuteButton',
-]
-
-from .stop_solo_mute import (
-    StopSoloMuteButton,
+from . import (
+    daw_cassette,
 )
+
+__all__ = [
+    'daw_cassette',
+]

@@ -124,13 +124,12 @@ class MainState(DeviceState):
             # )
             return
 
-        else:
-            log(
-                "device.event.in",
-                f"Recognized event: {mapping.getControl()}",
-                verbosity.EVENT,
-                detailed_msg=eventToString(event)
-            )
+        log(
+            "device.event.in",
+            f"Recognized event: {mapping.getControl()}",
+            verbosity.EVENT,
+            detailed_msg=eventToString(event)
+        )
 
         # Get active standard plugin
         plug_idx = common.getContext().activity.getActive()

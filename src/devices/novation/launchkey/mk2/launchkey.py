@@ -155,6 +155,7 @@ class LaunchkeyMk2_25(LaunchkeyMk2):
     """
 
     def __init__(self) -> None:
+        # FIXME: This has a master fader, investigate it further
         super().__init__(BasicControlMatcher())
 
     @classmethod

@@ -336,7 +336,7 @@ class DrumPadStrategy(IMappingStrategy):
         index = self.__mappings[row][col]
         if index == -1:
             # Not mapped to anything
-            return True
+            return
 
         # Use the callbacks
         control.color = self.__color(control, plug, index)

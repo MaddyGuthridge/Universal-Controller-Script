@@ -8,7 +8,7 @@ Authors:
 """
 
 from fl_classes import FlMidiMsg
-from . import IEventPattern
+from . import IEventPattern, fulfilByte
 
 
 class NullPattern(IEventPattern):
@@ -21,3 +21,15 @@ class NullPattern(IEventPattern):
 
     def fulfil(self) -> FlMidiMsg:
         raise TypeError("Unable to fulfil a NullPattern")
+
+
+class TruePattern(IEventPattern):
+    """
+    True patterns will match with any event
+    """
+
+    def matchEvent(self, event: FlMidiMsg) -> bool:
+        return True
+
+    def fulfil(self) -> FlMidiMsg:
+        return FlMidiMsg(fulfilByte(...), fulfilByte(...), fulfilByte(...))

@@ -37,6 +37,10 @@ work correctly, DAW and Preset configurations need to be sent to the device.
     device to the controller type "Universal Event Forwarder (user)", so that
     events from this script can be forwarded to the main script to be processed.
 
+### Example configuration
+
+![A screenshot of FL Studio's MIDI Settings window, showing a correct configuration](./images/hammer_88_pro_setup.png)
+
 ## Usage
 
 #### Channel Selection

@@ -19,7 +19,11 @@ from control_surfaces import (
     NullControl,
     CaptureMidiButton,
 )
-from control_surfaces.matchers import ShiftMatcher, BasicControlMatcher
+from control_surfaces.matchers import (
+    ShiftMatcher,
+    ShiftView,
+    BasicControlMatcher,
+)
 from devices.novation.launchkey.incontrol.controls import (
     LkMk3ControlSwitchButton,
     LkMk3RecordButton,
@@ -27,37 +31,56 @@ from devices.novation.launchkey.incontrol.controls import (
     Mk3DirectionRight,
     MiniMk3DirectionUp,
     MiniMk3DirectionDown,
-    getMk3SmallMuteControls
+    StopSoloMuteButton,
+    LkDrumPadMatcher,
+    LkMk3DrumPad,
+    LkMk3DrumPadSolo,
+    LkMk3DrumPadMute,
+    LkMk3MiniDrumPadActivity,
+    LkMk3PlayButton,
 )
 
 
 def getShiftControls() -> ShiftMatcher:
-    shift = NullControl(
+    shift_button = NullControl(
         ForwardedPattern(2, BasicPattern(0xB0, 0x6C, ...)),
         ForwardedStrategy(ButtonData2Strategy()),
     )
 
     # Non shifted events
-    non_shift_matcher = BasicControlMatcher()
-    non_shift_matcher.addControl(LkMk3RecordButton())
-    non_shift_matcher.addControl(LkMk3ControlSwitchButton())
-    non_shift_matcher.addSubMatcher(getMk3SmallMuteControls())
+    main_view = BasicControlMatcher()
+    main_view.addControl(LkMk3RecordButton())
+    main_view.addControl(LkMk3ControlSwitchButton())
+    main_view.addSubMatcher(LkDrumPadMatcher(LkMk3DrumPad))
 
     # Shifted events
-    shift_matcher = BasicControlMatcher()
-    shift_matcher.addControl(CaptureMidiButton(
+    shift_view = BasicControlMatcher()
+    shift_view.addControl(CaptureMidiButton(
         ForwardedPattern(2, BasicPattern(0xBF, 0x75, ...)),
         ForwardedStrategy(ButtonData2Strategy()),
     ))
-    shift_matcher.addControls([
+    shift_view.addControls([
         MiniMk3DirectionUp(),
         MiniMk3DirectionDown(),
         Mk3DirectionLeft(),
         Mk3DirectionRight(),
     ])
 
+    shift = ShiftView(shift_button, shift_view, allow_fallback_match=False)
+
+    mutes = ShiftView(
+        StopSoloMuteButton(),
+        LkDrumPadMatcher(LkMk3DrumPadSolo, LkMk3DrumPadMute),
+        disable_in_other_views=True,
+        latch=True,
+    )
+    activity_switchers = ShiftView(
+        LkMk3PlayButton(),
+        LkDrumPadMatcher(LkMk3MiniDrumPadActivity),
+        ignore_single_press=True,
+    )
+
     return ShiftMatcher(
-        shift,
-        non_shift_matcher,
-        shift_matcher,
+        main_view,
+        [shift, mutes, activity_switchers],
     )
