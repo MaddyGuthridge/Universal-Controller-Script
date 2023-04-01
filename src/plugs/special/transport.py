@@ -11,10 +11,12 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
+import arrangement
 import transport
 import ui
 
 from typing import Any
+from common.context_manager import getContext
 
 from common.extension_manager import ExtensionManager
 from common.types import Color
@@ -40,26 +42,12 @@ FAST_FORWARDING = 1
 REWINDING = -1
 NORMAL_SPEED = 0
 
-# Color definitions
-
-OFF = Color()
-GRAY = Color.fromInteger(0x606060, 0.3, False)
-ON = Color.fromInteger(0xFFFFFF, 1.0, True)
-
-SONG_COLOR = Color.fromInteger(0x45F147, 0.6, True)
-PAT_COLOR = Color.fromInteger(0xF78F41, 0.6, True)
-REC_COLOR = Color.fromInteger(0xAF0000, 1.0, True)
-STOP_COLOR = Color.fromInteger(0xB9413E, 1.0, True)
-
-BEAT_SONG_COLOR = Color.fromInteger(0x00A0F0, 1.0, True)
-BEAT_PAT_COLOR = Color.fromInteger(0xA43A37, 1.0, True)
-
 
 def getPatSongCol() -> Color:
     if transport.getLoopMode():
-        return SONG_COLOR
+        return Color.FL_SONG
     else:
-        return PAT_COLOR
+        return Color.FL_PATTERN
 
 
 def getBeatColor(off: Color) -> Color:
@@ -71,9 +59,9 @@ def getBeatColor(off: Color) -> Color:
     # 0 -> new bar
     elif beat == 0:
         if transport.getLoopMode():
-            return BEAT_SONG_COLOR
+            return Color.FL_SONG_ALT
         else:
-            return BEAT_PAT_COLOR
+            return Color.FL_PATTERN_ALT
     # -> new beat
     else:
         return getPatSongCol()
@@ -149,25 +137,40 @@ class Transport(SpecialPlugin):
         val = control.value != 0
         transport.fastForward(2 if val else 0)
         self._playback_ff_rw = FAST_FORWARDING if val else 0
+        # If it was a short press, jump between markers
+        if (
+            not val
+            and control.press_length
+            < getContext().settings.get("controls.short_press_time")
+        ):
+            arrangement.jumpToMarker(1, False)
+
         return True
 
     def rewind(self, control: ControlShadowEvent, *args: Any,) -> bool:
         val = control.value != 0
         transport.rewind(2 if val else 0)
         self._playback_ff_rw = REWINDING if val else 0
+        # If it was a short press, jump between markers
+        if (
+            not val
+            and control.press_length
+            < getContext().settings.get("controls.short_press_time")
+        ):
+            arrangement.jumpToMarker(-1, False)
         return True
 
     def tickPlay(self, control: ControlShadow, *args):
         if transport.isPlaying():
-            control.color = getBeatColor(off=GRAY)
+            control.color = getBeatColor(off=Color.DISABLED)
         else:
-            control.color = GRAY
+            control.color = Color.DISABLED
 
     def tickStop(self, control: ControlShadow, *args):
         if transport.isPlaying():
-            control.color = GRAY
+            control.color = Color.DISABLED
         else:
-            control.color = STOP_COLOR
+            control.color = Color.FL_STOP
 
     def tickLoop(self, control: ControlShadow, *args):
         """Color loop mode button"""
@@ -175,17 +178,21 @@ class Transport(SpecialPlugin):
 
     def tickRec(self, control: ControlShadow, *args):
         """Color record button"""
-        control.color = REC_COLOR if transport.isRecording() else GRAY
+        control.color = (
+            Color.FL_RECORD
+            if transport.isRecording()
+            else Color.DISABLED
+        )
 
     def tickMetro(self, control: ControlShadow, *args):
         """Color metronome button"""
         if ui.isMetronomeEnabled():
             if transport.isPlaying():
-                control.color = getBeatColor(GRAY)
+                control.color = getBeatColor(Color.DISABLED)
             else:
-                control.color = ON
+                control.color = Color.WHITE
         else:
-            control.color = GRAY
+            control.color = Color.DISABLED
 
     def tickHint(self, control: ControlShadow, *args):
         """Set hint message"""
@@ -194,16 +201,16 @@ class Transport(SpecialPlugin):
     def tickFf(self, control: ControlShadow, *args):
         """Fast forward"""
         if self._playback_ff_rw == FAST_FORWARDING:
-            control.color = ON
+            control.color = Color.WHITE
         else:
-            control.color = GRAY
+            control.color = Color.DISABLED
 
     def tickRw(self, control: ControlShadow, *args):
         """Rewind"""
         if self._playback_ff_rw == REWINDING:
-            control.color = ON
+            control.color = Color.WHITE
         else:
-            control.color = GRAY
+            control.color = Color.DISABLED
 
 
 ExtensionManager.super_special.register(Transport)

@@ -14,7 +14,13 @@ from typing import TYPE_CHECKING, Optional
 from control_surfaces.event_patterns import ForwardedPattern,  NotePattern
 from common.types import Color
 from control_surfaces.value_strategies import NoteStrategy, ForwardedStrategy
-from control_surfaces import ControlSurface, DrumPad, MuteButton, SoloButton
+from control_surfaces import (
+    ControlSurface,
+    DrumPad,
+    MuteButton,
+    SoloButton,
+    ActivitySwitcher,
+)
 from .. import ColorInControlSurface
 from ...consts import DRUM_ROWS, DRUM_COLS
 from control_surfaces.matchers import (
@@ -27,7 +33,7 @@ class ILkDrumPad(ControlSurface):  # pragma: no cover
     Interface representing the methods used by classes created by the
     createLkDrumPadBase() function
 
-    Note that these function are never called, they only serve to keep mypy
+    Note that these functions are never called, they only serve to keep mypy
     happy
     """
     def __init__(
@@ -35,20 +41,21 @@ class ILkDrumPad(ControlSurface):  # pragma: no cover
         coordinate: tuple[int, int],
         channel: int,
         note_num: int,
-        colors: dict[Color, int]
+        colors: dict[Color, int],
+        debug: Optional[str] = None,
     ) -> None:
-        ...
+        raise NotImplementedError("ILkDrumPad")
 
     @classmethod
     def create(cls, row: int, col: int) -> 'ILkDrumPad':
-        raise NotImplementedError()
+        raise NotImplementedError("ILkDrumPad")
 
     @staticmethod
     def getControlAssignmentPriorities() -> 'tuple[type[ControlSurface], ...]':
-        raise NotImplementedError()
+        raise NotImplementedError("ILkDrumPad")
 
     def onColorChange(self, *args):
-        pass
+        raise NotImplementedError("ILkDrumPad")
 
 
 def createLkDrumPadBase(
@@ -72,19 +79,25 @@ def createLkDrumPadBase(
         coordinate: tuple[int, int],
         channel: int,
         note_num: int,
-        colors: dict[Color, int]
+        colors: dict[Color, int],
+        debug: Optional[str] = None,
     ) -> None:
         extends.__init__(
             self,
             ForwardedPattern(2, NotePattern(note_num, channel)),
             ForwardedStrategy(NoteStrategy()),
             coordinate,
-            color_manager=ColorInControlSurface(channel, note_num, colors)
+            color_manager=ColorInControlSurface(
+                channel,
+                note_num,
+                colors,
+                debug=debug,
+            )
         )
 
     @classmethod  # type: ignore
     def create(cls, row: int, col: int) -> 'ILkDrumPad':
-        raise NotImplementedError()
+        raise NotImplementedError("Bruh")
 
     return type(
         name,
@@ -100,10 +113,12 @@ if not TYPE_CHECKING:
     LkDrumPad = createLkDrumPadBase(DrumPad)
     LkDrumPadMute = createLkDrumPadBase(MuteButton)
     LkDrumPadSolo = createLkDrumPadBase(SoloButton)
+    LkDrumPadActivity = createLkDrumPadBase(ActivitySwitcher)
 else:
     LkDrumPad = ILkDrumPad
     LkDrumPadMute = ILkDrumPad
     LkDrumPadSolo = ILkDrumPad
+    LkDrumPadActivity = ILkDrumPad
 
 
 class LkDrumPadMatcher(BasicControlMatcher):

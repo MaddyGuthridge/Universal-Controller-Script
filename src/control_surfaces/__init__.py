@@ -67,6 +67,7 @@ __all__ = [
     'StandardJogWheel',
     'ShiftedJogWheel',
     'MoveJogWheel',
+    'GenericFader',
     'Fader',
     'MasterFader',
     'FaderButton',
@@ -80,6 +81,7 @@ __all__ = [
     'MasterArmButton',
     'SelectButton',
     'MasterSelectButton',
+    'GenericKnob',
     'Knob',
     'MasterKnob',
     'Encoder',
@@ -104,6 +106,7 @@ __all__ = [
     'HintMsg',
     'NotifMsg',
     'Ambient',
+    'ActivitySwitcher',
 ]
 
 from .controls import (
@@ -147,6 +150,7 @@ from .controls import (
     StandardJogWheel,
     ShiftedJogWheel,
     MoveJogWheel,
+    GenericFader,
     Fader,
     MasterFader,
     FaderButton,
@@ -160,6 +164,7 @@ from .controls import (
     MasterArmButton,
     SelectButton,
     MasterSelectButton,
+    GenericKnob,
     Knob,
     MasterKnob,
     Encoder,
@@ -183,6 +188,7 @@ from .controls import (
     HintMsg,
     NotifMsg,
     Ambient,
+    ActivitySwitcher,
 )
 
 from .control_shadow import (

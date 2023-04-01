@@ -24,3 +24,4 @@ WindowIndex = int
 UnsafeWindowIndex = Optional[int]
 
 UnsafeIndex = Union[UnsafePluginIndex, UnsafeWindowIndex]
+SafeIndex = Union[PluginIndex, WindowIndex]

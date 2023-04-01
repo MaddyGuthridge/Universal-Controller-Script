@@ -46,5 +46,9 @@ class DeviceRecognizeError(UcsError):
     """Failed to recognize device"""
 
 
+class DeviceInitializeError(UcsError):
+    """Failed to initialise device"""
+
+
 class InvalidConfigError(UcsError):
     """Errors in configuration"""

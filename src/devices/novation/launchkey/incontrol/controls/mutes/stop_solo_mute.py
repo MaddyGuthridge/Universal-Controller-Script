@@ -14,15 +14,8 @@ from control_surfaces.value_strategies import (
     ForwardedStrategy
 )
 from control_surfaces import NullControl
-from control_surfaces.matchers import ShiftMatcher
 from ..incontrol_surface import ColorInControlSurface
 from ...colors.mk3 import COLORS
-from ..drum_pad import (
-    LkDrumPadMatcher,
-    LkMk3DrumPad,
-    LkMk3DrumPadSolo,
-    LkMk3DrumPadMute,
-)
 
 
 class StopSoloMuteButton(NullControl):
@@ -45,21 +38,3 @@ class StopSoloMuteButton(NullControl):
     @staticmethod
     def isPress(value: float) -> bool:
         return value != 0.0
-
-
-def getMk3SmallMuteControls() -> ShiftMatcher:
-    """
-    Returns a control matcher used to get mappings for the drum pads and
-    stop/solo/mute button on smaller launchkey models.
-    """
-    stop_mute_solo = StopSoloMuteButton()
-    # Stop/solo/mute button not pressed
-    non_shift_matcher = LkDrumPadMatcher(LkMk3DrumPad)
-    # Stop/solo/mute button pressed
-    shift_matcher = LkDrumPadMatcher(LkMk3DrumPadSolo, LkMk3DrumPadMute)
-
-    return ShiftMatcher(
-        stop_mute_solo,
-        non_shift_matcher,
-        shift_matcher,
-    )

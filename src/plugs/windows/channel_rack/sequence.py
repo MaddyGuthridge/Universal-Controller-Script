@@ -32,7 +32,7 @@ from plugs.event_filters import filterButtonLift
 from .helpers import INDEX, getChannelRows
 
 # How many steps should be scrolled each time
-SCROLL_MULTIPLIER = 4
+SCROLL_MULTIPLIER = 8
 
 DISABLED_COLOR = Color()
 

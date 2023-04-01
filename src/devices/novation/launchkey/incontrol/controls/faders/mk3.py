@@ -50,7 +50,7 @@ class LkMk3Fader(Fader):
 class LkMk3MasterFader(MasterFader):
     def __init__(self) -> None:
         super().__init__(
-                ForwardedPattern(2, BasicPattern(0xBF, 0x07, ...)),
+                ForwardedPattern(2, BasicPattern(0xBF, 0x3D, ...)),
                 ForwardedStrategy(Data2Strategy())
             )
 

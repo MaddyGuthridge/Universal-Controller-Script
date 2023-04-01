@@ -11,13 +11,13 @@ more details.
 """
 
 # Version info
-VERSION = (1, 2, 0)
+VERSION = (1, 2, 1)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
 VERSION_MINOR = VERSION[1]
 VERSION_REVISION = VERSION[2]
-VERSION_SUFFIX = "alpha.1"
+VERSION_SUFFIX = ""
 
 # Minimum API version required to run script
 MIN_API_VERSION = 19
@@ -90,3 +90,5 @@ DEVICE_TYPE_FORWARDER = 2
 
 # The starting point for control change parameters in plugins
 PARAM_CC_START = 4096
+
+WINDOW_NAMES = ['Mixer', 'Channel Rack', 'Playlist', 'Piano Roll', 'Browser']

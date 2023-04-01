@@ -13,14 +13,15 @@ more details.
 
 from typing import Optional
 import ui
+from common.consts import WINDOW_NAMES
 from common.profiler import profilerDecoration
 from common.logger import log, verbosity
 from common.plug_indexes import (
     PluginIndex,
-    UnsafeIndex,
     GeneratorIndex,
     EffectIndex,
     WindowIndex,
+    SafeIndex,
 )
 from common.util.api_fixes import (
     getFocusedPluginIndex,
@@ -29,9 +30,6 @@ from common.util.api_fixes import (
 )
 from common.types.bool_s import BoolS
 import plugins
-
-
-WINDOW_NAMES = ['Mixer', 'Channel Rack', 'Playlist', 'Piano Roll', 'Browser']
 
 
 class ActivityState:
@@ -53,6 +51,17 @@ class ActivityState:
         self._plug_active = True if self._plugin is not None else False
         self._changed = False
         self._plug_unsafe = False
+        self._history: list[SafeIndex] = []
+        self._ignore_next_history = False
+
+    def __repr__(self) -> str:
+        return (
+            f"ActivityState("
+            f"updating: {self._do_update}, "
+            f"split: {self._split}, "
+            f"active: {self.getActive()}"
+            f")"
+        )
 
     def inspect(self):
         """
@@ -82,34 +91,39 @@ class ActivityState:
                 self._plugin_name = ""
                 self._generator = (-1,)
             return
-        self._plugin = plugin
+        if self._plugin != plugin:
+            self._plugin = plugin
         try:
             self._plugin_name = plugins.getPluginName(*plugin)
         except TypeError:
             self._plugin_name = ""
         if len(plugin) == 1:
-            self._generator = plugin  # type: ignore
+            self._generator = plugin
         else:
-            self._effect = plugin  # type: ignore
+            self._effect = plugin
 
     @profilerDecoration("activity.tick")
     def tick(self) -> None:
         """
         Called frequently when we need to update the current window
         """
+        from common.context_manager import getContext
         # HACK: Fix FL Studio bugs
         reset_generator_active()
         self._changed = False
         # If the current plugin name has changed, we should unpause the updates
         if self._plug_active and not self._do_update:
-            if self._plugin_name != plugins.getPluginName(*self._plugin):
-                self._do_update = True
+            try:
+                if self._plugin_name != plugins.getPluginName(*self._plugin):
+                    self._do_update = True
+            except TypeError:
+                pass
         if self._do_update:
             # Manually update plugin using selection
             if (window := getFocusedWindowIndex()) is not None:
                 if window != self._window:
                     self._changed = True
-                self._window = window
+                    self._window = window
                 if not self._split:
                     if self._plug_active:
                         self._changed = True
@@ -119,7 +133,7 @@ class ActivityState:
                 self._plug_unsafe = False
                 if plugin != self._plugin:
                     self._changed = True
-                self._plugin = plugin
+                    self._plugin = plugin
                 try:
                     self._plugin_name = plugins.getPluginName(*plugin)
                 except TypeError:
@@ -127,15 +141,26 @@ class ActivityState:
                 # Ignore typing because len(plugin) doesn't narrow types in
                 # mypy
                 if len(plugin) == 1:
-                    self._generator = plugin  # type: ignore
+                    self._generator = plugin
                 else:
-                    self._effect = plugin  # type: ignore
+                    self._effect = plugin
                 if not self._split:
                     if not self._plug_active:
                         self._changed = True
                     self._plug_active = True
             else:
                 self._forcePlugUpdate()
+            # Add to history
+            if self._changed:
+                if self._ignore_next_history:
+                    self._ignore_next_history = False
+                else:
+                    self._history.insert(0, self.getActive())
+            # If there are too many things in the history
+            hist_len = \
+                getContext().settings.get("advanced.activity_history_length")
+            if len(self._history) >= hist_len:
+                self._history = self._history[:hist_len]
 
     def hasChanged(self) -> bool:
         """
@@ -146,7 +171,7 @@ class ActivityState:
         """
         return self._changed
 
-    def getActive(self) -> UnsafeIndex:
+    def getActive(self) -> SafeIndex:
         """
         Returns the currently active window or plugin
         """
@@ -190,6 +215,25 @@ class ActivityState:
         * `UnsafeWindowIndex`: active window
         """
         return self._window
+
+    def getHistoryActivity(self, index: int) -> SafeIndex:
+        """
+        Returns the activity entry at the given index, where 0 is the current
+        activity.
+
+        ### Args:
+        * `index` (`int`): index
+
+        ### Returns:
+        * `SafeIndex`: activity
+        """
+        return self._history[index]
+
+    def ignoreNextHistory(self):
+        """
+        Don't add the next activity change to the history
+        """
+        self._ignore_next_history = True
 
     def playPause(self, value: Optional[bool] = None) -> BoolS:
         """

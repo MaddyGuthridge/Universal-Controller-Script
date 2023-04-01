@@ -66,7 +66,7 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     # If a mixer plugin is focused
     if ui_6:
         # HACK: Error checking to hopefully avoid a crash due to bugs in FL
-        # Studio
+        # Studio <= 20.9.1
         if generator_previously_active:
             log(
                 "state.active",
@@ -148,7 +148,7 @@ def catchUnsafeOperation(func):
 def getSelectedDockMixerTracks() -> dict[int, list[int]]:
     """
     Returns a list of the selected mixer tracks for each dock side, not
-    including master or current
+    including current
 
     * 0: tracks docked to left
     * 1: tracks in centre
@@ -162,7 +162,7 @@ def getSelectedDockMixerTracks() -> dict[int, list[int]]:
         1: [],
         2: [],
     }
-    for i in range(1, mixer.trackCount() - 1):
+    for i in range(mixer.trackCount() - 1):
         if mixer.isTrackSelected(i):
             tracks[mixer.getTrackDockSide(i)].append(i)
 
@@ -171,14 +171,13 @@ def getSelectedDockMixerTracks() -> dict[int, list[int]]:
 
 def getSelectedMixerTracks() -> list[int]:
     """
-    Returns a list of the selected mixer tracks, not including master or
-    current
+    Returns a list of the selected mixer tracks, not including current
 
     ### Returns:
     * `list[int]`: track selections
     """
     tracks: list[int] = []
-    for i in range(1, mixer.trackCount() - 1):
+    for i in range(mixer.trackCount() - 1):
         if mixer.isTrackSelected(i):
             tracks.append(i)
 

@@ -21,19 +21,30 @@ from control_surfaces import (
     StandardPitchWheel,
     SustainPedal,
     ChannelAfterTouch,
+    ActivitySwitcher,
 )
 from devices import Device
-from control_surfaces.matchers import BasicControlMatcher, NoteMatcher
+from control_surfaces.matchers import (
+    BasicControlMatcher,
+    NoteMatcher,
+    ShiftMatcher,
+    ShiftView,
+)
 from .controls.transport import (
     SlPlayButton,
     SlStopButton,
     SlLoopButton,
     SlRecordButton,
+    SlDirectionRight,
+    SlDirectionLeft,
+    SlDirectionDown,
+    SlDirectionUp,
     SlDirectionNext,
     SlDirectionPrevious,
     SlRewindButton,
     SlFastForwardButton,
     SlControlSwitchButton,
+    SlActivitySwitchButton,
 )
 from .controls import (
     SlFaderSet,
@@ -46,6 +57,18 @@ from .controls import (
 )
 
 DEVICE_ID = "Novation.SL.Mk3"
+
+
+def getDrumPads():
+    """
+    Create drum pad definition
+    """
+    main = SlDrumPadMatcher()
+    activity = SlDrumPadMatcher(ActivitySwitcher)
+    return ShiftMatcher(
+        main,
+        [ShiftView(SlActivitySwitchButton(), activity, latch=True)]
+    )
 
 
 class SlMk3(Device):
@@ -62,7 +85,7 @@ class SlMk3(Device):
         matcher.addSubMatcher(NoteMatcher())
         matcher.addControl(ChannelAfterTouch.fromChannel(...))
 
-        matcher.addSubMatcher(SlDrumPadMatcher())
+        matcher.addSubMatcher(getDrumPads())
         matcher.addSubMatcher(SlEncoderSet())
         matcher.addSubMatcher(SlMuteSet())
         matcher.addSubMatcher(SlToolSelectorSet())
@@ -72,8 +95,12 @@ class SlMk3(Device):
         matcher.addControl(SlLoopButton())
         matcher.addControl(SlRewindButton())
         matcher.addControl(SlFastForwardButton())
-        matcher.addControl(SlDirectionNext())
+        matcher.addControl(SlDirectionRight())
+        matcher.addControl(SlDirectionLeft())
+        matcher.addControl(SlDirectionDown())
+        matcher.addControl(SlDirectionUp())
         matcher.addControl(SlDirectionPrevious())
+        matcher.addControl(SlDirectionNext())
         matcher.addControl(SlRecordButton())
         matcher.addControl(SlControlSwitchButton())
         matcher.addControl(StandardPitchWheel.create())

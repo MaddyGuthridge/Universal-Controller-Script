@@ -252,7 +252,7 @@ class SpecialPlugin(Plugin):
         ### Returns:
         * `bool`: whether the plugin should process the event
         """
-        raise AbstractMethodError()
+        raise AbstractMethodError(cls)
 
     @classmethod
     @abstractmethod

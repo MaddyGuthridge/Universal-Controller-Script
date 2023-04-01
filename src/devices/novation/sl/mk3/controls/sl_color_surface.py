@@ -23,14 +23,16 @@ class SlColorSurface(IColorManager):
     def __init__(
         self,
         note_num: int,
+        contrast_fix: bool = True,
     ) -> None:
         self.__index = note_num
+        self.__contrast_fix = contrast_fix
 
     def onColorChange(self, new: Color) -> None:
         """Called when the color changes"""
         new = new.fadeGray(-0.5, enabled=new.enabled)
         # Ignore whenever the light isn't enabled, as a fix for bad contrast
-        if not new.enabled:
+        if not new.enabled and self.__contrast_fix:
             new = Color()
         forwardEvent(
             FlMidiMsg([

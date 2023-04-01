@@ -53,9 +53,10 @@ def do_filter(callback: TickCallback):
                 def wrapper_method(
                     self,
                     index: UnsafeIndex,
+                    *args,
                 ) -> bool:
                     if callback(index):
-                        return func(self, index)  # type: ignore
+                        return func(self, index, *args)  # type: ignore
                     if enforce:
                         raise TypeError("Index not filtered correctly")
                     return filtered_return
@@ -64,9 +65,10 @@ def do_filter(callback: TickCallback):
             else:
                 def wrapper(
                     index: UnsafeIndex,
+                    *args,
                 ) -> bool:
                     if callback(index):
-                        return func(index)  # type: ignore
+                        return func(index, *args)  # type: ignore
                     if enforce:
                         raise TypeError("Index not filtered correctly")
                     return filtered_return

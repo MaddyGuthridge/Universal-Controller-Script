@@ -12,6 +12,7 @@ more details.
 """
 
 __all__ = [
+    'activity_switcher',
     'fallback_transport',
     'macro',
     'manual_mapper',
@@ -19,6 +20,7 @@ __all__ = [
     'transport',
 ]
 
+from . import activity_switcher
 from . import fallback_transport
 from . import macro
 from . import manual_mapper

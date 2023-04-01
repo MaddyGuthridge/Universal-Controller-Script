@@ -1,6 +1,10 @@
 
 # Devices
 
+## Akai
+
+* [MPK Mini Mk3](akai/mpk.mini.mk3.md)
+
 ## Korg
 
 * [NanoKontrol Mk1](korg/nanokontrol.mk1.md)

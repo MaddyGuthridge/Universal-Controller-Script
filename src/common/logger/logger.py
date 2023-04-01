@@ -27,6 +27,16 @@ class Log:
     searched through as required.
     """
 
+    def __repr__(self) -> str:
+        print("\n".join([
+            "Log: contains logging information from the script",
+            "Commands:",
+            " * length(): returns the length of the log",
+            " * recall(): recall log entries",
+            " * inspect(index): print detailed info about a log entry",
+        ]))
+        return ""
+
     def __init__(self) -> None:
         self._history: list[LogItem] = []
 

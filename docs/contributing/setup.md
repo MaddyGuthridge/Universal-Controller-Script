@@ -59,3 +59,6 @@ most code editors.
     will start up, print the welcome message then exit.
 
 11. Get familiar with the project's [style guidelines](style.md)
+
+12. Make sure you've joined the [Discord server](https://discord.gg/6vpfJUF) 
+    so that I can help out if you run into any issues.

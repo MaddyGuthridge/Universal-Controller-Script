@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from typing import TYPE_CHECKING
-from common.exceptions import DeviceRecognizeError
+from common.exceptions import DeviceRecognizeError, DeviceInitializeError
 from common.util.events import eventToString
 from fl_classes import FlMidiMsg
 
@@ -66,7 +66,11 @@ class DeviceCollection:
                 if device.matchDeviceName(arg):
                     # If it matches the pattern, then we found the right device
                     # create an instance and return it
-                    return device.create(None)
+                    try:
+                        return device.create(None)
+                    except Exception as e:
+                        raise DeviceInitializeError(
+                            "Failed to initialise device") from e
             raise DeviceRecognizeError(
                 f"Device not recognized, using device name {arg}")
         # Sysex event
@@ -80,7 +84,11 @@ class DeviceCollection:
                 elif pattern.matchEvent(arg):
                     # If it matches the pattern, then we found the right device
                     # create an instance and return it
-                    return device.create(arg)
+                    try:
+                        return device.create(arg)
+                    except Exception as e:
+                        raise DeviceInitializeError(
+                            "Failed to initialise device") from e
             raise DeviceRecognizeError(
                 f"Device not recognized, using response "
                 f"pattern {eventToString(arg)}"
@@ -101,7 +109,11 @@ class DeviceCollection:
         """
         for device in self.__devices:
             if id in device.getSupportedIds():
-                return device.create(id=id)
+                try:
+                    return device.create(id=id)
+                except Exception as e:
+                    raise DeviceInitializeError(
+                        "Failed to initialise device") from e
         raise DeviceRecognizeError(f"Device with ID {id} not found")
 
     def all(self) -> list[type['Device']]:
