@@ -11,8 +11,10 @@ more details.
 """
 from . import (
     daw_cassette,
+    speldosa,
 )
 
 __all__ = [
     'daw_cassette',
+    'speldosa',
 ]
