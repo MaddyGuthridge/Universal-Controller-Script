@@ -91,5 +91,5 @@ jobs:
     - run: poetry install
     - name: Test script load
       run: |
-        python src/device_universal.py
-        python src/device_event_forward.py
+        poetry run python src/device_universal.py
+        poetry run python src/device_event_forward.py
