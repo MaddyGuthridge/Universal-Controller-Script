@@ -31,7 +31,7 @@ class IControlShadow:
     simplifies performing quick assignments of control properties.
     """
 
-    def isBound(self) -> TypeGuard['ControlShadow']:
+    def isBound(self) -> TypeGuard['ControlShadow']:  # type: ignore
         """
         Return whether this control shadow is bound to an actual control
 
