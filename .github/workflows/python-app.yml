@@ -3,7 +3,7 @@
 
 name: Test and Lint
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   Pytest:
@@ -16,16 +16,19 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.9
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - uses: Gr1N/setup-poetry@v8
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+    - run: poetry --version
+    - run: poetry install
     - name: Test with pytest
       run: |
-        coverage run -m pytest
+        poetry run coverage run -m pytest
     - name: Generate code coverage report
       run: |
-        coverage report
+        poetry run coverage report
 
   Flake8:
     runs-on: ubuntu-latest
@@ -37,13 +40,16 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.9
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - uses: Gr1N/setup-poetry@v8
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+    - run: poetry --version
+    - run: poetry install
     - name: Lint with flake8
       run: |
-        flake8
+        poetry run flake8
 
   Mypy:
     runs-on: ubuntu-latest
@@ -55,13 +61,16 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.9
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - uses: Gr1N/setup-poetry@v8
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+    - run: poetry --version
+    - run: poetry install
     - name: Lint with mypy
       run: |
-        mypy .
+        poetry run mypy .
 
   Load:
     runs-on: ubuntu-latest
@@ -73,10 +82,13 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.9
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - uses: Gr1N/setup-poetry@v8
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+    - run: poetry --version
+    - run: poetry install
     - name: Test script load
       run: |
         python src/device_universal.py
