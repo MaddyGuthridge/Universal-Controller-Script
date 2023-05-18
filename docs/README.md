@@ -11,4 +11,6 @@
 
 * [Plugin Information](plugins/README.md)
 
+* [Project Roadmap](./roadmap.md)
+
 * [Information for Contributors](contributing/README.md)
