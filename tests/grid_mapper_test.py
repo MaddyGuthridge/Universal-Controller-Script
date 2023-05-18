@@ -81,3 +81,11 @@ def test_wraps_tall():
         [(0, 0, 3), None, None],
         [(0, 1, 3), None, None],
     ]
+
+
+def test_wraps_long_row():
+    assert grid_map(3, 3, 8, 1, wrap_overflows=True) == [
+        [(0, 0, 0), (0, 0, 1), (0, 0, 2)],
+        [(0, 0, 3), (0, 0, 4), (0, 0, 5)],
+        [(0, 0, 6), (0, 0, 7), None],
+    ]

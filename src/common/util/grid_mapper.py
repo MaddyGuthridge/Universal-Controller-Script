@@ -2,6 +2,13 @@
 # src / common / util / grid_mapper
 
 Code to map groups of elements onto an overall grid.
+
+## TODO
+
+Some features are currently untested which may be required for some layouts.
+
+* Support for vertical-before-horizontal filling
+* Support for fill directions
 """
 import math
 from typing import Optional
@@ -21,9 +28,7 @@ def fill_in_group(
     horizontal_before_vertical: bool,
 ) -> tuple[list[list[Optional[int]]], int]:
     """
-    Fill in the index for a group
-
-    Used by grid_map
+    Fill in a group number to the specified region on the grid.
 
     ### Args:
     * `grid` (`list[list[Optional[int]]]`): grid to fill into
@@ -62,7 +67,11 @@ def fill_in_group(
     while True:
         try:
             for curr_row in range(row, row + group_height):
+                og_row = curr_row
                 for curr_col in range(col, col + group_width):
+                    # Reset the row each iteration to fix issues with long
+                    # wraps
+                    curr_row = og_row
                     # Check if we've filled enough items
                     if filled_items == group_width * group_height:
                         raise StopIteration()
@@ -75,9 +84,9 @@ def fill_in_group(
                             filled_items += width - group_width
                             break
                         elif wrap_overflows:
-                            # Wrap around to the next group row
-                            row += group_height
-                            raise StopIteration()
+                            # Fill it in on a later row instead
+                            curr_row += curr_col // width * group_height
+                            curr_col = curr_col % width
                         else:
                             # Can't place this group
                             return grid, 0
@@ -89,13 +98,13 @@ def fill_in_group(
                             # We've filled enough
                             return grid_copy, 1
                         elif wrap_overflows:
-                            # Wrap around to the next group column
-                            col += group_width
-                            raise StopIteration()
+                            # Fill it in on a later column instead
+                            curr_col += curr_row // height * group_width
+                            curr_row = curr_row % height
                         else:
                             # Can't place this group
                             return grid, 0
-                    # If we reach this point, we can fill it safely
+                    # If we reach this point, we can fill it normally
                     grid_copy[curr_row][curr_col] = group_num
                     filled_items += 1
         except StopIteration:
@@ -122,6 +131,10 @@ def template_map_to_index_map(
     group_height: int,
     horizontal_before_vertical: bool,
 ) -> list[list[Optional[tuple[int, int, int]]]]:
+    """
+    Map group numbers in a grid to a new grid where each cell is a tuple
+    containing the group number, row and column within the group.
+    """
     result: list[list[Optional[tuple[int, int, int]]]] = \
         [[None] * width for _ in range(height)]
 
