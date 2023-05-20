@@ -68,7 +68,6 @@ def triggerPad(
     return True
 
 
-
 class FPC(StandardPlugin):
     """
     Used to interact with the FPC plugin, mapping drum pads to the required
