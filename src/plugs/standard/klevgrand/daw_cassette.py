@@ -63,11 +63,11 @@ class DawCassette(StandardPlugin):
         self,
         event: ControlShadowEvent,
         plug_index: EffectIndex,
-        pad: int,
+        pad: GridCell,
     ) -> bool:
         try:
-            param = PARAMS[pad // 3]
-            val = VALS[pad % 3]
+            param = PARAMS[pad.overall_index // 3]
+            val = VALS[pad.overall_index % 3]
         except IndexError:
             return False
         plugins.setParamValue(val, param, *plug_index)
