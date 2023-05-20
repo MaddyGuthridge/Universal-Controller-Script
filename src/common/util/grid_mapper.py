@@ -14,13 +14,14 @@ import math
 from typing import Optional
 
 
-GridIndex = tuple[int, int, int]
+GridIndex = tuple[int, int, int, int]
 """
 Represents a mapping for a particular index. All values are zero-indexed
 
 * `int`: group number
 * `int`: row within group
 * `int`: column within group
+* `int`: overall index within group
 """
 
 GridLayout = list[list[Optional[GridIndex]]]
@@ -32,8 +33,15 @@ tuple if it is mapped, or is `None` if it is not mapped.
 """
 
 
+__UnfilledGrid = list[list[Optional[int]]]
+"""
+Represents a grid before it is filled with all values. Elements can be
+group numbers or `None` if they are not filled yet.
+"""
+
+
 def __fill_in_group(
-    grid: list[list[Optional[int]]],
+    grid: __UnfilledGrid,
     width: int,
     height: int,
     group_width: int,
@@ -44,12 +52,12 @@ def __fill_in_group(
     truncate_overflows: bool,
     wrap_overflows: bool,
     horizontal_before_vertical: bool,
-) -> tuple[list[list[Optional[int]]], int]:
+) -> tuple[__UnfilledGrid, int]:
     """
     Fill in a group number to the specified region on the grid.
 
     ### Args:
-    * `grid` (`list[list[Optional[int]]]`): grid to fill into
+    * `grid` (`__UnfilledGroup`): grid to fill into
 
     * `width` (`int`): width of the overall grid
 
@@ -75,7 +83,7 @@ def __fill_in_group(
 
     ### Returns:
 
-    * `list[list[Optional[int]]]`: new grid
+    * `__UnfilledGroup`: new grid
 
     * `int`: amount to increment the group number by
     """
@@ -142,7 +150,7 @@ def __fill_in_group(
 
 
 def __template_map_to_index_map(
-    grid: list[list[Optional[int]]],
+    grid: __UnfilledGrid,
     width: int,
     height: int,
     group_width: int,
@@ -153,8 +161,7 @@ def __template_map_to_index_map(
     Map group numbers in a grid to a new grid where each cell is a tuple
     containing the group number, row and column within the group.
     """
-    result: list[list[Optional[tuple[int, int, int]]]] = \
-        [[None] * width for _ in range(height)]
+    result: GridLayout = [[None] * width for _ in range(height)]
 
     # Starting indexes of each group, used to calculate the indexes for each
     # element in the group
@@ -191,14 +198,17 @@ def __template_map_to_index_map(
                     # rows fill first
                     off_col += off_row // group_height * width
                     off_row %= group_height
+                    group_index = off_row * group_width + off_col
                 else:
                     # columns fill first
                     off_row += off_col // group_width * height
                     off_col %= group_width
+                    group_index = off_col * group_height + off_row
                 result[row][col] = (
                     group_number,
                     off_row,
                     off_col,
+                    group_index
                 )
 
     return result
@@ -207,8 +217,8 @@ def __template_map_to_index_map(
 def grid_map(
     width: int,
     height: int,
-    group_width: int,
-    group_height: int,
+    group_width: Optional[int],
+    group_height: Optional[int],
     left_to_right: bool = True,
     top_to_bottom: bool = True,
     horizontal_before_vertical: bool = True,
@@ -228,9 +238,13 @@ def grid_map(
 
     * `height` (`int`): height of the overall grid
 
-    * `group_width` (`int`): width of each group
+    * `group_width` (`int | None`): width of each group to be placed on the
+      grid. If `None` is given, the full width of the overall grid will be
+      used.
 
-    * `group_height` (`int`): height of each group
+    * `group_height` (`int | None`): height of each group to be placed on the
+      grid. If `None` is given, the full height of the overall grid will be
+      used.
 
     * `left_to_right` (`bool`, optional): whether to place groups
       left-to-right (`True`) or right-to-left (`False`). Defaults to `True`.
@@ -250,10 +264,15 @@ def grid_map(
       are too big to fit into the group (`True`) or to not place them at all
       (`False`). Defaults to `False`.
     """
+    # Handle unset widths and heights for groups
+    if group_width is None:
+        group_width = width
+    if group_height is None:
+        group_height = height
+
     # A template grid - instead of filling each group element, we'll just say
     # which group goes where and figure out the specific elements later
-    template_grid: list[list[Optional[int]]] = \
-        [[None] * width for _ in range(height)]
+    template_grid: __UnfilledGrid = [[None] * width for _ in range(height)]
 
     # All of the following operations assume left-to-right, top-to-bottom
     # We can then transform the result as required afterwards
