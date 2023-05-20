@@ -42,6 +42,9 @@ class GridCell:
         """Height of the group that this cell belongs to"""
         self.group_index = col + group_width * row
         """Index within the group that this cell belongs to"""
+        self.overall_index = \
+            self.group_index + group_number * group_width * group_height
+        """Overall index, accounting for group number"""
 
 
 GridLayout = list[list[Optional[GridCell]]]

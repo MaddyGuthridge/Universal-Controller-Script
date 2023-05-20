@@ -13,6 +13,7 @@ from typing import Any
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex, UnsafeIndex
+from common.util.grid_mapper import GridCell
 from control_surfaces import Note
 from control_surfaces import ControlShadowEvent, ControlShadow
 from devices import DeviceShadow
@@ -24,21 +25,26 @@ from plugs.mapping_strategies import GridStrategy
 def colorPad(
     control: ControlShadow,
     ch_idx: UnsafeIndex,
-    pad_idx: int,
+    pad_idx: GridCell,
 ) -> Color:
     if not isinstance(ch_idx, tuple):
         return Color()
     chan = ch_idx[0]
-    return Color.fromInteger(plugins.getPadInfo(chan, -1, 2, pad_idx))
+    return Color.fromInteger(plugins.getPadInfo(
+        chan,
+        -1,
+        2,
+        pad_idx.overall_index,
+    ))
 
 
 @event_filters.toGeneratorIndex(False)
 def triggerPad(
     control: ControlShadowEvent,
     ch_idx: GeneratorIndex,
-    pad_idx: int,
+    pad_idx: GridCell,
 ) -> bool:
-    note = plugins.getPadInfo(*ch_idx, -1, 1, pad_idx)
+    note = plugins.getPadInfo(*ch_idx, -1, 1, pad_idx.overall_index)
     # Work-around for horrible bug where wrong note numbers are given
     if note > 127:
         note = note >> 16
@@ -52,14 +58,12 @@ class FPC(StandardPlugin):
     notes
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-
         drums = GridStrategy(
             4,
             4,
-            True,
             triggerPad,
-            colorPad,
-            invert_rows=True,
+            color_callback=colorPad,
+            top_to_bottom=False,
         )
 
         self._notes = shadow.bindMatches(Note, self.noteEvent)

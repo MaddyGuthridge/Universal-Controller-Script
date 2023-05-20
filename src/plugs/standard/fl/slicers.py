@@ -14,6 +14,7 @@ import channels
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex
+from common.util.grid_mapper import GridCell
 from devices import DeviceShadow
 from plugs import StandardPlugin, event_filters, tick_filters
 from plugs.mapping_strategies.grid_strategy import (
@@ -29,11 +30,10 @@ class Slicers(StandardPlugin):
     """
     def __init__(self, shadow: DeviceShadow) -> None:
         drums = GridStrategy(
-            -1,
-            -1,
-            True,
+            None,
+            None,
             self.trigger,
-            self.color,
+            color_callback=self.color,
         )
         self.__indexes: list[int] = []
         super().__init__(shadow, [drums])
@@ -71,13 +71,17 @@ class Slicers(StandardPlugin):
         self,
         control: ControlShadow,
         ch_idx: GeneratorIndex,
-        pad_idx: int,
+        pad_idx: GridCell,
     ) -> Color:
         """
         Color the note at the required index
         """
-        if 0 <= pad_idx < len(self.__indexes):
-            return color_callbacks.channelColor(control, ch_idx, pad_idx)
+        if 0 <= pad_idx.overall_index < len(self.__indexes):
+            return color_callbacks.channelColor(
+                control,
+                ch_idx,
+                pad_idx,
+            )
         else:
             return Color()
 

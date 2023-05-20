@@ -13,6 +13,7 @@ import plugins
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import EffectIndex
+from common.util.grid_mapper import GridCell
 from control_surfaces import ControlShadowEvent, ControlShadow
 from devices import DeviceShadow
 from plugs import StandardPlugin
@@ -49,9 +50,8 @@ class DawCassette(StandardPlugin):
         drums = GridStrategy(
             3,
             2,
-            True,
             self.triggerDrumPads,
-            self.colorDrumPads,
+            color_callback=self.colorDrumPads,
         )
 
         self.__active_pads = [0, 0]
@@ -77,10 +77,10 @@ class DawCassette(StandardPlugin):
         self,
         control: ControlShadow,
         _,
-        pad: int,
+        pad: GridCell,
     ) -> Color:
-        pad_row = pad // 3
-        pad_col = pad % 3
+        pad_row = pad.overall_index // 3
+        pad_col = pad.overall_index % 3
         try:
             if pad_col == self.__active_pads[pad_row]:
                 return Color.WHITE

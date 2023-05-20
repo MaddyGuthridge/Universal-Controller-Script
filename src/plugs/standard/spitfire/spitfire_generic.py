@@ -14,6 +14,7 @@ import plugins
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex
+from common.util.grid_mapper import GridCell
 from control_surfaces import ControlShadowEvent
 from control_surfaces import Fader
 from devices import DeviceShadow
@@ -78,9 +79,13 @@ BOUND_COLOR = Color.fromRgb(127, 127, 127)
 def trigger(
     control: ControlShadowEvent,
     ch_idx: GeneratorIndex,
-    pad_idx: int,
+    pad_idx: GridCell,
 ) -> bool:
-    channels.midiNoteOn(ch_idx[0], pad_idx, int(control.value * 127))
+    channels.midiNoteOn(
+        ch_idx[0],
+        pad_idx.overall_index,
+        int(control.value * 127)
+    )
     return True
 
 
@@ -141,7 +146,9 @@ class SpitfireKeyswitch(SpitfireGeneric):
     keyswitches.
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        super().__init__(shadow, [GridStrategy(4, 2, False, trigger)])
+        super().__init__(shadow, [
+            GridStrategy(4, 2, trigger, do_property_update=False)
+        ])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':
