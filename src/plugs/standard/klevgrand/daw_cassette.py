@@ -13,10 +13,11 @@ import plugins
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import EffectIndex
+from common.util.grid_mapper import GridCell
 from control_surfaces import ControlShadowEvent, ControlShadow
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.mapping_strategies import SimpleFaders, DrumPadStrategy
+from plugs.mapping_strategies import SimpleFaders, GridStrategy
 from plugs.event_filters import toEffectIndex as eEffectIndex
 from plugs.tick_filters import toEffectIndex as tEffectIndex
 
@@ -46,12 +47,11 @@ class DawCassette(StandardPlugin):
             ],
             PLUG_COLOR,
         )
-        drums = DrumPadStrategy(
+        drums = GridStrategy(
             3,
             2,
-            True,
             self.triggerDrumPads,
-            self.colorDrumPads,
+            color_callback=self.colorDrumPads,
         )
 
         self.__active_pads = [0, 0]
@@ -63,11 +63,11 @@ class DawCassette(StandardPlugin):
         self,
         event: ControlShadowEvent,
         plug_index: EffectIndex,
-        pad: int,
+        pad: GridCell,
     ) -> bool:
         try:
-            param = PARAMS[pad // 3]
-            val = VALS[pad % 3]
+            param = PARAMS[pad.overall_index // 3]
+            val = VALS[pad.overall_index % 3]
         except IndexError:
             return False
         plugins.setParamValue(val, param, *plug_index)
@@ -77,10 +77,10 @@ class DawCassette(StandardPlugin):
         self,
         control: ControlShadow,
         _,
-        pad: int,
+        pad: GridCell,
     ) -> Color:
-        pad_row = pad // 3
-        pad_col = pad % 3
+        pad_row = pad.overall_index // 3
+        pad_col = pad.overall_index % 3
         try:
             if pad_col == self.__active_pads[pad_row]:
                 return Color.WHITE

@@ -14,10 +14,11 @@ import channels
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex
+from common.util.grid_mapper import GridCell
 from devices import DeviceShadow
 from plugs import StandardPlugin, event_filters, tick_filters
-from plugs.mapping_strategies.drum_pad_strategy import (
-    DrumPadStrategy,
+from plugs.mapping_strategies.grid_strategy import (
+    GridStrategy,
     color_callbacks,
 )
 from control_surfaces import ControlShadowEvent, ControlShadow
@@ -28,12 +29,11 @@ class Slicers(StandardPlugin):
     Adds support for Slicex and Fruity Slicer
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        drums = DrumPadStrategy(
-            -1,
-            -1,
-            True,
+        drums = GridStrategy(
+            None,
+            None,
             self.trigger,
-            self.color,
+            color_callback=self.color,
         )
         self.__indexes: list[int] = []
         super().__init__(shadow, [drums])
@@ -51,15 +51,15 @@ class Slicers(StandardPlugin):
         self,
         control: ControlShadowEvent,
         ch_idx: GeneratorIndex,
-        pad_idx: int,
+        pad_idx: GridCell,
     ) -> bool:
         """
         Trigger a note at the required index
         """
-        if 0 <= pad_idx < len(self.__indexes):
+        if 0 <= pad_idx.overall_index < len(self.__indexes):
             channels.midiNoteOn(
                 channels.getChannelIndex(*ch_idx),
-                self.__indexes[pad_idx],
+                self.__indexes[pad_idx.overall_index],
                 int(control.value * 127),
             )
             return True
@@ -71,13 +71,17 @@ class Slicers(StandardPlugin):
         self,
         control: ControlShadow,
         ch_idx: GeneratorIndex,
-        pad_idx: int,
+        pad_idx: GridCell,
     ) -> Color:
         """
         Color the note at the required index
         """
-        if 0 <= pad_idx < len(self.__indexes):
-            return color_callbacks.channelColor(control, ch_idx, pad_idx)
+        if 0 <= pad_idx.overall_index < len(self.__indexes):
+            return color_callbacks.channelColor(
+                control,
+                ch_idx,
+                pad_idx,
+            )
         else:
             return Color()
 

@@ -189,6 +189,21 @@ plugins = ["setuptools"]
 requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
 [[package]]
+name = "jestspectation"
+version = "1.1.0"
+description = "Pattern matching helper classes designed to allow for testing of complex data structures in a readable and logical format"
+category = "main"
+optional = false
+python-versions = ">=3.9,<4.0"
+files = [
+    {file = "jestspectation-1.1.0-py3-none-any.whl", hash = "sha256:f38e70121a82fc9da77c0e09a4b9887cf2d71cb092318cfa35fd2fb48aca882b"},
+    {file = "jestspectation-1.1.0.tar.gz", hash = "sha256:3235c031c8a298985f240a6cd159186a5b8ce50cc1b424e8096e49c5c9aa2417"},
+]
+
+[package.dependencies]
+typing-extensions = ">=4.5.0,<5.0.0"
+
+[[package]]
 name = "jsonschema"
 version = "4.17.3"
 description = "An implementation of JSON Schema validation for Python"
@@ -418,4 +433,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9.1"
-content-hash = "dbd42a63156a78ba9eda440f2decf74ecbd88d2b221e0877fff3ea0773849beb"
+content-hash = "b2f97adbce8258df0e6692f255e7d3d2c5023ba6c0755c19677d827b3f6fdff2"

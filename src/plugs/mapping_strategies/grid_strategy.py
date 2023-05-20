@@ -16,6 +16,7 @@ from . import IMappingStrategy
 from common.plug_indexes import UnsafeIndex
 from devices import DeviceShadow
 from common.types import Color
+from common.util.grid_mapper import GridCell, GridLayout, grid_map
 
 from control_surfaces import (
     ControlShadow,
@@ -23,9 +24,9 @@ from control_surfaces import (
     ControlShadowEvent,
 )
 
-TriggerCallback = Callable[[ControlShadowEvent, UnsafeIndex, int], bool]
-ColorCallback = Callable[[ControlShadow, UnsafeIndex, int], Color]
-AnnotationCallback = Callable[[ControlShadow, UnsafeIndex, int], str]
+TriggerCallback = Callable[[ControlShadowEvent, UnsafeIndex, GridCell], bool]
+ColorCallback = Callable[[ControlShadow, UnsafeIndex, GridCell], Color]
+AnnotationCallback = Callable[[ControlShadow, UnsafeIndex, GridCell], str]
 
 
 class color_callbacks:
@@ -37,7 +38,7 @@ class color_callbacks:
     def white(
         control: ControlShadow,
         plug_index: UnsafeIndex,
-        index: int,
+        index: GridCell,
     ) -> Color:
         """
         Colors all drum pads white with brightness 0.3
@@ -48,7 +49,7 @@ class color_callbacks:
     def channelColor(
         control: ControlShadow,
         plug_index: UnsafeIndex,
-        index: int,
+        index: GridCell,
     ) -> Color:
         """
         Colors all drum pads white with the channel or mixer track color
@@ -77,7 +78,7 @@ class annotation_callbacks:
     def empty(
         control: ControlShadow,
         plug_index: UnsafeIndex,
-        index: int,
+        index: GridCell,
     ) -> str:
         """
         Provides a default annotation for drum pads bound using the drum pad
@@ -86,22 +87,25 @@ class annotation_callbacks:
         return ""
 
 
-class DrumPadStrategy(IMappingStrategy):
+class GridStrategy(IMappingStrategy):
     """
-    The drum pad strategy allows for mapping drum pad controls to drums or
-    keyswitches. It handles various drum pad dimensions in order to ensure that
-    content is fit to them as correctly as possible.
+    The grid strategy can be used for creating grid-like layouts that adapt to
+    the drum pad layout of various MIDI controllers.
     """
 
     def __init__(
         self,
-        width: int,
-        height: int,
-        do_property_update: bool,
+        group_width: Optional[int],
+        group_height: Optional[int],
         trigger_callback: TriggerCallback,
+        left_to_right: bool = True,
+        top_to_bottom: bool = True,
+        horizontal_before_vertical: bool = True,
+        truncate_overflows: bool = False,
+        wrap_overflows: bool = False,
+        do_property_update: bool = True,
         color_callback: ColorCallback = color_callbacks.channelColor,
         annotation_callback: AnnotationCallback = annotation_callbacks.empty,
-        invert_rows: bool = False,
     ) -> None:
         """
         Create an instance of a drum pad strategy
@@ -116,21 +120,42 @@ class DrumPadStrategy(IMappingStrategy):
         or you can read the docs on the documentation website once I make it.
 
         ### Args:
-        * `width` (`int`): the width of a single row of controls. This is used
-          to determine how to arrange rows and columns for each control. After
-          every `n` drum pads (where `n = width`), the index of the drum pad
-          wraps around to start a new row. After running out of rows on the
-          drum pad grid, another group of columns will be wrapped around to,
-          although the `height` parameter is also respected. If the width of
-          the controls is not important, this value and the `height` should be
-          set to `-1`.
+        * `group_width` (`Optional[int]`): the width of a single row of
+          controls. This is used to determine how to arrange rows and columns
+          for each control. After every `n` drum pads (where `n = width`), the
+          index of the drum pad wraps around to start a new row. After running
+          out of rows on the drum pad grid, another group of columns will be
+          wrapped around to, although the `height` parameter is also respected.
+          If the width of the controls is not important, this value and the
+          `height` should be set to `None`.
 
-        * `height` (`int`): the height of a group of controls. This is used to
-          determine how to arrange rows and columns for each control. After
-          every `m` rows of drum pads (where `m = height`), drum pad indexes
-          will wrap around to the next group of `n` columns (where
+        * `group_height` (`Optional[int]`): the height of a group of controls.
+          This is used to determine how to arrange rows and columns for each
+          control. After every `m` rows of drum pads (where `m = height`), drum
+          pad indexes will wrap around to the next group of `n` columns (where
           `n = width`). If the height of the controls is not important, this
-          value should be set to `-1`.
+          value should be set to `None`.
+
+        * `left_to_right` (`bool`, optional): whether to place groups
+          left-to-right (`True`) or right-to-left (`False`). Defaults to
+          `True`.
+
+        * `top_to_bottom` (`bool`, optional): whether to place groups
+          top-to-bottom (`True`) or bottom-to-top (`False`). Defaults to
+          `True`.
+
+        * `horizontal_before_vertical` (`bool`, optional): Whether to fill
+          groups horizontally first or vertically first. If `True`, elements
+          are filled across, then vertically once each row is filled. Defaults
+          to `True`.
+
+        * `truncate_overflows` (`bool`, optional): whether to truncate groups
+          that are too big to fit into the group (`True`) or to not place them
+          at all (`False`). Defaults to `False`.
+
+        * `wrap_overflows` (`bool`, optional): whether to wrap groups that
+          are too big to fit into the group (`True`) or to not place them at
+          all (`False`). Defaults to `False`.
 
         * `do_property_update` (`bool`): whether the color and annotation
           properties of each drum pad should be updated after the initial
@@ -142,8 +167,8 @@ class DrumPadStrategy(IMappingStrategy):
           `TriggerCallback` should return a `bool` representing whether the
           event was handled, and should accept the following parameters:
 
-              * `int`: the index of the drum pad, as determined by the width
-                and height specified when creating the drum pad strategy.
+              * `GridCell`: the index of the drum pad, as determined by the
+                width and height specified when creating the drum pad strategy.
 
               * `ControlShadowEvent`: the event that caused the trigger. The
                 data from this event can be used to determine the value and
@@ -158,8 +183,8 @@ class DrumPadStrategy(IMappingStrategy):
           pad will be gray. The callback should return a `Color` object, and
           accept the following parameters:
 
-              * `int`: the index of the drum pad, as determined by the width
-                and height specified when creating the drum pad strategy.
+              * `GridCell`: the index of the drum pad, as determined by the
+                width and height specified when creating the drum pad strategy.
 
               * `ControlShadow`: the control that is associated with this
                 index. The data from this can be used to determine the value
@@ -173,110 +198,33 @@ class DrumPadStrategy(IMappingStrategy):
           parameter is the drum pad index. Defaults to
           `annotation_callbacks.empty`, meaning that the annotation for each
           drum pad will be unset.
-
-        * `invert_rows` (`bool`, optional): whether to have the rows invert, so
-          that the first row is at the bottom and the last is at the top. It
-          does not respect the groupings made by the `height` parameter.
-          Defaults to `False`
         """
-        self.__width = width
-        self.__height = height
+        # Width and height of each group
+        self.__group_width = group_width
+        self.__group_height = group_height
+
+        # Whether to update properties
         self.__do_update = do_property_update
+
+        # Directions
+        self.__left_to_right = left_to_right
+        self.__top_to_bottom = top_to_bottom
+        self.__horizontal_before_vertical = horizontal_before_vertical
+
+        # Truncation and wrapping
+        self.__truncate_overflows = truncate_overflows
+        self.__wrap_overflows = wrap_overflows
+
+        # Callbacks
         self.__trigger = trigger_callback
         self.__color = color_callback
         self.__annotate: AnnotationCallback = annotation_callback
-        self.__invert_rows = invert_rows
-        self.__mappings: Optional[list[list[int]]] = None
+
+        # mappings
+        self.__mappings: Optional[GridLayout] = None
+        # list of drums we've initialized
         self.__initialized_drums: Optional[list[list[bool]]] = None
-
-        # Error checking
-        if width == -1 and height != -1:
-            raise ValueError(f"height ({height}) must be -1 if width is -1")
         super().__init__()
-
-    def generateLayoutMapping(self, shadow: DeviceShadow) -> list[list[int]]:
-        """
-        Generate a mapping to use for the layout of the drum pads
-
-        ### Args:
-        * `shadow` (`DeviceShadow`): device to create the mapping for
-
-        ### Returns:
-        * `list[list[int]]`: mapping matrix
-        """
-        # Get the number of rows and columns
-        rows, cols = shadow.getDevice().getDrumPadSize()
-
-        # Determine the actual width and height of each chunk
-        full_width = self.__width if self.__width != -1 else cols
-        full_height = self.__height if self.__height != -1 else rows
-
-        # Calculate the number of rows and columns we'll actually be able to
-        # use
-        reduced_rows = rows // full_height * full_height
-        reduced_cols = cols // full_width * full_width
-
-        # If we can't use any rows or columns, just use the maximum available
-        if reduced_rows == 0:
-            reduced_rows = rows
-            full_height = rows
-        if reduced_cols == 0:
-            reduced_cols = cols
-            full_width = cols
-
-        # Determine the size of each subdivided chunk
-        chunk_size = full_width * full_height
-
-        def calcIndex(r: int, c: int) -> int:
-            """
-            Calculate the index used for any particular cell
-            """
-            # Return early for out-of-range values
-            if (
-                r >= reduced_rows
-                or c >= reduced_cols
-                or r < 0  # handles reversed indexes
-            ):
-                return -1
-            # Outer values represent the coordinates of the chunk that the
-            # index lies in
-            outer_row = (
-                r // self.__height
-                if self.__height != -1
-                else 0
-            )
-            outer_col = (
-                c // self.__width
-                if self.__width != -1
-                else 0
-            )
-
-            # Inner values represent the coordinates within that chunk
-            inner_row = r - full_height * outer_row
-            inner_col = c - full_width * outer_col
-
-            # Indexes are the index of the chunk and the value within the
-            # chunk
-            outer_idx = outer_col + rows // self.__width * outer_row
-            inner_idx = inner_row * full_width + inner_col
-
-            # We can add those together to get the overall index
-            return outer_idx * chunk_size + inner_idx
-
-        def row_mapper(r: int):
-            """
-            Function to account for the invert_rows property
-            """
-            return (reduced_rows - r - 1) if self.__invert_rows else r
-
-        # Now fill in the matrix
-        return [
-            [
-                calcIndex(row_mapper(r), c)
-                for c in range(cols)
-            ]
-            for r in range(rows)
-        ]
 
     def apply(self, shadow: DeviceShadow) -> None:
         rows, cols = shadow.getDevice().getDrumPadSize()
@@ -294,7 +242,17 @@ class DrumPadStrategy(IMappingStrategy):
                              "already bound by another component of this "
                              "plugin?")
 
-        self.__mappings = self.generateLayoutMapping(shadow)
+        self.__mappings = grid_map(
+            cols,
+            rows,
+            self.__group_width,
+            self.__group_height,
+            self.__left_to_right,
+            self.__top_to_bottom,
+            self.__horizontal_before_vertical,
+            self.__truncate_overflows,
+            self.__wrap_overflows,
+        )
         self.__initialized_drums = [
             [False for _ in range(cols)]
             for _ in range(rows)
@@ -310,7 +268,7 @@ class DrumPadStrategy(IMappingStrategy):
 
         row, col = control.coordinate
         index = self.__mappings[row][col]
-        if index == -1:
+        if index is None:
             # Not mapped to anything
             return True
 
@@ -334,7 +292,7 @@ class DrumPadStrategy(IMappingStrategy):
             return
 
         index = self.__mappings[row][col]
-        if index == -1:
+        if index is None:
             # Not mapped to anything
             return
 
