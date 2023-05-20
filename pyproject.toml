@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.9.1"
 fl-studio-api-stubs = "^28.2.0"
 typing-extensions = "^4.5.0"
+jestspectation = "^1.1.0"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.2.5"
