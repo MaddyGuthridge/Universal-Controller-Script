@@ -46,6 +46,12 @@ class GridCell:
             self.group_index + group_number * group_width * group_height
         """Overall index, accounting for group number"""
 
+    def __repr__(self) -> str:
+        return (
+            f"GridCell(group={self.group_number}, row={self.row}, "
+            f"col={self.col})"
+        )
+
 
 GridLayout = list[list[Optional[GridCell]]]
 """
