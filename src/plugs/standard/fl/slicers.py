@@ -51,15 +51,15 @@ class Slicers(StandardPlugin):
         self,
         control: ControlShadowEvent,
         ch_idx: GeneratorIndex,
-        pad_idx: int,
+        pad_idx: GridCell,
     ) -> bool:
         """
         Trigger a note at the required index
         """
-        if 0 <= pad_idx < len(self.__indexes):
+        if 0 <= pad_idx.overall_index < len(self.__indexes):
             channels.midiNoteOn(
                 channels.getChannelIndex(*ch_idx),
-                self.__indexes[pad_idx],
+                self.__indexes[pad_idx.overall_index],
                 int(control.value * 127),
             )
             return True
