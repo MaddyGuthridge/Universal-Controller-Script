@@ -16,7 +16,7 @@ from common.plug_indexes import EffectIndex
 from control_surfaces import ControlShadowEvent, ControlShadow
 from devices import DeviceShadow
 from plugs import StandardPlugin
-from plugs.mapping_strategies import SimpleFaders, DrumPadStrategy
+from plugs.mapping_strategies import SimpleFaders, GridStrategy
 from plugs.event_filters import toEffectIndex as eEffectIndex
 from plugs.tick_filters import toEffectIndex as tEffectIndex
 
@@ -46,7 +46,7 @@ class DawCassette(StandardPlugin):
             ],
             PLUG_COLOR,
         )
-        drums = DrumPadStrategy(
+        drums = GridStrategy(
             3,
             2,
             True,

@@ -19,7 +19,7 @@ from control_surfaces import Fader
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs import event_filters, tick_filters
-from plugs.mapping_strategies import DrumPadStrategy, IMappingStrategy
+from plugs.mapping_strategies import GridStrategy, IMappingStrategy
 
 # Generate list of supported plugins
 
@@ -141,7 +141,7 @@ class SpitfireKeyswitch(SpitfireGeneric):
     keyswitches.
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        super().__init__(shadow, [DrumPadStrategy(4, 2, False, trigger)])
+        super().__init__(shadow, [GridStrategy(4, 2, False, trigger)])
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'StandardPlugin':

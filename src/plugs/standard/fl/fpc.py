@@ -18,7 +18,7 @@ from control_surfaces import ControlShadowEvent, ControlShadow
 from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs import event_filters, tick_filters
-from plugs.mapping_strategies import DrumPadStrategy
+from plugs.mapping_strategies import GridStrategy
 
 
 def colorPad(
@@ -53,7 +53,7 @@ class FPC(StandardPlugin):
     """
     def __init__(self, shadow: DeviceShadow) -> None:
 
-        drums = DrumPadStrategy(
+        drums = GridStrategy(
             4,
             4,
             True,

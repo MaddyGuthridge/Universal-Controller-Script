@@ -16,8 +16,8 @@ from common.extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex
 from devices import DeviceShadow
 from plugs import StandardPlugin, event_filters, tick_filters
-from plugs.mapping_strategies.drum_pad_strategy import (
-    DrumPadStrategy,
+from plugs.mapping_strategies.grid_strategy import (
+    GridStrategy,
     color_callbacks,
 )
 from control_surfaces import ControlShadowEvent, ControlShadow
@@ -28,7 +28,7 @@ class Slicers(StandardPlugin):
     Adds support for Slicex and Fruity Slicer
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        drums = DrumPadStrategy(
+        drums = GridStrategy(
             -1,
             -1,
             True,

@@ -11,7 +11,7 @@ more details.
 """
 import pytest
 from devices import DeviceShadow
-from plugs.mapping_strategies import DrumPadStrategy
+from plugs.mapping_strategies import GridStrategy
 from common.plug_indexes import UnsafeIndex
 from common.types import Color
 from control_surfaces import ControlShadowEvent, ControlShadow, DrumPad
@@ -115,7 +115,7 @@ def test_cant_create_with_invalid_height():
     strategy with a specified height but unspecified width?
     """
     with pytest.raises(ValueError):
-        DrumPadStrategy(-1, 2, True, triggerCallbackGenerator(0, Flag()))
+        GridStrategy(-1, 2, True, triggerCallbackGenerator(0, Flag()))
 
 
 def test_callback_reached():
@@ -124,7 +124,7 @@ def test_callback_reached():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(-1, -1, True, triggerCallbackGenerator(0, flag))
+    strategy = GridStrategy(-1, -1, True, triggerCallbackGenerator(0, flag))
     # Create the bindings
     shadow = DeviceShadow(device)
     strategy.apply(shadow)
@@ -152,7 +152,7 @@ def test_basic_coordinates_rows():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(-1, -1, True, triggerCallbackGenerator(1, flag))
+    strategy = GridStrategy(-1, -1, True, triggerCallbackGenerator(1, flag))
     # Create the bindings
     shadow = DeviceShadow(device)
     strategy.apply(shadow)
@@ -178,7 +178,7 @@ def test_basic_coordinates_cols():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(-1, -1, True, triggerCallbackGenerator(4, flag))
+    strategy = GridStrategy(-1, -1, True, triggerCallbackGenerator(4, flag))
     # Create the bindings
     shadow = DeviceShadow(device)
     strategy.apply(shadow)
@@ -204,7 +204,7 @@ def test_limited_width():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(2, -1, True, triggerCallbackGenerator(2, flag))
+    strategy = GridStrategy(2, -1, True, triggerCallbackGenerator(2, flag))
     # Create the bindings
     shadow = DeviceShadow(device)
     strategy.apply(shadow)
@@ -232,7 +232,7 @@ def test_limited_width_column_groups():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(2, -1, True, triggerCallbackGenerator(8, flag))
+    strategy = GridStrategy(2, -1, True, triggerCallbackGenerator(8, flag))
     # Create the bindings
     shadow = DeviceShadow(device)
     strategy.apply(shadow)
@@ -260,7 +260,7 @@ def test_limited_height():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(2, 2, True, triggerCallbackGenerator(4, flag))
+    strategy = GridStrategy(2, 2, True, triggerCallbackGenerator(4, flag))
     # Create the bindings
     shadow = DeviceShadow(device)
     strategy.apply(shadow)
@@ -286,7 +286,7 @@ def test_limited_height_wraps_around():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(2, 2, True, triggerCallbackGenerator(8, flag))
+    strategy = GridStrategy(2, 2, True, triggerCallbackGenerator(8, flag))
     # Create the bindings
     shadow = DeviceShadow(device)
     strategy.apply(shadow)
@@ -316,7 +316,7 @@ def test_colorize_annotate():
         [12, 13, 14, 15],
     ]
     flag = Flag()
-    strategy = DrumPadStrategy(
+    strategy = GridStrategy(
         -1,
         -1,
         True,
@@ -359,7 +359,7 @@ def test_colorize_annotate_ignore_unmapped():
         [9, 10, 11, -1],
     ]
     flag = Flag()
-    strategy = DrumPadStrategy(
+    strategy = GridStrategy(
         3,
         -1,
         True,
@@ -394,7 +394,7 @@ def test_colorize_annotate_defaults():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(
+    strategy = GridStrategy(
         -1,
         -1,
         True,
@@ -429,7 +429,7 @@ def test_unassigned_column():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(3, -1, True, triggerCallbackGenerator(0, flag))
+    strategy = GridStrategy(3, -1, True, triggerCallbackGenerator(0, flag))
     # Create the bindings
     shadow = DeviceShadow(device)
     strategy.apply(shadow)
@@ -456,7 +456,7 @@ def test_unassigned_row():
     """
     device = DummyDeviceDrumPads(4, 4)
     flag = Flag()
-    strategy = DrumPadStrategy(4, 3, True, triggerCallbackGenerator(0, flag))
+    strategy = GridStrategy(4, 3, True, triggerCallbackGenerator(0, flag))
     # Create the bindings
     shadow = DeviceShadow(device)
     strategy.apply(shadow)
@@ -484,7 +484,7 @@ def test_prevent_updates():
         [12, 13, 14, 15],
     ]
     flag = Flag()
-    strategy = DrumPadStrategy(
+    strategy = GridStrategy(
         -1,
         -1,
         False,
@@ -520,7 +520,7 @@ def test_error_when_drums_already_assigned():
     shadow.bindMatches(DrumPad, callback, target_num=3)
 
     # Now when we try to bind the matcher it will fail
-    strategy = DrumPadStrategy(
+    strategy = GridStrategy(
         -1,
         -1,
         False,
@@ -541,7 +541,7 @@ def test_invert_rows():
         [4,  5,  6,  7],
         [0,  1,  2,  3],
     ]
-    strategy = DrumPadStrategy(
+    strategy = GridStrategy(
         -1,
         -1,
         False,
@@ -568,7 +568,7 @@ def test_invert_rows_ignores_empty():
         [0,   1,  2,  3],
         [-1, -1, -1, -1],
     ]
-    strategy = DrumPadStrategy(
+    strategy = GridStrategy(
         4,
         3,
         False,
@@ -596,7 +596,7 @@ def test_subdivide_when_lacking_height():
     """
     flag = Flag()
     device = DummyDeviceDrumPads(2, 8)
-    strategy = DrumPadStrategy(
+    strategy = GridStrategy(
         4,
         4,
         True,
@@ -628,7 +628,7 @@ def test_subdivide_when_lacking_width():
     """
     flag = Flag()
     device = DummyDeviceDrumPads(2, 8)
-    strategy = DrumPadStrategy(
+    strategy = GridStrategy(
         4,
         4,
         True,
