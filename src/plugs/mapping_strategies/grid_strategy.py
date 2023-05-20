@@ -253,6 +253,7 @@ class GridStrategy(IMappingStrategy):
             self.__truncate_overflows,
             self.__wrap_overflows,
         )
+        print(self.__mappings)
         self.__initialized_drums = [
             [False for _ in range(cols)]
             for _ in range(rows)

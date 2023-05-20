@@ -22,6 +22,21 @@ from plugs import event_filters, tick_filters
 from plugs.mapping_strategies import GridStrategy
 
 
+def calculate_overall_index(pad_idx):
+    """
+    Messy code to get an index for drum pads
+    """
+    # TODO: Can we use inverted_row?
+    row = 1 - pad_idx.row
+    overall_index = (
+        pad_idx.group_size * pad_idx.group_number
+        + row * pad_idx.group_width
+        + pad_idx.col
+    )
+
+    return overall_index
+
+
 def colorPad(
     control: ControlShadow,
     ch_idx: UnsafeIndex,
@@ -34,7 +49,7 @@ def colorPad(
         chan,
         -1,
         2,
-        pad_idx.overall_index,
+        calculate_overall_index(pad_idx),
     ))
 
 
@@ -44,12 +59,14 @@ def triggerPad(
     ch_idx: GeneratorIndex,
     pad_idx: GridCell,
 ) -> bool:
-    note = plugins.getPadInfo(*ch_idx, -1, 1, pad_idx.overall_index)
+    overall_index = calculate_overall_index(pad_idx)
+    note = plugins.getPadInfo(*ch_idx, -1, 1, overall_index)
     # Work-around for horrible bug where wrong note numbers are given
     if note > 127:
         note = note >> 16
     channels.midiNoteOn(*ch_idx, note, int(control.value*127))
     return True
+
 
 
 class FPC(StandardPlugin):
@@ -60,7 +77,7 @@ class FPC(StandardPlugin):
     def __init__(self, shadow: DeviceShadow) -> None:
         drums = GridStrategy(
             4,
-            4,
+            2,
             triggerPad,
             color_callback=colorPad,
             top_to_bottom=False,

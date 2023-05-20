@@ -40,10 +40,12 @@ class GridCell:
         """Width of the group that this cell belongs to"""
         self.group_height = group_height
         """Height of the group that this cell belongs to"""
+        self.group_size = group_width * group_height
+        """Size of each group"""
         self.group_index = col + group_width * row
         """Index within the group that this cell belongs to"""
         self.overall_index = \
-            self.group_index + group_number * group_width * group_height
+            self.group_index + group_number * self.group_size
         """Overall index, accounting for group number"""
 
     def __repr__(self) -> str:
