@@ -139,3 +139,27 @@ def test_wraps_long_row():
         [cell_at_index(3), cell_at_index(4), cell_at_index(5)],
         [cell_at_index(6), cell_at_index(7), None],
     ]
+
+
+def test_bottom_to_top():
+    assert grid_map(4, 4, 4, 2, top_to_bottom=False) == [
+        [cell_in(1), cell_in(1), cell_in(1), cell_in(1)],
+        [cell_in(1), cell_in(1), cell_in(1), cell_in(1)],
+        [cell_in(0), cell_in(0), cell_in(0), cell_in(0)],
+        [cell_in(0), cell_in(0), cell_in(0), cell_in(0)],
+    ]
+
+
+def test_indexes_bottom_to_top():
+    assert grid_map(2, 4, 2, 2, top_to_bottom=False) == [
+        [cell_at_index(0), cell_at_index(1)],
+        [cell_at_index(2), cell_at_index(3)],
+        [cell_at_index(0), cell_at_index(1)],
+        [cell_at_index(2), cell_at_index(3)],
+    ]
+    assert grid_map(2, 4, 2, 2, top_to_bottom=False) == [
+        [cell_at(0, 0), cell_at(0, 1)],
+        [cell_at(1, 0), cell_at(1, 1)],
+        [cell_at(0, 0), cell_at(0, 1)],
+        [cell_at(1, 0), cell_at(1, 1)],
+    ]

@@ -32,9 +32,9 @@ class GridCell:
         """Row within the group that this cell belongs to, top-to-bottom"""
         self.col = col
         """Column within the group that this cell belongs to, left-to-right"""
-        self.inverse_row = group_height - row
+        self.inverse_row = group_height - row - 1
         """Row within the group that this cell belongs to, bottom-to-top"""
-        self.inverse_col = group_width - col
+        self.inverse_col = group_width - col - 1
         """Column within the group that this cell belongs to, right-to-left"""
         self.group_width = group_width
         """Width of the group that this cell belongs to"""
