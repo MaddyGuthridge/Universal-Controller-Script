@@ -11,6 +11,7 @@ more details.
 """
 import mixer
 import channels
+import itertools
 from typing import Callable, Optional, Any
 from . import IMappingStrategy
 from common.plug_indexes import UnsafeIndex
@@ -225,6 +226,23 @@ class GridStrategy(IMappingStrategy):
         # list of drums we've initialized
         self.__initialized_drums: Optional[list[list[bool]]] = None
         super().__init__()
+
+    def get_num_groups_mapped(self) -> int:
+        """
+        Returns the number of groups that have been mapped using the strategy.
+
+        ### Raises
+        * `ValueError`: the mapping strategy hasn't been applied yet
+
+        ### Returns:
+        * `int`: the number of groups that were mapped by the strategy.
+        """
+        if self.__mappings is None:
+            raise ValueError("Mapping strategy hasn't been applied yet")
+        return max(map(
+            lambda cell: 0 if cell is None else cell.group_number,
+            itertools.chain.from_iterable(self.__mappings)
+        ))
 
     def apply(self, shadow: DeviceShadow) -> None:
         rows, cols = shadow.getDevice().getDrumPadSize()
