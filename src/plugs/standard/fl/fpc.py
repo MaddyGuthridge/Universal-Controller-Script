@@ -22,19 +22,18 @@ from plugs import event_filters, tick_filters
 from plugs.mapping_strategies import GridStrategy
 
 
-def calculate_overall_index(pad_idx):
+def calculate_overall_index(pad_idx: GridCell) -> int:
     """
-    Messy code to get an index for drum pads
+    Calculate and return the required FPC drum pad index given the index of the
+    grid mapping.
     """
-    # TODO: Can we use inverted_row?
-    row = 1 - pad_idx.row
-    overall_index = (
-        pad_idx.group_size * pad_idx.group_number
-        + row * pad_idx.group_width
-        + pad_idx.col
-    )
-
-    return overall_index
+    # TODO: Consider integrating this with the GridCell class for something
+    # like an "inner index"
+    # That would probably be a much better design, and would certainly make it
+    # more reusable compared to this janky poorly-placed mess you see before
+    # you
+    group_index = pad_idx.col + pad_idx.group_width * pad_idx.inverse_row
+    return group_index + pad_idx.group_number * pad_idx.group_size
 
 
 def colorPad(
@@ -42,6 +41,9 @@ def colorPad(
     ch_idx: UnsafeIndex,
     pad_idx: GridCell,
 ) -> Color:
+    """
+    Determine the color to use for a particular drum pad
+    """
     if not isinstance(ch_idx, tuple):
         return Color()
     chan = ch_idx[0]
