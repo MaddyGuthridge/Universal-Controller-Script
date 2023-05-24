@@ -427,7 +427,7 @@ class ControlShadowList:
                 control.annotation = annotation
         return self
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[ControlShadow]:
         return iter(self.controls)
 
     def __len__(self) -> int:

@@ -139,7 +139,7 @@ class PluginPager:
 
         # Now tick the page
         # Ignore type since this function does exist for all subclasses
-        self.__pages[self.__index].tick(index)
+        self.__pages[self.__index].doTick(index)
 
         # Tick the main one last so that it overrides any other controls
         self.__shadow.tick(index)
