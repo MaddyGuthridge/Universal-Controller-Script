@@ -241,7 +241,25 @@ class GridStrategy(IMappingStrategy):
             raise ValueError("Mapping strategy hasn't been applied yet")
         return max(map(
             lambda cell: 0 if cell is None else cell.group_number,
-            itertools.chain.from_iterable(self.__mappings)
+            itertools.chain.from_iterable(self.__mappings),
+        )) + 1
+
+    def get_group_size(self) -> int:
+        """
+        Returns the size of all the groups that have been mapped using the
+        strategy.
+
+        ### Raises
+        * `ValueError`: the mapping strategy hasn't been applied yet
+
+        ### Returns:
+        * `int`: the size of each group mapped by the strategy
+        """
+        if self.__mappings is None:
+            raise ValueError("Mapping strategy hasn't been applied yet")
+        return max(map(
+            lambda cell: 0 if cell is None else cell.group_size,
+            itertools.chain.from_iterable(self.__mappings),
         ))
 
     def apply(self, shadow: DeviceShadow) -> None:
