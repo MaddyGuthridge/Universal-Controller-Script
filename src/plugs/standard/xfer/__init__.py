@@ -19,8 +19,8 @@ from plugs.standard import basicPluginBuilder
 # Serum
 basicPluginBuilder(
     ('Serum',),
-    [45, 46, 35, 37, 218, 219, 220, 221],
-    Color.fromInteger(0x206cc8)
+    [218, 219, 220, 221],
+    Color.fromInteger(0x206cc8),
 )
 
 
@@ -28,5 +28,5 @@ basicPluginBuilder(
 basicPluginBuilder(
     ('OTT',),
     list(range(4)),
-    Color.fromInteger(0xb1c1cf)
+    Color.fromInteger(0xb1c1cf),
 )
