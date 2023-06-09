@@ -293,6 +293,11 @@ def grid_map(
     * `wrap_overflows` (`bool`, optional): whether to wrap groups that
       are too big to fit into the group (`True`) or to not place them at all
       (`False`). Defaults to `False`.
+
+    ### Returns
+    * `GridLayout`: a 3D array of `GridCell | None` objects describing the
+      mapping of that particular cell (which group it belongs to and its
+      position within that group)
     """
     # Handle unset widths and heights for groups
     if group_width is None:
