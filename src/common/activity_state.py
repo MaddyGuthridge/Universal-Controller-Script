@@ -13,20 +13,17 @@ more details.
 
 from typing import Optional
 import ui
-from common.consts import WINDOW_NAMES
 from common.profiler import profilerDecoration
-from common.logger import log, verbosity
 from common.plug_indexes import (
     PluginIndex,
     GeneratorIndex,
     EffectIndex,
     WindowIndex,
-    SafeIndex,
+    FlIndex,
 )
 from common.util.api_fixes import (
     getFocusedPluginIndex,
     getFocusedWindowIndex,
-    reset_generator_active,
 )
 from common.types.bool_s import BoolS
 import plugins
@@ -43,15 +40,15 @@ class ActivityState:
         """
         self._do_update = True
         self._split = False
-        self._window: WindowIndex = 0
-        self._generator: GeneratorIndex = (0,)
-        self._effect: EffectIndex = (0, 0)
+        self._window = WindowIndex(0)
+        self._generator = GeneratorIndex(0)
+        self._effect = EffectIndex(0, 0)
         self._plugin: PluginIndex = self._generator
         self._plugin_name = ""
         self._plug_active = True if self._plugin is not None else False
         self._changed = False
         self._plug_unsafe = False
-        self._history: list[SafeIndex] = []
+        self._history: list[FlIndex] = []
         self._ignore_next_history = False
 
     def __repr__(self) -> str:
@@ -80,17 +77,7 @@ class ActivityState:
         """
         plugin = getFocusedPluginIndex(force=True)
         if plugin is None:
-            if not self._plug_unsafe:
-                log(
-                    "state.active",
-                    "Using plugin not from selected channel rack group",
-                    verbosity.WARNING
-                )
-                self._plug_unsafe = True
-                self._plugin = (-1,)
-                self._plugin_name = ""
-                self._generator = (-1,)
-            return
+            raise TypeError("Wait this shouldn't be possible")
         if self._plugin != plugin:
             self._plugin = plugin
         try:
@@ -108,13 +95,11 @@ class ActivityState:
         Called frequently when we need to update the current window
         """
         from common.context_manager import getContext
-        # HACK: Fix FL Studio bugs
-        reset_generator_active()
         self._changed = False
         # If the current plugin name has changed, we should unpause the updates
         if self._plug_active and not self._do_update:
             try:
-                if self._plugin_name != plugins.getPluginName(*self._plugin):
+                if self._plugin_name != self._plugin.getName():
                     self._do_update = True
             except TypeError:
                 pass
@@ -171,7 +156,7 @@ class ActivityState:
         """
         return self._changed
 
-    def getActive(self) -> SafeIndex:
+    def getActive(self) -> FlIndex:
         """
         Returns the currently active window or plugin
         """
@@ -216,7 +201,7 @@ class ActivityState:
         """
         return self._window
 
-    def getHistoryActivity(self, index: int) -> SafeIndex:
+    def getHistoryActivity(self, index: int) -> FlIndex:
         """
         Returns the activity entry at the given index, where 0 is the current
         activity.
@@ -253,7 +238,7 @@ class ActivityState:
             if self._plug_active:
                 name = self._plugin_name
             else:
-                name = WINDOW_NAMES[self._window]
+                name = self._window.getName()
             msg = f"Paused active plugin on {name}"
         ui.setHintMsg(msg)
         return BoolS(self._do_update, msg)
