@@ -12,35 +12,23 @@ more details.
 """
 
 import general
-import plugins
 import ui
 import channels
 import mixer
 import playlist
 
-from common.profiler import profilerDecoration, ProfilerContext
-from common.consts import PARAM_CC_START
+from common.profiler import profilerDecoration
 from common.plug_indexes import (
-    UnsafePluginIndex,
+    WindowIndex,
     PluginIndex,
-    UnsafeWindowIndex,
+    GeneratorIndex,
+    EffectIndex,
 )
-from common.logger import verbosity, log
-
-# HACK: A terrible horrible no good really bad global variable to make sure
-# that we hopefully avoid crashes in getFocusedPluginIndex
-generator_previously_active = 0
-
-
-def reset_generator_active():
-    """Horrible hacky function to hopefully work around a bug in FL Studio"""
-    global generator_previously_active
-    if generator_previously_active != 0:
-        generator_previously_active -= 1
+from typing import Optional
 
 
 @profilerDecoration("getFocusedPluginIndex")
-def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
+def getFocusedPluginIndex(force: bool = False) -> Optional[PluginIndex]:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
 
@@ -56,53 +44,32 @@ def getFocusedPluginIndex(force: bool = False) -> UnsafePluginIndex:
     * `int`: grouped index of a channel rack plugin if one is focused
     * `int, int`: index of a mixer plugin if one is focused
     """
-    # HACK: Move this elsewhere
-    global generator_previously_active
-    with ProfilerContext("getFocused"):
-        # for i in range(8):
-        #     print(f"    {ui.getFocused(i)=}, {i=}")
-        ui_6 = ui.getFocused(6)
-        ui_7 = ui.getFocused(7)
     # If a mixer plugin is focused
-    if ui_6:
-        # HACK: Error checking to hopefully avoid a crash due to bugs in FL
-        # Studio <= 20.9.1
-        if generator_previously_active:
-            log(
-                "state.active",
-                "getFocusedPluginIndex() crash prevention",
-                verbosity.WARNING
-            )
-            return None
-        with ProfilerContext("getFocusedFormID @ mixer"):
-            form_id = ui.getFocusedFormID()
+    if ui.getFocused(6):
+        form_id = ui.getFocusedFormID()
         track = form_id // 4194304
         slot = (form_id - 4194304 * track) // 65536
-        return track, slot
+        return EffectIndex(track, slot)
     # Otherwise, assume that a channel is selected
     # Use the channel rack index so that we always have one
-    elif ui_7:
-        generator_previously_active = 3
-        with ProfilerContext("getFocusedFormID @ cr"):
-            form_id = ui.getFocusedFormID()
-        # NOTE: When using groups, ui.getFocusedFormID() returns the index
-        # respecting groups, instead of the global index, yuck
+    elif ui.getFocused(7):
+        form_id = ui.getFocusedFormID()
         if form_id == -1:
-            # Plugin outside current group or invalid
+            # Plugin invalid?
             return None
-        return (form_id,)
+        # Since the form ID respects groups, we need to convert it to a global
+        # index
+        channel = channels.getChannelIndex(form_id)
+        return GeneratorIndex(channel)
     else:
-        generator_previously_active = 3
         if force:
-            with ProfilerContext("selectedChannel"):
-                ret = (channels.selectedChannel(),)
-            return ret
+            return GeneratorIndex(channels.selectedChannel())
         else:
             return None
 
 
 @profilerDecoration("getFocusedWindowIndex")
-def getFocusedWindowIndex() -> UnsafeWindowIndex:
+def getFocusedWindowIndex() -> Optional[WindowIndex]:
     """
     Fixes the horrible ui.getFocused() function
 
@@ -112,21 +79,8 @@ def getFocusedWindowIndex() -> UnsafeWindowIndex:
     """
     for i in range(5):
         if ui.getFocused(i):
-            return i
+            return WindowIndex(i)
     return None
-
-
-def isPluginVst(index: PluginIndex) -> bool:
-    """
-    Returns whether a plugin is a VST
-
-    ### Args:
-    * `index` (`PluginIndex`): plugin index
-    """
-    try:
-        return plugins.getParamCount(*index) > PARAM_CC_START
-    except TypeError:
-        return False
 
 
 def catchUnsafeOperation(func):
