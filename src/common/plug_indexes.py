@@ -19,29 +19,60 @@ from common.consts import PARAM_CC_START
 
 class FlIndex:
     """
-    Represents an index to a plugin or window
+    Represents an index to a plugin or window in FL Studio
     """
     @abstractmethod
     def getName(self) -> str:
+        """
+        Returns the name of the plugin/window at the given index
+        """
         ...
 
     def asWindowIndex(self) -> 'WindowIndex':
+        """
+        Cast this to a WindowIndex
+
+        Raises an error if the index was not a WindowIndex
+
+        ### Raises:
+        * `TypeError`: type cast failed
+
+        ### Returns:
+        * `WindowIndex`: this index, but now guaranteed to be a WindowIndex
+        """
         if isinstance(self, WindowIndex):
             return self
         raise TypeError(f'Cannot cast to WindowIndex, type is {self}')
 
     def asPluginIndex(self) -> 'PluginIndex':
+        """
+        Cast this to a PluginIndex
+
+        Raises an error if the index was not a PluginIndex
+
+        ### Raises:
+        * `TypeError`: type cast failed
+
+        ### Returns:
+        * `PluginIndex`: this index, but now guaranteed to be a PluginIndex
+        """
         if isinstance(self, PluginIndex):
             return self
         raise TypeError(f'Cannot cast to PluginIndex, type is {self}')
 
 
 class WindowIndex(FlIndex):
+    """
+    Represents a window in FL Studio
+    """
     def __init__(self, windowIndex: int) -> None:
         self.__index = windowIndex
 
     @property
     def index(self) -> int:
+        """
+        The index of the window.
+        """
         return self.__index
 
     def __repr__(self) -> str:
@@ -66,19 +97,34 @@ class PluginIndex(FlIndex):
     @abstractmethod
     @property
     def index(self) -> int:
+        """
+        The primary index of this plugin.
+
+        * Global index on the channel rack for generators.
+        * Mixer track for effects.
+        """
         ...
 
     @abstractmethod
     @property
     def slotIndex(self) -> int:
+        """
+        The slot index for effects. `-1` for generators.
+        """
         ...
 
     @property
     def isValid(self) -> bool:
+        """
+        `True` when the plugin is valid.
+        """
         return plugins.isValid(self.index, self.slotIndex, True)
 
     @property
     def isVst(self) -> bool:
+        """
+        `True` when the plugin is a VST.
+        """
         if self.isValid:
             paramCount = plugins.getParamCount(
                 self.index,
@@ -90,6 +136,9 @@ class PluginIndex(FlIndex):
         else:
             return False
 
+    def getName(self) -> str:
+        return plugins.getPluginName(self.index, self.slotIndex, False, True)
+
 
 class GeneratorIndex(PluginIndex):
     def __init__(self, index: int) -> None:
@@ -100,14 +149,17 @@ class GeneratorIndex(PluginIndex):
 
     @property
     def index(self) -> int:
+        """
+        The global index of the channel rack slot that contains the plugin.
+        """
         return self.__index
 
     @property
     def slotIndex(self) -> Literal[-1]:
+        """
+        This value is always `-1` for generator plugins.
+        """
         return -1
-
-    def getName(self) -> str:
-        return plugins.getPluginName(self.index, -1, False, True)
 
 
 class EffectIndex(PluginIndex):
@@ -121,11 +173,14 @@ class EffectIndex(PluginIndex):
 
     @property
     def index(self) -> int:
+        """
+        The mixer track that contains the plugin.
+        """
         return self.__index
 
     @property
     def slotIndex(self) -> int:
+        """
+        The mixer slot that contains the plugin.
+        """
         return self.__slot
-
-    def getName(self) -> str:
-        return plugins.getPluginName(self.index, -1, False, True)
