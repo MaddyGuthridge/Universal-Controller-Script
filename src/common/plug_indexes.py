@@ -13,6 +13,7 @@ from abc import abstractmethod
 from typing import Literal
 
 import plugins
+from common import consts
 
 from common.consts import PARAM_CC_START
 
@@ -79,18 +80,7 @@ class WindowIndex(FlIndex):
         return f"WindowIndex({self.__index}, {self.getName()!r})"
 
     def getName(self) -> str:
-        if self.__index == 0:
-            return "Mixer"
-        elif self.__index == 1:
-            return "Channel rack"
-        elif self.__index == 2:
-            return "Playlist"
-        elif self.__index == 3:
-            return "Piano roll"
-        elif self.__index == 4:
-            return "Browser"
-        else:
-            raise ValueError(f"ERROR: Invalid window index {self.__index}")
+        return consts.WINDOW_NAMES[self.__index]
 
 
 class PluginIndex(FlIndex):
