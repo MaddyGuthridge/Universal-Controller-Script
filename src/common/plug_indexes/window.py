@@ -10,6 +10,9 @@ class WindowIndex(FlIndex):
     def __init__(self, windowIndex: int) -> None:
         self.__index = windowIndex
 
+    def __hash__(self) -> int:
+        return self.__index
+
     @property
     def index(self) -> int:
         """
