@@ -18,6 +18,7 @@ import common
 from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
 from fl_classes import FlMidiMsg
+from common.plug_indexes import PluginIndex, WindowIndex
 from common.util.events import eventToString
 from .dev_state import DeviceState
 
@@ -69,30 +70,30 @@ class MainState(DeviceState):
                     p.apply(thorough=True)
 
         # Tick active standard plugin or window
-        if plug_idx is not None:
-            if isinstance(plug_idx, tuple):
-                try:
-                    plug_id = plugins.getPluginName(*plug_idx)
-                except TypeError:
-                    # Plugin not valid
-                    plug_id = ""
-                plug = common.ExtensionManager.plugins.get(
-                    plug_id, self._device
-                )
-                if plug is not None:
-                    with ProfilerContext(f"tick-{type(plug).__name__}"):
-                        plug.doTick(plug_idx)
-                    with ProfilerContext(f"apply-{type(plug).__name__}"):
-                        plug.apply(thorough=changed)
-            else:
-                window = common.ExtensionManager.windows.get(
-                    plug_idx, self._device
-                )
-                if window is not None:
-                    with ProfilerContext(f"tick-{type(window).__name__}"):
-                        window.doTick(plug_idx)
-                    with ProfilerContext(f"apply-{type(window).__name__}"):
-                        window.apply(thorough=changed)
+        if isinstance(plug_idx, PluginIndex):
+            try:
+                plug_id = plug_idx.getName()
+            except TypeError:
+                # Plugin not valid
+                plug_id = ""
+            plug = common.ExtensionManager.plugins.get(
+                plug_id, self._device
+            )
+            if plug is not None:
+                with ProfilerContext(f"tick-{type(plug).__name__}"):
+                    plug.doTick(plug_idx)
+                with ProfilerContext(f"apply-{type(plug).__name__}"):
+                    plug.apply(thorough=changed)
+        else:
+            assert isinstance(plug_idx, WindowIndex)
+            window = common.ExtensionManager.windows.get(
+                plug_idx, self._device
+            )
+            if window is not None:
+                with ProfilerContext(f"tick-{type(window).__name__}"):
+                    window.doTick(plug_idx)
+                with ProfilerContext(f"apply-{type(window).__name__}"):
+                    window.apply(thorough=changed)
 
         # Tick final special plugins
         for p in common.ExtensionManager.super_special.get(self._device):
@@ -142,30 +143,30 @@ class MainState(DeviceState):
                         event.handled = True
                         return
 
-        if plug_idx is not None:
-            if isinstance(plug_idx, tuple):
-                try:
-                    plug_id = plugins.getPluginName(*plug_idx)
-                except TypeError:
-                    # Plugin not valid
-                    plug_id = ""
-                plug = common.ExtensionManager.plugins.get(
-                    plug_id, self._device
-                )
-                if plug is not None:
-                    with ProfilerContext(f"process-{type(plug).__name__}"):
-                        if plug.processEvent(mapping, plug_idx):
-                            event.handled = True
-                            return
-            else:
-                window = common.ExtensionManager.windows.get(
-                    plug_idx, self._device
-                )
-                if window is not None:
-                    with ProfilerContext(f"process-{type(window).__name__}"):
-                        if window.processEvent(mapping, plug_idx):
-                            event.handled = True
-                            return
+        if isinstance(plug_idx, tuple):
+            try:
+                plug_id = plugins.getPluginName(*plug_idx)
+            except TypeError:
+                # Plugin not valid
+                plug_id = ""
+            plug = common.ExtensionManager.plugins.get(
+                plug_id, self._device
+            )
+            if plug is not None:
+                with ProfilerContext(f"process-{type(plug).__name__}"):
+                    if plug.processEvent(mapping, plug_idx):
+                        event.handled = True
+                        return
+        else:
+            assert isinstance(plug_idx, WindowIndex)
+            window = common.ExtensionManager.windows.get(
+                plug_idx, self._device
+            )
+            if window is not None:
+                with ProfilerContext(f"process-{type(window).__name__}"):
+                    if window.processEvent(mapping, plug_idx):
+                        event.handled = True
+                        return
 
         # Process for special plugins
         for p in (common.ExtensionManager.special.get(self._device)):
