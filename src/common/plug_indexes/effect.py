@@ -1,4 +1,24 @@
+import mixer
+from common.types import Color
 from .fl_index import PluginIndex
+
+
+class MixerTrack:
+    """
+    Helper class for accessing properties of mixer tracks
+    """
+
+    def __init__(self, index: int) -> None:
+        self.__index = index
+
+    @property
+    def color(self) -> Color:
+        """
+        Color of the track
+        """
+        return Color.fromInteger(mixer.getTrackColor(self.__index))
+
+    # TODO: Flesh out with more stuff as required
 
 
 class EffectIndex(PluginIndex):
@@ -9,6 +29,17 @@ class EffectIndex(PluginIndex):
     def __repr__(self) -> str:
         return \
             f"EffectIndex({self.__index}, {self.__slot}, {self.getName()!r})"
+
+    def focus(self) -> None:
+        # FIXME: Currently impossible, wait for support in API
+        print("Cannot focus effects")
+
+    @property
+    def track(self) -> MixerTrack:
+        """
+        The mixer track that underlies this index
+        """
+        return MixerTrack(self.__index)
 
     @property
     def index(self) -> int:

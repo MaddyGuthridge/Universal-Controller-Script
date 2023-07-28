@@ -1,3 +1,4 @@
+import ui
 from common import consts
 from . import FlIndex
 
@@ -21,3 +22,6 @@ class WindowIndex(FlIndex):
 
     def getName(self) -> str:
         return consts.WINDOW_NAMES[self.__index]
+
+    def focus(self) -> None:
+        ui.showWindow(self.index)

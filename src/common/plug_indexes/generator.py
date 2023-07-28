@@ -44,6 +44,13 @@ class GeneratorIndex(PluginIndex):
     def __repr__(self) -> str:
         return f"GeneratorIndex({self.__index}, {self.getName()!r})"
 
+    def focus(self) -> None:
+        group_index = getGroupChannelIndex(self.__index)
+        if group_index is not None:
+            channels.focusEditor(group_index)
+        else:
+            print("Cannot focus generator outside of current group")
+
     @property
     def index(self) -> int:
         """

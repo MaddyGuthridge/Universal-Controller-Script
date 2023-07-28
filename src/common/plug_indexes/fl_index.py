@@ -31,6 +31,13 @@ class FlIndex:
         """
         ...
 
+    @abstractmethod
+    def focus(self) -> None:
+        """
+        Focus the plugin or window
+        """
+        ...
+
     def asWindowIndex(self) -> 'WindowIndex':
         """
         Cast this to a WindowIndex
