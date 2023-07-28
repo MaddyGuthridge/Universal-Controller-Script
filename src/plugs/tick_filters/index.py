@@ -22,7 +22,7 @@ from .decorator import do_filter
 @do_filter
 def toPluginIndex(index: FlIndex):
     """
-    Filter out events when the index is not a plugin
+    Filter out ticks when the index is not a plugin
     """
     return isinstance(index, PluginIndex)
 
@@ -30,7 +30,7 @@ def toPluginIndex(index: FlIndex):
 @do_filter
 def toGeneratorIndex(index: FlIndex):
     """
-    Filter out events when the index is not a generator plugin
+    Filter out ticks when the index is not a generator plugin
     """
     return isinstance(index, GeneratorIndex)
 
@@ -38,7 +38,7 @@ def toGeneratorIndex(index: FlIndex):
 @do_filter
 def toEffectIndex(index: FlIndex):
     """
-    Filter out events when the index is not an effect plugin
+    Filter out ticks when the index is not an effect plugin
     """
     return isinstance(index, EffectIndex)
 
@@ -46,6 +46,6 @@ def toEffectIndex(index: FlIndex):
 @do_filter
 def toWindowIndex(index: FlIndex):
     """
-    Filter out events when the index is not a window
+    Filter out ticks when the index is not a window
     """
     return isinstance(index, WindowIndex)
