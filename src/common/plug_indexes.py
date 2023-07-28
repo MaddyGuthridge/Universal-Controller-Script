@@ -11,11 +11,13 @@ more details.
 """
 from abc import abstractmethod
 from typing import Literal
+import channels
 
 import plugins
 from common import consts
 
 from common.consts import PARAM_CC_START
+from common.types.color import Color
 
 
 class FlIndex:
@@ -150,6 +152,52 @@ class GeneratorIndex(PluginIndex):
         This value is always `-1` for generator plugins.
         """
         return -1
+
+    def fpcGetPadSemitone(self, pad_index: int) -> int:
+        """
+        Returns the note number for the drum pad at the given index.
+
+        For use with the FPC plugin.
+        """
+        return plugins.getPadInfo(
+            self.index,
+            self.slotIndex,
+            1,  # Note number
+            pad_index,
+            True,
+        )
+
+    def fpcGetPadColor(self, pad_index: int) -> Color:
+        """
+        Returns the color of the drum pad at the given index.
+
+        For use with the FPC plugin.
+        """
+        return Color.fromInteger(plugins.getPadInfo(
+            self.index,
+            self.slotIndex,
+            2,  # Color
+            pad_index,
+            True,
+        ))
+
+    def getNoteName(self, note_number: int) -> str:
+        """
+        Returns the name of the note at the given index
+        """
+        return plugins.getName(
+            self.index,
+            self.slotIndex,
+            2,  # Note name
+            note_number,
+            True,
+        )
+
+    def triggerNote(self, note_number: int, value: float) -> None:
+        """
+        Trigger a note on the given channel
+        """
+        channels.midiNoteOn(self.index, note_number, int(value * 127))
 
 
 class EffectIndex(PluginIndex):

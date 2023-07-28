@@ -7,8 +7,8 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-import plugins
 from typing import Any
+from common.param import Param
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex
@@ -18,11 +18,14 @@ from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs import event_filters, tick_filters
 
+# Number of parameters in the parametric EQ
 NUM_PARAMS = 7
+# Start indexes for each param set
 LEVEL = 0
 FREQUENCY = 7
 BANDWIDTH = 14
 
+# Colors of the bands in the eq
 COLORS = [
     Color.fromInteger(0xCD5689),  # Purple
     Color.fromInteger(0xA254C1),  # Pink
@@ -36,7 +39,7 @@ COLORS = [
 
 class ParametricEq(StandardPlugin):
     """
-    Used to interact with the Fruit parametric EQ 2 plugin
+    Used to interact with the Fruity Parametric EQ 2 plugin
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
@@ -64,27 +67,28 @@ class ParametricEq(StandardPlugin):
 
     @tick_filters.toEffectIndex()
     def tick(self, index: GeneratorIndex):
-        if len(self._levels):
-            for color, (f, i) in enumerate(
+        # List of (color_index, (control, param_index))
+        # CHECK: Does this work if some properties weren't bound?
+        properties = list(
+            enumerate(
                 zip(self._levels, range(LEVEL, LEVEL+NUM_PARAMS))
-            ):
-                f.annotation = plugins.getParamName(i, *index)
-                f.color = COLORS[color]
-                f.value = plugins.getParamValue(i, *index)
-        if len(self._frequencies):
-            for color, (f, i) in enumerate(
+            )
+        ) + list(
+            enumerate(
                 zip(self._frequencies, range(FREQUENCY, FREQUENCY+NUM_PARAMS))
-            ):
-                f.annotation = plugins.getParamName(i, *index)
-                f.color = COLORS[color]
-                f.value = plugins.getParamValue(i, *index)
-        if len(self._frequencies):
-            for color, (f, i) in enumerate(
+            )
+        ) + list(
+            enumerate(
                 zip(self._bandwidths, range(BANDWIDTH, BANDWIDTH+NUM_PARAMS))
-            ):
-                f.annotation = plugins.getParamName(i, *index)
-                f.color = COLORS[color]
-                f.value = plugins.getParamValue(i, *index)
+            )
+        )
+
+        # Set each property
+        for color_index, (control, param_index) in properties:
+            param = Param(param_index)(index)
+            control.annotation = param.name
+            control.color = COLORS[color_index]
+            control.value = param.value
 
     @classmethod
     def getPlugIds(cls) -> tuple[str, ...]:
@@ -97,8 +101,8 @@ class ParametricEq(StandardPlugin):
         index: GeneratorIndex,
         *args: Any
     ) -> bool:
-        plugins.setParamValue(control.value, LEVEL +
-                              control.getShadow().coordinate[1], *index)
+        param = Param(LEVEL + control.getShadow().coordinate[1])
+        param(index).value = control.value
         return True
 
     @event_filters.toEffectIndex()
@@ -108,8 +112,8 @@ class ParametricEq(StandardPlugin):
         index: GeneratorIndex,
         *args: Any
     ) -> bool:
-        plugins.setParamValue(control.value, FREQUENCY +
-                              control.getShadow().coordinate[1], *index)
+        param = Param(FREQUENCY + control.getShadow().coordinate[1])
+        param(index).value = control.value
         return True
 
     @event_filters.toEffectIndex()
@@ -119,8 +123,8 @@ class ParametricEq(StandardPlugin):
         index: GeneratorIndex,
         *args: Any
     ) -> bool:
-        plugins.setParamValue(control.value, BANDWIDTH +
-                              control.getShadow().coordinate[1], *index)
+        param = Param(BANDWIDTH + control.getShadow().coordinate[1])
+        param(index).value = control.value
         return True
 
 

@@ -14,7 +14,7 @@ more details.
 from typing import final
 from common import log, verbosity
 from common.util.abstract_method_error import AbstractMethodError
-from common.plug_indexes import UnsafeIndex, WindowIndex
+from common.plug_indexes import WindowIndex, FlIndex
 from control_surfaces import ControlEvent
 from devices import DeviceShadow
 from plugs.mapping_strategies import IMappingStrategy
@@ -96,7 +96,7 @@ class Plugin:
         """
         raise AbstractMethodError(cls)
 
-    def processEvent(self, mapping: ControlEvent, index: UnsafeIndex) -> bool:
+    def processEvent(self, mapping: ControlEvent, index: FlIndex) -> bool:
         """
         Process the event
 
@@ -116,7 +116,7 @@ class Plugin:
         return self._shadow.processEvent(mapping, index)
 
     @final
-    def doTick(self, index: UnsafeIndex) -> None:
+    def doTick(self, index: FlIndex) -> None:
         """
         Tick the plugin, to allow parameters to update if required.
 
@@ -131,7 +131,7 @@ class Plugin:
         # Then tick the device shadow
         self._shadow.tick(index)
 
-    def tick(self, index: UnsafeIndex) -> None:
+    def tick(self, index: FlIndex) -> None:
         """
         Tick the plugin, to allow parameters to update if required.
 
