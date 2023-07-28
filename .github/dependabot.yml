@@ -11,3 +11,9 @@ updates:
       interval: "daily"
     reviewers:
       - "MiguelGuthridge"
+  - package-ecosystem: "poetry" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "MiguelGuthridge"
