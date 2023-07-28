@@ -11,9 +11,9 @@ more details.
 """
 from typing import Callable
 from typing_extensions import TypeAlias
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes import FlIndex
 
-TickCallback: TypeAlias = Callable[[UnsafeIndex], bool]
+TickCallback: TypeAlias = Callable[[FlIndex], bool]
 
 
 def do_filter(callback: TickCallback):
@@ -52,7 +52,7 @@ def do_filter(callback: TickCallback):
             if method:
                 def wrapper_method(
                     self,
-                    index: UnsafeIndex,
+                    index: FlIndex,
                     *args,
                 ) -> bool:
                     if callback(index):
@@ -64,7 +64,7 @@ def do_filter(callback: TickCallback):
                 return wrapper_method  # type: ignore
             else:
                 def wrapper(
-                    index: UnsafeIndex,
+                    index: FlIndex,
                     *args,
                 ) -> bool:
                     if callback(index):

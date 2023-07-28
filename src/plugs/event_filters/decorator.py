@@ -11,7 +11,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from typing import Any, Callable
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes import FlIndex
 from control_surfaces import ControlShadowEvent
 from devices.device_shadow import EventCallback
 
@@ -53,7 +53,7 @@ def do_filter(callback: EventCallback):
                 def wrapper_method(
                     self,
                     control: ControlShadowEvent,
-                    index: UnsafeIndex,
+                    index: FlIndex,
                     *args: Any,
                     **kwargs: Any
                 ) -> bool:
@@ -73,7 +73,7 @@ def do_filter(callback: EventCallback):
             else:
                 def wrapper(
                     control: ControlShadowEvent,
-                    index: UnsafeIndex,
+                    index: FlIndex,
                     *args: Any,
                     **kwargs: Any
                 ) -> bool:
