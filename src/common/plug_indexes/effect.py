@@ -31,8 +31,7 @@ class EffectIndex(PluginIndex):
             f"EffectIndex({self.__index}, {self.__slot}, {self.getName()!r})"
 
     def focus(self) -> None:
-        # FIXME: Currently impossible, wait for support in API
-        print("Cannot focus effects")
+        mixer.focusEditor(self.__index, self.__slot)
 
     @property
     def track(self) -> MixerTrack:
