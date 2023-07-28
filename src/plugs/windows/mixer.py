@@ -15,7 +15,7 @@ import mixer
 from common import getContext
 from common.types import Color
 from common.extension_manager import ExtensionManager
-from common.plug_indexes import (UnsafeIndex)
+from common.plug_indexes.fl_index import (UnsafeIndex)
 from common.util.api_fixes import (
     getSelectedDockMixerTracks,
     getMixerDockSides,

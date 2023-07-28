@@ -14,7 +14,7 @@ more details.
 from typing import final
 from common import log, verbosity
 from common.util.abstract_method_error import AbstractMethodError
-from common.plug_indexes import WindowIndex, FlIndex
+from common.plug_indexes.fl_index import WindowIndex, FlIndex
 from control_surfaces import ControlEvent
 from devices import DeviceShadow
 from plugs.mapping_strategies import IMappingStrategy

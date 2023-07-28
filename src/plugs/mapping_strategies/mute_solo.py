@@ -12,7 +12,7 @@ more details.
 
 from typing import Callable, Any
 from common.types import Color
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes.fl_index import UnsafeIndex
 from control_surfaces import (
     ControlShadowEvent,
     ControlShadow,

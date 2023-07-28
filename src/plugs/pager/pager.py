@@ -9,7 +9,7 @@ more details.
 """
 from typing import Any
 from common.types import Color
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes.fl_index import UnsafeIndex
 from control_surfaces import ControlEvent, ControlSwitchButton
 from control_surfaces.control_mapping import ControlShadowEvent
 from devices import DeviceShadow

@@ -217,3 +217,25 @@ def getUndoPosition() -> tuple[int, int]:
       history
     """
     return general.getUndoHistoryPos(), general.getUndoHistoryCount()
+
+
+def getGroupChannelIndex(global_index: int) -> Optional[int]:
+    """
+    Returns the group index of the channel at the given global index
+
+    ### Returns
+    * `int`: group index, or
+    * `None`: channel does not exist in the current group
+    """
+    for i in range(channels.channelCount()):
+        global_i = channels.getChannelIndex(i)
+        if global_i == global_index:
+            return i
+        elif global_i > global_index:
+            # Short-circuit: we went past it
+            # This works because grouped channels are still kept in the same
+            # order as their global order
+            return None
+
+    # Reached the end and didn't find it
+    return None

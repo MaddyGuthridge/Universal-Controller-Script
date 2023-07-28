@@ -23,7 +23,7 @@ from common.extension_manager import ExtensionManager
 from common import getContext
 from common.consts import WINDOW_NAMES
 from common.types import Color
-from common.plug_indexes import SafeIndex
+from common.plug_indexes import FlIndex, GeneratorIndex, WindowIndex
 from control_surfaces import (
     ActivitySwitcher as ActivitySwitchControl,
     ControlShadowEvent,
@@ -34,7 +34,7 @@ from plugs import SpecialPlugin
 from plugs.event_filters import filterButtonLift
 
 
-def getActivityColor(activity: SafeIndex) -> Color:
+def getActivityColor(activity: FlIndex) -> Color:
     """
     Returns the color associated with a particular activity
 
@@ -44,13 +44,13 @@ def getActivityColor(activity: SafeIndex) -> Color:
     ### Returns:
     * `Color`: color
     """
-    if isinstance(activity, int):
+    if isinstance(activity, WindowIndex):
         return Color.ENABLED
     else:
-        if len(activity) == 1:
+        if isinstance(activity, GeneratorIndex):
             # Generator -> channel color
             try:
-                return Color.fromInteger(channels.getChannelColor(*activity))
+                return activity.channel.color
             except TypeError:
                 # Prevent issues if we deleted stuff
                 return Color.BLACK

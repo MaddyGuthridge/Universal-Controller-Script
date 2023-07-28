@@ -14,7 +14,7 @@ import channels
 import itertools
 from typing import Callable, Optional, Any
 from . import IMappingStrategy
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes.fl_index import UnsafeIndex
 from devices import DeviceShadow
 from common.types import Color
 from common.util.grid_mapper import GridCell, GridLayout, grid_map

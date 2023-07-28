@@ -12,7 +12,7 @@ more details.
 import channels
 import ui
 from common.types.color import Color
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes.fl_index import UnsafeIndex
 from common.util.grid_mapper import GridCell
 from control_surfaces import ControlShadowEvent
 from control_surfaces import (

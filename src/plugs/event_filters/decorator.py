@@ -11,7 +11,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from typing import Any, Callable
-from common.plug_indexes import FlIndex
+from common.plug_indexes.fl_index import FlIndex
 from control_surfaces import ControlShadowEvent
 from devices.device_shadow import EventCallback
 

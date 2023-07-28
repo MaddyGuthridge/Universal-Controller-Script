@@ -56,7 +56,7 @@ class Slicers(StandardPlugin):
         """
         # TODO: why do we need to check <= 0?
         if 0 <= pad_idx.overall_index < len(self.__indexes):
-            ch_idx.triggerNote(
+            ch_idx.channel.triggerNote(
                 self.__indexes[pad_idx.overall_index],
                 control.value,
             )

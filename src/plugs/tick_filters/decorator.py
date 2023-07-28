@@ -11,7 +11,7 @@ more details.
 """
 from typing import Callable
 from typing_extensions import TypeAlias
-from common.plug_indexes import FlIndex
+from common.plug_indexes.fl_index import FlIndex
 
 TickCallback: TypeAlias = Callable[[FlIndex], bool]
 

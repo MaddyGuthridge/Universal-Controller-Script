@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Optional
 if TYPE_CHECKING:
     from plugs import WindowPlugin
     from devices import Device
-    from common.plug_indexes import WindowIndex
+    from common.plug_indexes.fl_index import WindowIndex
 
 
 class WindowPluginCollection:

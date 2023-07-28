@@ -11,7 +11,7 @@ more details.
 """
 import plugins
 
-from common.plug_indexes import PluginIndex
+from common.plug_indexes.fl_index import PluginIndex
 from abc import abstractmethod
 
 

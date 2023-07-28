@@ -13,7 +13,7 @@ more details.
 import channels
 
 from typing import Any
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes.fl_index import UnsafeIndex
 from common import getContext
 
 from control_surfaces import Note

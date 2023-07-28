@@ -56,7 +56,7 @@ def triggerPad(
     overall_index = calculate_overall_index(pad_idx)
 
     note = ch_idx.fpcGetPadSemitone(overall_index)
-    ch_idx.triggerNote(note, control.value)
+    ch_idx.channel.triggerNote(note, control.value)
     return True
 
 
@@ -112,7 +112,10 @@ class FPC(StandardPlugin):
         index: GeneratorIndex,
         *args: Any
     ) -> bool:
-        index.triggerNote(control.getControl().coordinate[1], control.value)
+        index.channel.triggerNote(
+            control.getControl().coordinate[1],
+            control.value,
+        )
         return True
 
 
