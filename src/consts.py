@@ -113,11 +113,11 @@ HEADER_TEMPLATE = r"""
            .;;,'      '.'      'FL/'   ;&/"
          ,;,'                       ,\\;'
       .;;.                    ,,';\\;'
-    .;;'                    ,;L\/'`
-   ;;'                  .,/\L;'
+    .;;'                    ,;FL/'`
+   ;;'                  .,/FL;'
   ;/               .,;/\/,'..
-  \;,        .,;/&/;;.    ,'      Universal Controller Script
-   ":;;;;;//;;&/''       ;        Version {version}
+  \;,        .,;UCS;;.    ,'      Universal Controller Script
+   ":;UCS;//;FL/''       ;        Version {version}
       ``'''``          .'         FL Studio {fl_version}
                      .;
             ',    ,:'             Made with <3 by Miguel Guthridge
