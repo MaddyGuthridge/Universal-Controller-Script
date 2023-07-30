@@ -12,16 +12,16 @@ more details.
 import ui
 
 # Version info
-VERSION = (1, 3, 0)
+VERSION = (2, 0, 0)
 
 # Sub versions
 VERSION_MAJOR = VERSION[0]
 VERSION_MINOR = VERSION[1]
 VERSION_REVISION = VERSION[2]
-VERSION_SUFFIX = "beta-2"
+VERSION_SUFFIX = "beta-3"
 
 # Minimum API version required to run script
-MIN_API_VERSION = 19
+MIN_FL_VERSION = (21, 0, 3)
 
 
 def getVersionString() -> str:
