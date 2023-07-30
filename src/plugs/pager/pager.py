@@ -9,7 +9,7 @@ more details.
 """
 from typing import Any
 from common.types import Color
-from common.plug_indexes.fl_index import UnsafeIndex
+from common.plug_indexes.fl_index import FlIndex
 from control_surfaces import ControlEvent, ControlSwitchButton
 from control_surfaces.control_mapping import ControlShadowEvent
 from devices import DeviceShadow
@@ -101,7 +101,7 @@ class PluginPager:
             self.__index = 0
         self.__needs_update = True
 
-    def processEvent(self, mapping: ControlEvent, index: UnsafeIndex) -> bool:
+    def processEvent(self, mapping: ControlEvent, index: FlIndex) -> bool:
         """Secret override of the processEvent method for the Plugin class
         """
         # Process events for the main plugin first
@@ -117,7 +117,7 @@ class PluginPager:
     def controlSwitch(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
+        index: FlIndex,
         *args: Any
     ) -> bool:
         """Switch between pages"""
@@ -125,7 +125,7 @@ class PluginPager:
             self.nextPage()
         return True
 
-    def tick(self, index: UnsafeIndex) -> None:
+    def tick(self, index: FlIndex) -> None:
         """Secret override of the tick method for the Plugin class
         Since different types of plugins take different arguments for the
         method, we need to use generic args and kwargs.

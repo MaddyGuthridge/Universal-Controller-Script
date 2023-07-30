@@ -19,9 +19,7 @@ from common import getContext
 from common.types import Color
 from common.plug_indexes import (
     FlIndex,
-    GeneratorIndex,
-    WindowIndex,
-    EffectIndex,
+    PluginIndex,
 )
 from control_surfaces import (
     ActivitySwitcher as ActivitySwitchControl,
@@ -43,23 +41,15 @@ def getActivityColor(activity: FlIndex) -> Color:
     ### Returns:
     * `Color`: color
     """
-    if isinstance(activity, WindowIndex):
-        return Color.ENABLED
+    if isinstance(activity, PluginIndex):
+        try:
+            return activity.track.color
+        except TypeError:
+            # Prevent issues if we deleted stuff
+            # FIXME: Do we need this check? What could we have deleted?
+            return Color.BLACK
     else:
-        if isinstance(activity, GeneratorIndex):
-            # Generator -> channel color
-            try:
-                return activity.channel.color
-            except TypeError:
-                # Prevent issues if we deleted stuff
-                return Color.BLACK
-        else:
-            assert isinstance(activity, EffectIndex)
-            # Effect -> track color
-            try:
-                return activity.track.color
-            except TypeError:
-                return Color.BLACK
+        return Color.ENABLED
 
 
 class ActivitySwitcher(SpecialPlugin):
