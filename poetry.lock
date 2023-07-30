@@ -137,14 +137,14 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "fl-studio-api-stubs"
-version = "28.2.0"
+version = "28.2.1"
 description = "Module and function definitions and documentation for the FL Studio Python API"
 category = "main"
 optional = false
 python-versions = ">=3.9.1,<4.0.0"
 files = [
-    {file = "fl_studio_api_stubs-28.2.0-py3-none-any.whl", hash = "sha256:ee6695a07414bb5d2c833d7ad27a3b82ccfb4e28b7bd959cc09c526d16233781"},
-    {file = "fl_studio_api_stubs-28.2.0.tar.gz", hash = "sha256:9d842c29ff040ad3c392338aaceebb3937417d1b41c3d3de518459fd66544cca"},
+    {file = "fl_studio_api_stubs-28.2.1-py3-none-any.whl", hash = "sha256:bb07a63f03fcec372a85505af4a952b6a980cf996f913eccdbb8a53fa2d5883a"},
+    {file = "fl_studio_api_stubs-28.2.1.tar.gz", hash = "sha256:1c9864b110251a3eeace48f91197db73e358c69cba85876dc4e74c7cca405a7d"},
 ]
 
 [package.dependencies]
