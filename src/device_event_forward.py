@@ -18,15 +18,16 @@ more details.
 """
 # flake8: noqa
 
+import version_check
+
 # Add our additional includes to the Python environment
 import fl_typing
 
-import version_check
+import consts
 
 # Add support for fl_param_checker
 from fl_param_checker import idleCallback, pluginParamCheck
 
-from common import consts
 from common.context_manager import catchContextResetException
 from common.extension_manager import ExtensionManager
 from common.states import WaitingForDevice, ForwardState

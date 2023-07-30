@@ -17,8 +17,9 @@ __all__ = [
     'credits'
 ]
 
+import consts
+
 from typing import Callable
-import common
 from .misc import _NoneNoPrintout, NoneNoPrintout
 
 
@@ -61,12 +62,12 @@ class ConsoleCommand:
 
 help = ConsoleCommand(
     f"Universal Controller Script\n"
-    f"Version: {common.consts.getVersionString()}\n"
+    f"Version: {consts.getVersionString()}\n"
     f"---------------------------\n"
     f"For documentation, visit the project's GitHub:\n"
-    f"  {common.consts.WEBSITE}\n"
+    f"  {consts.WEBSITE}\n"
     f"To speak to a human, join our Discord server:\n"
-    f"  {common.consts.DISCORD}\n"
+    f"  {consts.DISCORD}\n"
     f"---------------------------\n"
     f"List of commands (enter into the console to use it):\n"
     f" * help(): display this message\n"
@@ -82,7 +83,7 @@ help = ConsoleCommand(
 _newline = '\n'
 _credit_str = "\n".join(
     f"{key}:{_newline}{_newline.join([f' * {p}' for p in value])}"
-    for key, value in common.consts.AUTHORS.items()
+    for key, value in consts.AUTHORS.items()
 )
 credits = ConsoleCommand(
     f"Credits:\n"

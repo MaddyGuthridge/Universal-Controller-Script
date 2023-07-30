@@ -1,5 +1,5 @@
 import ui
-from common import consts
+import consts
 from . import FlIndex
 
 

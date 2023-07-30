@@ -3,7 +3,7 @@ from abc import abstractmethod
 import plugins
 
 from .fl_index import FlIndex
-from common.consts import PARAM_CC_START
+from consts import PARAM_CC_START
 from common.tracks import AbstractTrack
 
 
