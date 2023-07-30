@@ -84,7 +84,7 @@ class ActivityState:
             self._plugin_name = plugins.getPluginName(*plugin)
         except TypeError:
             self._plugin_name = ""
-        if len(plugin) == 1:
+        if isinstance(plugin, GeneratorIndex):
             self._generator = plugin
         else:
             self._effect = plugin
