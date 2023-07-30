@@ -41,8 +41,8 @@ class ActivityState:
         self._do_update = True
         self._split = False
         self._window = WindowIndex(0)
-        self._generator = GeneratorIndex(0)
-        self._effect = EffectIndex(0, 0)
+        self._generator: GeneratorIndex = GeneratorIndex(0)
+        self._effect: EffectIndex = EffectIndex(0, 0)
         self._plugin: PluginIndex = self._generator
         self._plugin_name = ""
         self._plug_active = True if self._plugin is not None else False
@@ -60,7 +60,7 @@ class ActivityState:
             f")"
         )
 
-    def inspect(self):
+    def inspect(self) -> str:
         """
         Inspect details about the activity state.
         """
@@ -120,14 +120,13 @@ class ActivityState:
                     self._changed = True
                     self._plugin = plugin
                 try:
-                    self._plugin_name = plugins.getPluginName(*plugin)
+                    self._plugin_name = plugin.getName()
                 except TypeError:
                     self._plugin_name = ""
-                # Ignore typing because len(plugin) doesn't narrow types in
-                # mypy
-                if len(plugin) == 1:
+                if isinstance(plugin, GeneratorIndex):
                     self._generator = plugin
                 else:
+                    assert isinstance(plugin, EffectIndex)
                     self._effect = plugin
                 if not self._split:
                     if not self._plug_active:
@@ -214,7 +213,7 @@ class ActivityState:
         """
         return self._history[index]
 
-    def ignoreNextHistory(self):
+    def ignoreNextHistory(self) -> None:
         """
         Don't add the next activity change to the history
         """
