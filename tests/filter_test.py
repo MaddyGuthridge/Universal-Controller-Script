@@ -60,11 +60,3 @@ def test_filter_to_window():
     assert was_filtered(func, (1, ))
     assert was_filtered(func, (1, 2))
     assert not was_filtered(func, 0)
-
-
-def test_filter_out_none():
-    func = get_function(event_filters.toSafeIndex)
-    assert was_filtered(func, None)
-    assert not was_filtered(func, 0)
-    assert not was_filtered(func, (1, ))
-    assert not was_filtered(func, (1, 2))

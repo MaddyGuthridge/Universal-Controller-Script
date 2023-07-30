@@ -12,6 +12,7 @@ more details.
 
 # import pytest
 # from common.types import FlMidiMsg
+from common.plug_indexes import WindowIndex
 from control_surfaces import (
     ControlEvent,
     PlayButton,
@@ -34,4 +35,4 @@ def test_process_unbound():
         0.0,
         0,
         False,
-    ), None)
+    ), WindowIndex.MIXER)
