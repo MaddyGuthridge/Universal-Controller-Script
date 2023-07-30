@@ -13,6 +13,11 @@ class WindowIndex(FlIndex):
     def __hash__(self) -> int:
         return self.__index
 
+    def __eq__(self, __value: object) -> bool:
+        if isinstance(__value, WindowIndex):
+            return __value.index == self.index
+        return NotImplemented
+
     @property
     def index(self) -> int:
         """

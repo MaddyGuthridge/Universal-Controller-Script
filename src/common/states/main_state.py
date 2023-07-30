@@ -11,7 +11,6 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-import plugins
 from typing import TYPE_CHECKING
 
 import common
@@ -143,9 +142,9 @@ class MainState(DeviceState):
                         event.handled = True
                         return
 
-        if isinstance(plug_idx, tuple):
+        if isinstance(plug_idx, PluginIndex):
             try:
-                plug_id = plugins.getPluginName(*plug_idx)
+                plug_id = plug_idx.getName()
             except TypeError:
                 # Plugin not valid
                 plug_id = ""
