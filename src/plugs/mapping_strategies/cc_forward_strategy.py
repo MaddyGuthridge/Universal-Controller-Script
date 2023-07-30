@@ -9,13 +9,13 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-import plugins
 from common.consts import PARAM_CC_START
+from common.param import Param
 from . import IMappingStrategy
 from devices import DeviceShadow
 from plugs.event_filters import filterButtonLift
 from common.types import Color
-from common.util.api_fixes import isPluginVst
+from common.plug_indexes import PluginIndex
 
 from control_surfaces import (
     ControlShadowEvent,
@@ -52,11 +52,14 @@ class CcForwardStrategy(IMappingStrategy):
         shadow.bindMatches(Encoder, self.process)
 
     @filterButtonLift()
-    def process(self, control: ControlShadowEvent, index, *args, **kwargs):
-        if isPluginVst(index):
-            plugins.setParamValue(
-                control.value,
-                PARAM_CC_START + control.midi.data1,
-                *index,
-            )
+    def process(
+        self,
+        control: ControlShadowEvent,
+        index: PluginIndex,
+        *args,
+        **kwargs,
+    ):
+        if index.isVst():
+            param = Param(PARAM_CC_START + control.midi.data1)
+            param(index).value = control.value
         return False
