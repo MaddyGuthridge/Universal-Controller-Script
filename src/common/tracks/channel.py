@@ -2,7 +2,8 @@
 import channels
 
 from .abstract import AbstractTrack
-from typing import Optional, TypeVar, ParamSpec, Concatenate, Callable, Union
+from typing import Optional, TypeVar, Callable, Union
+from typing_extensions import ParamSpec, Concatenate
 from common.types import Color
 from common.util.api_fixes import getGroupChannelIndex
 

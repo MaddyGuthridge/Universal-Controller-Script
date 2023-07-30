@@ -22,12 +22,7 @@ from typing import Optional, TYPE_CHECKING
 
 
 if TYPE_CHECKING:
-    from common.plug_indexes import (
-        WindowIndex,
-        PluginIndex,
-        GeneratorIndex,
-        EffectIndex,
-    )
+    from common.plug_indexes import WindowIndex, PluginIndex
 
 
 @profilerDecoration("getFocusedPluginIndex")
