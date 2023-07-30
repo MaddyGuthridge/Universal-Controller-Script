@@ -9,8 +9,8 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-import channels
 from common.extension_manager import ExtensionManager
+from common.plug_indexes import WindowIndex
 from common.types import Color
 from devices import DeviceShadow
 from plugs import WindowPlugin, PluginPager
@@ -29,18 +29,11 @@ class ChannelRack(PluginPager, WindowPlugin):
         PluginPager.__init__(self, shadow)
         self.addPage(StepSequencer(shadow.copy()), Color.fromRgb(0, 127, 255))
         self.addPage(OmniPreview(shadow.copy()), Color.fromRgb(127, 0, 255))
-        mute_solo = MuteSoloStrategy(
-            lambda i: getChannelRows()[i],
-            channels.muteChannel,
-            channels.isChannelMuted,
-            channels.soloChannel,
-            channels.isChannelSolo,
-            channels.getChannelColor,
-        )
+        mute_solo = MuteSoloStrategy(lambda i: getChannelRows()[i])
         WindowPlugin.__init__(self, shadow, [mute_solo])
 
     @classmethod
-    def getWindowId(cls) -> int:
+    def getWindowId(cls) -> WindowIndex:
         return INDEX
 
     @classmethod

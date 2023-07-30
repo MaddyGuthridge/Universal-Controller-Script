@@ -12,7 +12,7 @@ more details.
 import channels
 import ui
 from common.types.color import Color
-from common.plug_indexes.fl_index import UnsafeIndex
+from common.plug_indexes import FlIndex, WindowIndex
 from common.util.grid_mapper import GridCell
 from control_surfaces import ControlShadowEvent
 from control_surfaces import (
@@ -64,7 +64,7 @@ class StepSequencer(WindowPlugin):
         super().__init__(shadow, [self._drums])
 
     @classmethod
-    def getWindowId(cls) -> int:
+    def getWindowId(cls) -> WindowIndex:
         return INDEX
 
     @classmethod
@@ -74,7 +74,7 @@ class StepSequencer(WindowPlugin):
     def triggerDrumPad(
         self,
         control: ControlShadowEvent,
-        idx: UnsafeIndex,
+        idx: FlIndex,
         cell: GridCell,
     ) -> bool:
         """
@@ -84,7 +84,7 @@ class StepSequencer(WindowPlugin):
         # TODO: Later use them to implement graph editor features
         if not control.value:
             return False
-        channel = cell.group_number + getChannelRows()[0]
+        channel = cell.group_number + getChannelRows()[0].index
         index = cell.group_index + self._scroll * SCROLL_MULTIPLIER
 
         val = channels.getGridBit(channel, index)
@@ -94,13 +94,13 @@ class StepSequencer(WindowPlugin):
     def colorDrumPad(
         self,
         control: ControlShadow,
-        idx: UnsafeIndex,
+        idx: FlIndex,
         cell: GridCell,
     ) -> Color:
         """
         Determine color for drum pads
         """
-        channel = cell.group_number + getChannelRows()[0]
+        channel = cell.group_number + getChannelRows()[0].index
         index = cell.group_index + self._scroll * SCROLL_MULTIPLIER
 
         on_color = Color.fromGrayscale(1)
@@ -119,7 +119,7 @@ class StepSequencer(WindowPlugin):
         col = self._scroll * SCROLL_MULTIPLIER
 
         # FIXME: This might get an index error on controllers with no drum pads
-        row = getChannelRows()[0]
+        row = getChannelRows()[0].index
 
         width = self._drums.get_group_size()
         height = self._drums.get_num_groups_mapped()
