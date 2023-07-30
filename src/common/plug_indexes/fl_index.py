@@ -11,13 +11,11 @@ more details.
 """
 from abc import abstractmethod
 from typing import TYPE_CHECKING
-import plugins
-
-from common.consts import PARAM_CC_START
 
 
 if TYPE_CHECKING:
     from .window import WindowIndex
+    from .plugin import PluginIndex
 
 
 class FlIndex:
@@ -67,53 +65,7 @@ class FlIndex:
         ### Returns:
         * `PluginIndex`: this index, but now guaranteed to be a PluginIndex
         """
+        from .plugin import PluginIndex
         if isinstance(self, PluginIndex):
             return self
         raise TypeError(f'Cannot cast to PluginIndex, type is {self}')
-
-
-class PluginIndex(FlIndex):
-    @abstractmethod
-    @property
-    def index(self) -> int:
-        """
-        The primary index of this plugin.
-
-        * Global index on the channel rack for generators.
-        * Mixer track for effects.
-        """
-        ...
-
-    @abstractmethod
-    @property
-    def slotIndex(self) -> int:
-        """
-        The slot index for effects. `-1` for generators.
-        """
-        ...
-
-    @property
-    def isValid(self) -> bool:
-        """
-        `True` when the plugin is valid.
-        """
-        return plugins.isValid(self.index, self.slotIndex, True)
-
-    @property
-    def isVst(self) -> bool:
-        """
-        `True` when the plugin is a VST.
-        """
-        if self.isValid:
-            paramCount = plugins.getParamCount(
-                self.index,
-                self.slotIndex,
-                True,
-            )
-            # A plugin is assumed to be a VST if it has over 4096 params
-            return paramCount > PARAM_CC_START
-        else:
-            return False
-
-    def getName(self) -> str:
-        return plugins.getPluginName(self.index, self.slotIndex, False, True)

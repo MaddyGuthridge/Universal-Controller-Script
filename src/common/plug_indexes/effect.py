@@ -1,9 +1,9 @@
 import mixer
 from common.types import Color
-from .fl_index import PluginIndex
+from .plugin import PluginIndex, AbstractTrack
 
 
-class MixerTrack:
+class MixerTrack(AbstractTrack):
     """
     Helper class for accessing properties of mixer tracks
     """
@@ -13,12 +13,19 @@ class MixerTrack:
 
     @property
     def color(self) -> Color:
-        """
-        Color of the track
-        """
         return Color.fromInteger(mixer.getTrackColor(self.__index))
 
-    # TODO: Flesh out with more stuff as required
+    @color.setter
+    def color(self, new_color: Color) -> None:
+        mixer.setTrackColor(self.__index, new_color.integer)
+
+    @property
+    def name(self) -> str:
+        return mixer.getTrackName(self.__index)
+
+    @name.setter
+    def name(self, new_name: str) -> None:
+        mixer.setTrackName(self.__index, new_name)
 
 
 class EffectIndex(PluginIndex):
