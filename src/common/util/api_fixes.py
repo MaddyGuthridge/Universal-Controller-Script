@@ -18,17 +18,20 @@ import mixer
 import playlist
 
 from common.profiler import profilerDecoration
-from common.plug_indexes import (
-    WindowIndex,
-    PluginIndex,
-    GeneratorIndex,
-    EffectIndex,
-)
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from common.plug_indexes import (
+        WindowIndex,
+        PluginIndex,
+        GeneratorIndex,
+        EffectIndex,
+    )
 
 
 @profilerDecoration("getFocusedPluginIndex")
-def getFocusedPluginIndex(force: bool = False) -> Optional[PluginIndex]:
+def getFocusedPluginIndex(force: bool = False) -> Optional['PluginIndex']:
     """
     Fixes the horrible ui.getFocusedFormIndex() function
 
@@ -44,6 +47,7 @@ def getFocusedPluginIndex(force: bool = False) -> Optional[PluginIndex]:
     * `int`: grouped index of a channel rack plugin if one is focused
     * `int, int`: index of a mixer plugin if one is focused
     """
+    from common.plug_indexes import GeneratorIndex, EffectIndex
     # If a mixer plugin is focused
     if ui.getFocused(6):
         form_id = ui.getFocusedFormID()
@@ -69,7 +73,7 @@ def getFocusedPluginIndex(force: bool = False) -> Optional[PluginIndex]:
 
 
 @profilerDecoration("getFocusedWindowIndex")
-def getFocusedWindowIndex() -> Optional[WindowIndex]:
+def getFocusedWindowIndex() -> Optional['WindowIndex']:
     """
     Fixes the horrible ui.getFocused() function
 
@@ -77,6 +81,7 @@ def getFocusedWindowIndex() -> Optional[WindowIndex]:
         * `None`: if no window is focused
         * `int`: index of window
     """
+    from common.plug_indexes import WindowIndex
     for i in range(5):
         if ui.getFocused(i):
             return WindowIndex(i)

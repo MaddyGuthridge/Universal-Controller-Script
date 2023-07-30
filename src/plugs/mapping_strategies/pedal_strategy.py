@@ -13,7 +13,7 @@ more details.
 from typing import Any
 from common.consts import PARAM_CC_START
 from common.param import Param
-from common.util.api_fixes import PluginIndex
+from common.plug_indexes import PluginIndex
 from control_surfaces.controls.pedal import (
     Pedal,
     SustainPedal,

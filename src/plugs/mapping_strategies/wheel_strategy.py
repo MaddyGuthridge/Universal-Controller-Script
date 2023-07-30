@@ -13,7 +13,7 @@ more details.
 from typing import Any
 from common.consts import PARAM_CC_START
 from common.param import Param
-from common.util.api_fixes import PluginIndex, GeneratorIndex
+from common.plug_indexes import PluginIndex, GeneratorIndex
 
 from control_surfaces import ModWheel, PitchWheel
 from control_surfaces import ControlShadowEvent

@@ -8,8 +8,8 @@ from common.tracks import AbstractTrack
 
 
 class PluginIndex(FlIndex):
-    @abstractmethod
     @property
+    @abstractmethod
     def index(self) -> int:
         """
         The primary index of this plugin.
@@ -19,16 +19,16 @@ class PluginIndex(FlIndex):
         """
         ...
 
-    @abstractmethod
     @property
+    @abstractmethod
     def slotIndex(self) -> int:
         """
         The slot index for effects. `-1` for generators.
         """
         ...
 
-    @abstractmethod
     @property
+    @abstractmethod
     def track(self) -> AbstractTrack:
         """
         The track or channel underlying this function.

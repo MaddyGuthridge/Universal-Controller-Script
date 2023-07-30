@@ -18,7 +18,8 @@ __all__ = [
 ]
 
 
-from .fl_index import FlIndex, PluginIndex
+from .fl_index import FlIndex
+from .plugin import PluginIndex
 from .window import WindowIndex
 from .generator import GeneratorIndex
 from .effect import EffectIndex

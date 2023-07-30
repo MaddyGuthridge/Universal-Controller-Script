@@ -11,7 +11,7 @@ more details.
 """
 import plugins
 
-from common.plug_indexes.fl_index import PluginIndex
+from common.plug_indexes import PluginIndex
 from abc import abstractmethod
 
 
@@ -29,8 +29,8 @@ class PluginParameter:
         """
         ...
 
-    @abstractmethod
     @property
+    @abstractmethod
     def value(self) -> float:
         """
         The value of the parameter (read/write)
@@ -42,8 +42,8 @@ class PluginParameter:
     def value(self, newValue: float):
         ...
 
-    @abstractmethod
     @property
+    @abstractmethod
     def name(self) -> str:
         """
         The name of the parameter

@@ -16,7 +16,7 @@ from common.profiler import profilerDecoration, ProfilerContext
 from control_surfaces import ControlShadowEvent, ControlShadow, Fader
 from devices.device_shadow import DeviceShadow
 from plugs.event_filters import toPluginIndex
-from common.util.api_fixes import PluginIndex
+from common.plug_indexes import PluginIndex
 from . import IMappingStrategy
 
 DEFAULT_COLOR = Color.fromInteger(0x222222)

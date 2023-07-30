@@ -1,7 +1,7 @@
 """
 plugs > mapping_strategies > preset_navigation
 """
-from common.util.api_fixes import PluginIndex
+from common.plug_indexes import PluginIndex
 from control_surfaces import (
     DirectionNext,
     DirectionPrevious,

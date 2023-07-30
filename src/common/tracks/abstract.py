@@ -9,15 +9,15 @@ class AbstractTrack:
 
     Allows for their properties to be get/set in a simplified manner
     """
-    @abstractmethod
     @property
+    @abstractmethod
     def index(self) -> int:
         """
         Index of the track
         """
 
-    @abstractmethod
     @property
+    @abstractmethod
     def color(self) -> Color:
         """
         Color of the track
@@ -28,8 +28,8 @@ class AbstractTrack:
     def color(self, new_color: Color) -> None:
         ...
 
-    @abstractmethod
     @property
+    @abstractmethod
     def name(self) -> str:
         """
         Name of the track. Note that this isn't necessarily the same as the
@@ -41,8 +41,8 @@ class AbstractTrack:
     def name(self, new_name: str) -> None:
         ...
 
-    @abstractmethod
     @property
+    @abstractmethod
     def mute(self) -> bool:
         """
         Whether the track is muted
@@ -58,8 +58,8 @@ class AbstractTrack:
         """
         self.mute = not self.mute
 
-    @abstractmethod
     @property
+    @abstractmethod
     def solo(self) -> bool:
         """
         Whether the track is solo

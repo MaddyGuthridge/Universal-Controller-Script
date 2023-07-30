@@ -11,7 +11,7 @@ more details.
 """
 
 from common.param import Param, PluginParameter
-from common.util.api_fixes import PluginIndex
+from common.plug_indexes import PluginIndex
 from control_surfaces import ModX, ModY
 from control_surfaces import ControlShadow, ControlShadowEvent
 from devices.device_shadow import DeviceShadow
