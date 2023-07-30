@@ -21,6 +21,8 @@ more details.
 # Add our additional includes to the Python environment
 import fl_typing
 
+import version_check
+
 # Add support for fl_param_checker
 from fl_param_checker import idleCallback, pluginParamCheck
 
@@ -31,7 +33,6 @@ from common.states import WaitingForDevice, ForwardState
 
 from common import log, verbosity
 from common import getContext
-from common.consts import getVersionString
 
 
 class OverallDevice:

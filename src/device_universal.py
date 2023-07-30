@@ -22,11 +22,13 @@ more details.
 # Add our additional includes to the Python environment
 import fl_typing
 
+import version_check
+
 # Add support for fl_param_checker
 from fl_param_checker import idleCallback, pluginParamCheck
 
 # Get context, and context reset wrapper
-from common import getContext, catchContextResetException, getVersionString
+from common import getContext, catchContextResetException
 # Function to allow user to reset context
 from common.context_manager import unsafeResetContext as reset
 # Import constants and logger

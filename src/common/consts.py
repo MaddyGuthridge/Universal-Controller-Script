@@ -17,11 +17,19 @@ VERSION = (2, 0, 0)
 # Sub versions
 VERSION_MAJOR = VERSION[0]
 VERSION_MINOR = VERSION[1]
-VERSION_REVISION = VERSION[2]
+VERSION_RELEASE = VERSION[2]
 VERSION_SUFFIX = "beta-3"
 
 # Minimum API version required to run script
 MIN_FL_VERSION = (21, 0, 3)
+
+
+def formatVersion(version: tuple[int, int, int], suffix: str = '') -> str:
+    """
+    Format the given version string
+    """
+    suffix = f"-{suffix}" if suffix else ""
+    return ".".join(map(str, version)) + suffix
 
 
 def getVersionString() -> str:
@@ -30,8 +38,42 @@ def getVersionString() -> str:
 
     Eg: `"1.2.3-beta"`
     """
-    suffix = f"-{VERSION_SUFFIX}" if VERSION_SUFFIX else ""
-    return ".".join(map(str, VERSION)) + suffix
+    return formatVersion(VERSION, VERSION_SUFFIX)
+
+
+def getFlVersion() -> tuple[int, int, int]:
+    fl_major = ui.getVersion(0)
+    assert isinstance(fl_major, int)
+    fl_minor = ui.getVersion(1)
+    assert isinstance(fl_minor, int)
+    fl_release = ui.getVersion(2)
+    assert isinstance(fl_release, int)
+
+    return fl_major, fl_minor, fl_release
+
+
+def checkFlVersion() -> bool:
+    """
+    Checks if the script is running in a compatible version of FL Studio
+    """
+    fl_major, fl_minor, fl_release = getFlVersion()
+
+    req_major, req_minor, req_release = MIN_FL_VERSION
+
+    if fl_major < req_major:
+        return False
+    if fl_major > req_major:
+        return True
+
+    if fl_minor < req_minor:
+        return False
+    if fl_minor > req_minor:
+        return True
+
+    if fl_release < req_release:
+        return False
+
+    return True
 
 
 # Website
