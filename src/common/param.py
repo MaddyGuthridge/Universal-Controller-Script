@@ -88,7 +88,8 @@ def Param(paramIndex: int) -> type[PluginParameter]:
                 paramIndex,
                 self.__plug.index,
                 self.__plug.slotIndex,
-                True
+                0,
+                True,
             )
 
         @property
