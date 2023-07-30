@@ -11,8 +11,9 @@ more details.
 """
 
 from typing import Callable, Any
+from common.tracks import AbstractTrack
 from common.types import Color
-from common.plug_indexes.fl_index import UnsafeIndex
+from common.plug_indexes.fl_index import FlIndex
 from control_surfaces import (
     ControlShadowEvent,
     ControlShadow,
@@ -51,12 +52,7 @@ class MuteSoloStrategy(IMappingStrategy):
     """
     def __init__(
         self,
-        selected_callback: Callable[[int], int],
-        mute_callback: Callable[[int], None],
-        is_mute_callback: Callable[[int], bool],
-        solo_callback: Callable[[int], None],
-        is_solo_callback: Callable[[int], bool],
-        color_callback: Callable[[int], int],
+        selected_callback: Callable[[int], AbstractTrack],
     ) -> None:
         """
         Create a MuteSoloStrategy
@@ -66,31 +62,11 @@ class MuteSoloStrategy(IMappingStrategy):
         events from the controls and color the controls.
 
         ### Args:
-        * `selected_callback` (`Callable[[int], int]`): given an int n, returns
-          the nth selected track index. Note that if there aren't enough
+        * `selected_callback` (`Callable[[int], AbstractTrack]`): given an int
+          n, returns the nth selected track. Note that if there aren't enough
           tracks, an IndexError should be raised.
-
-        * `mute_callback` (`Callable[[int], None]`): toggles whether the track
-          at the given index is muted.
-
-        * `is_mute_callback` (`Callable[[int], bool]`): returns whether the
-          track at the given index is muted.
-
-        * `solo_callback` (`Callable[[int], None]`): toggles whether the track
-          at the given index is solo.
-
-        * `is_solo_callback` (`Callable[[int], bool]`): returns whether the
-          track at the given index is solo.
-
-        * `color_callback` (`Callable[[int], int]`): returns the color of the
-          track at the given index.
         """
         self.selected = selected_callback
-        self.mute = mute_callback
-        self.is_mute = is_mute_callback
-        self.solo = solo_callback
-        self.is_solo = is_solo_callback
-        self.color = color_callback
 
     def apply(self, shadow: DeviceShadow) -> None:
         self._buttons = shadow.bindMatches(
@@ -116,7 +92,7 @@ class MuteSoloStrategy(IMappingStrategy):
     def eGeneric(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
+        index: FlIndex,
         number: int,
         *args: Any,
     ) -> bool:
@@ -124,16 +100,16 @@ class MuteSoloStrategy(IMappingStrategy):
             track = self.selected(number)
         except IndexError:
             return True
-        if control.double or self.is_solo(track):
-            self.solo(track)
+        if control.double or track.solo:
+            track.soloToggle()
         else:
-            self.mute(track)
+            track.muteToggle()
         return True
 
     def tGeneric(
         self,
         control: ControlShadow,
-        index: UnsafeIndex,
+        index: FlIndex,
         number: int,
         *args: Any,
     ):
@@ -143,17 +119,17 @@ class MuteSoloStrategy(IMappingStrategy):
             # Out of range tracks should be disabled
             control.color = Color()
             return
-        if self.is_mute(track):
+        if track.mute:
             control.color = COLOR_DISABLED
         else:
-            control.color = Color.fromInteger(self.color(track), enabled=True)
+            control.color = track.color
         return True
 
     @filterButtonLift()
     def eMute(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
+        index: FlIndex,
         number: int,
         *args: Any,
     ) -> bool:
@@ -161,13 +137,13 @@ class MuteSoloStrategy(IMappingStrategy):
             track = self.selected(number)
         except IndexError:
             return True
-        self.mute(track)
+        track.muteToggle()
         return True
 
     def tMute(
         self,
         control: ControlShadow,
-        index: UnsafeIndex,
+        index: FlIndex,
         number: int,
         *args: Any,
     ):
@@ -177,8 +153,8 @@ class MuteSoloStrategy(IMappingStrategy):
             # Out of range tracks should be disabled
             control.color = Color()
             return
-        if self.is_mute(track):
-            control.color = Color.fromInteger(self.color(track), enabled=True)
+        if track.mute:
+            control.color = track.color
         else:
             control.color = COLOR_DISABLED
         return True
@@ -187,7 +163,7 @@ class MuteSoloStrategy(IMappingStrategy):
     def eSolo(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
+        index: FlIndex,
         number: int,
         *args: Any,
     ) -> bool:
@@ -195,16 +171,16 @@ class MuteSoloStrategy(IMappingStrategy):
             track = self.selected(number)
         except IndexError:
             return True
-        if self.is_mute(track):
-            self.mute(track)
+        if track.mute:
+            track.muteToggle()
         else:
-            self.solo(track)
+            track.soloToggle()
         return True
 
     def tSolo(
         self,
         control: ControlShadow,
-        index: UnsafeIndex,
+        index: FlIndex,
         number: int,
         *args: Any,
     ):
@@ -214,8 +190,8 @@ class MuteSoloStrategy(IMappingStrategy):
             # Out of range tracks should be disabled
             control.color = Color()
             return
-        if self.is_mute(track):
+        if track.mute:
             control.color = COLOR_DISABLED
         else:
-            control.color = Color.fromInteger(self.color(track), enabled=True)
+            control.color = track.color
         return True
