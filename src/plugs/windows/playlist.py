@@ -17,9 +17,10 @@ import patterns
 import transport
 import general
 from common import getContext
+from common.tracks import PlaylistTrack
 from common.types import Color
 from common.extension_manager import ExtensionManager
-from common.plug_indexes.fl_index import UnsafeIndex
+from common.plug_indexes import WindowIndex, FlIndex
 from common.util.api_fixes import getFirstPlaylistSelection
 from control_surfaces import consts
 from control_surfaces import ControlShadowEvent
@@ -40,8 +41,6 @@ from plugs import WindowPlugin
 from plugs.event_filters import filterButtonLift
 from plugs.mapping_strategies import MuteSoloStrategy
 
-INDEX = 2
-
 TOOL_COLORS = [
     Color.fromInteger(0xffc43f),  # Pencil
     Color.fromInteger(0x7bcefd),  # Paint
@@ -61,11 +60,11 @@ def getNumDrumCols() -> int:
     return getContext().getDevice().getDrumPadSize()[1]
 
 
-def getSelection(i: int):
+def getSelection(i: int) -> PlaylistTrack:
     selection = getFirstPlaylistSelection()
     if i >= getNumDrumCols():
         raise IndexError()
-    return selection + i
+    return PlaylistTrack(selection + i)
 
 
 class Playlist(WindowPlugin):
@@ -82,14 +81,7 @@ class Playlist(WindowPlugin):
             target_num=len(TOOL_COLORS),
         )\
             .colorize(TOOL_COLORS)
-        mute_solo = MuteSoloStrategy(
-            getSelection,
-            playlist.muteTrack,
-            playlist.isTrackMuted,
-            playlist.soloTrack,
-            playlist.isTrackSolo,
-            playlist.getTrackColor,
-        )
+        mute_solo = MuteSoloStrategy(getSelection)
 
         # Navigation mappings
         # FIXME: This is super yucky, come up with a better system for it
@@ -152,8 +144,8 @@ class Playlist(WindowPlugin):
         super().__init__(shadow, [mute_solo])
 
     @classmethod
-    def getWindowId(cls) -> int:
-        return INDEX
+    def getWindowId(cls) -> WindowIndex:
+        return WindowIndex.PLAYLIST
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':
@@ -162,7 +154,7 @@ class Playlist(WindowPlugin):
     def jogWheel(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
+        index: FlIndex,
         *args: Any
     ) -> bool:
         if control.value == consts.JOG_NEXT:
@@ -184,12 +176,12 @@ class Playlist(WindowPlugin):
                 track = playlist.trackCount() - 1
             playlist.deselectAll()
             playlist.selectTrack(track)
-            ui.scrollWindow(INDEX, track)
+            ui.scrollWindow(WindowIndex.PLAYLIST.index, track)
         elif isinstance(control.getControl(), StandardJogWheel):
             # Need to account for ticks being zero-indexed and bars being
             # 1-indexed
             bar = int(transport.getSongPos(3)) + increment - 1
-            ui.scrollWindow(INDEX, bar, 1)
+            ui.scrollWindow(WindowIndex.PLAYLIST.index, bar, 1)
             # TODO: Make this work with time signature markers
             transport.setSongPos(bar * general.getRecPPB(), 2)
         return True
@@ -201,7 +193,7 @@ class Playlist(WindowPlugin):
         window,
         idx: int,
     ) -> bool:
-        # FIXME: This uses keyboard shortcuts which are extremely unreliable
+        # HACK: This uses keyboard shortcuts which are extremely unreliable
         if idx < len(TOOL_COLORS):
             # If we're already in a menu, close it
             if ui.isInPopupMenu():

@@ -12,13 +12,12 @@ more details.
 import transport
 import ui
 from common.extension_manager import ExtensionManager
+from common.plug_indexes import WindowIndex
 from common.types import Color
 from devices import DeviceShadow
 from plugs import WindowPlugin
 from plugs.event_filters import filterButtonLift
 from control_surfaces import ToolSelector, ControlShadowEvent
-
-INDEX = 3
 
 
 TOOL_COLORS = [
@@ -52,8 +51,8 @@ class PianoRoll(WindowPlugin):
         super().__init__(shadow, [])
 
     @classmethod
-    def getWindowId(cls) -> int:
-        return INDEX
+    def getWindowId(cls) -> WindowIndex:
+        return WindowIndex.PIANO_ROLL
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'WindowPlugin':

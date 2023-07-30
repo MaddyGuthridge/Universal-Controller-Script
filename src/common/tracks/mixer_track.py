@@ -11,6 +11,21 @@ class MixerTrack(AbstractTrack):
     def __init__(self, index: int) -> None:
         self.__index = index
 
+    def __eq__(self, __value: object) -> bool:
+        if isinstance(__value, MixerTrack):
+            return __value.index == self.__index
+        return NotImplemented
+
+    def __gt__(self, __value: object) -> bool:
+        if isinstance(__value, MixerTrack):
+            return self.index > __value.index
+        return NotImplemented
+
+    def __lt__(self, __value: object) -> bool:
+        if isinstance(__value, MixerTrack):
+            return self.index < __value.index
+        return NotImplemented
+
     @property
     def index(self) -> int:
         return self.__index

@@ -12,6 +12,10 @@ class PlaylistTrack(AbstractTrack):
         self.__index = index
 
     @property
+    def index(self) -> int:
+        return self.__index
+
+    @property
     def color(self) -> Color:
         return Color.fromInteger(playlist.getTrackColor(self.__index))
 
