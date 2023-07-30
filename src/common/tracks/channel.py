@@ -2,7 +2,7 @@
 import channels
 
 from .abstract import AbstractTrack
-from typing import TypeVar, ParamSpec, Concatenate, Callable, Union
+from typing import Optional, TypeVar, ParamSpec, Concatenate, Callable, Union
 from common.types import Color
 from common.util.api_fixes import getGroupChannelIndex
 
@@ -83,11 +83,39 @@ class Channel(AbstractTrack):
     def __init__(self, index: int) -> None:
         self.__index = index
 
-    def triggerNote(self, note_number: int, value: float) -> None:
+    @property
+    def index(self) -> int:
+        """
+        Global index of the channel
+        """
+        return self.__index
+
+    @property
+    def group_index(self) -> Optional[int]:
+        """
+        Index of the channel, respecting groups
+        """
+        return getGroupChannelIndex(self.__index)
+
+    def triggerNote(
+        self,
+        note_number: int,
+        value: float,
+        channel: Optional[int] = None,
+    ) -> None:
         """
         Trigger a note on this channel
         """
-        channels.midiNoteOn(self.__index, note_number, int(value * 127))
+        if channel is None:
+            channel = -1
+        channels.midiNoteOn(
+            self.__index,
+            note_number,
+            int(value * 127),
+            # NOTE: Currently FL Studio won't set the note color correctly
+            # from this channel
+            channel,
+        )
 
     @property
     def color(self) -> Color:

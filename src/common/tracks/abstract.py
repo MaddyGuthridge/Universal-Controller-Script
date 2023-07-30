@@ -11,6 +11,13 @@ class AbstractTrack:
     """
     @abstractmethod
     @property
+    def index(self) -> int:
+        """
+        Index of the track
+        """
+
+    @abstractmethod
+    @property
     def color(self) -> Color:
         """
         Color of the track
