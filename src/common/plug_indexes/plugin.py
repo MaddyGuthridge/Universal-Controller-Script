@@ -4,41 +4,7 @@ import plugins
 
 from .fl_index import FlIndex
 from common.consts import PARAM_CC_START
-from common.types import Color
-
-
-class AbstractTrack:
-    """
-    Abstract base class for mixer tracks and channel rack channels
-
-    Allows for their properties to be get/set in a simplified manner
-    """
-    @abstractmethod
-    @property
-    def color(self) -> Color:
-        """
-        Color of the track
-        """
-        ...
-
-    @color.setter
-    def color(self, new_color: Color) -> None:
-        ...
-
-    @abstractmethod
-    @property
-    def name(self) -> str:
-        """
-        Name of the track. Note that this isn't necessarily the same as the
-        name of the plugin.
-        """
-        ...
-
-    @name.setter
-    def name(self, new_name: str) -> None:
-        ...
-
-    # TODO: Flesh out with more stuff as required
+from common.tracks import AbstractTrack
 
 
 class PluginIndex(FlIndex):
