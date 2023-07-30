@@ -9,6 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+import ui
 
 # Version info
 VERSION = (1, 3, 0)
@@ -55,31 +56,38 @@ AUTHORS: dict[str, list[str]] = {
     ]
 }
 
-ASCII_HEADER_ART = r"""
+HEADER_TEMPLATE = r"""
                                 .
                              ,;;'
                             ;;'
-             .,;/F\/;,    ,L,
-           ,\FFFLFLFFLF; ;L'
-          ;FLFLFLFFLFFFFLF/L;;,,     ,,;;;;;/;;,
-         'FLL\LFFFFFLFLFLFFFLFFFFLL;;,.'`    ',&
-            ':/L;/FFFFLFFLFFFFFLFFF\           &;
-                 \;FFFFFLFFFFLFFFFLF;        .&/
-                 ,;LFFFLFLFLLFFLFLFFL      ,;&/
-              .;;:.'/LFLFL\F;,;LL\FL/    ./&'
+             .,;/FL/;,    ,/,
+           ,\UCS;FL;UCS; ;/'
+          ;FL;UCS;FL;UCS;FL\;;,,     ,,;;;;;/;;,
+         'UCS;FL;UCS;FL;UCS;FL;UCS;;;,.'`    ',&
+            ':/UCS;FL;UCS;FL;UCS;FL\           &;
+                 \UCS;FL;UCS;FL;UCS;\        .&/
+                 ,;FL;UCS;FL;UCS;FL;;      ,;&/
+              .;;:.'/FL;UCS/;,UCS;FL/    ./&'
            .;;,'      '.'      'FL/'   ;&/"
          ,;,'                       ,\\;'
       .;;.                    ,,';\\;'
     .;;'                    ,;L\/'`
    ;;'                  .,/\L;'
   ;/               .,;/\/,'..
-  \;,        .,;/&/;;.    ,'
-   ":;;;;;//;;&/''       ;
-      ``'''``          .'
+  \;,        .,;/&/;;.    ,'      Universal Controller Script
+   ":;;;;;//;;&/''       ;        Version {version}
+      ``'''``          .'         FL Studio {fl_version}
                      .;
-            ',    ,:'
+            ',    ,:'             Made with <3 by Miguel Guthridge
               ';''
 """
+
+
+def getHeaderArt():
+    return HEADER_TEMPLATE\
+        .replace("{version}", getVersionString())\
+        .replace("{fl_version}", str(ui.getVersion()))
+
 
 # Device enquiry message
 UNIVERSAL_DEVICE_ENQUIRY = bytes([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7])

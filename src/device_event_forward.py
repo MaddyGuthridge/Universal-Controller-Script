@@ -50,8 +50,8 @@ class OverallDevice:
     @catchContextResetException
     def bootstrap(self):
         log("bootstrap.initialize", "Load success", verbosity.INFO)
-        print(consts.ASCII_HEADER_ART)
-        print(f"Universal Event Forwarder: v{getVersionString()}")
+        print(consts.getHeaderArt())
+        print(f"Universal Event Forwarder")
 
 dev = OverallDevice()
 
