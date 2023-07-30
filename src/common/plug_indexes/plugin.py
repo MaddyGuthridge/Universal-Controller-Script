@@ -62,3 +62,15 @@ class PluginIndex(FlIndex):
         name of the channel/track it resides on
         """
         return plugins.getPluginName(self.index, self.slotIndex, False, True)
+
+    def presetNext(self) -> None:
+        """
+        Navigate to the next preset for the plugin
+        """
+        plugins.nextPreset(self.index, self.slotIndex, True)
+
+    def presetPrevious(self) -> None:
+        """
+        Navigate to the previous preset for the plugin
+        """
+        plugins.prevPreset(self.index, self.slotIndex, True)

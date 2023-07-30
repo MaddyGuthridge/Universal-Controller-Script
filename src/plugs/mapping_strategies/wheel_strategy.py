@@ -10,18 +10,19 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-import plugins
-import channels
-
 from typing import Any
 from common.consts import PARAM_CC_START
-from common.util.api_fixes import PluginIndex, isPluginVst
+from common.param import Param
+from common.util.api_fixes import PluginIndex, GeneratorIndex
 
 from control_surfaces import ModWheel, PitchWheel
 from control_surfaces import ControlShadowEvent
 from devices import DeviceShadow
 from plugs.event_filters import toPluginIndex
 from . import IMappingStrategy
+
+
+mod_wheel = Param(PARAM_CC_START + 1)
 
 
 class WheelStrategy(IMappingStrategy):
@@ -81,10 +82,7 @@ class WheelStrategy(IMappingStrategy):
         ### Returns:
         * `bool`: whether the event was processed
         """
-        if index is None:
-            return False
-
-        if not isPluginVst(index):
+        if not index.isVst():
             if self._raise:
                 raise TypeError("Expected a plugin of VST type - make sure "
                                 "that this plugin is a VST, and not an FL "
@@ -93,8 +91,7 @@ class WheelStrategy(IMappingStrategy):
                 return False
 
         # Assign parameter
-        plugins.setParamValue(control.value, PARAM_CC_START + 1, *index)
-
+        mod_wheel(index).value = control.value
         return True
 
     @toPluginIndex()
@@ -115,11 +112,7 @@ class WheelStrategy(IMappingStrategy):
         ### Returns:
         * `bool`: whether the event was processed
         """
-
-        # Set pitch
-        if len(index) == 1:
-            # This error is due to https://github.com/python/mypy/issues/9710
-            # channels.setChannelPitch(*index, control.value*2 - 1)
-            channels.setChannelPitch(index[0], control.value*2 - 1)
-
+        # Only apply to generator plugins
+        if isinstance(index, GeneratorIndex):
+            index.pitch = control.value * 2 - 1
         return True

@@ -1,7 +1,6 @@
 """
 plugs > mapping_strategies > preset_navigation
 """
-import plugins
 from common.util.api_fixes import PluginIndex
 from control_surfaces import (
     DirectionNext,
@@ -32,7 +31,7 @@ class PresetNavigationStrategy(IMappingStrategy):
         index: PluginIndex,
         *args,
     ) -> bool:
-        plugins.nextPreset(*index)
+        index.presetNext()
         return True
 
     @filterButtonLift()
@@ -43,5 +42,5 @@ class PresetNavigationStrategy(IMappingStrategy):
         index: PluginIndex,
         *args,
     ) -> bool:
-        plugins.prevPreset(*index)
+        index.presetPrevious()
         return True

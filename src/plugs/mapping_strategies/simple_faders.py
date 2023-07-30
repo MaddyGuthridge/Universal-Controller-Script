@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-import plugins
+from common.param import Param, PluginParameter
 from common.types import Color
 from common.profiler import profilerDecoration, ProfilerContext
 from control_surfaces import ControlShadowEvent, ControlShadow, Fader
@@ -43,7 +43,7 @@ class SimpleFaders(IMappingStrategy):
         * `colors` (`list[Color] | Color`, optional): list of colors or a color
           to assign to each control. Defaults to `DEFAULT_COLOR`.
         """
-        self._parameters = parameters
+        self._parameters = list(map(Param, parameters))
         self._colors = colors
         self.__ticker = 0
 
@@ -61,12 +61,11 @@ class SimpleFaders(IMappingStrategy):
         self,
         control: ControlShadowEvent,
         index: PluginIndex,
-        param_index: int,
+        param: type[PluginParameter],
         *args,
     ) -> bool:
         """Fader event"""
-        with ProfilerContext("set-param-value"):
-            plugins.setParamValue(control.value, param_index, *index)
+        param(index).value = control.value
         return True
 
     @toPluginIndex()
@@ -75,17 +74,18 @@ class SimpleFaders(IMappingStrategy):
         self,
         control: ControlShadow,
         index: PluginIndex,
-        param_index: int,
+        param: type[PluginParameter],
         *args,
     ):
         """Fader tick"""
         # Update value
+        # FIXME: Test to see if it is safe to remove this hack
         with ProfilerContext("value"):
             # HACK: Workaround for performance issues with getParamValue()
             self.__ticker += 1
             self.__ticker %= 10
             if self.__ticker == 0:
-                control.value = plugins.getParamValue(param_index, *index)
+                control.value = param(index).value
         # Update annotations
         with ProfilerContext("annotation"):
-            control.annotation = plugins.getParamName(param_index, *index)
+            control.annotation = param(index).name

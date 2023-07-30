@@ -12,6 +12,10 @@ class MixerTrack(AbstractTrack):
         self.__index = index
 
     @property
+    def index(self) -> int:
+        return self.__index
+
+    @property
     def color(self) -> Color:
         return Color.fromInteger(mixer.getTrackColor(self.__index))
 

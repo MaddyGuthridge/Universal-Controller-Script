@@ -4,7 +4,7 @@ import plugins
 
 from common.tracks import Channel
 from .plugin import PluginIndex
-from typing import Literal
+from typing import Literal, Optional
 from common.types import Color
 from common.util.api_fixes import getGroupChannelIndex
 
@@ -31,6 +31,12 @@ class GeneratorIndex(PluginIndex):
         return self.__index
 
     @property
+    def group_index(self) -> Optional[int]:
+        """
+        The group index of the channel rack slot that contains the plugin
+        """
+
+    @property
     def slotIndex(self) -> Literal[-1]:
         """
         This value is always `-1` for generator plugins.
@@ -43,6 +49,21 @@ class GeneratorIndex(PluginIndex):
         The channel that underlies this index
         """
         return Channel(self.__index)
+
+    @property
+    def pitch(self) -> float:
+        """
+        The pitch of the plugin as a percentage
+        """
+        if self.group_index is None:
+            return 0
+        return channels.getChannelPitch(self.group_index)
+
+    @pitch.setter
+    def pitch(self, new_pitch: float):
+        if self.group_index is None:
+            return
+        channels.setChannelPitch(self.group_index, new_pitch)
 
     def fpcGetPadSemitone(self, pad_index: int) -> int:
         """

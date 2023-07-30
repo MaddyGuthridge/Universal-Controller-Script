@@ -10,11 +10,10 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-import plugins
-
 from typing import Any
 from common.consts import PARAM_CC_START
-from common.util.api_fixes import PluginIndex, isPluginVst
+from common.param import Param
+from common.util.api_fixes import PluginIndex
 from control_surfaces.controls.pedal import (
     Pedal,
     SustainPedal,
@@ -28,6 +27,11 @@ from control_surfaces import ControlShadowEvent, ControlShadowList
 from devices import DeviceShadow
 from plugs.event_filters import toPluginIndex
 from . import IMappingStrategy
+
+
+sustain = Param(PARAM_CC_START + SUSTAIN)
+sostenuto = Param(PARAM_CC_START + SOSTENUTO)
+soft = Param(PARAM_CC_START + SOFT)
 
 
 class PedalStrategy(IMappingStrategy):
@@ -96,7 +100,7 @@ class PedalStrategy(IMappingStrategy):
         """
 
         # Filter out non-VSTs
-        if not isPluginVst(index):
+        if not index.isVst():
             if self._raise:
                 raise TypeError("Expected a plugin of VST type - make sure "
                                 "that this plugin is a VST, and not an FL "
@@ -106,13 +110,11 @@ class PedalStrategy(IMappingStrategy):
 
         # Assign parameters
         if t_ped is SustainPedal:
-            plugins.setParamValue(
-                control.value, PARAM_CC_START + SUSTAIN, *index)
+            sustain(index).value = control.value
         elif t_ped is SostenutoPedal:
-            plugins.setParamValue(
-                control.value, PARAM_CC_START + SOSTENUTO, *index)
+            sostenuto(index).value = control.value
         elif t_ped is SoftPedal:
-            plugins.setParamValue(control.value, PARAM_CC_START + SOFT, *index)
+            soft(index).value = control.value
         else:
             raise NotImplementedError("Pedal type not recognized")
 
