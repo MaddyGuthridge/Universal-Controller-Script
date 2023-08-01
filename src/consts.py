@@ -102,26 +102,26 @@ HEADER_TEMPLATE = r"""
                                 .
                              ,;;'
                             ;;'
-             .,;/FL/;,    ,/,
-           ,\UCS;FL;UCS; ;/'
-          ;FL;UCS;FL;UCS;FL\;;,,     ,,;;;;;/;;,
-         'UCS;FL;UCS;FL;UCS;FL;UCS;;;,.'`    ',&
-            ':/UCS;FL;UCS;FL;UCS;FL\           &;
-                 \UCS;FL;UCS;FL;UCS;\        .&/
-                 ,;FL;UCS;FL;UCS;FL;;      ,;&/
-              .;;:.'/FL;UCS/;,UCS;FL/    ./&'
-           .;;,'      '.'      'FL/'   ;&/"
-         ,;,'                       ,\\;'
+             .,;UCS/;,    ,/,
+           ,\FL;FL;FL\;  /'
+          /UCS;UCS;UCS;UCS;UCS\,     ,,;;&&;/;;,
+         'FL;FL;FL;FL;FL;FL;FL;FL;FL;&|'`   `',\
+            ':/UCS;UCS;UCS;UCS;UCS;\           ;;
+                 \FL;FL;FL;FL;FL;FL;\        .;/
+                 ,;UCS;UCS;UCS;UCS;/;      ,;&/
+              .;;:.'/FL;;FL;FLFL;FL;/    ./&'
+           .;&,'      '.'      ':;/'   ;&/"
+         ,/,'                       ,\\;'
       .;;.                    ,,';\\;'
-    .;;'                    ,;FL/'`
-   ;;'                  .,/FL;'
-  ;/               .,;/\/,'..
-  \;,        .,;UCS;;.    ,'      Universal Controller Script
-   ":;UCS;//;FL/''       ;        Version {version}
+    .;&'                    ,;/:/'`
+   ;;'                  .,/&|;'
+  //               .,;/\/,'..
+  \;         .,;&\|;;'    ,'      Universal Controller Script
+   ":;&&;;|/;&|/''       ;        Version {version}
       ``'''``          .'         FL Studio {fl_version}
                      .;
             ',    ,:'             Made with <3 by Miguel Guthridge
-              ';''
+              ':''
 """
 
 
