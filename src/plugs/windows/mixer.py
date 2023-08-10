@@ -255,7 +255,10 @@ class Mixer(WindowPlugin):
         *args: Any
     ) -> bool:
         """Faders -> volume"""
-        index = self._selection[control.getControl().coordinate[1]]
+        try:
+            index = self._selection[control.getControl().coordinate[1]]
+        except IndexError:
+            return False
         mixer.setTrackVolume(index.index, snapFaders(
             control.value, control.getControl()))
         return True
