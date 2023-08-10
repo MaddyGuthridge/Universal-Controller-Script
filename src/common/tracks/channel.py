@@ -229,6 +229,9 @@ class Channel(AbstractTrack):
 
     @property
     def volume(self) -> float:
+        """
+        Volume of a channel, from 0 - 1, where 0.78125 is the default
+        """
         return channelAction(
             channels.getChannelVolume,
             0.0,
@@ -246,6 +249,9 @@ class Channel(AbstractTrack):
 
     @property
     def pan(self) -> float:
+        """
+        Panning of a channel, from -1 to 1 where 0 is centred
+        """
         return channelAction(
             channels.getChannelPan,
             0.0,

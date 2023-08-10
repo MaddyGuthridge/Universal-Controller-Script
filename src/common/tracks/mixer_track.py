@@ -84,6 +84,9 @@ class MixerTrack(AbstractTrack):
 
     @property
     def volume(self) -> float:
+        """
+        Volume of a track, from 0 - 1, where 0.8 is 100% volume
+        """
         return mixer.getTrackVolume(self.__index)
 
     @volume.setter
@@ -92,6 +95,9 @@ class MixerTrack(AbstractTrack):
 
     @property
     def pan(self) -> float:
+        """
+        Panning of a track, from -1 to 1 where 0 is centred
+        """
         return mixer.getTrackPan(self.__index)
 
     @pan.setter
@@ -100,8 +106,29 @@ class MixerTrack(AbstractTrack):
 
     @property
     def stereo_separation(self) -> float:
+        """
+        Stereo separation of a mixer track, ranges from -1 to 1
+        """
         return mixer.getTrackStereoSep(self.__index)
 
     @stereo_separation.setter
     def stereo_separation(self, new_sep: float) -> None:
         mixer.setTrackStereoSep(self.__index, new_sep)
+
+    @property
+    def armed(self) -> bool:
+        """
+        Whether the track is armed for recording
+        """
+        return mixer.isTrackArmed(self.__index)
+
+    @armed.setter
+    def armed(self, new_value: bool) -> None:
+        if new_value != self.armed:
+            mixer.armTrack(self.__index)
+
+    def armedToggle(self) -> None:
+        """
+        Toggle whether a track is armed for recording
+        """
+        mixer.armTrack(self.__index)
