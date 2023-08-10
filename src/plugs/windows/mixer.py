@@ -173,6 +173,8 @@ class Mixer(WindowPlugin):
             else:
                 return
 
+        assert len(dock_sides), "No elements on the dock side"
+
         # Find index of first selected track on that docking side
         for index, track_index in enumerate(dock_sides):
             if track_index == selected[0]:
@@ -190,8 +192,8 @@ class Mixer(WindowPlugin):
         if (
             dock_side != self._dock_side
             or len(self._selection) == 0
-            or first < self._selection_docked[0]
-            or index > self._selection_docked[-1]
+            or MixerTrack(first) < self._selection_docked[0]
+            or MixerTrack(index) > self._selection_docked[-1]
         ):
             self._selection = [dock_sides[i] for i in range(first, last)]
             self._selection_docked = list(map(MixerTrack, range(first, last)))
