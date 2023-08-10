@@ -43,6 +43,25 @@ class AbstractTrack:
 
     @property
     @abstractmethod
+    def selected(self) -> bool:
+        """
+        Whether the track is selected
+        """
+        ...
+
+    @selected.setter
+    def selected(self, new_value: bool) -> None:
+        if self.selected != new_value:
+            self.selectedToggle()
+
+    @abstractmethod
+    def selectedToggle(self) -> None:
+        """
+        Toggle whether the track is selected
+        """
+
+    @property
+    @abstractmethod
     def mute(self) -> bool:
         """
         Whether the track is muted
@@ -50,13 +69,14 @@ class AbstractTrack:
 
     @mute.setter
     def mute(self, new_value: bool):
-        ...
+        if self.mute != new_value:
+            self.muteToggle()
 
+    @abstractmethod
     def muteToggle(self) -> None:
         """
         Toggle whether a track is muted
         """
-        self.mute = not self.mute
 
     @property
     @abstractmethod
@@ -67,12 +87,13 @@ class AbstractTrack:
 
     @solo.setter
     def solo(self, new_value: bool):
-        ...
+        if self.solo != new_value:
+            self.soloToggle()
 
+    @abstractmethod
     def soloToggle(self) -> None:
         """
         Toggle whether a track is solo
         """
-        self.solo = not self.solo
 
     # TODO: Flesh out with more stuff as required

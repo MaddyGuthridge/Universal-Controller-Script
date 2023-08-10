@@ -156,6 +156,30 @@ class Channel(AbstractTrack):
         )
 
     @property
+    def selected(self) -> bool:
+        return channelAction(
+            channels.isChannelSelected,
+            False,
+            self.__index,
+        )
+
+    @selected.setter
+    def selected(self, new_value: bool) -> None:
+        if self.selected != new_value:
+            channelAction(
+                channels.selectChannel,
+                None,
+                self.__index,
+            )
+
+    def selectedToggle(self) -> None:
+        channelAction(
+            channels.selectChannel,
+            None,
+            self.__index,
+        )
+
+    @property
     def mute(self) -> bool:
         return channelAction(
             channels.isChannelMuted,

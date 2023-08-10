@@ -36,6 +36,18 @@ class PlaylistTrack(AbstractTrack):
         playlist.setTrackName(self.__index, new_name)
 
     @property
+    def selected(self) -> bool:
+        return playlist.isTrackSelected(self.__index)
+
+    @selected.setter
+    def selected(self, new_value: bool) -> None:
+        if self.selected != new_value:
+            playlist.selectTrack(self.__index)
+
+    def selectedToggle(self) -> None:
+        playlist.selectTrack(self.__index)
+
+    @property
     def mute(self) -> bool:
         return playlist.isTrackMuted(self.__index)
 

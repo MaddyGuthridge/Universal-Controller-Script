@@ -47,6 +47,18 @@ class MixerTrack(AbstractTrack):
         mixer.setTrackName(self.__index, new_name)
 
     @property
+    def selected(self) -> bool:
+        return mixer.isTrackSelected(self.__index)
+
+    @selected.setter
+    def selected(self, new_value: bool) -> None:
+        if self.selected != new_value:
+            mixer.selectTrack(self.__index)
+
+    def selectedToggle(self) -> None:
+        mixer.selectTrack(self.__index)
+
+    @property
     def mute(self) -> bool:
         return mixer.isTrackMuted(self.__index)
 
