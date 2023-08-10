@@ -15,7 +15,7 @@ from . import IMappingStrategy
 from devices import DeviceShadow
 from plugs.event_filters import filterButtonLift
 from common.types import Color
-from common.plug_indexes import PluginIndex
+from common.plug_indexes import FlIndex, PluginIndex
 
 from control_surfaces import (
     ControlShadowEvent,
@@ -55,11 +55,12 @@ class CcForwardStrategy(IMappingStrategy):
     def process(
         self,
         control: ControlShadowEvent,
-        index: PluginIndex,
+        index: FlIndex,
         *args,
         **kwargs,
     ):
-        if index.isVst():
+        if isinstance(index, PluginIndex) and index.isVst():
             param = Param(PARAM_CC_START + control.midi.data1)
             param(index).value = control.value
+            return True
         return False
