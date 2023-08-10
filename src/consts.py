@@ -11,6 +11,8 @@ more details.
 """
 import ui
 
+# Name to present for the script
+
 # Version info
 VERSION = (2, 0, 0)
 
@@ -105,7 +107,7 @@ HEADER_TEMPLATE = r"""
              .,;UCS/;,    ,/,
            ,\FL;FL;FL\;  /'
           /UCS;UCS;UCS;UCS;UCS\,     ,,;;&&;/;;,
-         'FL;FL;FL;FL;FL;FL;FL;FL;FL;&|'`   `',\
+         'FL;FL;FL;FL;FL;FL;FL;FL;\/;&|'`   `',\
             ':/UCS;UCS;UCS;UCS;UCS;\           ;;
                  \FL;FL;FL;FL;FL;FL;\        .;/
                  ,;UCS;UCS;UCS;UCS;/;      ,;&/
@@ -116,7 +118,7 @@ HEADER_TEMPLATE = r"""
     .;&'                    ,;/:/'`
    ;;'                  .,/&|;'
   //               .,;/\/,'..
-  \;         .,;&\|;;'    ,'      Universal Controller Script
+  \;         .,;&\|;;'    ,'      {title}
    ":;&&;;|/;&|/''       ;        Version {version}
       ``'''``          .'         FL Studio {fl_version}
                      .;
@@ -125,8 +127,9 @@ HEADER_TEMPLATE = r"""
 """
 
 
-def getHeaderArt():
+def getHeaderArt(title_string: str):
     return HEADER_TEMPLATE\
+        .replace("{title}", title_string)\
         .replace("{version}", getVersionString())\
         .replace("{fl_version}", str(ui.getVersion()))
 

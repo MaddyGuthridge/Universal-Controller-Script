@@ -35,6 +35,9 @@ from common.states import WaitingForDevice, ForwardState
 from common import log, verbosity
 from common import getContext
 
+# Import console helpers
+from common.util.console_helpers import *
+
 
 class OverallDevice:
     @catchContextResetException
@@ -52,8 +55,8 @@ class OverallDevice:
     @catchContextResetException
     def bootstrap(self):
         log("bootstrap.initialize", "Load success", verbosity.INFO)
-        print(consts.getHeaderArt())
-        print(f"Universal Event Forwarder")
+        print(consts.getHeaderArt("Universal Event Forwarder"))
+        print("Type `help` for help using the script\n")
 
 dev = OverallDevice()
 

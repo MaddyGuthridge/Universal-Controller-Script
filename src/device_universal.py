@@ -67,7 +67,7 @@ class OverallDevice:
     @catchContextResetException
     def bootstrap(self):
         log("bootstrap.initialize", "Load success", verbosity.INFO)
-        print(consts.getHeaderArt())
+        print(consts.getHeaderArt("Universal Controller Script"))
         print(ExtensionManager.getBasicInfo())
         print("Type `help` for help using the script\n")
 
