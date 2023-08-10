@@ -1,4 +1,14 @@
+"""
+common > plug_indexes > generator
 
+Type definitions for generator plugin indexes.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 import channels
 import plugins
 
@@ -53,7 +63,7 @@ class GeneratorIndex(PluginIndex):
     @property
     def pitch(self) -> float:
         """
-        The pitch of the plugin as a percentage
+        The pitch of the plugin as a percentage (-1 to 1)
         """
         if self.group_index is None:
             return 0

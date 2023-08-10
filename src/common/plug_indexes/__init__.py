@@ -1,7 +1,7 @@
 """
 common > plug_indexes
 
-Type definitions for plugin indexes.
+Type definitions for plugin and window indexes.
 
 Authors:
 * Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]

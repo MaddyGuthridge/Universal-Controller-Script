@@ -32,7 +32,7 @@ class FlIndex:
     @abstractmethod
     def focus(self) -> None:
         """
-        Focus the plugin or window
+        Focus the plugin or window, bringing its UI to the front.
         """
         ...
 

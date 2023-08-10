@@ -1,9 +1,23 @@
+"""
+common > plug_indexes > effect
+
+Type definitions for effect plugin indexes.
+
+Authors:
+* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+
+This code is licensed under the GPL v3 license. Refer to the LICENSE file for
+more details.
+"""
 import mixer
 from .plugin import PluginIndex
 from common.tracks import MixerTrack
 
 
 class EffectIndex(PluginIndex):
+    """
+    Represents the index to an effect plugin
+    """
     def __init__(self, index: int, slotIndex: int) -> None:
         self.__index = index
         self.__slot = slotIndex
