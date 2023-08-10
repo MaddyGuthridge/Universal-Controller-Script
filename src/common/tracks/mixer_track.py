@@ -69,3 +69,27 @@ class MixerTrack(AbstractTrack):
 
     def soloToggle(self) -> None:
         mixer.soloTrack(self.__index)
+
+    @property
+    def volume(self) -> float:
+        return mixer.getTrackVolume(self.__index)
+
+    @volume.setter
+    def volume(self, new_volume: float) -> None:
+        mixer.setTrackVolume(self.__index, new_volume)
+
+    @property
+    def pan(self) -> float:
+        return mixer.getTrackPan(self.__index)
+
+    @pan.setter
+    def pan(self, new_pan: float) -> None:
+        mixer.setTrackPan(self.__index, new_pan)
+
+    @property
+    def stereo_separation(self) -> float:
+        return mixer.getTrackStereoSep(self.__index)
+
+    @stereo_separation.setter
+    def stereo_separation(self, new_sep: float) -> None:
+        mixer.setTrackStereoSep(self.__index, new_sep)

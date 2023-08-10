@@ -202,3 +202,37 @@ class Channel(AbstractTrack):
             None,
             self.__index,
         )
+
+    @property
+    def volume(self) -> float:
+        return channelAction(
+            channels.getChannelVolume,
+            0.0,
+            self.__index,
+        )
+
+    @volume.setter
+    def volume(self, new_volume: float) -> None:
+        channelAction(
+            channels.setChannelVolume,
+            None,
+            self.__index,
+            new_volume,
+        )
+
+    @property
+    def pan(self) -> float:
+        return channelAction(
+            channels.getChannelPan,
+            0.0,
+            self.__index,
+        )
+
+    @pan.setter
+    def pan(self, new_pan: float) -> None:
+        channelAction(
+            channels.setChannelPan,
+            None,
+            self.__index,
+            new_pan,
+        )
