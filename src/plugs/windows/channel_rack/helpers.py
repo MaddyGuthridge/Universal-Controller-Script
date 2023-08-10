@@ -13,9 +13,11 @@ more details.
 import channels
 
 from common.context_manager import getContext
+from common.plug_indexes import WindowIndex
+from common.tracks import Channel
 from control_surfaces import ControlShadow, DrumPad
 
-INDEX = 1
+INDEX = WindowIndex.CHANNEL_RACK
 
 
 def getNumDrumCols() -> int:
@@ -38,7 +40,7 @@ def coordToIndex(control: ControlShadow) -> int:
     return index
 
 
-def getChannelRows() -> list[int]:
+def getChannelRows() -> list[Channel]:
     """
     Returns the rows which should be used by the channel rack, when using the
     drum pad as a step sequencer
@@ -59,7 +61,7 @@ def getChannelRows() -> list[int]:
     s = channels.selectedChannel(False)
     ret = []
     for i in range(s, channels.channelCount(False)):
-        ret.append(i)
+        ret.append(Channel(i))
     return ret[:num_cols]
 
     # s = getSelectedChannels(global_mode=False)

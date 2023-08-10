@@ -12,12 +12,11 @@ more details.
 
 from typing import Any
 import channels
+from common.plug_indexes import WindowIndex
 from common.types.color import Color
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes import FlIndex
 from control_surfaces import ControlShadowEvent
-from control_surfaces import (
-    DrumPad,
-)
+from control_surfaces import DrumPad
 from devices import DeviceShadow
 from plugs import WindowPlugin
 from .helpers import coordToIndex, INDEX
@@ -34,7 +33,7 @@ class OmniPreview(WindowPlugin):
         super().__init__(shadow, [])
 
     @classmethod
-    def getWindowId(cls) -> int:
+    def getWindowId(cls) -> WindowIndex:
         return INDEX
 
     @classmethod
@@ -44,7 +43,7 @@ class OmniPreview(WindowPlugin):
     def drumPads(
         self,
         control: ControlShadowEvent,
-        idx: UnsafeIndex,
+        window_index: FlIndex,
         *args: Any
     ) -> bool:
         """Bind drum pads to omni preview"""

@@ -9,7 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-import plugins
+from common.param import Param
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import EffectIndex
@@ -27,7 +27,7 @@ PLUG_COLOR = Color.fromInteger(0xccccb7)
 
 VALS = [0.0, 0.1, 0.2]
 MAX_VALS = [0.05, 0.15]
-PARAMS = [7, 6]
+PARAMS = [Param(7), Param(6)]
 
 
 class DawCassette(StandardPlugin):
@@ -66,11 +66,12 @@ class DawCassette(StandardPlugin):
         pad: GridCell,
     ) -> bool:
         try:
-            param = PARAMS[pad.overall_index // 3]
+            param = PARAMS[pad.overall_index // 3](plug_index)
             val = VALS[pad.overall_index % 3]
         except IndexError:
             return False
-        plugins.setParamValue(val, param, *plug_index)
+
+        param.value = val
         return True
 
     def colorDrumPads(
@@ -92,7 +93,7 @@ class DawCassette(StandardPlugin):
     @tEffectIndex()
     def tick(self, index: EffectIndex) -> None:
         for active_index, param in enumerate(PARAMS):
-            val = plugins.getParamValue(param, *index)
+            val = param(index).value
             for i, upper in enumerate(MAX_VALS):
                 if val < upper:
                     self.__active_pads[active_index] = i

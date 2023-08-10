@@ -1,8 +1,11 @@
-from common.consts import checkFlVersion, MIN_FL_VERSION, formatVersion
 import ui
 
 
 def versionCheck():
+    try:
+        from consts import checkFlVersion, formatVersion, MIN_FL_VERSION
+    except ImportError as e:
+        print(e)
     try:
         # If we can import fl_model, that means we're running outside of FL
         # Studio - don't block the version check
@@ -21,7 +24,7 @@ def versionCheck():
         print()
         print()
 
-        raise Exception("Script load cancelled")
+        # raise Exception("Script load cancelled")
 
 
 versionCheck()

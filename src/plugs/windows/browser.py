@@ -10,10 +10,11 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from common.extension_manager import ExtensionManager
+from common.plug_indexes.window import WindowIndex
 from devices import DeviceShadow
 from plugs import WindowPlugin
 
-INDEX = 4
+INDEX = WindowIndex.BROWSER
 
 
 class Browser(WindowPlugin):
@@ -27,7 +28,7 @@ class Browser(WindowPlugin):
         super().__init__(shadow, [])
 
     @classmethod
-    def getWindowId(cls) -> int:
+    def getWindowId(cls) -> WindowIndex:
         return INDEX
 
     @classmethod

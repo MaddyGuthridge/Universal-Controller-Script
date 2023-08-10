@@ -9,8 +9,6 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-import plugins
-import channels
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex
@@ -56,11 +54,11 @@ class Slicers(StandardPlugin):
         """
         Trigger a note at the required index
         """
+        # TODO: why do we need to check <= 0?
         if 0 <= pad_idx.overall_index < len(self.__indexes):
-            channels.midiNoteOn(
-                channels.getChannelIndex(*ch_idx),
+            ch_idx.track.triggerNote(
                 self.__indexes[pad_idx.overall_index],
-                int(control.value * 127),
+                control.value,
             )
             return True
         else:
@@ -92,7 +90,7 @@ class Slicers(StandardPlugin):
         """
         self.__indexes = []
         for i in range(128):
-            if plugins.getName(*index, -1, 2, i) != "":
+            if index.getNoteName(i) != "":
                 self.__indexes.append(i)
         return super().tick(index)
 

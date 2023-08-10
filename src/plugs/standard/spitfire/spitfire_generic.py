@@ -10,7 +10,7 @@ more details.
 from typing import Any
 import channels
 
-import plugins
+from common.param import Param
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex
@@ -21,6 +21,13 @@ from devices import DeviceShadow
 from plugs import StandardPlugin
 from plugs import event_filters, tick_filters
 from plugs.mapping_strategies import GridStrategy, IMappingStrategy
+
+# Params
+
+EXPRESSION = Param(0)
+DYNAMICS = Param(1)
+FADER_PARAMS = [EXPRESSION, DYNAMICS]
+
 
 # Generate list of supported plugins
 
@@ -82,7 +89,7 @@ def trigger(
     pad_idx: GridCell,
 ) -> bool:
     channels.midiNoteOn(
-        ch_idx[0],
+        ch_idx.index,
         pad_idx.overall_index,
         int(control.value * 127)
     )
@@ -135,8 +142,8 @@ class SpitfireGeneric(StandardPlugin):
         index: GeneratorIndex,
         *args: Any
     ) -> bool:
-        plugins.setParamValue(
-            control.value, control.getShadow().coordinate[1], *index)
+        FADER_PARAMS[control.getShadow().coordinate[1]](index).value \
+            = control.value
         return True
 
 

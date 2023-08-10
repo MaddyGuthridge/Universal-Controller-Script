@@ -11,7 +11,6 @@ more details.
 """
 __all__ = [
     'filterButtonLift',
-    'toSafeIndex',
     'toWindowIndex',
     'toPluginIndex',
     'toGeneratorIndex',
@@ -20,7 +19,6 @@ __all__ = [
 
 from .filters import filterButtonLift
 from .index import (
-    toSafeIndex,
     toWindowIndex,
     toPluginIndex,
     toGeneratorIndex,

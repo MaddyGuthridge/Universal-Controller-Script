@@ -7,12 +7,10 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-import plugins
-import channels
 from typing import Any
 from common.types import Color
 from common.extension_manager import ExtensionManager
-from common.plug_indexes import GeneratorIndex, UnsafeIndex
+from common.plug_indexes import GeneratorIndex, FlIndex
 from common.util.grid_mapper import GridCell
 from control_surfaces import Note
 from control_surfaces import ControlShadowEvent, ControlShadow
@@ -38,21 +36,15 @@ def calculate_overall_index(pad_idx: GridCell) -> int:
 
 def colorPad(
     control: ControlShadow,
-    ch_idx: UnsafeIndex,
+    ch_idx: FlIndex,
     pad_idx: GridCell,
 ) -> Color:
     """
     Determine the color to use for a particular drum pad
     """
-    if not isinstance(ch_idx, tuple):
+    if not isinstance(ch_idx, GeneratorIndex):
         return Color()
-    chan = ch_idx[0]
-    return Color.fromInteger(plugins.getPadInfo(
-        chan,
-        -1,
-        2,
-        calculate_overall_index(pad_idx),
-    ))
+    return ch_idx.fpcGetPadColor(calculate_overall_index(pad_idx))
 
 
 @event_filters.toGeneratorIndex(False)
@@ -62,11 +54,9 @@ def triggerPad(
     pad_idx: GridCell,
 ) -> bool:
     overall_index = calculate_overall_index(pad_idx)
-    note = plugins.getPadInfo(*ch_idx, -1, 1, overall_index)
-    # Work-around for horrible bug where wrong note numbers are given
-    if note > 127:
-        note = note >> 16
-    channels.midiNoteOn(*ch_idx, note, int(control.value*127))
+
+    note = ch_idx.fpcGetPadSemitone(overall_index)
+    ch_idx.track.triggerNote(note, control.value)
     return True
 
 
@@ -98,21 +88,18 @@ class FPC(StandardPlugin):
 
     @tick_filters.toGeneratorIndex()
     def tick(self, index: GeneratorIndex):
+        # Set properties for each keyboard note
         notes = set()
         for idx in range(32):
             # Get the note number
-            note = plugins.getPadInfo(*index, -1, 1, idx)
-            # Get the color
-            color = plugins.getPadInfo(*index, -1, 2, idx)
-            # get the annotation
-            annotation = plugins.getName(*index, -1, 2, note)
+            note = index.fpcGetPadSemitone(idx)
 
             # Set values
-            self._notes[note].color = Color.fromInteger(color)
-            self._notes[note].annotation = annotation
+            self._notes[note].color = index.fpcGetPadColor(idx)
+            self._notes[note].annotation = index.getNoteName(note)
             notes.add(note)
 
-        # Set colors and annotations for the others
+        # Set colors and annotations for the others to be blank
         for i in range(128):
             if i not in notes:
                 self._notes[i].color = Color()
@@ -125,11 +112,9 @@ class FPC(StandardPlugin):
         index: GeneratorIndex,
         *args: Any
     ) -> bool:
-        channels.midiNoteOn(
-            *index,
+        index.track.triggerNote(
             control.getControl().coordinate[1],
-            int(control.value * 127),
-            control.channel
+            control.value,
         )
         return True
 

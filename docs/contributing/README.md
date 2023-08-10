@@ -1,6 +1,13 @@
 
 # Contributing
 
+## IMPORTANT
+
+This documentation is outdated due to several refactors that happened in the
+preparation for v2 of the script. I'll try to update it as soon as I get time.
+
+## Main content
+
 Thanks so much for your interest in contributing to the Universal Controller
 Script! Here are some resources that can help you bring your amazing ideas to
 life in the project. Remember, you can always ask for help in the

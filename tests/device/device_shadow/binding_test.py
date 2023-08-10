@@ -11,6 +11,7 @@ more details.
 """
 
 import pytest
+from common.plug_indexes import WindowIndex
 from control_surfaces import (
     ControlEvent,
     PlayButton,
@@ -40,7 +41,7 @@ def test_binding():
             0.0,
             0,
             False,
-        ), None)
+        ), WindowIndex.MIXER)
 
 
 def test_bind_same():
@@ -82,4 +83,4 @@ def test_bind_matches_all():
                 0.0,
                 0,
                 False,
-            ), None)
+            ), WindowIndex.MIXER)

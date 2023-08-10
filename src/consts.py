@@ -11,6 +11,8 @@ more details.
 """
 import ui
 
+# Name to present for the script
+
 # Version info
 VERSION = (2, 0, 0)
 
@@ -102,31 +104,32 @@ HEADER_TEMPLATE = r"""
                                 .
                              ,;;'
                             ;;'
-             .,;/FL/;,    ,/,
-           ,\UCS;FL;UCS; ;/'
-          ;FL;UCS;FL;UCS;FL\;;,,     ,,;;;;;/;;,
-         'UCS;FL;UCS;FL;UCS;FL;UCS;;;,.'`    ',&
-            ':/UCS;FL;UCS;FL;UCS;FL\           &;
-                 \UCS;FL;UCS;FL;UCS;\        .&/
-                 ,;FL;UCS;FL;UCS;FL;;      ,;&/
-              .;;:.'/FL;UCS/;,UCS;FL/    ./&'
-           .;;,'      '.'      'FL/'   ;&/"
-         ,;,'                       ,\\;'
+             .,;UCS/;,    ,/,
+           ,\FL;FL;FL\;  /'
+          /UCS;UCS;UCS;UCS;UCS\,     ,,;;&&;/;;,
+         'FL;FL;FL;FL;FL;FL;FL;FL;\/;&|'`   `',\
+            ':/UCS;UCS;UCS;UCS;UCS;\           ;;
+                 \FL;FL;FL;FL;FL;FL;\        .;/
+                 ,;UCS;UCS;UCS;UCS;/;      ,;&/
+              .;;:.'/FL;;FL;FLFL;FL;/    ./&'
+           .;&,'      '.'      ':;/'   ;&/"
+         ,/,'                       ,\\;'
       .;;.                    ,,';\\;'
-    .;;'                    ,;L\/'`
-   ;;'                  .,/\L;'
-  ;/               .,;/\/,'..
-  \;,        .,;/&/;;.    ,'      Universal Controller Script
-   ":;;;;;//;;&/''       ;        Version {version}
+    .;&'                    ,;/:/'`
+   ;;'                  .,/&|;'
+  //               .,;/\/,'..
+  \;         .,;&\|;;'    ,'      {title}
+   ":;&&;;|/;&|/''       ;        Version {version}
       ``'''``          .'         FL Studio {fl_version}
                      .;
             ',    ,:'             Made with <3 by Miguel Guthridge
-              ';''
+              ':''
 """
 
 
-def getHeaderArt():
+def getHeaderArt(title_string: str):
     return HEADER_TEMPLATE\
+        .replace("{title}", title_string)\
         .replace("{version}", getVersionString())\
         .replace("{fl_version}", str(ui.getVersion()))
 

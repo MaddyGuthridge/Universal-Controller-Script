@@ -13,9 +13,10 @@ from typing import Any
 import ui
 import mixer
 from common import getContext
+from common.tracks.mixer_track import MixerTrack
 from common.types import Color
 from common.extension_manager import ExtensionManager
-from common.plug_indexes import (UnsafeIndex)
+from common.plug_indexes import WindowIndex
 from common.util.api_fixes import (
     getSelectedDockMixerTracks,
     getMixerDockSides,
@@ -43,12 +44,12 @@ from plugs.event_filters import filterButtonLift
 from plugs.mapping_strategies import MuteSoloStrategy
 from plugs import WindowPlugin
 
-INDEX = 0
+INDEX = WindowIndex.MIXER
 COLOR_DISABLED = Color.fromGrayscale(0.3, False)
 COLOR_ARMED = Color.fromInteger(0xAF0000, 1.0, True)
 
 
-def snapFaders(value: float, control: ControlSurface) -> float:
+def snapVolume(value: float, control: ControlSurface) -> float:
     """
     Return the snapped value of a fader, so that getting volumes to 100% is
     easier
@@ -69,7 +70,7 @@ def snapFaders(value: float, control: ControlSurface) -> float:
         return value * 0.8
 
 
-def unsnapFaders(value: float, control: ControlSurface) -> float:
+def unsnapVolume(value: float, control: ControlSurface) -> float:
     """
     Convert a mixer track volume to a fader value
     """
@@ -79,11 +80,11 @@ def unsnapFaders(value: float, control: ControlSurface) -> float:
         return clamp(value / 0.8, 0, 1)
 
 
-def snapKnobs(value: float) -> float:
+def snapPan(value: float) -> float:
     return snap(value, 0.5) * 2 - 1
 
 
-def unsnapKnobs(value: float) -> float:
+def unsnapPan(value: float) -> float:
     return (value + 1) / 2
 
 
@@ -129,21 +130,14 @@ class Mixer(WindowPlugin):
         ).annotate("Show selected").colorize(Color.fromGrayscale(0.5))
 
         # Create bindings for mute, solo and generic buttons
-        mutes_solos = MuteSoloStrategy(
-            lambda i: self._selection[i],
-            mixer.muteTrack,
-            mixer.isTrackMuted,
-            mixer.soloTrack,
-            mixer.isTrackSolo,
-            mixer.getTrackColor,
-        )
+        mutes_solos = MuteSoloStrategy(lambda i: self._selection[i])
 
         # TODO: Bind master controls
 
         # List of mapped channels
-        self._selection: list[int] = []
+        self._selection: list[MixerTrack] = []
         # List of mapped channels, respecting the dock side
-        self._selection_docked: list[int] = []
+        self._selection_docked: list[MixerTrack] = []
         # Dock side that we're mapping to
         self._dock_side = 1
         # Length of mapped channels
@@ -151,7 +145,7 @@ class Mixer(WindowPlugin):
         super().__init__(shadow, [mutes_solos])
 
     @classmethod
-    def getWindowId(cls) -> int:
+    def getWindowId(cls) -> WindowIndex:
         return INDEX
 
     @classmethod
@@ -163,8 +157,14 @@ class Mixer(WindowPlugin):
         Update the list of selected tracks
         """
         dock_side = mixer.getTrackDockSide(mixer.trackNumber())
-        selected = getSelectedDockMixerTracks()[dock_side]
-        dock_sides = getMixerDockSides()[dock_side]
+        selected = list(map(
+            MixerTrack,
+            getSelectedDockMixerTracks()[dock_side],
+        ))
+        dock_sides = list(map(
+            MixerTrack,
+            getMixerDockSides()[dock_side],
+        ))
 
         if len(selected) == 0:
             # No selection, we need to generate one
@@ -172,6 +172,8 @@ class Mixer(WindowPlugin):
                 selected = [dock_sides[0]]
             else:
                 return
+
+        assert len(dock_sides), "No elements on the dock side"
 
         # Find index of first selected track on that docking side
         for index, track_index in enumerate(dock_sides):
@@ -190,11 +192,11 @@ class Mixer(WindowPlugin):
         if (
             dock_side != self._dock_side
             or len(self._selection) == 0
-            or first < self._selection_docked[0]
-            or index > self._selection_docked[-1]
+            or MixerTrack(first) < self._selection_docked[0]
+            or MixerTrack(index) > self._selection_docked[-1]
         ):
             self._selection = [dock_sides[i] for i in range(first, last)]
-            self._selection_docked = list(range(first, last))
+            self._selection_docked = list(map(MixerTrack, range(first, last)))
             self._dock_side = dock_side
             self.displayRect()
 
@@ -204,7 +206,7 @@ class Mixer(WindowPlugin):
         """
         first = self._selection_docked[0]
         ui.miDisplayDockRect(
-            first + 1,
+            first.index + 1,
             len(self._selection),
             self._dock_side,
             2000,
@@ -243,7 +245,7 @@ class Mixer(WindowPlugin):
             dest = mixer.trackCount() - 2
         if dest >= mixer.trackCount() - 1:
             dest = 0
-        mixer.selectTrack(dest)
+        MixerTrack(dest).selected = True
 
         return True
 
@@ -253,9 +255,11 @@ class Mixer(WindowPlugin):
         *args: Any
     ) -> bool:
         """Faders -> volume"""
-        index = self._selection[control.getControl().coordinate[1]]
-        mixer.setTrackVolume(index, snapFaders(
-            control.value, control.getControl()))
+        try:
+            track = self._selection[control.getControl().coordinate[1]]
+        except IndexError:
+            return False
+        track.volume = snapVolume(control.value, control.getControl())
         return True
 
     def masterFader(
@@ -264,12 +268,10 @@ class Mixer(WindowPlugin):
         *args: Any
     ) -> bool:
         if len(self._faders) == 0:
-            track = mixer.trackNumber()
-            mixer.setTrackVolume(track, snapFaders(
-                control.value, control.getControl()))
+            track = MixerTrack(mixer.trackNumber())
         else:
-            mixer.setTrackVolume(0, snapFaders(
-                control.value, control.getControl()))
+            track = MixerTrack(mixer.trackNumber())
+        track.volume = snapVolume(control.value, control.getControl())
         return True
 
     def updateColors(self):
@@ -282,33 +284,29 @@ class Mixer(WindowPlugin):
         self._fader_master.color = c
         self._fader_master.annotation = name
         # For each selected track
-        for n, i in enumerate(self._selection):
-            c = Color.fromInteger(mixer.getTrackColor(i))
-            name = mixer.getTrackName(i)
-            vol = mixer.getTrackVolume(i)
-            pan = mixer.getTrackPan(i)
+        for fader_num, track in enumerate(self._selection):
             # Only apply to controls that are within range
-            if len(self._faders) > n:
-                self._faders[n].color = c
-                self._faders[n].annotation = name
-                self._faders[n].value = unsnapFaders(
-                    vol, self._faders[n].getControl())
-            if len(self._knobs) > n:
-                self._knobs[n].color = c
-                self._knobs[n].annotation = name
-                self._knobs[n].value = unsnapKnobs(pan)
+            if len(self._faders) > fader_num:
+                self._faders[fader_num].color = track.color
+                self._faders[fader_num].annotation = track.name
+                self._faders[fader_num].value = unsnapVolume(
+                    track.volume, self._faders[fader_num].getControl())
+            if len(self._knobs) > fader_num:
+                self._knobs[fader_num].color = track.color
+                self._knobs[fader_num].annotation = track.name
+                self._knobs[fader_num].value = unsnapPan(track.pan)
             # Select buttons
-            if len(self._selects) > n:
-                if mixer.isTrackSelected(i):
-                    self._selects[n].color = c
+            if len(self._selects) > fader_num:
+                if track.selected:
+                    self._selects[fader_num].color = track.color
                 else:
-                    self._selects[n].color = COLOR_DISABLED
+                    self._selects[fader_num].color = COLOR_DISABLED
             # Arm buttons
-            if len(self._arms) > n:
-                if mixer.isTrackArmed(i):
-                    self._arms[n].color = COLOR_ARMED
+            if len(self._arms) > fader_num:
+                if track.armed:
+                    self._arms[fader_num].color = COLOR_ARMED
                 else:
-                    self._arms[n].color = COLOR_DISABLED
+                    self._arms[fader_num].color = COLOR_DISABLED
 
     def knob(
         self,
@@ -317,7 +315,7 @@ class Mixer(WindowPlugin):
     ) -> bool:
         """Knobs -> panning"""
         index = self._selection[control.getControl().coordinate[1]]
-        mixer.setTrackPan(index, snapKnobs(control.value))
+        index.pan = snapPan(control.value)
         return True
 
     def masterKnob(
@@ -326,34 +324,34 @@ class Mixer(WindowPlugin):
         *args: Any
     ) -> bool:
         if len(self._knobs) == 0:
-            track = mixer.trackNumber()
-            mixer.setTrackPan(track, snapKnobs(control.value))
+            track = MixerTrack(mixer.trackNumber())
         else:
-            mixer.setTrackPan(0, snapKnobs(control.value))
+            track = MixerTrack(0)
+        track.pan = snapPan(control.value)
         return True
 
     @filterButtonLift()
     def arm(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
+        index: WindowIndex,
         *args: Any
     ) -> bool:
         """Arm track"""
-        index = self._selection[control.getControl().coordinate[1]]
-        mixer.armTrack(index)
+        track = self._selection[control.getControl().coordinate[1]]
+        mixer.armTrack(track.index)
         return True
 
     @filterButtonLift()
     def select(
         self,
         control: ControlShadowEvent,
-        index: UnsafeIndex,
+        index: WindowIndex,
         *args: Any
     ) -> bool:
         """Select track"""
-        index = self._selection[control.getControl().coordinate[1]]
-        mixer.selectTrack(index)
+        track = self._selection[control.getControl().coordinate[1]]
+        track.selectedToggle()
         return True
 
     @filterButtonLift()

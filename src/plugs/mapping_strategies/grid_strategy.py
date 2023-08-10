@@ -9,12 +9,11 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-import mixer
-import channels
 import itertools
 from typing import Callable, Optional, Any
+
+from common.plug_indexes import FlIndex, WindowIndex, PluginIndex
 from . import IMappingStrategy
-from common.plug_indexes import UnsafeIndex
 from devices import DeviceShadow
 from common.types import Color
 from common.util.grid_mapper import GridCell, GridLayout, grid_map
@@ -25,9 +24,9 @@ from control_surfaces import (
     ControlShadowEvent,
 )
 
-TriggerCallback = Callable[[ControlShadowEvent, UnsafeIndex, GridCell], bool]
-ColorCallback = Callable[[ControlShadow, UnsafeIndex, GridCell], Color]
-AnnotationCallback = Callable[[ControlShadow, UnsafeIndex, GridCell], str]
+TriggerCallback = Callable[[ControlShadowEvent, FlIndex, GridCell], bool]
+ColorCallback = Callable[[ControlShadow, FlIndex, GridCell], Color]
+AnnotationCallback = Callable[[ControlShadow, FlIndex, GridCell], str]
 
 
 class color_callbacks:
@@ -38,7 +37,7 @@ class color_callbacks:
     @staticmethod
     def white(
         control: ControlShadow,
-        plug_index: UnsafeIndex,
+        plug_index: FlIndex,
         index: GridCell,
     ) -> Color:
         """
@@ -49,7 +48,7 @@ class color_callbacks:
     @staticmethod
     def channelColor(
         control: ControlShadow,
-        plug_index: UnsafeIndex,
+        plug_index: FlIndex,
         index: GridCell,
     ) -> Color:
         """
@@ -59,26 +58,23 @@ class color_callbacks:
         """
 
         # FL Studio windows should use white
-        if isinstance(plug_index, int) or plug_index is None:
+        if isinstance(plug_index, WindowIndex):
             return Color.fromGrayscale(0.3)
 
-        # Effect plugins use the color of their mixer track
-        if len(plug_index) == 2:
-            return Color.fromInteger(mixer.getTrackColor(plug_index[0]))
-
-        # Channel plugins use their color
-        return Color.fromInteger(channels.getChannelColor(*plug_index))
+        # It's a plugin
+        assert isinstance(plug_index, PluginIndex)
+        return plug_index.track.color
 
 
 class annotation_callbacks:
     """
-    A collection of simple callbacks for generating colors that can be used to
-    color drum pads
+    A collection of simple callbacks for generating annotations that can be
+    used to describe drum pads
     """
     @staticmethod
     def empty(
         control: ControlShadow,
-        plug_index: UnsafeIndex,
+        plug_index: FlIndex,
         index: GridCell,
     ) -> str:
         """
@@ -175,7 +171,7 @@ class GridStrategy(IMappingStrategy):
                 data from this event can be used to determine the value and
                 coordinate of the drum pad.
 
-              * `UnsafeIndex`: the index of the plugin or window associated
+              * `FlIndex`: the index of the plugin or window associated
                 with this strategy.
 
         * `color_callback` (`ColorCallback`, optional): the callback
@@ -191,7 +187,7 @@ class GridStrategy(IMappingStrategy):
                 index. The data from this can be used to determine the value
                 and coordinate of the drum pad if required.
 
-              * `UnsafeIndex`: the index of the plugin or window associated
+              * `FlIndex`: the index of the plugin or window associated
                 with this strategy.
 
         * `annotation_callback` (`Callable[[int], str]`, optional): the
@@ -297,7 +293,7 @@ class GridStrategy(IMappingStrategy):
     def processTrigger(
         self,
         control: ControlShadowEvent,
-        plug: UnsafeIndex,
+        plug: FlIndex,
         *args: Any
     ) -> bool:
         assert self.__mappings is not None
@@ -314,7 +310,7 @@ class GridStrategy(IMappingStrategy):
     def tick(
         self,
         control: ControlShadow,
-        plug: UnsafeIndex,
+        plug: FlIndex,
         *args: Any
     ):
         assert self.__mappings is not None

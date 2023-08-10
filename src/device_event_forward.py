@@ -18,21 +18,25 @@ more details.
 """
 # flake8: noqa
 
+import version_check
+
 # Add our additional includes to the Python environment
 import fl_typing
 
-import version_check
+import consts
 
 # Add support for fl_param_checker
 from fl_param_checker import idleCallback, pluginParamCheck
 
-from common import consts
 from common.context_manager import catchContextResetException
 from common.extension_manager import ExtensionManager
 from common.states import WaitingForDevice, ForwardState
 
 from common import log, verbosity
 from common import getContext
+
+# Import console helpers
+from common.util.console_helpers import *
 
 
 class OverallDevice:
@@ -51,8 +55,8 @@ class OverallDevice:
     @catchContextResetException
     def bootstrap(self):
         log("bootstrap.initialize", "Load success", verbosity.INFO)
-        print(consts.getHeaderArt())
-        print(f"Universal Event Forwarder")
+        print(consts.getHeaderArt("Universal Event Forwarder"))
+        print("Type `help` for help using the script\n")
 
 dev = OverallDevice()
 

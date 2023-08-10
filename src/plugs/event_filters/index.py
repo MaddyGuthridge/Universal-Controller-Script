@@ -9,45 +9,43 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes import (
+    FlIndex,
+    PluginIndex,
+    GeneratorIndex,
+    EffectIndex,
+    WindowIndex,
+)
 from .decorator import do_filter
 
 
 @do_filter
-def toPluginIndex(control, index: UnsafeIndex, *args, **kwargs):
+def toPluginIndex(control, index: FlIndex, *args, **kwargs):
     """
     Filter out events when the index is not a plugin
     """
-    return isinstance(index, tuple)
+    return isinstance(index, PluginIndex)
 
 
 @do_filter
-def toGeneratorIndex(control, index: UnsafeIndex, *args, **kwargs):
+def toGeneratorIndex(control, index: FlIndex, *args, **kwargs):
     """
     Filter out events when the index is not a generator plugin
     """
-    return isinstance(index, tuple) and len(index) == 1
+    return isinstance(index, GeneratorIndex)
 
 
 @do_filter
-def toEffectIndex(control, index: UnsafeIndex, *args, **kwargs):
+def toEffectIndex(control, index: FlIndex, *args, **kwargs):
     """
     Filter out events when the index is not an effect plugin
     """
-    return isinstance(index, tuple) and len(index) == 2
+    return isinstance(index, EffectIndex)
 
 
 @do_filter
-def toWindowIndex(control, index: UnsafeIndex, *args, **kwargs):
+def toWindowIndex(control, index: FlIndex, *args, **kwargs):
     """
     Filter out events when the index is not a window
     """
-    return isinstance(index, int)
-
-
-@do_filter
-def toSafeIndex(control, index: UnsafeIndex, *args, **kwargs):
-    """
-    Filter out events when the index is None
-    """
-    return index is not None
+    return isinstance(index, WindowIndex)

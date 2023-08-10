@@ -13,7 +13,7 @@ more details.
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 from typing_extensions import TypeAlias
-from common.plug_indexes import UnsafeIndex
+from common.plug_indexes import FlIndex
 
 from common.util.dict_tools import lowestValueGrEqTarget, greatestKey
 from control_surfaces import ControlSurface
@@ -37,36 +37,36 @@ if TYPE_CHECKING:
 # HELP WANTED: Can someone please fix this awfulness in a way that doesn't
 # cause MyPy to have a temper tantrum?
 EventCallback = Union[
-    Callable[[ControlShadowEvent, UnsafeIndex], bool],
-    Callable[[ControlShadowEvent, UnsafeIndex, Any], bool],
-    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any], bool],
-    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any], bool],
-    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowEvent, UnsafeIndex, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowEvent, UnsafeIndex,
+    Callable[[ControlShadowEvent, FlIndex], bool],
+    Callable[[ControlShadowEvent, FlIndex, Any], bool],
+    Callable[[ControlShadowEvent, FlIndex, Any, Any], bool],
+    Callable[[ControlShadowEvent, FlIndex, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, FlIndex, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, FlIndex, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadowEvent, FlIndex,
               Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowEvent, UnsafeIndex,
+    Callable[[ControlShadowEvent, FlIndex,
               Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowEvent, UnsafeIndex, Any,
+    Callable[[ControlShadowEvent, FlIndex, Any,
               Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadowEvent, UnsafeIndex, Any,
+    Callable[[ControlShadowEvent, FlIndex, Any,
               Any, Any, Any, Any, Any, Any, Any, Any], bool],
 ]
 TickCallback = Union[
     None,
-    Callable[[ControlShadow, UnsafeIndex], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex,
+    Callable[[ControlShadow, FlIndex], bool],
+    Callable[[ControlShadow, FlIndex, Any], bool],
+    Callable[[ControlShadow, FlIndex, Any, Any], bool],
+    Callable[[ControlShadow, FlIndex, Any, Any, Any], bool],
+    Callable[[ControlShadow, FlIndex, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, FlIndex, Any, Any, Any, Any, Any], bool],
+    Callable[[ControlShadow, FlIndex,
               Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex,
+    Callable[[ControlShadow, FlIndex,
               Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any,
+    Callable[[ControlShadow, FlIndex, Any,
               Any, Any, Any, Any, Any, Any, Any], bool],
-    Callable[[ControlShadow, UnsafeIndex, Any,
+    Callable[[ControlShadow, FlIndex, Any,
               Any, Any, Any, Any, Any, Any, Any, Any], bool],
 ]
 
@@ -681,7 +681,7 @@ class DeviceShadow:
         self.bindControls(matches, on_event, on_tick, iterable)
         return matches
 
-    def processEvent(self, control: ControlEvent, index: UnsafeIndex) -> bool:
+    def processEvent(self, control: ControlEvent, index: FlIndex) -> bool:
         """
         Process an event by calling the bound callback function associated with
         it if applicable.
@@ -715,7 +715,7 @@ class DeviceShadow:
         # Call the bound function with any extra required args
         return fn(mapping, index, *args)
 
-    def tick(self, index: UnsafeIndex) -> None:
+    def tick(self, index: FlIndex) -> None:
         """
         Tick the assigned control surfaces of the plugin.
 

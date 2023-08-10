@@ -16,7 +16,7 @@ from typing import Optional
 import device
 
 import common
-from common.consts import UNIVERSAL_DEVICE_ENQUIRY
+from consts import UNIVERSAL_DEVICE_ENQUIRY
 from common.exceptions import DeviceRecognizeError
 from common import log, verbosity
 from fl_classes import isMidiMsgSysex, FlMidiMsg

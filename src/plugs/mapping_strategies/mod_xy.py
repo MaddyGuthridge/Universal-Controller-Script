@@ -10,8 +10,8 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-import plugins
-from common.util.api_fixes import PluginIndex
+from common.param import Param, PluginParameter
+from common.plug_indexes import PluginIndex
 from control_surfaces import ModX, ModY
 from control_surfaces import ControlShadow, ControlShadowEvent
 from devices.device_shadow import DeviceShadow
@@ -33,8 +33,8 @@ class ModXYStrategy(IMappingStrategy):
 
         * `y_param` (`int`): mod-y param-index
         """
-        self._x = x_param
-        self._y = y_param
+        self._x = Param(x_param)
+        self._y = Param(y_param)
 
     def apply(self, shadow: DeviceShadow) -> None:
         shadow.bindMatch(ModX, self.event, self.tick, (self._x,))
@@ -45,10 +45,10 @@ class ModXYStrategy(IMappingStrategy):
         self,
         control: ControlShadowEvent,
         index: PluginIndex,
-        param_index: int,
+        param: type[PluginParameter],
         *args,
     ) -> bool:
-        plugins.setParamValue(control.value, param_index, *index)
+        param(index).value = control.value
         return True
 
     @toPluginIndex()
@@ -56,10 +56,10 @@ class ModXYStrategy(IMappingStrategy):
         self,
         control: ControlShadow,
         index: PluginIndex,
-        param_index: int,
+        param: type[PluginParameter],
         *args,
     ):
         # Update value
-        control.value = plugins.getParamValue(param_index, *index)
+        control.value = param(index).value
         # Update annotations
-        control.annotation = plugins.getParamName(param_index, *index)
+        control.annotation = param(index).name
