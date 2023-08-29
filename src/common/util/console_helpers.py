@@ -76,6 +76,7 @@ help = ConsoleCommand(
     f"    * log.inspect(entry_number): print info about a log entry\n"
     f" * credits(): print credits for the script\n"
     f" * reset(): reset the script and reload modular components\n"
+    f" * pluginParamCheck(): launch the plugin parameter checker interface\n"
 )
 
 # Damn this is an awful way of formatting this, but I can't think of anything
