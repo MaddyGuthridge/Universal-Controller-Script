@@ -71,7 +71,15 @@ class PluginIndex(FlIndex):
         Name of the plugin. Note that this isn't necessarily the same as the
         name of the channel/track it resides on
         """
-        return plugins.getPluginName(self.index, self.slotIndex, False, True)
+        try:
+            return plugins.getPluginName(
+                self.index,
+                self.slotIndex,
+                False,
+                True,
+            )
+        except TypeError:
+            return 'Invalid plugin'
 
     def presetNext(self) -> None:
         """
