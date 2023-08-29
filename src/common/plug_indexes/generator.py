@@ -45,6 +45,7 @@ class GeneratorIndex(PluginIndex):
         """
         The group index of the channel rack slot that contains the plugin
         """
+        return getGroupChannelIndex(self.__index)
 
     @property
     def slotIndex(self) -> Literal[-1]:
