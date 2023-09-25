@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9.1"
 fl-studio-api-stubs = "^29.0.0"
-typing-extensions = "^4.5.0"
+typing-extensions = "^4.8.0"
 jestspectation = "^1.2.1"
 
 [tool.poetry.group.dev.dependencies]
