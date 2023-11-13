@@ -182,13 +182,13 @@ requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
 [[package]]
 name = "jestspectation"
-version = "1.2.1"
+version = "1.2.2"
 description = "Pattern matching tools to test complex data structures"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "jestspectation-1.2.1-py3-none-any.whl", hash = "sha256:03c5c9328a65a05d690271d6c599091694fac7d4031a2f712e317b1d36c27f75"},
-    {file = "jestspectation-1.2.1.tar.gz", hash = "sha256:eacdbabb38e9763815fa0e5b8181fb8a07d4a257b1b55d28559c95ef48142b8f"},
+    {file = "jestspectation-1.2.2-py3-none-any.whl", hash = "sha256:3a9d93a2c61edbd0576f2f0ba9abc887892a144d82914ea400d400c796b798ba"},
+    {file = "jestspectation-1.2.2.tar.gz", hash = "sha256:90214402d380780aa2dc26d78fa393694f83acd74d6b5aac5d9c3d4cc357c2df"},
 ]
 
 [package.dependencies]
@@ -413,4 +413,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9.1"
-content-hash = "62482253db964cc05e8a4c4053d16f17a525df530ef3f74e9fb7bcc4f44291d6"
+content-hash = "b65a10d270e8aa0df7917eec66e71177eb381ef41e979c3d6ea3cc8745db9283"
