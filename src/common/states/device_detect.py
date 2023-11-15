@@ -150,7 +150,7 @@ class WaitingForDevice(IScriptState):
         # Always handle all events
         event.handled = True
         # Ignore all events unless they are Sysex
-        if isMidiMsgSysex(event):
+        if self._sent_enquiry and isMidiMsgSysex(event):
             try:
                 dev = common.ExtensionManager.devices.get(event)
                 log(
