@@ -9,7 +9,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from typing import Any
+from typing import Any, cast
 import arrangement
 import ui
 import playlist
@@ -41,17 +41,21 @@ from integrations import WindowIntegration
 from integrations.event_filters import filterButtonLift
 from integrations.mapping_strategies import MuteSoloStrategy
 
-TOOL_COLORS = [
-    Color.fromInteger(0xffc43f),  # Pencil
-    Color.fromInteger(0x7bcefd),  # Paint
-    Color.fromInteger(0xfe5750),  # Delete
-    Color.fromInteger(0xff54b0),  # Mute
-    Color.fromInteger(0xffa64a),  # Slip
-    Color.fromInteger(0x85b3f2),  # Slice
-    Color.fromInteger(0xff9354),  # Select
-    Color.fromInteger(0x80acff),  # Zoom
-    # Color.fromInteger(0xffa64a),  # Preview
-]
+# Thanks, https://stackoverflow.com/a/8081580/6335363
+TOOL_COLORS, TOOL_NAMES = cast(
+    tuple[list[Color], list[str]],
+    map(list, zip(*[
+        (Color.fromInteger(0xffc43f),  "Pencil"),
+        (Color.fromInteger(0x7bcefd),  "Paint"),
+        (Color.fromInteger(0xfe5750),  "Delete"),
+        (Color.fromInteger(0xff54b0),  "Mute"),
+        (Color.fromInteger(0xffa64a),  "Slip"),
+        (Color.fromInteger(0x85b3f2),  "Slice"),
+        (Color.fromInteger(0xff9354),  "Select"),
+        (Color.fromInteger(0x80acff),  "Zoom"),
+        # (Color.fromInteger(0xffa64a),  "Preview"),
+    ])),
+)
 
 
 def getNumDrumCols() -> int:
@@ -80,8 +84,10 @@ class Playlist(WindowIntegration):
             args_generator=...,
             target_num=len(TOOL_COLORS),
         )\
-            .colorize(TOOL_COLORS)
-        mute_solo = MuteSoloStrategy(getSelection)
+            .colorize(TOOL_COLORS)\
+            .annotate(TOOL_NAMES)
+
+        MuteSoloStrategy(shadow, getSelection)
 
         # Navigation mappings
         # FIXME: This is super yucky, come up with a better system for it
@@ -141,7 +147,7 @@ class Playlist(WindowIntegration):
             shadow.bindControl(up_down[1], self.eNextTrack)
             up_down = None
 
-        super().__init__(shadow, [mute_solo])
+        super().__init__(shadow)
 
     @classmethod
     def getWindowId(cls) -> WindowIndex:
