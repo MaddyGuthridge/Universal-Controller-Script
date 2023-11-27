@@ -20,6 +20,7 @@ from integrations.event_filters import filterButtonLift
 from control_surfaces import ToolSelector, ControlShadowEvent
 
 
+# TODO: Annotate tool names, like in playlist
 TOOL_COLORS = [
     Color.fromInteger(0xffc43f),  # Pencil
     Color.fromInteger(0x7bcefd),  # Paint
@@ -48,7 +49,7 @@ class PianoRoll(WindowIntegration):
             target_num=len(TOOL_COLORS),
         )\
             .colorize(TOOL_COLORS)
-        super().__init__(shadow, [])
+        super().__init__(shadow)
 
     @classmethod
     def getWindowId(cls) -> WindowIndex:

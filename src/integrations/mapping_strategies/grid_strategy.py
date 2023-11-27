@@ -13,10 +13,9 @@ import itertools
 from typing import Callable, Optional, Any
 
 from common.plug_indexes import FlIndex, WindowIndex, PluginIndex
-from . import IMappingStrategy
 from devices import DeviceShadow
 from common.types import Color
-from common.util.grid_mapper import GridCell, GridLayout, grid_map
+from common.util.grid_mapper import GridCell, grid_map
 
 from control_surfaces import (
     ControlShadow,
@@ -84,7 +83,7 @@ class annotation_callbacks:
         return ""
 
 
-class GridStrategy(IMappingStrategy):
+class GridStrategy:
     """
     The grid strategy can be used for creating grid-like layouts that adapt to
     the drum pad layout of various MIDI controllers.
@@ -92,6 +91,7 @@ class GridStrategy(IMappingStrategy):
 
     def __init__(
         self,
+        shadow: DeviceShadow,
         group_width: Optional[int],
         group_height: Optional[int],
         trigger_callback: TriggerCallback,
@@ -105,7 +105,7 @@ class GridStrategy(IMappingStrategy):
         annotation_callback: AnnotationCallback = annotation_callbacks.empty,
     ) -> None:
         """
-        Create an instance of a drum pad strategy
+        Create an instance of a grid strategy strategy
 
         This will link all available drum pads, using the provided callback
         functions to manage the control surfaces.
@@ -117,6 +117,8 @@ class GridStrategy(IMappingStrategy):
         or you can read the docs on the documentation website once I make it.
 
         ### Args:
+        * `shadow` (`DeviceShadow`): the device shadow to bind the mappings to
+
         * `group_width` (`Optional[int]`): the width of a single row of
           controls. This is used to determine how to arrange rows and columns
           for each control. After every `n` drum pads (where `n = width`), the
@@ -217,48 +219,6 @@ class GridStrategy(IMappingStrategy):
         self.__color = color_callback
         self.__annotate: AnnotationCallback = annotation_callback
 
-        # mappings
-        self.__mappings: Optional[GridLayout] = None
-        # list of drums we've initialized
-        self.__initialized_drums: Optional[list[list[bool]]] = None
-        super().__init__()
-
-    def get_num_groups_mapped(self) -> int:
-        """
-        Returns the number of groups that have been mapped using the strategy.
-
-        ### Raises
-        * `ValueError`: the mapping strategy hasn't been applied yet
-
-        ### Returns:
-        * `int`: the number of groups that were mapped by the strategy.
-        """
-        if self.__mappings is None:
-            raise ValueError("Mapping strategy hasn't been applied yet")
-        return max(map(
-            lambda cell: 0 if cell is None else cell.group_number,
-            itertools.chain.from_iterable(self.__mappings),
-        )) + 1
-
-    def get_group_size(self) -> int:
-        """
-        Returns the size of all the groups that have been mapped using the
-        strategy.
-
-        ### Raises
-        * `ValueError`: the mapping strategy hasn't been applied yet
-
-        ### Returns:
-        * `int`: the size of each group mapped by the strategy
-        """
-        if self.__mappings is None:
-            raise ValueError("Mapping strategy hasn't been applied yet")
-        return max(map(
-            lambda cell: 0 if cell is None else cell.group_size,
-            itertools.chain.from_iterable(self.__mappings),
-        ))
-
-    def apply(self, shadow: DeviceShadow) -> None:
         rows, cols = shadow.getDevice().getDrumPadSize()
 
         drums = shadow.bindMatches(
@@ -285,10 +245,42 @@ class GridStrategy(IMappingStrategy):
             self.__truncate_overflows,
             self.__wrap_overflows,
         )
+        # list of drums we've initialized
         self.__initialized_drums = [
             [False for _ in range(cols)]
             for _ in range(rows)
         ]
+
+    def get_num_groups_mapped(self) -> int:
+        """
+        Returns the number of groups that have been mapped using the strategy.
+
+        ### Raises
+        * `ValueError`: the mapping strategy hasn't been applied yet
+
+        ### Returns:
+        * `int`: the number of groups that were mapped by the strategy.
+        """
+        return max(map(
+            lambda cell: 0 if cell is None else cell.group_number,
+            itertools.chain.from_iterable(self.__mappings),
+        )) + 1
+
+    def get_group_size(self) -> int:
+        """
+        Returns the size of all the groups that have been mapped using the
+        strategy.
+
+        ### Raises
+        * `ValueError`: the mapping strategy hasn't been applied yet
+
+        ### Returns:
+        * `int`: the size of each group mapped by the strategy
+        """
+        return max(map(
+            lambda cell: 0 if cell is None else cell.group_size,
+            itertools.chain.from_iterable(self.__mappings),
+        ))
 
     def processTrigger(
         self,
@@ -313,9 +305,6 @@ class GridStrategy(IMappingStrategy):
         plug: FlIndex,
         *args: Any
     ):
-        assert self.__mappings is not None
-        assert self.__initialized_drums is not None
-
         row, col = control.coordinate
 
         # If we're not updating the drums and they're already initialized, skip

@@ -85,7 +85,7 @@ class ManualMapper(CoreIntegration):
             allow_substitution=False,
             args_generator=...,
         )
-        super().__init__(shadow, [])
+        super().__init__(shadow)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'CoreIntegration':

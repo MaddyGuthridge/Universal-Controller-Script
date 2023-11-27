@@ -32,15 +32,14 @@ class Flex(PluginIntegration):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         # TODO: Grey out faders when they're not used
-        faders = SimpleFaders(
+        SimpleFaders(
+            shadow,
             [FADER_START + i for i in range(NUM_FADERS)],
             colors=FLEX_COLOR,
         )
+        PresetNavigationStrategy(shadow)
         shadow.bindMatch(Ambient, None).colorize(FLEX_COLOR)
-        super().__init__(shadow, [
-            faders,
-            PresetNavigationStrategy(),
-        ])
+        super().__init__(shadow)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'PluginIntegration':

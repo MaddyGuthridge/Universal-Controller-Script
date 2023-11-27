@@ -69,7 +69,7 @@ class ActivitySwitcher(CoreIntegration):
             self.tActivity,
             args_generator=...,
         )
-        super().__init__(shadow, [])
+        super().__init__(shadow)
 
     @filterButtonLift()
     def eActivity(

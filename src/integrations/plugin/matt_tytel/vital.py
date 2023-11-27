@@ -16,7 +16,7 @@ from common.param import Param
 from devices import DeviceShadow
 from common import ExtensionManager
 from control_surfaces import PitchWheel, ControlShadowEvent, ControlShadow
-from integrations.mapping_strategies import IMappingStrategy, SimpleFaders
+from integrations.mapping_strategies import SimpleFaders
 from integrations import PluginIntegration, event_filters, tick_filters
 
 MACRO_START = 211
@@ -34,11 +34,11 @@ class Vital(PluginIntegration):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        mappings: list[IMappingStrategy] = []
-        mappings.append(SimpleFaders(
+        SimpleFaders(
+            shadow,
             [MACRO_START + i for i in range(4)],
             colors=VITAL_COLOR,
-        ))
+        )
         pitch = shadow.bindMatch(
             PitchWheel,
             self.ePitchWheel,
@@ -48,7 +48,7 @@ class Vital(PluginIntegration):
             pitch.annotation = 'Pitch'
             pitch.color = VITAL_COLOR
 
-        super().__init__(shadow, mappings)
+        super().__init__(shadow)
 
     @event_filters.toGeneratorIndex()
     def ePitchWheel(

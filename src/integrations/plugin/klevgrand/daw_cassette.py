@@ -36,7 +36,8 @@ class DawCassette(PluginIntegration):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        faders = SimpleFaders(
+        SimpleFaders(
+            shadow,
             [
                 5,  # TAPE QUALITY
                 4,  # HEAD QUALITY
@@ -47,7 +48,8 @@ class DawCassette(PluginIntegration):
             ],
             PLUG_COLOR,
         )
-        drums = GridStrategy(
+        GridStrategy(
+            shadow,
             3,
             2,
             self.triggerDrumPads,
@@ -56,7 +58,7 @@ class DawCassette(PluginIntegration):
 
         self.__active_pads = [0, 0]
 
-        super().__init__(shadow, [faders, drums])
+        super().__init__(shadow)
 
     @eEffectIndex()
     def triggerDrumPads(

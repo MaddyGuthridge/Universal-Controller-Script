@@ -59,7 +59,7 @@ class ParametricEq(PluginIntegration):
             self.bandwidths,
             target_num=NUM_PARAMS,
         )
-        super().__init__(shadow, [])
+        super().__init__(shadow)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'PluginIntegration':

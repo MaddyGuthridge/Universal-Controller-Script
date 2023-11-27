@@ -10,13 +10,11 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 import ui
-from . import IMappingStrategy
 from devices import DeviceShadow
 from integrations.event_filters import filterButtonLift
 from common.types import Color
 
 from control_surfaces import (
-    IControlShadow,
     DirectionNext,
     DirectionPrevious,
     DirectionLeft,
@@ -29,17 +27,19 @@ from control_surfaces import (
 BOUND_COLOR = Color.fromInteger(0x888888)
 
 
-class DirectionStrategy(IMappingStrategy):
+class DirectionStrategy:
     """
     Mapping strategy to handle direction buttons.
 
     This maps controls to next or previous commands.
     """
-    def __init__(self) -> None:
-        self._controls: list[IControlShadow] = []
+    def __init__(self, shadow: DeviceShadow) -> None:
+        """
+        Mapping strategy to handle button presses
 
-    def apply(self, shadow: DeviceShadow):
-        # TODO: Find nicer way to bind colors like this
+        ### Args:
+        * `shadow` (`DeviceShadow`): device shadow to bind on
+        """
         shadow.bindMatch(
             DirectionNext,
             self.next,

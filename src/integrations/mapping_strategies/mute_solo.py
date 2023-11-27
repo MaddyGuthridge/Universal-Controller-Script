@@ -23,12 +23,11 @@ from control_surfaces import (
 )
 from devices import DeviceShadow
 from integrations.event_filters import filterButtonLift
-from .mapping_strategy import IMappingStrategy
 
 COLOR_DISABLED = Color.fromGrayscale(0.3, False)
 
 
-class MuteSoloStrategy(IMappingStrategy):
+class MuteSoloStrategy:
     """
     Binds mute and solo buttons to mute tracks at the given callback functions,
     as well as providing colorization functionality.
@@ -52,6 +51,7 @@ class MuteSoloStrategy(IMappingStrategy):
     """
     def __init__(
         self,
+        shadow: DeviceShadow,
         selected_callback: Callable[[int], AbstractTrack],
     ) -> None:
         """
@@ -62,13 +62,14 @@ class MuteSoloStrategy(IMappingStrategy):
         events from the controls and color the controls.
 
         ### Args:
+        * `shadow` (`DeviceShadow`): the device shadow to bind to
+
         * `selected_callback` (`Callable[[int], AbstractTrack]`): given an int
           n, returns the nth selected track. Note that if there aren't enough
           tracks, an IndexError should be raised.
         """
         self.selected = selected_callback
 
-    def apply(self, shadow: DeviceShadow) -> None:
         self._buttons = shadow.bindMatches(
             GenericFaderButton,
             self.eGeneric,

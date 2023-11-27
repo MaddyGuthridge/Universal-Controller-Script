@@ -23,15 +23,19 @@ from control_surfaces import (
 )
 from control_surfaces import ControlShadowEvent
 from devices import DeviceShadow
-from . import IMappingStrategy
 
 
-class JogStrategy(IMappingStrategy):
+class JogStrategy:
     """
-    Maps jog wheels to navigation controls.
+    Maps jog wheels to forwards/backwards navigation
     """
-    def apply(self, shadow: DeviceShadow) -> None:
-        # Bind note events to noteCallback()
+    def __init__(self, shadow: DeviceShadow) -> None:
+        """
+        Maps jog wheels to forwards/backwards navigation
+
+        ### Args:
+        * `shadow` (`DeviceShadow`): device shadow to bind on
+        """
         shadow.bindMatches(
             JogWheel,
             self.jogWheel,

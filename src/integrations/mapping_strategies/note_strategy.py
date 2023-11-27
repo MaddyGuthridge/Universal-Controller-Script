@@ -17,15 +17,20 @@ from common import getContext
 from control_surfaces import Note
 from control_surfaces import ControlShadowEvent
 from devices import DeviceShadow
-from . import IMappingStrategy
 
 
-class NoteStrategy(IMappingStrategy):
+class NoteStrategy:
     """
     Maps notes to the active generator plugin.
     """
 
-    def apply(self, shadow: DeviceShadow) -> None:
+    def __init__(self, shadow: DeviceShadow) -> None:
+        """
+        Maps notes to the active generator plugin
+
+        ### Args:
+        * `shadow` (`DeviceShadow`): device shadow to bind to
+        """
         # Bind note events to noteCallback()
         shadow.bindMatches(
             Note,

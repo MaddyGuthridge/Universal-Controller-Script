@@ -34,12 +34,11 @@ class DefaultIntegration(PluginIntegration):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        super().__init__(shadow, [
-            PedalStrategy(),
-            WheelStrategy(),
-            NoteStrategy(),
-            PresetNavigationStrategy(),
-        ])
+        PedalStrategy(shadow)
+        WheelStrategy(shadow)
+        NoteStrategy(shadow)
+        PresetNavigationStrategy(shadow)
+        super().__init__(shadow)
 
     @classmethod
     def getPlugIds(cls) -> tuple[str, ...]:

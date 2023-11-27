@@ -22,7 +22,7 @@ from control_surfaces import Fader
 from devices import DeviceShadow
 from integrations import PluginIntegration
 from integrations import event_filters, tick_filters
-from integrations.mapping_strategies import GridStrategy, IMappingStrategy
+from integrations.mapping_strategies import GridStrategy
 
 # Params
 
@@ -102,11 +102,9 @@ class SpitfireGeneric(PluginIntegration):
     """
     Used to interact with Spitfire Audio plugins, mapping faders to parameters
     """
-    def __init__(
-        self,
-        shadow: DeviceShadow,
-        mapping_strategies: list[IMappingStrategy]
-    ) -> None:
+    def __init__(self, shadow: DeviceShadow) -> None:
+        # FIXME: This can probably be done using `SimpleFaders`, which would be
+        # much cleaner and more readable
         self._faders = shadow.bindMatches(
             Fader,
             self.faders,
@@ -121,11 +119,11 @@ class SpitfireGeneric(PluginIntegration):
             self._faders[1] \
                 .annotate("Dynamics") \
                 .colorize(BOUND_COLOR)
-        super().__init__(shadow, mapping_strategies)
+        super().__init__(shadow)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'PluginIntegration':
-        return cls(shadow, [])
+        return cls(shadow)
 
     @classmethod
     def getPlugIds(cls) -> tuple[str, ...]:
@@ -155,9 +153,8 @@ class SpitfireKeyswitch(SpitfireGeneric):
     keyswitches.
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        super().__init__(shadow, [
-            GridStrategy(4, 2, trigger, do_property_update=False)
-        ])
+        GridStrategy(shadow, 4, 2, trigger, do_property_update=False)
+        super().__init__(shadow)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'PluginIntegration':

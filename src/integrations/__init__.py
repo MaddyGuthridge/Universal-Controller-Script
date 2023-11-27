@@ -18,7 +18,6 @@ __all__ = [
 ]
 
 from .mapping_strategies import (
-    IMappingStrategy,
     NoteStrategy,
     PedalStrategy,
     WheelStrategy,

@@ -17,7 +17,6 @@ from common.util.abstract_method_error import AbstractMethodError
 from common.plug_indexes import WindowIndex, FlIndex
 from control_surfaces import ControlEvent
 from devices import DeviceShadow
-from integrations.mapping_strategies import IMappingStrategy
 from abc import abstractmethod
 
 
@@ -43,20 +42,13 @@ class Integration:
     def __init__(
         self,
         shadow: DeviceShadow,
-        mapping_strategies: list[IMappingStrategy]
     ) -> None:
         """
         Create a base integration object
 
         ### Args:
         * `shadow` (`DeviceShadow`): device shadow to interact with
-        * `mapping_strategies` (`list[IMappingStrategy]`): list of strategies
-          to quickly bind reusable mappings to integrations. This argument
-          should be provided by inheriting classes
         """
-        # Bind the mapping strategies
-        for strat in mapping_strategies:
-            strat.apply(shadow)
         self._shadow = shadow
 
     def __repr__(self) -> str:

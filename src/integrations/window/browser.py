@@ -25,7 +25,7 @@ class Browser(WindowIntegration):
     """
 
     def __init__(self, shadow: DeviceShadow) -> None:
-        super().__init__(shadow, [])
+        super().__init__(shadow)
 
     @classmethod
     def getWindowId(cls) -> WindowIndex:

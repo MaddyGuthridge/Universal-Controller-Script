@@ -27,14 +27,15 @@ class Slicers(PluginIntegration):
     Adds support for Slicex and Fruity Slicer
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        drums = GridStrategy(
+        GridStrategy(
+            shadow,
             None,
             None,
             self.trigger,
             color_callback=self.color,
         )
         self.__indexes: list[int] = []
-        super().__init__(shadow, [drums])
+        super().__init__(shadow)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'PluginIntegration':

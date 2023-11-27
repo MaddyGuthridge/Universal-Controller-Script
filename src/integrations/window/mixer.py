@@ -130,7 +130,7 @@ class Mixer(WindowIntegration):
         ).annotate("Show selected").colorize(Color.fromGrayscale(0.5))
 
         # Create bindings for mute, solo and generic buttons
-        mutes_solos = MuteSoloStrategy(lambda i: self._selection[i])
+        MuteSoloStrategy(shadow, lambda i: self._selection[i])
 
         # TODO: Bind master controls
 
@@ -142,7 +142,7 @@ class Mixer(WindowIntegration):
         self._dock_side = 1
         # Length of mapped channels
         self._len = max(map(len, [self._faders, self._knobs]))
-        super().__init__(shadow, [mutes_solos])
+        super().__init__(shadow)
 
     @classmethod
     def getWindowId(cls) -> WindowIndex:
