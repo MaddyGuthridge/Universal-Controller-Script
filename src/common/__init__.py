@@ -41,7 +41,7 @@ from .extension_manager import ExtensionManager
 
 # Import devices and plugins
 import devices
-import plugs
+import integrations
 
 del devices
-del plugs
+del integrations
