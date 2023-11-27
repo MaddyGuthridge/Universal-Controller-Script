@@ -16,7 +16,7 @@ from common.util.console_helpers import printReturn
 
 if TYPE_CHECKING:
     from devices import Device
-    from plugs import Plugin
+    from integrations import Integration
 
 from .standard_plugs import StandardPluginCollection
 from .special_plugs import SpecialPluginCollection
@@ -147,7 +147,7 @@ class ExtensionManager:
 
     @classmethod
     @printReturn
-    def inspect(cls, ext: 'type[Device] | type[Plugin] | str') -> str:
+    def inspect(cls, ext: 'type[Device] | type[Integration] | str') -> str:
         """
         Returns info about an extension, which can be a device or a plugin of
         any kind
@@ -160,16 +160,16 @@ class ExtensionManager:
         * `str`: extension info
         """
         import devices
-        import plugs
+        import integrations
         if isinstance(ext, str):
             return cls.plugins.inspect(ext)
         elif issubclass(ext, devices.Device):
             return cls.devices.inspect(ext)
-        elif issubclass(ext, plugs.StandardPlugin):
+        elif issubclass(ext, integrations.PluginIntegration):
             return cls.plugins.inspect(ext)
-        elif issubclass(ext, plugs.WindowPlugin):
+        elif issubclass(ext, integrations.WindowIntegration):
             return cls.windows.inspect(ext)
-        elif issubclass(ext, plugs.SpecialPlugin):
+        elif issubclass(ext, integrations.CoreIntegration):
             # FIXME: Final plugins can't be inspected
             return cls.special.inspect(ext)
         else:

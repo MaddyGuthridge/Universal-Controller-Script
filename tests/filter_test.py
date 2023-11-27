@@ -16,7 +16,7 @@ from common.plug_indexes import (
     EffectIndex,
 )
 from control_surfaces import ControlShadowEvent
-from plugs import event_filters
+from integrations import event_filters
 
 
 def get_function(filter):

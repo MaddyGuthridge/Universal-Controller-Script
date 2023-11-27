@@ -13,7 +13,7 @@ more details.
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from plugs import StandardPlugin
+    from integrations import PluginIntegration
     from devices import Device
 
 
@@ -21,12 +21,12 @@ class StandardPluginCollection:
     """Collection of standard plugins registered to the script
     """
     def __init__(self) -> None:
-        self.__mappings: dict[str, type['StandardPlugin']] = {}
-        self.__instantiated: dict[str, 'StandardPlugin'] = {}
-        self.__fallback: Optional[type['StandardPlugin']] = None
-        self.__fallback_inst: Optional['StandardPlugin'] = None
+        self.__mappings: dict[str, type['PluginIntegration']] = {}
+        self.__instantiated: dict[str, 'PluginIntegration'] = {}
+        self.__fallback: Optional[type['PluginIntegration']] = None
+        self.__fallback_inst: Optional['PluginIntegration'] = None
 
-    def register(self, plug: type['StandardPlugin']) -> None:
+    def register(self, plug: type['PluginIntegration']) -> None:
         """
         Register a standard plugin
 
@@ -48,7 +48,7 @@ class StandardPluginCollection:
         for plug_id in plug.getPlugIds():
             self.__mappings[plug_id] = plug
 
-    def registerFallback(self, plug: type['StandardPlugin']) -> None:
+    def registerFallback(self, plug: type['PluginIntegration']) -> None:
         """
         Register a plugin to be used as a fallback when the default bindings
         fail
@@ -60,7 +60,7 @@ class StandardPluginCollection:
         """
         self.__fallback = plug
 
-    def get(self, id: str, device: 'Device') -> Optional['StandardPlugin']:
+    def get(self, id: str, device: 'Device') -> Optional['PluginIntegration']:
         """Get an instance of the plugin matching this plugin id
         """
         from devices.device_shadow import DeviceShadow
@@ -82,7 +82,7 @@ class StandardPluginCollection:
                         = self.__fallback.create(DeviceShadow(device))
             return self.__fallback_inst
 
-    def getFallback(self) -> Optional['StandardPlugin']:
+    def getFallback(self) -> Optional['PluginIntegration']:
         """Return the fallback plugin if registered
         """
         return self.__fallback_inst
@@ -91,16 +91,16 @@ class StandardPluginCollection:
         self.__instantiated = {}
         self.__fallback_inst = None
 
-    def all(self) -> list[type['StandardPlugin']]:
+    def all(self) -> list[type['PluginIntegration']]:
         return list(self.__mappings.values())
 
-    def instantiated(self) -> list['StandardPlugin']:
+    def instantiated(self) -> list['PluginIntegration']:
         return list(self.__instantiated.values())
 
     def __len__(self) -> int:
         return len(self.__mappings)
 
-    def _formatPlugin(cls, plug: Optional['StandardPlugin']) -> str:
+    def _formatPlugin(cls, plug: Optional['PluginIntegration']) -> str:
         """
         Format info about a plugin instance
 
@@ -115,14 +115,14 @@ class StandardPluginCollection:
         else:
             return repr(plug)
 
-    def inspect(self, plug: 'type[StandardPlugin] | str') -> str:
+    def inspect(self, plug: 'type[PluginIntegration] | str') -> str:
         if isinstance(plug, str):
             return self._inspect_id(plug)
         else:
             return self._inspect_plug(plug)
 
-    def _inspect_plug(self, plug: 'type[StandardPlugin]') -> str:
-        matches: list[tuple[str, Optional['StandardPlugin']]] = []
+    def _inspect_plug(self, plug: 'type[PluginIntegration]') -> str:
+        matches: list[tuple[str, Optional['PluginIntegration']]] = []
 
         for id, p in self.__mappings.items():
             if p == plug:
