@@ -75,7 +75,7 @@ class Press(CoreIntegration):
             + self.bind_all(shadow, ModWheel)
             + self.bind_all(shadow, PitchWheel)
         )
-        super().__init__(shadow, [])
+        super().__init__(shadow)
 
     @classmethod
     def shouldBeActive(cls) -> bool:

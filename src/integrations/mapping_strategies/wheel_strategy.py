@@ -19,30 +19,18 @@ from control_surfaces import ModWheel, PitchWheel
 from control_surfaces import ControlShadowEvent
 from devices import DeviceShadow
 from integrations.event_filters import toPluginIndex
-from . import IMappingStrategy
 
 
 mod_wheel = Param(PARAM_CC_START + 1)
 
 
-class WheelStrategy(IMappingStrategy):
+class WheelStrategy:
     """
     Maps mod and pitch wheels to the current plugin.
     """
-    def __init__(self, raise_on_error: bool = False) -> None:
+    def __init__(self, shadow: DeviceShadow) -> None:
         """
         Create a WheelStrategy for binding mod and pitch wheel events
-
-        ### Args:
-        * `raise_on_error` (`bool`, optional): Whether an error should be
-          raised if the plugin doesn't support CC parameters. Defaults to
-          `False`.
-        """
-        self._raise = raise_on_error
-
-    def apply(self, shadow: DeviceShadow) -> None:
-        """
-        Bind pedal events to the pedalCallback function
 
         ### Args:
         * `shadow` (`DeviceShadow`): device to bind to
@@ -52,13 +40,11 @@ class WheelStrategy(IMappingStrategy):
         shadow.bindMatches(
             ModWheel,
             self.modCallback,
-            raise_on_failure=False
         )
         # And pitch events to pitchCallback()
         shadow.bindMatches(
             PitchWheel,
             self.pitchCallback,
-            raise_on_failure=False
         )
 
     @toPluginIndex()
@@ -83,12 +69,9 @@ class WheelStrategy(IMappingStrategy):
         * `bool`: whether the event was processed
         """
         if not index.isVst():
-            if self._raise:
-                raise TypeError("Expected a plugin of VST type - make sure "
-                                "that this plugin is a VST, and not an FL "
-                                "Studio plugin")
-            else:
-                return False
+            # FIXME: Log that plugin wasn't a VST so binding mod wheel doesn't
+            # work
+            return False
 
         # Assign parameter
         mod_wheel(index).value = control.value

@@ -88,7 +88,7 @@ class Transport(CoreIntegration):
         shadow.bindMatch(RewindButton, self.rewind, self.tickRw)
         # Whether we're fast forwarding or rewinding
         self._playback_ff_rw = 0
-        super().__init__(shadow, [])
+        super().__init__(shadow)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'CoreIntegration':

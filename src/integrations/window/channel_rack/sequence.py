@@ -43,6 +43,7 @@ class StepSequencer(WindowIntegration):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         self._drums = GridStrategy(
+            shadow,
             16,
             1,
             self.triggerDrumPad,
@@ -61,7 +62,7 @@ class StepSequencer(WindowIntegration):
         self._down = shadow.bindMatch(DirectionDown, self.down)
         self._prev = shadow.bindMatch(DirectionPrevious, self.left)
         self._next = shadow.bindMatch(DirectionNext, self.right)
-        super().__init__(shadow, [self._drums])
+        super().__init__(shadow)
 
     @classmethod
     def getWindowId(cls) -> WindowIndex:

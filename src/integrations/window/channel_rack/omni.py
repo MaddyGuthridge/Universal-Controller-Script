@@ -30,7 +30,7 @@ class OmniPreview(WindowIntegration):
     def __init__(self, shadow: DeviceShadow) -> None:
         self._drums = \
             shadow.bindMatches(DrumPad, self.drumPads)
-        super().__init__(shadow, [])
+        super().__init__(shadow)
 
     @classmethod
     def getWindowId(cls) -> WindowIndex:

@@ -29,8 +29,8 @@ class ChannelRack(IntegrationPager, WindowIntegration):
         IntegrationPager.__init__(self, shadow)
         self.addPage(StepSequencer(shadow.copy()), Color.fromRgb(0, 127, 255))
         self.addPage(OmniPreview(shadow.copy()), Color.fromRgb(127, 0, 255))
-        mute_solo = MuteSoloStrategy(lambda i: getChannelRows()[i])
-        WindowIntegration.__init__(self, shadow, [mute_solo])
+        MuteSoloStrategy(shadow, lambda i: getChannelRows()[i])
+        WindowIntegration.__init__(self, shadow)
 
     @classmethod
     def getWindowId(cls) -> WindowIndex:

@@ -26,7 +26,6 @@ from control_surfaces.controls.pedal import (
 from control_surfaces import ControlShadowEvent, ControlShadowList
 from devices import DeviceShadow
 from integrations.event_filters import toPluginIndex
-from . import IMappingStrategy
 
 
 sustain = Param(PARAM_CC_START + SUSTAIN)
@@ -34,22 +33,12 @@ sostenuto = Param(PARAM_CC_START + SOSTENUTO)
 soft = Param(PARAM_CC_START + SOFT)
 
 
-class PedalStrategy(IMappingStrategy):
+class PedalStrategy:
     """
     Binds pedals to relevant CC parameters.
     """
-    def __init__(self, raise_on_error: bool = True) -> None:
-        """
-        Create a PedalStrategy for binding pedals to CC parameters
 
-        ### Args:
-        * `raise_on_error` (`bool`, optional): Whether an error should be
-          raised
-          if the plugin doesn't support CC parameters. Defaults to `True`.
-        """
-        self._raise = raise_on_error
-
-    def apply(self, shadow: DeviceShadow) -> None:
+    def __init__(self, shadow: DeviceShadow) -> None:
         """
         Bind pedal events to the pedalCallback function
 
@@ -58,8 +47,10 @@ class PedalStrategy(IMappingStrategy):
         """
         # Generator function for mapping out pedal events
 
-        # TODO: Use argument generators as strategies to the strategies?
-        # Could save even more repeated code
+        # FIXME: Honestly this design for binding pedals is kinda yucky.
+        # Refactor it to remove the need for passing arguments alongside
+        # control bindings at some point, since that's always been insanely
+        # difficult to make type-safe
         def gen(shadows: ControlShadowList):
             for s in shadows:
                 yield (type(s.getControl()), )
@@ -98,15 +89,11 @@ class PedalStrategy(IMappingStrategy):
         ### Returns:
         * `bool`: whether the event was processed
         """
-
         # Filter out non-VSTs
         if not index.isVst():
-            if self._raise:
-                raise TypeError("Expected a plugin of VST type - make sure "
-                                "that this plugin is a VST, and not an FL "
-                                "Studio plugin")
-            else:
-                return False
+            # FIXME: Log that plugin wasn't a VST so binding mod wheel doesn't
+            # work
+            return False
 
         # Assign parameters
         if t_ped is SustainPedal:

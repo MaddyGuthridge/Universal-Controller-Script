@@ -46,7 +46,7 @@ class Macro(CoreIntegration):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
-        super().__init__(shadow, [])
+        super().__init__(shadow)
         # Macro buttons
         shadow.bindMatch(UndoButton, self.eUndo, self.tUndo)
         shadow.bindMatch(RedoButton, self.eRedo, self.tRedo)

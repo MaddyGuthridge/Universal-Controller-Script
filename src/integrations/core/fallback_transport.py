@@ -32,14 +32,14 @@ class FinalTransport(CoreIntegration):
 
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
-        super().__init__(shadow, [
-            DirectionStrategy(),
-            JogStrategy(),
-            NoteStrategy(),
-            WheelStrategy(),
-            PedalStrategy(raise_on_error=False),
-            CcForwardStrategy(),
-        ])
+        DirectionStrategy(shadow),
+        JogStrategy(shadow),
+        NoteStrategy(shadow),
+        WheelStrategy(shadow),
+        PedalStrategy(shadow),
+        CcForwardStrategy(shadow),
+
+        super().__init__(shadow)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'CoreIntegration':

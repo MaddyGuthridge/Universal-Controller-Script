@@ -11,7 +11,6 @@ more details.
 """
 from consts import PARAM_CC_START
 from common.param import Param
-from . import IMappingStrategy
 from devices import DeviceShadow
 from integrations.event_filters import filterButtonLift
 from common.types import Color
@@ -27,14 +26,18 @@ from control_surfaces import (
 BOUND_COLOR = Color.fromInteger(0x888888)
 
 
-class CcForwardStrategy(IMappingStrategy):
+class CcForwardStrategy:
     """
     Forwards CC MIDI events to VST plugins, to add support for MIDI learning.
     """
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, shadow: DeviceShadow) -> None:
+        """
+        Forwards CC MIDI events to VST plugins, adding support for MIDI
+        learning within them
 
-    def apply(self, shadow: DeviceShadow) -> None:
+        ### Args:
+        * `shadow` (`DeviceShadow`): device to bind controls on
+        """
         shadow.bindMatches(
             # God I cannot wait for https://github.com/python/mypy/issues/4717
             # to get fixed

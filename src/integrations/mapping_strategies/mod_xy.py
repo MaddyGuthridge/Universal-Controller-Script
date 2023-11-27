@@ -16,29 +16,31 @@ from control_surfaces import ModX, ModY
 from control_surfaces import ControlShadow, ControlShadowEvent
 from devices.device_shadow import DeviceShadow
 from integrations.event_filters.index import toPluginIndex
-from . import IMappingStrategy
 
 
-class ModXYStrategy(IMappingStrategy):
+class ModXYStrategy:
     """
     Maps mod-x and mod-y controls to the given parameters
     """
-    def __init__(self, x_param: int, y_param: int) -> None:
+    def __init__(
+        self,
+        shadow: DeviceShadow,
+        x_param: int,
+        y_param: int,
+    ) -> None:
         """
         Create a mapping for mod-x and mod-y controls, given the param indexes
         for each value
 
         ### Args:
+        * `shadow` (`DeviceShadow`): device shadow to bind to
+
         * `x_param` (`int`): mod-x param index
 
         * `y_param` (`int`): mod-y param-index
         """
-        self._x = Param(x_param)
-        self._y = Param(y_param)
-
-    def apply(self, shadow: DeviceShadow) -> None:
-        shadow.bindMatch(ModX, self.event, self.tick, (self._x,))
-        shadow.bindMatch(ModY, self.event, self.tick, (self._y,))
+        shadow.bindMatch(ModX, self.event, self.tick, (Param(x_param),))
+        shadow.bindMatch(ModY, self.event, self.tick, (Param(y_param),))
 
     @toPluginIndex()
     def event(

@@ -12,7 +12,6 @@ more details.
 """
 
 __all__ = [
-    'IMappingStrategy',
     'PedalStrategy',
     'WheelStrategy',
     'NoteStrategy',
@@ -25,8 +24,6 @@ __all__ = [
     'PresetNavigationStrategy',
     'CcForwardStrategy',
 ]
-
-from .mapping_strategy import IMappingStrategy
 
 from .pedal_strategy import PedalStrategy
 from .wheel_strategy import WheelStrategy

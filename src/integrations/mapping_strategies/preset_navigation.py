@@ -15,17 +15,21 @@ from control_surfaces import (
 )
 from devices import DeviceShadow
 from integrations.event_filters import toPluginIndex, filterButtonLift
-from .mapping_strategy import IMappingStrategy
 
 
-class PresetNavigationStrategy(IMappingStrategy):
+class PresetNavigationStrategy:
     """
-    Mapping strategy that provides bindings for next/previous buttons
+    Mapping strategy that binds next/previous buttons to change plugins to
+    their next/previous preset
     """
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, shadow: DeviceShadow) -> None:
+        """
+        Mapping strategy that binds next/previous buttons to change plugins
+        to their next/previous preset
 
-    def apply(self, shadow: DeviceShadow) -> None:
+        ### Args:
+        * `shadow` (`DeviceShadow`): device shadow to bind to
+        """
         shadow.bindMatch(DirectionNext, self.eDirectionNext)
         shadow.bindMatch(DirectionPrevious, self.eDirectionPrev)
 

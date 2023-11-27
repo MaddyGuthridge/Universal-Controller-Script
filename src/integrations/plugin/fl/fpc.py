@@ -68,7 +68,8 @@ class FPC(PluginIntegration):
     notes
     """
     def __init__(self, shadow: DeviceShadow) -> None:
-        drums = GridStrategy(
+        GridStrategy(
+            shadow,
             4,
             2,
             triggerPad,
@@ -78,7 +79,7 @@ class FPC(PluginIntegration):
 
         self._notes = shadow.bindMatches(Note, self.noteEvent)
 
-        super().__init__(shadow, [drums])
+        super().__init__(shadow)
 
     @classmethod
     def create(cls, shadow: DeviceShadow) -> 'PluginIntegration':

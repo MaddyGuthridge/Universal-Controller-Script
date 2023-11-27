@@ -17,7 +17,6 @@ from common.extension_manager import ExtensionManager
 from devices import DeviceShadow
 from integrations import PluginIntegration
 from integrations.mapping_strategies import (
-    IMappingStrategy,
     SimpleFaders,
     PresetNavigationStrategy,
 )
@@ -50,11 +49,10 @@ def basicPluginBuilder(
         """
 
         def __init__(self, shadow: DeviceShadow) -> None:
-            mappings: list[IMappingStrategy] = []
-            mappings.append(SimpleFaders(params, colors=color))
+            SimpleFaders(shadow, params, colors=color)
             if uses_presets:
-                mappings.append(PresetNavigationStrategy())
-            super().__init__(shadow, mappings)
+                PresetNavigationStrategy(shadow)
+            super().__init__(shadow)
 
         @classmethod
         def create(cls, shadow: DeviceShadow) -> 'PluginIntegration':
