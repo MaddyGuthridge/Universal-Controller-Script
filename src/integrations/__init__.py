@@ -23,12 +23,7 @@ from .mapping_strategies import (
     WheelStrategy,
 )
 
-from .integration import (
-    Integration,
-    CoreIntegration,
-    PluginIntegration,
-    WindowIntegration,
-)
+from .integration import Integration
 from .pager import IntegrationPager
 
 # Register all integrations
