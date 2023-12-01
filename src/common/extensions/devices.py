@@ -16,10 +16,10 @@ if TYPE_CHECKING:
     from devices import Device
 
 
-_devices: dict[bytes, Device] = {}
+_devices: dict[bytes, 'Device'] = {}
 
 
-def get_device_matching_id(device_id: bytes) -> Optional[type[Device]]:
+def get_device_matching_id(device_id: bytes) -> Optional[type['Device']]:
     """
     Return a device definition that matches the given device ID
 
@@ -45,7 +45,7 @@ def get_device_matching_id(device_id: bytes) -> Optional[type[Device]]:
     return None
 
 
-def register(device_id: bytes) -> Decorator[type[Device], type[Device]]:
+def register(device_id: bytes) -> Decorator[type['Device'], type['Device']]:
     """
     Register a device definition to be associated with the given `device_id`
 
@@ -63,13 +63,13 @@ def register(device_id: bytes) -> Decorator[type[Device], type[Device]]:
         ...
     ```
 
-    ### Args:
+    ### Args
     * `device_id` (`bytes`): device ID to match against
 
-    ### Returns:
+    ### Returns
     * `Decorator[Device]`: _description_
     """
-    def inner(device_definition: type[Device]) -> type[Device]:
+    def inner(device_definition: type['Device']) -> type['Device']:
         # Do the error checking inside `inner` so we can give a nicer error
         # message, and to make sure people don't abuse decorators to register
         # multiple devices with one outer `register` call
@@ -87,7 +87,7 @@ def register(device_id: bytes) -> Decorator[type[Device], type[Device]]:
     return inner
 
 
-def get_registered_devices() -> dict[bytes, Device]:
+def get_registered_devices() -> dict[bytes, 'Device']:
     """
     Returns a dictionary mapping registered device IDs to the corresponding
     device definitions
