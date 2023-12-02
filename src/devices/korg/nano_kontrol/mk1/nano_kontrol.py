@@ -15,7 +15,7 @@ more details.
 """
 
 from typing import Optional
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from control_surfaces.event_patterns import IEventPattern, BasicPattern
 from fl_classes import FlMidiMsg
 from control_surfaces.value_strategies import (

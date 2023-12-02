@@ -14,7 +14,7 @@ more details.
 from typing import Any
 from time import time
 from common.types import Color
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from control_surfaces import (
     DrumPad,
     Button,

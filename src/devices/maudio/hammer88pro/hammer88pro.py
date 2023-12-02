@@ -20,7 +20,7 @@ from control_surfaces.event_patterns import (
     ForwardedUnionPattern,
     NotePattern,
 )
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from fl_classes import FlMidiMsg
 from devices import Device
 from control_surfaces.matchers import (

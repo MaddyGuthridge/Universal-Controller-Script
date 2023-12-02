@@ -15,7 +15,7 @@ import general
 import transport
 from typing import Any
 
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from common import getContext
 from common.types import Color
 from common.util.api_fixes import getUndoPosition

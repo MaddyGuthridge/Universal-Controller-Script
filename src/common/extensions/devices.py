@@ -89,7 +89,7 @@ def register(device_id: bytes) -> SymmetricDecorator[type['Device']]:
     return inner
 
 
-def get_registered_devices() -> dict[bytes, 'Device']:
+def get_registered_devices() -> dict[bytes, type['Device']]:
     """
     Returns a dictionary mapping registered device IDs to the corresponding
     device definitions

@@ -14,7 +14,7 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from common import getContext
 from common.types import Color
 from common.plug_indexes import (

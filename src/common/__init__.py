@@ -37,8 +37,6 @@ from .context_manager import (
     catchContextResetException
 )
 
-from .extension_manager import ExtensionManager
-
 # Import devices and plugins
 import devices
 import integrations
