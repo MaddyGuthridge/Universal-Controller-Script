@@ -10,13 +10,14 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from typing import TYPE_CHECKING, Optional
-from common.types.decorator import Decorator
+from common.types.decorator import SymmetricDecorator
+from common.util.events import bytesToString
 
 if TYPE_CHECKING:
     from devices import Device
 
 
-_devices: dict[bytes, 'Device'] = {}
+_devices: dict[bytes, type['Device']] = {}
 
 
 def get_device_matching_id(device_id: bytes) -> Optional[type['Device']]:
@@ -45,7 +46,7 @@ def get_device_matching_id(device_id: bytes) -> Optional[type['Device']]:
     return None
 
 
-def register(device_id: bytes) -> Decorator[type['Device'], type['Device']]:
+def register(device_id: bytes) -> SymmetricDecorator[type['Device']]:
     """
     Register a device definition to be associated with the given `device_id`
 
@@ -74,9 +75,10 @@ def register(device_id: bytes) -> Decorator[type['Device'], type['Device']]:
         # message, and to make sure people don't abuse decorators to register
         # multiple devices with one outer `register` call
         if (found_dev := get_device_matching_id(device_id)) is not None:
+            device_id_str = bytesToString(device_id)
             raise ValueError(
-                f"A device matching device_id {device_id} has already been "
-                f"registered.\n\n"
+                f"A device matching device_id {device_id_str} has already "
+                f"been registered.\n\n"
                 f"Attempted to register: {device_definition}\n"
                 f"Previously registered device: {found_dev}"
             )

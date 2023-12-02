@@ -9,31 +9,30 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
-from ctypes import Union
 from typing import TYPE_CHECKING, Optional
-from common.types.decorator import Decorator
+from common.types.decorator import SymmetricDecorator
 from common.plug_indexes import WindowIndex
 
 if TYPE_CHECKING:
     from integrations import Integration
 
 
-_plugin_integrations: dict[str, 'Integration'] = {}
+_plugin_integrations: dict[str, type['Integration']] = {}
 """Integrations with plugins"""
 
-_window_integrations: dict[WindowIndex, 'Integration'] = {}
+_window_integrations: dict[WindowIndex, type['Integration']] = {}
 """Integrations with FL Studio windows"""
 
-_core_pre_integrations: list['Integration'] = []
+_core_pre_integrations: list[type['Integration']] = []
 """Core integrations (preprocessed)"""
 
-_core_post_integrations: list['Integration'] = []
+_core_post_integrations: list[type['Integration']] = []
 """Core integrations (postprocessed)"""
 
 
 def register_plugin(
     plugin_name: str,
-) -> Decorator[type['Integration'], type['Integration']]:
+) -> SymmetricDecorator[type['Integration']]:
     """
     Register an integration with a plugin (FL or VST), given the plugin name.
 
@@ -69,7 +68,7 @@ def register_plugin(
 
 def register_window(
     idx: WindowIndex,
-) -> Decorator[type['Integration'], type['Integration']]:
+) -> SymmetricDecorator[type['Integration']]:
     """
     Register an integration with an FL Studio window, given its window index.
 
@@ -103,10 +102,10 @@ def register_window(
     return inner
 
 
-def register_core(*, preprocess: bool) -> Union[
-    type['Integration'],
-    Decorator[type['Integration'], type['Integration']]
-]:
+def register_core(
+    *,
+    preprocess: bool,
+) -> SymmetricDecorator[type['Integration']]:
     """
     Register a core integration with the script. Core integrations are always
     active, and can be used to make a feature set be always in use.
