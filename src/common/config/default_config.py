@@ -29,8 +29,8 @@ DEFAULT_CONFIG: Config = {
     },
     "advanced": {
         "debug": {
-            "profiling": False,
-            "exec_tracing": False
+            "profiling_enabled": False,
+            "exec_tracing_enabled": False
         },
         "drop_tick_time": 100,
         "slow_tick_time": 50,

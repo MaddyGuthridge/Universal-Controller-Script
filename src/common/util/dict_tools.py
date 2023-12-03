@@ -10,7 +10,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from typing import Any, Protocol, TypeVar
+from typing import Any, Protocol, TypeVar, TypedDict, Union
 
 
 class SupportsComparison(Protocol):
@@ -39,7 +39,7 @@ class SupportsComparison(Protocol):
         ...
 
 
-BaseDict = TypeVar('BaseDict', bound=dict)
+BaseDict = TypeVar('BaseDict', bound=Union[dict, TypedDict])
 
 
 def recursive_merge_dictionaries(
