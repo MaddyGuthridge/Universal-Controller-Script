@@ -22,7 +22,6 @@ from .extensions.integrations import (
 )
 from .config import load_configuration
 from .activity_state import ActivityState
-from .profiler import ProfilerManager
 from .plug_indexes import WindowIndex
 from .util.api_fixes import catchUnsafeOperation
 from .util.misc import NoneNoPrintout
@@ -162,8 +161,8 @@ class UcsContext:
         """
         Display information about the performance of the script.
         """
-        dropped_percent = int(self.__dropped_ticks / self._ticks * 100)
-        slow_percent = int(self.__slow_ticks / self._ticks * 100)
+        dropped_percent = int(self.__dropped_ticks / self.__tick_count * 100)
+        slow_percent = int(self.__slow_ticks / self.__tick_count * 100)
 
         print("=======================")
         print("PERFORMANCE INFORMATION")
