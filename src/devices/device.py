@@ -128,7 +128,7 @@ class Device:
         """
         raise AbstractMethodError(self)
 
-    def getDeviceNumber(self) -> int:
+    def get_device_number(self) -> int:
         """
         Returns the number of a device
 
@@ -139,7 +139,7 @@ class Device:
 
         ### Returns:
         * `int`: device number
-              * `1`: Main device
+              * `0`: Main device
               * other values: other device numbers.
         """
         return 1

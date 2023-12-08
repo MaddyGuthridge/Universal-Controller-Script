@@ -17,7 +17,7 @@ from control_surfaces.event_patterns import (
     ForwardedPattern
 )
 from fl_classes import FlMidiMsg, isMidiMsgStandard
-from common.util.events import decodeForwardedEvent
+from common.util.events import decode_forwarded_event
 from control_surfaces import ControlEvent, ControlSurface
 from . import IControlMatcher
 
@@ -36,7 +36,7 @@ class IndexedMatcher(IControlMatcher):
         status: int,
         data1_start: int,
         controls: Sequence[ControlSurface],
-        device: int = 1,
+        device: int = 0,
     ) -> None:
         """
         Create an indexed matcher.
@@ -49,7 +49,7 @@ class IndexedMatcher(IControlMatcher):
         * `controls` (`list[ControlSurface]`): list of controls to bind
 
         * `device` (`int`, optional): device number, to allow for forwarded
-          events. Defaults to `1`.
+          events. Defaults to `0` for main device.
         """
         self.__pattern: IEventPattern = BasicPattern(
             status,
@@ -60,7 +60,7 @@ class IndexedMatcher(IControlMatcher):
         self.__start = data1_start
         self.__controls = controls
 
-        if device != 1:
+        if device != 0:
             self.__forwarded = True
             self.__pattern = ForwardedPattern(device, self.__pattern)
         else:
@@ -83,7 +83,7 @@ class IndexedMatcher(IControlMatcher):
         if not self.__pattern.matchEvent(event):
             return None
         if self.__forwarded:
-            decoded = decodeForwardedEvent(event)
+            decoded = decode_forwarded_event(event)
         else:
             decoded = event
         assert isMidiMsgStandard(decoded)

@@ -10,9 +10,15 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 from fl_classes import FlMidiMsg, isMidiMsgStandard, isMidiMsgSysex
+from .forwarded_events import (
+    is_event_forwarded,
+    get_forwarded_origin_device,
+    get_forwarded_target_device,
+    decode_forwarded_event,
+)
 
 
-def eventToRawData(event: FlMidiMsg) -> 'int | bytes':
+def event_to_raw_data(event: FlMidiMsg) -> 'int | bytes':
     """
     Convert event to raw data.
 
@@ -29,7 +35,7 @@ def eventToRawData(event: FlMidiMsg) -> 'int | bytes':
         return event.sysex
 
 
-def bytesToString(bytes_iter: bytes) -> str:
+def bytes_to_string(bytes_iter: bytes) -> str:
     """
     Convert bytes to a fancy formatted string
 
@@ -42,7 +48,7 @@ def bytesToString(bytes_iter: bytes) -> str:
     return f"[{', '.join(f'0x{b:02X}' for b in bytes_iter)}]"
 
 
-def eventToString(event: FlMidiMsg) -> str:
+def event_to_string(event: FlMidiMsg) -> str:
     """
     Convert event to string
 
@@ -58,9 +64,9 @@ def eventToString(event: FlMidiMsg) -> str:
         )
     else:
         assert isMidiMsgSysex(event)
-        if not isEventForwarded(event):
-            return bytesToString(event.sysex)
-        dev = getEventForwardedTo(event)
-        num = getEventDeviceNum(event)
-        decoded = eventToString(decodeForwardedEvent(event))
-        return f"{dev}@{num} => {decoded})"
+        if not is_event_forwarded(event):
+            return bytes_to_string(event.sysex)
+        origin = get_forwarded_origin_device(event)
+        target = get_forwarded_target_device(event)
+        decoded = event_to_string(decode_forwarded_event(event))
+        return f"{origin}->{target} | {decoded})"

@@ -18,7 +18,7 @@ from common import ProfilerContext, profilerDecoration
 from common import log, verbosity
 from fl_classes import FlMidiMsg
 from common.plug_indexes import PluginIndex, WindowIndex
-from common.util.events import eventToString
+from common.util.events import event_to_string
 from .dev_state import DeviceState
 
 if TYPE_CHECKING:
@@ -32,7 +32,7 @@ class MainState(DeviceState):
     """
 
     def __init__(self, device: 'Device') -> None:
-        if device.getDeviceNumber() != 1:
+        if device.get_device_number() != 1:
             raise ValueError(
                 "Non-main devices should be configured to use the 'Universal "
                 "Event Forwarder' script, rather than the main 'Universal "
@@ -113,7 +113,7 @@ class MainState(DeviceState):
             event.handled = True
             log(
                 "device.event.in",
-                f"Failed to recognize event: {eventToString(event)}",
+                f"Failed to recognize event: {event_to_string(event)}",
                 verbosity.CRITICAL,
                 "This usually means that the device hasn't been configured "
                 "correctly. Please contact the device's maintainer."
@@ -128,7 +128,7 @@ class MainState(DeviceState):
             "device.event.in",
             f"Recognized event: {mapping.getControl()}",
             verbosity.EVENT,
-            detailed_msg=eventToString(event)
+            detailed_msg=event_to_string(event)
         )
 
         # Get active standard plugin

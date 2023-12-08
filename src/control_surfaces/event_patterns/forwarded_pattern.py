@@ -10,10 +10,9 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from common.util.events import (
-    decodeForwardedEvent,
-    encodeForwardedEvent,
-    isEventForwardedHereFrom,
+from common.util.forwarded_events import (
+    receive_event_from_external,
+    encode_forwarded_event,
 )
 from . import IEventPattern, UnionPattern
 
@@ -47,17 +46,17 @@ class ForwardedPattern(IEventPattern):
 
     def matchEvent(self, event: FlMidiMsg) -> bool:
         # Check if the event was forwarded here
-        if not isEventForwardedHereFrom(event, self._device_num):
-            return False
-
-        # Extract the event and determine if it matches with the
-        # underlying pattern
-        # print(eventToString(eventFromForwarded(event, null+2)))
-        return self._pattern.matchEvent(decodeForwardedEvent(event))
+        if (info := receive_event_from_external(event)) is not None:
+            decoded, device_num = info
+            return (
+                device_num == self._device_num
+                and self._pattern.matchEvent(decoded)
+            )
+        return False
 
     def fulfil(self) -> FlMidiMsg:
         num = self._device_num
-        return FlMidiMsg(encodeForwardedEvent(self._pattern.fulfil(), num))
+        return FlMidiMsg(encode_forwarded_event(self._pattern.fulfil(), num))
 
 
 class ForwardedUnionPattern(IEventPattern):

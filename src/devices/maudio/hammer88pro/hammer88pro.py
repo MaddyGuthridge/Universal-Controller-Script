@@ -236,7 +236,7 @@ class Hammer88Pro(Device):
             ]
         )
 
-    def getDeviceNumber(self) -> int:
+    def get_device_number(self) -> int:
         name = device.getName()
 
         try:

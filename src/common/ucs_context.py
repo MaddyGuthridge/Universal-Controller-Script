@@ -12,7 +12,7 @@ more details.
 """
 from fl_classes import FlMidiMsg
 from time import time_ns
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from .extensions.integrations import (
     get_core_preprocess_integrations,
@@ -25,6 +25,7 @@ from .activity_state import ActivityState
 from .plug_indexes import WindowIndex
 from .util.api_fixes import catchUnsafeOperation
 from .util.misc import NoneNoPrintout
+from .util.forwarded_events import handle_event_on_external
 
 if TYPE_CHECKING:
     from devices import Device
@@ -44,6 +45,8 @@ class UcsContext:
         """Whether the script is currently initialized and running"""
         self.device = device
         """The object representing the overall device"""
+        self.device_num = device.get_device_number()
+        """The device number, used to forward events"""
         self.settings = load_configuration()
         """The configuration of the script"""
         self.activity = ActivityState()
@@ -96,6 +99,9 @@ class UcsContext:
         """
         Initialize the device
         """
+        # No need to do anything unless this is the main script
+        if self.device_num != 0:
+            return
         self.device.initialize()
         self.initialized = True
 
@@ -103,6 +109,9 @@ class UcsContext:
         """
         Deinitialize the device
         """
+        # No need to do anything unless this is the main script
+        if self.device_num != 0:
+            return
         self.device.deinitialize()
         self.initialized = False
 
@@ -118,7 +127,8 @@ class UcsContext:
         if not self.initialized:
             return
 
-        # TODO: Process forwarded events here
+        if self.device_num != 0:
+            return handle_event_on_external(self.device_num, event)
 
         # TODO: write this
 
@@ -127,6 +137,10 @@ class UcsContext:
         """
         Called frequently to let devices and integrations update.
         """
+        # No need to do anything unless this is the main script
+        if self.device_num != 0:
+            return
+
         # If the script isn't initialized, performing a tick could be dangerous
         # and get it into an invalid state
         if not self.initialized:

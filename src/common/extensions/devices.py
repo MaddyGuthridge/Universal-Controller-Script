@@ -11,7 +11,7 @@ more details.
 """
 from typing import TYPE_CHECKING, Optional
 from common.types.decorator import SymmetricDecorator
-from common.util.events import bytesToString
+from common.util.events import bytes_to_string
 
 if TYPE_CHECKING:
     from devices import Device
@@ -75,7 +75,7 @@ def register(device_id: bytes) -> SymmetricDecorator[type['Device']]:
         # message, and to make sure people don't abuse decorators to register
         # multiple devices with one outer `register` call
         if (found_dev := get_device_matching_id(device_id)) is not None:
-            device_id_str = bytesToString(device_id)
+            device_id_str = bytes_to_string(device_id)
             raise ValueError(
                 f"A device matching device_id {device_id_str} has already "
                 f"been registered.\n\n"

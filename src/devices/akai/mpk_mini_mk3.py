@@ -100,7 +100,7 @@ class MpkMiniMk3(Device):
     def getDrumPadSize(cls) -> tuple[int, int]:
         return 4, 4
 
-    def getDeviceNumber(self) -> int:
+    def get_device_number(self) -> int:
         return 1
 
     @classmethod

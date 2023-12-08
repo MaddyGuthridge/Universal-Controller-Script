@@ -91,7 +91,7 @@ class LaunchkeyMk2(Device):
     def getDrumPadSize(cls) -> tuple[int, int]:
         return 2, 8
 
-    def getDeviceNumber(self) -> int:
+    def get_device_number(self) -> int:
         name = device.getName()
         if "MIDIIN2" in name:
             return 2

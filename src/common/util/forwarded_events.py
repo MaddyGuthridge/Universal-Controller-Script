@@ -10,8 +10,9 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 import device
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional
 from fl_classes import FlMidiMsg, isMidiMsgStandard, isMidiMsgSysex
+from . import events
 from common.exceptions import EventDispatchError
 
 
@@ -46,7 +47,44 @@ def is_event_forwarded(event: FlMidiMsg) -> bool:
         return True
 
 
-def forward_event_to_main(event: FlMidiMsg, origin: int) -> None:
+def get_forwarded_origin_device(event: FlMidiMsg) -> int:
+    """
+    Returns the origin device of a forwarded event
+
+    ### Args
+    * `event` (`FlMidiMsg`): message to parse
+
+    ### Returns
+    * `int`: origin device number
+    """
+    return event.sysex[ORIGIN_INDEX]
+
+
+def get_forwarded_target_device(event: FlMidiMsg) -> int:
+    """
+    Returns the target device of a forwarded event
+
+    ### Args
+    * `event` (`FlMidiMsg`): message to parse
+
+    ### Returns
+    * `int`: target device number
+    """
+    return event.sysex[TARGET_INDEX]
+
+
+def encode_forwarded_event(event: FlMidiMsg, origin: int):
+    """
+    Encode an event to prepare it to be forwarded to secondary ports
+
+    ### Args
+    * `event` (`FlMidiMsg`): event to encode
+
+    * `origin` (`int`): device number from which the event originates
+
+    ### Returns
+    * `bytes`: encoded sysex event
+    """
     sysex = EVENT_HEADER + bytes([0, origin])
     if isMidiMsgStandard(event):
         encoded = sysex + bytes([0]) + bytes([
@@ -59,6 +97,19 @@ def forward_event_to_main(event: FlMidiMsg, origin: int) -> None:
         if TYPE_CHECKING:  # TODO: Find a way to make this unnecessary
             assert isMidiMsgSysex(event)
         encoded = sysex + bytes([1]) + bytes(event.sysex)
+    return encoded
+
+
+def forward_event_to_main(event: FlMidiMsg, origin: int) -> None:
+    """
+    Given an event from an origin device, forward it to the main device
+
+    ### Args
+    * `event` (`FlMidiMsg`): message to encode and forward
+
+    * `origin` (`int`): origin device number
+    """
+    encoded = encode_forwarded_event(event, origin)
     # Dispatch to all available devices
     if device.dispatchReceiverCount() == 0:
         raise EventDispatchError(
@@ -71,6 +122,14 @@ def forward_event_to_main(event: FlMidiMsg, origin: int) -> None:
 
 
 def forward_event_to_external(event: FlMidiMsg, target: int) -> None:
+    """
+    Given an event from an origin device, forward it to the main device
+
+    ### Args
+    * `event` (`FlMidiMsg`): message to encode and forward
+
+    * `origin` (`int`): origin device number
+    """
     sysex = EVENT_HEADER + bytes([target, 0])
     if isMidiMsgStandard(event):
         encoded = sysex + bytes([0]) + bytes([
@@ -96,17 +155,16 @@ def forward_event_to_external(event: FlMidiMsg, target: int) -> None:
         encoded.dispatch(i, 0xF0, encoded)
 
 
-def receive_event_from_origin(
-    event: FlMidiMsg,
-    device_num: int,
-) -> Optional[FlMidiMsg]:
-    if not is_event_forwarded(event):
-        return None
-    assert isMidiMsgSysex(event)
+def decode_forwarded_event(event: FlMidiMsg) -> FlMidiMsg:
+    """
+    Given a forwarded event, decode it and return the result
 
-    if event.sysex[TARGET_INDEX] != device_num:
-        return None
+    ### Args
+    * `event` (`FlMidiMsg`): event to decode
 
+    ### Returns
+    * `FlMidiMsg`: decoded event
+    """
     if event.sysex[IS_SYSEX_INDEX] == 1:
         # Remaining bytes are sysex data
         return FlMidiMsg(list(event.sysex[IS_SYSEX_INDEX + 1:]))
@@ -119,26 +177,79 @@ def receive_event_from_origin(
         )
 
 
+def receive_event_from_main(
+    event: FlMidiMsg,
+    device_num: int,
+) -> Optional[FlMidiMsg]:
+    """
+    Attempt to receive an event forwarded from the main script
+
+    ### Args
+    * `event` (`FlMidiMsg`): event to receive
+
+    * `device_num` (`int`): device number that is receiving the event
+
+    ### Returns
+    * `Optional[FlMidiMsg]`: decoded message, if it was forwarded from the main
+      script, otherwise, `None`.
+    """
+    if not is_event_forwarded(event):
+        return None
+    assert isMidiMsgSysex(event)
+
+    if get_forwarded_target_device(event) != device_num:
+        return None
+    return decode_forwarded_event(event)
+
+
 def receive_event_from_external(
     event: FlMidiMsg,
-) -> Optional[Union[FlMidiMsg, int]]:
+) -> Optional[tuple[FlMidiMsg, int]]:
+    """
+    Attempt to receive an event from an external controller, and return the
+    decoded event and the origin device number it was sent from.
+
+    ### Args
+    * `event` (`FlMidiMsg`): event to attempt to receive
+
+    ### Returns
+    * `Optional[Union[FlMidiMsg, int]]`: decoded event and origin device number
+      if event was forwarded, else `None`.
+    """
     if not is_event_forwarded(event):
         return None
     assert isMidiMsgSysex(event)
 
     # If it isn't targeting the main script
-    if event.sysex[TARGET_INDEX] != 0:
+    if get_forwarded_target_device(event) != 0:
         return None
 
-    origin = event.sysex[ORIGIN_INDEX]
+    origin = get_forwarded_origin_device(event)
+    return decode_forwarded_event(event), origin
 
-    if event.sysex[IS_SYSEX_INDEX] == 1:
-        # Remaining bytes are sysex data
-        return FlMidiMsg(list(event.sysex[IS_SYSEX_INDEX + 1:])), origin
+
+def handle_event_on_external(
+    device_num: int,
+    event: FlMidiMsg,
+) -> None:
+    """
+    Handle incoming MIDI messages on secondary port
+
+    For events that are forwarded here, output them to this port, and for
+    events that originated from this port, forward them to the main script.
+
+    ### Args
+    * `device_num` (`int`): device number to handle events for
+
+    * `event` (`FlMidiMsg`): event to handle
+    """
+    if is_event_forwarded(event):
+        decoded = receive_event_from_main(event, device_num)
+        if decoded is not None:
+            if isMidiMsgSysex(decoded):
+                device.midiOutSysex(decoded.sysex)
+            else:
+                assert isMidiMsgStandard(decoded)
+                device.midiOutMsg(events.event_to_raw_data(decoded))
     else:
-        # Extract (data2, data1, status)
-        return FlMidiMsg(
-            event.sysex[IS_SYSEX_INDEX + 3],
-            event.sysex[IS_SYSEX_INDEX + 2],
-            event.sysex[IS_SYSEX_INDEX + 1]
-        ), origin
+        forward_event_to_main(event, device_num)

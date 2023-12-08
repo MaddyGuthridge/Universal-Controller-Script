@@ -69,7 +69,7 @@ class LaunchkeyMiniMk3(Device):
     def getDrumPadSize(cls) -> tuple[int, int]:
         return 2, 8
 
-    def getDeviceNumber(self) -> int:
+    def get_device_number(self) -> int:
         if (
             'MIDIIN2' in device.getName()
             or 'DAW' in device.getName()
