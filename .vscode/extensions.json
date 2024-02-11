@@ -1,21 +1,11 @@
 {
-	// See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
-	// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
-
-	// List of extensions which should be recommended for users of this workspace.
 	"recommendations": [
-		"ms-python.vscode-pylance",
 		"ms-python.python",
-		"streetsidesoftware.code-spell-checker",
+		"DavidAnson.vscode-markdownlint",
 		"njpwerner.autodocstring",
+		"streetsidesoftware.code-spell-checker",
 		"kevinrose.vsc-python-indent",
-        "ms-python.autopep8",
-        "ms-python.flake8",
-        "ms-python.isort",
-        "ms-python.mypy-type-checker",
-	],
-	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
-	"unwantedRecommendations": [
-
+		"ms-python.flake8",
+		"ms-python.mypy-type-checker",
 	]
 }
