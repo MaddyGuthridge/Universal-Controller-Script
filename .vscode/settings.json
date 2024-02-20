@@ -8,7 +8,7 @@
     "autoDocstring.customTemplatePath": "resources/docstring_template.mustache",
 
     // Switch off Pylance, since we're using MyPy instead
-    "python.analysis.typeCheckingMode": "off",
+    // "python.analysis.typeCheckingMode": "off",
 
     // Pytest configuration
     "python.testing.pytestArgs": [
