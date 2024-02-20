@@ -9,7 +9,10 @@
 		"streetsidesoftware.code-spell-checker",
 		"njpwerner.autodocstring",
 		"kevinrose.vsc-python-indent",
-        "matangover.mypy",
+        "ms-python.autopep8",
+        "ms-python.flake8",
+        "ms-python.isort",
+        "ms-python.mypy-type-checker",
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [

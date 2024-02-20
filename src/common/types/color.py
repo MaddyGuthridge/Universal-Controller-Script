@@ -771,6 +771,8 @@ class Color:
         else:
             return NotImplemented
 
+    # Hopefully this duplicate code can be fixed if I get a better answer to
+    # https://stackoverflow.com/q/75000973/6335363
     WHITE: 'Color'
     GRAY: 'Color'
     BLACK: 'Color'

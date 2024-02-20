@@ -19,18 +19,22 @@ more details.
 # Disable flake8 on this file: it gets too mad at us
 # flake8: noqa
 
+import version_check
+
 # Add our additional includes to the Python environment
 import fl_typing
+
+import consts
 
 # Add support for fl_param_checker
 from fl_param_checker import idleCallback, pluginParamCheck
 
 # Get context, and context reset wrapper
-from common import getContext, catchContextResetException, getVersionString
+from common import getContext, catchContextResetException
 # Function to allow user to reset context
 from common.context_manager import unsafeResetContext as reset
 # Import constants and logger
-from common import consts, log, verbosity, ExtensionManager
+from common import log, verbosity, ExtensionManager
 # Import verbosity constants
 from common.logger.verbosity import *
 # Import some helper functions
@@ -63,8 +67,7 @@ class OverallDevice:
     @catchContextResetException
     def bootstrap(self):
         log("bootstrap.initialize", "Load success", verbosity.INFO)
-        print(consts.ASCII_HEADER_ART)
-        print(f"Universal Controller Script: v{getVersionString()}")
+        print(consts.getHeaderArt("Universal Controller Script"))
         print(ExtensionManager.getBasicInfo())
         print("Type `help` for help using the script\n")
 

@@ -7,7 +7,7 @@ Continuing from the primary setup instructions. In order for the controller to
 work correctly, DAW and Preset configurations need to be sent to the device.
 
 1.  Download the preset files for the controller from
-    [the script resources folder](../../../resources/deviceconfigs/maudio/hammer88pro/)
+    [the script resources folder](../../../resources/device_configs/maudio/hammer88pro/)
 
 2.  Open the Hammer 88 Pro Preset Editor Program (this can be installed with the
     included software bundle for your controller).

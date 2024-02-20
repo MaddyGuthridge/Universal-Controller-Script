@@ -13,19 +13,19 @@ more details.
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from plugs import WindowPlugin
+    from integrations import WindowIntegration
     from devices import Device
-    from common.plug_indexes import WindowIndex
+    from common.plug_indexes.fl_index import WindowIndex
 
 
 class WindowPluginCollection:
     """Collection of window plugins registered to the script
     """
     def __init__(self) -> None:
-        self.__mappings: dict[WindowIndex, type['WindowPlugin']] = {}
-        self.__instantiated: dict[WindowIndex, 'WindowPlugin'] = {}
+        self.__mappings: dict[WindowIndex, type['WindowIntegration']] = {}
+        self.__instantiated: dict[WindowIndex, 'WindowIntegration'] = {}
 
-    def register(self, plug: type['WindowPlugin']) -> None:
+    def register(self, plug: type['WindowIntegration']) -> None:
         """
         Register a window plugin
 
@@ -50,7 +50,7 @@ class WindowPluginCollection:
         self,
         id: 'WindowIndex',
         device: 'Device'
-    ) -> Optional['WindowPlugin']:
+    ) -> Optional['WindowIntegration']:
         """Get an instance of the plugin matching this window index
         """
         from devices.device_shadow import DeviceShadow
@@ -74,16 +74,16 @@ class WindowPluginCollection:
     def reset(self) -> None:
         self.__instantiated = {}
 
-    def all(self) -> list[type['WindowPlugin']]:
+    def all(self) -> list[type['WindowIntegration']]:
         return list(self.__mappings.values())
 
-    def instantiated(self) -> list['WindowPlugin']:
+    def instantiated(self) -> list['WindowIntegration']:
         return list(self.__instantiated.values())
 
     def __len__(self) -> int:
         return len(self.__mappings)
 
-    def _formatPlugin(cls, plug: Optional['WindowPlugin']) -> str:
+    def _formatPlugin(cls, plug: Optional['WindowIntegration']) -> str:
         """
         Format info about a plugin instance
 
@@ -98,7 +98,7 @@ class WindowPluginCollection:
         else:
             return repr(plug)
 
-    def inspect(self, plug: type['WindowPlugin']) -> str:
+    def inspect(self, plug: type['WindowIntegration']) -> str:
         """
         Returns info about a window plugin
 
@@ -108,7 +108,7 @@ class WindowPluginCollection:
         ### Returns:
         * `str`: plugin info
         """
-        matches: list[tuple['WindowIndex', Optional['WindowPlugin']]] = []
+        matches: list[tuple['WindowIndex', Optional['WindowIntegration']]] = []
 
         for id, p in self.__mappings.items():
             if p == plug:

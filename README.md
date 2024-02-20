@@ -92,9 +92,10 @@ The following plugins have full support with the script.
 
 I'd love to have your support! Here's what you can do to help:
 
-* Contribute code to the project: see [the documentation](docs/contributing) for
-  detailed instructions, and feel free to reach out on the
-  [Discord server](https://discord.gg/6vpfJUF) if you need a hand.
+* Contribute code to the project: see
+  [the documentation](docs/contributing/README.md) for detailed instructions,
+  and feel free to reach out on the [Discord server](https://discord.gg/6vpfJUF)
+  if you need a hand.
 
 * Help with plugin support: join the [Discord server](https://discord.gg/6vpfJUF)
   and let me know! You'll just need to follow some simple instructions.

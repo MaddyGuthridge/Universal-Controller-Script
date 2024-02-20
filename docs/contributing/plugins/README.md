@@ -74,8 +74,6 @@ mapped to. This can be done one of two ways:
   * `super().init(shadow, [SimpleFaders(0,1,2,4,5,6,7,8, colors=Color.fromInteger(0x206cc8))])`
   would be equivalent to the "basicPluginBuilder" function example above
 
-  Consult ['Mapping Strategy'](mapping_strategy.md) for more options.
-
 Callbacks can be also be decorated using [event filters](filters.md)
 to filter out unwanted events. For example:
 

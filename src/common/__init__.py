@@ -25,7 +25,6 @@ __all__ = [
     'ExtensionManager',
 ]
 
-from .consts import getVersionString
 
 from . import exceptions
 from .logger import log, verbosity
@@ -42,6 +41,7 @@ from .extension_manager import ExtensionManager
 
 # Import devices and plugins
 import devices
-import plugs
+import integrations
+
 del devices
-del plugs
+del integrations

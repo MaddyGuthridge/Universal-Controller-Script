@@ -13,7 +13,7 @@ more details.
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from plugs import SpecialPlugin
+    from integrations import CoreIntegration
     from devices import Device
 
 
@@ -21,10 +21,11 @@ class SpecialPluginCollection:
     """Collection of special plugins registered to the script.
     """
     def __init__(self) -> None:
-        self.__types: list[type['SpecialPlugin']] = []
-        self.__instantiated: dict[type['SpecialPlugin'], 'SpecialPlugin'] = {}
+        self.__types: list[type['CoreIntegration']] = []
+        self.__instantiated: dict[type['CoreIntegration'], 'CoreIntegration']\
+            = {}
 
-    def register(self, plug: type['SpecialPlugin']) -> None:
+    def register(self, plug: type['CoreIntegration']) -> None:
         """
         Register a special plugin
 
@@ -47,11 +48,11 @@ class SpecialPluginCollection:
         """
         self.__types.append(plug)
 
-    def get(self, device: 'Device') -> list['SpecialPlugin']:
+    def get(self, device: 'Device') -> list['CoreIntegration']:
         """Get a list of all the active special plugins
         """
         from devices.device_shadow import DeviceShadow
-        ret: list[SpecialPlugin] = []
+        ret: list[CoreIntegration] = []
         for p in self.__types:
             # If plugin should be active
             if p.shouldBeActive():
@@ -64,19 +65,19 @@ class SpecialPluginCollection:
     def reset(self) -> None:
         self.__instantiated = {}
 
-    def all(self) -> list[type['SpecialPlugin']]:
+    def all(self) -> list[type['CoreIntegration']]:
         return list(self.__types)
 
-    def instantiated(self) -> list['SpecialPlugin']:
+    def instantiated(self) -> list['CoreIntegration']:
         return list(self.__instantiated.values())
 
     def __len__(self) -> int:
         return len(self.__types)
 
-    def __contains__(self, other: type['SpecialPlugin']) -> bool:
+    def __contains__(self, other: type['CoreIntegration']) -> bool:
         return other in self.__types
 
-    def inspect(self, plug: type['SpecialPlugin']) -> str:
+    def inspect(self, plug: type['CoreIntegration']) -> str:
         if plug in self.__instantiated.keys():
             return str(self.__instantiated[plug])
         elif plug in self.__types:

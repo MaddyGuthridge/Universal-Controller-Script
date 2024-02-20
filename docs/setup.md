@@ -44,7 +44,7 @@ intend to contribute code to the script, you should follow the
     means that your device doesn't have a definition (I'd love if you
     [contributed one](contributing/README.md)), but if you're sure your
     device does, it may just need some manual configuration. Refer to its
-    manual page in the [devices section](devices/devices.md).
+    manual page in the [devices section](devices/README.md).
 
 Don't forget to read the basic [usage instructions](usage.md) for the script
 so that you can take full advantage of the integration it provides!
