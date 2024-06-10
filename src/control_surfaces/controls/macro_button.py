@@ -4,7 +4,7 @@ control_surfaces > controls > macro_button
 Defines control surfaces used for macros, such as save, undo, etc
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Maddy Guthridge [hello@maddyguthridge.com, HDSQ#2154]
 
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.

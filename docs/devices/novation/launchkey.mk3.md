@@ -28,5 +28,5 @@ Note that the Launchkey Mk3 88 is currently untested, and may not be detected
 by the script. Let me know if it works for you!!!
 
 ## Who to contact
-This device is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
+This device is maintained by Maddy Guthridge. [Email](mailto:hdsq@outlook.com),
 Discord: ***HDSQ#2154***.

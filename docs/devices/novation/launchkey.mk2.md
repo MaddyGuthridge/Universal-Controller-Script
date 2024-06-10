@@ -20,5 +20,5 @@ Continuing from the primary setup instructions.
   metronome button, respectively.
 
 ## Who to contact
-This device is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
+This device is maintained by Maddy Guthridge. [Email](mailto:hdsq@outlook.com),
 Discord: ***HDSQ#2154***.

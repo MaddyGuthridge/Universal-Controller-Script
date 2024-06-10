@@ -5,7 +5,7 @@ Contains the definition for the union type event pattern, which allows events
 to be detected if they match any of a number of patterns.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Maddy Guthridge [hello@maddyguthridge.com, HDSQ#2154]
 """
 
 import random

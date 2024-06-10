@@ -89,7 +89,7 @@ free to repeat these steps as many times as necessary.
 1. Create a Git branch for your work. Most developers name their branch with
    both their name and the feature they are working on. For example, if I was
    adding support for the "Super fancy" plugin, I might call my branch
-   `miguel-plugin-super-fancy`.
+   `Maddy-plugin-super-fancy`.
 
 2. Refer to [the other documentation for contributors](./README.md) for help
    with creating your contribution. Remember you can always ask for help on the

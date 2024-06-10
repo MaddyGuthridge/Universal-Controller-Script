@@ -4,7 +4,7 @@ common > plug_indexes > generator
 Type definitions for generator plugin indexes.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* MaddyGuthridge [hello@maddyguthridge.com, HDSQ#2154]
 
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.

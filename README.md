@@ -8,7 +8,7 @@ integration between hardware controllers and software.
 * Read the [setup instructions](docs/setup.md)
 
 * Download the
-  [latest release](https://github.com/MiguelGuthridge/Universal-Controller-Script/releases)
+  [latest release](https://github.com/MaddyGuthridge/Universal-Controller-Script/releases)
 
 * Join the [Discord server](https://discord.gg/6vpfJUF) for troubleshooting
   help and to give feedback on the project
