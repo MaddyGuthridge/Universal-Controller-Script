@@ -105,7 +105,7 @@ I'd love to have your support! Here's what you can do to help:
   so we can try and get things working together.
 
 * Help fund my work: you don't have to, but
-  [buying me some pasta](https://www.buymeacoffee.com/miguelguthridge) is a great
+  [buying me some pasta](https://www.buymeacoffee.com/maddyguthridge) is a great
   way to show some love! I want to try to give everyone the same high quality
   software so don't expect much more than a thankyou, but I really would appreciate
   it!
