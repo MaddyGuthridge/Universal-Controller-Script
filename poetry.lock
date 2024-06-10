@@ -179,13 +179,13 @@ colors = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "jestspectation"
-version = "1.4.1"
+version = "1.4.2"
 description = "Pattern matching tools to test complex data structures"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "jestspectation-1.4.1-py3-none-any.whl", hash = "sha256:7c656a839bd7f72ac68f377e0ff7df5407638f00e36009f70900e940e3c7d8be"},
-    {file = "jestspectation-1.4.1.tar.gz", hash = "sha256:d314f59cdd435bd664e18c845503aa8e66d2f9315c8aac1e87c21880cb24af60"},
+    {file = "jestspectation-1.4.2-py3-none-any.whl", hash = "sha256:9116c596adf36c84355ca7688c5e29b426c4f1e2e04713ad7f661041ffb4589e"},
+    {file = "jestspectation-1.4.2.tar.gz", hash = "sha256:5d27995752966b123b75af52742cb5c3503a609fc373a1743225dcc8bc16ea1f"},
 ]
 
 [package.dependencies]
@@ -410,4 +410,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9.1"
-content-hash = "b41d309013f6f0045a3b67e810e4bebfc8b1f24c950f0a2058c85eb7c6dc929f"
+content-hash = "f40deff5b0ec7bd7e61baa50414204d2cf8c646de0740561c89e08c7625f0bd4"
