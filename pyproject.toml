@@ -2,24 +2,24 @@
 name = "universal-controller-script"
 version = "1.2.1"
 description = "A free and open source program that integrates with FL Studio to provide deep integration between hardware controllers and software."
-authors = ["Miguel Guthridge <hdsq@outlook.com.au>"]
+authors = ["Maddy Guthridge <hello@maddyguthridge.com>"]
 license = "GPL v3"
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9.1"
 fl-studio-api-stubs = "^33.2.0"
-typing-extensions = "^4.9.0"
-jestspectation = "^1.3.0"
+typing-extensions = "^4.12.2"
+jestspectation = "^1.4.2"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.4.1"
+coverage = "^7.5.3"
 flake8 = "^7.0.0"
 isort = "^5.13.2"
-mypy = "^1.8.0"
-pytest = "^8.0.0"
-autopep8 = "^2.0.4"
-jestspectation = "^1.3.0"
+mypy = "^1.10.0"
+pytest = "^8.2.2"
+autopep8 = "^2.3.0"
+jestspectation = "^1.4.2"
 
 [build-system]
 requires = ["poetry-core"]

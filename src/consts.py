@@ -4,7 +4,7 @@ common > consts
 Constants used within the script
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Maddy Guthridge [hello@maddyguthridge.com, HDSQ#2154]
 
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
@@ -79,7 +79,7 @@ def checkFlVersion() -> bool:
 
 
 # Website
-WEBSITE = "https://github.com/MiguelGuthridge/Universal-Controller-Script"
+WEBSITE = "https://github.com/MaddyGuthridge/Universal-Controller-Script"
 ISSUES_PAGE = f"{WEBSITE}/issues"
 DOCUMENTATION = f"{WEBSITE}/tree/main/docs"
 DISCORD = "https://discord.gg/6vpfJUF"
@@ -87,10 +87,10 @@ DISCORD = "https://discord.gg/6vpfJUF"
 # Contributor information
 AUTHORS: dict[str, list[str]] = {
     "Designers": [
-        "Miguel Guthridge"
+        "Maddy Guthridge"
     ],
     "Primary Developers": [
-        "Miguel Guthridge"
+        "Maddy Guthridge"
     ],
     "Minor Contributors": [
     ],
@@ -122,7 +122,7 @@ HEADER_TEMPLATE = r"""
    ":;&&;;|/;&|/''       ;        Version {version}
       ``'''``          .'         FL Studio {fl_version}
                      .;
-            ',    ,:'             Made with <3 by Miguel Guthridge
+            ',    ,:'             Made with <3 by Maddy Guthridge
               ':''
 """
 

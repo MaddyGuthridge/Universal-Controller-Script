@@ -5,7 +5,7 @@ Contains the BoolS type as well as TrueS and FalseS types, which can be used in
 place of boolean types when a description is required.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Maddy Guthridge [hello@maddyguthridge.com, HDSQ#2154]
 
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.

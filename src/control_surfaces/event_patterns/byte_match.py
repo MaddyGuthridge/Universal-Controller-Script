@@ -5,7 +5,7 @@ Contains the definition for the byte-match type expression, as well as helper
 functions for creating event patterns.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Maddy Guthridge [hello@maddyguthridge.com, HDSQ#2154]
 
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.

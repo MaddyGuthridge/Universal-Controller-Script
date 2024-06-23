@@ -8,5 +8,5 @@ Basic mappings to FL Studio's Parametric EQ 2 plugin.
 * First 7 knobs to band frequencies
 
 ## Who to contact
-This plugin is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
+This plugin is maintained by Maddy Guthridge. [Email](mailto:hdsq@outlook.com),
 Discord: ***HDSQ#2154***.

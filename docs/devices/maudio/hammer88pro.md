@@ -58,4 +58,4 @@ When it is used normally, it will change selections and scroll. If it is turned
 while pressed, it will either move items, or scroll along a different axis.
 
 ## Who to contact
-This device is maintained by Miguel Guthridge. Discord: ***HDSQ#2154***.
+This device is maintained by Maddy Guthridge. Discord: ***HDSQ#2154***.

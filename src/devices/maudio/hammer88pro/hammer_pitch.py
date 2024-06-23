@@ -5,7 +5,7 @@ Contains the definition for the Hammer 88 Pro's pitch wheel, since its
 behavior is weird.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Maddy Guthridge [hello@maddyguthridge.com, HDSQ#2154]
 
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.

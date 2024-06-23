@@ -4,10 +4,10 @@ tests > test_log
 Tests for the logger
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au]
+* Maddy Guthridge [hello@maddyguthridge.com]
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Maddy Guthridge [hello@maddyguthridge.com, HDSQ#2154]
 
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.

@@ -3,7 +3,7 @@
 
 I have huge plans for the Universal Controller Script! Here are some of the
 features I'm looking to build into it. If you have any other ideas, feel free
-to [create an issue](https://github.com/MiguelGuthridge/Universal-Controller-Script/issues/new/choose).
+to [create an issue](https://github.com/MaddyGuthridge/Universal-Controller-Script/issues/new/choose).
 
 ## FL Studio integration
 

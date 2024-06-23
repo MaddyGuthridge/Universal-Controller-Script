@@ -17,5 +17,5 @@ highlighted using a red rectangle on the mixer window.
 * Move Jog wheel to track multi-selection
 
 ## Who to contact
-This plugin is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
+This plugin is maintained by Maddy Guthridge. [Email](mailto:hdsq@outlook.com),
 Discord: ***HDSQ#2154***.

@@ -11,5 +11,5 @@ run into any issues with plugin detection, let me know and I can fix it.
 * Drum pads to keyswitch selection
 
 ## Who to contact
-This plugin is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
+This plugin is maintained by Maddy Guthridge. [Email](mailto:hdsq@outlook.com),
 Discord: ***HDSQ#2154***.

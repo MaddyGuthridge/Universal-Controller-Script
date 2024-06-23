@@ -8,5 +8,5 @@ Basic mappings to FL Studio's playlist window.
 * Move jog wheel to track selection
 
 ## Who to contact
-This plugin is maintained by Miguel Guthridge. [Email](mailto:hdsq@outlook.com),
+This plugin is maintained by Maddy Guthridge. [Email](mailto:hdsq@outlook.com),
 Discord: ***HDSQ#2154***.

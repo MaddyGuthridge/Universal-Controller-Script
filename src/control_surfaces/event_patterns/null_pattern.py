@@ -4,7 +4,7 @@ control_surfaces > event_patterns > null_pattern
 An event pattern that matches with nothing
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Maddy Guthridge [hello@maddyguthridge.com, HDSQ#2154]
 """
 
 from fl_classes import FlMidiMsg

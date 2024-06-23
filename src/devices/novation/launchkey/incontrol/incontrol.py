@@ -4,7 +4,7 @@ devices > novation > launchkey > incontrol > incontrol
 Contains code for managing the InControl state used by some launchkey devices.
 
 Authors:
-* Miguel Guthridge [hdsq@outlook.com.au, HDSQ#2154]
+* Maddy Guthridge [hello@maddyguthridge.com, HDSQ#2154]
 
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
