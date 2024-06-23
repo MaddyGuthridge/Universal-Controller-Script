@@ -73,7 +73,7 @@ class MainState(DeviceState):
             if isinstance(plug_idx, tuple):
                 try:
                     plug_id = plugins.getPluginName(*plug_idx)
-                except TypeError:
+                except (TypeError, RuntimeError):
                     # Plugin not valid
                     plug_id = ""
                 plug = common.ExtensionManager.plugins.get(
@@ -146,7 +146,7 @@ class MainState(DeviceState):
             if isinstance(plug_idx, tuple):
                 try:
                     plug_id = plugins.getPluginName(*plug_idx)
-                except TypeError:
+                except (TypeError, RuntimeError):
                     # Plugin not valid
                     plug_id = ""
                 plug = common.ExtensionManager.plugins.get(

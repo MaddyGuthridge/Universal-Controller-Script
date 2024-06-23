@@ -51,14 +51,14 @@ def getActivityColor(activity: SafeIndex) -> Color:
             # Generator -> channel color
             try:
                 return Color.fromInteger(channels.getChannelColor(*activity))
-            except TypeError:
+            except (TypeError, RuntimeError):
                 # Prevent issues if we deleted stuff
                 return Color.BLACK
         else:
             # Effect -> track color
             try:
                 return Color.fromInteger(mixer.getTrackColor(activity[0]))
-            except TypeError:
+            except (TypeError, RuntimeError):
                 return Color.BLACK
 
 
@@ -78,7 +78,7 @@ def getActivityName(activity: SafeIndex) -> str:
         if len(activity) == 1:
             try:
                 return channels.getChannelName(*activity)
-            except TypeError:
+            except (TypeError, RuntimeError):
                 # Prevent issues if we deleted stuff
                 return ""
         else:
@@ -88,7 +88,7 @@ def getActivityName(activity: SafeIndex) -> str:
                     f"{mixer.getTrackName(activity[0])}: "  # type: ignore
                     f"{plugins.getPluginName(*activity, True)}"
                 )
-            except TypeError:
+            except (TypeError, RuntimeError):
                 # Prevent issues if we deleted stuff
                 return ""
 

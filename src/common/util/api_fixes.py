@@ -125,7 +125,7 @@ def isPluginVst(index: PluginIndex) -> bool:
     """
     try:
         return plugins.getParamCount(*index) > PARAM_CC_START
-    except TypeError:
+    except (TypeError, RuntimeError):
         return False
 
 
@@ -139,7 +139,7 @@ def catchUnsafeOperation(func):
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except TypeError as e:
+        except (TypeError, RuntimeError) as e:
             if e.args != ("Operation unsafe at current time",):
                 raise e
     return wrapper

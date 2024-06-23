@@ -95,7 +95,7 @@ class ActivityState:
             self._plugin = plugin
         try:
             self._plugin_name = plugins.getPluginName(*plugin)
-        except TypeError:
+        except (TypeError, RuntimeError):
             self._plugin_name = ""
         if len(plugin) == 1:
             self._generator = plugin
@@ -116,7 +116,7 @@ class ActivityState:
             try:
                 if self._plugin_name != plugins.getPluginName(*self._plugin):
                     self._do_update = True
-            except TypeError:
+            except (TypeError, RuntimeError):
                 pass
         if self._do_update:
             # Manually update plugin using selection
@@ -136,7 +136,7 @@ class ActivityState:
                     self._plugin = plugin
                 try:
                     self._plugin_name = plugins.getPluginName(*plugin)
-                except TypeError:
+                except (TypeError, RuntimeError):
                     self._plugin_name = ""
                 # Ignore typing because len(plugin) doesn't narrow types in
                 # mypy

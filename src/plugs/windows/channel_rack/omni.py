@@ -52,7 +52,7 @@ class OmniPreview(WindowPlugin):
             idx = channels.getChannelIndex(
                 coordToIndex(control.getShadow())
             )
-        except TypeError:  # Index out of range
+        except (TypeError, RuntimeError):  # Index out of range
             return True
         channels.midiNoteOn(
             idx,

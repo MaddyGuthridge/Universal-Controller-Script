@@ -44,7 +44,7 @@ class NoteStrategy(IMappingStrategy):
     ) -> bool:
         try:
             i = channels.getChannelIndex(*getContext().activity.getGenerator())
-        except TypeError:
+        except (TypeError, RuntimeError):
             # Index out of range - we're using a plugin from a different group
             i = channels.channelNumber()
         channels.midiNoteOn(
