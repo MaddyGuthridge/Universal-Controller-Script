@@ -10,7 +10,7 @@ readme = "README.md"
 python = "^3.9.1"
 fl-studio-api-stubs = "^33.2.0"
 typing-extensions = "^4.12.2"
-jestspectation = "^1.4.2"
+jestspectation = "^1.4.3"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.6.0"
@@ -19,7 +19,7 @@ isort = "^5.13.2"
 mypy = "^1.11.1"
 pytest = "^8.3.2"
 autopep8 = "^2.3.1"
-jestspectation = "^1.4.2"
+jestspectation = "^1.4.3"
 
 [build-system]
 requires = ["poetry-core"]
