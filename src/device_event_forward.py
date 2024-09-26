@@ -29,7 +29,7 @@ import consts
 from fl_param_checker import idleCallback, pluginParamCheck
 
 from common.context_manager import catchContextResetException
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from common.states import WaitingForDevice, ForwardState
 
 from common import log, verbosity

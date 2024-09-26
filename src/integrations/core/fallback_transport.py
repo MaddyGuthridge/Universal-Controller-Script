@@ -11,7 +11,7 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from devices import DeviceShadow
 from integrations import CoreIntegration
 from integrations.mapping_strategies import (

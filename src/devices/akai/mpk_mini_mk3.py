@@ -17,7 +17,7 @@ from control_surfaces.event_patterns import (
     UnionPattern,
 )
 from control_surfaces.value_strategies import Data2Strategy
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from fl_classes import FlMidiMsg
 from control_surfaces import (
     Knob,
@@ -100,7 +100,7 @@ class MpkMiniMk3(Device):
     def getDrumPadSize(cls) -> tuple[int, int]:
         return 4, 4
 
-    def getDeviceNumber(self) -> int:
+    def get_device_number(self) -> int:
         return 1
 
     @classmethod

@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 from typing_extensions import TypeAlias
 from common.plug_indexes import FlIndex
 
-from common.util.dict_tools import lowestValueGrEqTarget, greatestKey
+from common.util.dict_tools import lowest_value_greater_eq_target, greatest_key
 from control_surfaces import ControlSurface
 from . import Device
 
@@ -228,17 +228,17 @@ class DeviceShadow:
 
         try:
             if target_num is None:
-                highest = greatestKey(num_type_matches)
+                highest = greatest_key(num_type_matches)
             else:
                 try:
                     # Find the lowest value above the allowed amount
-                    highest = lowestValueGrEqTarget(
+                    highest = lowest_value_greater_eq_target(
                         num_type_matches,
                         target_num
                     )
                 except ValueError:
                     # If that fails, just use the highest value available
-                    highest = greatestKey(num_type_matches)
+                    highest = greatest_key(num_type_matches)
         except ValueError:
             # No matches causes greatestKey() to fail since there's no keys
             return []

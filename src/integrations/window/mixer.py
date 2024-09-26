@@ -15,7 +15,7 @@ import mixer
 from common import getContext
 from common.tracks.mixer_track import MixerTrack
 from common.types import Color
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from common.plug_indexes import WindowIndex
 from common.util.api_fixes import (
     getSelectedDockMixerTracks,

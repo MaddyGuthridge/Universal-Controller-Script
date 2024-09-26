@@ -38,7 +38,7 @@ from common import log, verbosity, ExtensionManager
 # Import verbosity constants
 from common.logger.verbosity import *
 # Import some helper functions
-from common.util.events import eventToString
+from common.util.events import event_to_string
 # Import first state
 from common.states import WaitingForDevice, MainState
 
