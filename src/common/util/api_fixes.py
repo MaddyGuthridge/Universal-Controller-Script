@@ -18,11 +18,21 @@ import mixer
 import playlist
 
 from common.profiler import profilerDecoration
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, overload, Literal
 
 
 if TYPE_CHECKING:
     from common.plug_indexes import WindowIndex, PluginIndex
+
+
+@overload
+def getFocusedPluginIndex(force: Literal[True]) -> 'PluginIndex':
+    ...
+
+
+@overload
+def getFocusedPluginIndex(force: Literal[False]) -> Optional['PluginIndex']:
+    ...
 
 
 @profilerDecoration("getFocusedPluginIndex")

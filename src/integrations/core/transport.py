@@ -18,7 +18,7 @@ import ui
 from typing import Any
 from common.context_manager import getContext
 
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from common.types import Color
 from control_surfaces import (
     ControlShadowEvent,

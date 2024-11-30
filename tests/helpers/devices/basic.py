@@ -51,7 +51,7 @@ class DummyDeviceAbstract(Device):
     def getUniversalEnquiryResponsePattern() -> Optional[IEventPattern]:
         return None
 
-    def getDeviceNumber(self) -> int:
+    def get_device_number(self) -> int:
         return 1
 
     @staticmethod
@@ -120,7 +120,7 @@ class DummyDeviceBasic(DummyDeviceAbstract):
     ) -> 'Device':
         return cls()
 
-    def getDeviceNumber(self) -> int:
+    def get_device_number(self) -> int:
         return self._num
 
 

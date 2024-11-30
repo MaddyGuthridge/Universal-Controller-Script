@@ -76,12 +76,10 @@ class ActivityState:
         Used so that split windows and plugins behaves correctly.
         """
         plugin = getFocusedPluginIndex(force=True)
-        if plugin is None:
-            raise TypeError("Wait this shouldn't be possible")
         if self._plugin != plugin:
             self._plugin = plugin
         try:
-            self._plugin_name = plugins.getPluginName(*plugin)
+            self._plugin_name = plugin.getName()
         except TypeError:
             self._plugin_name = ""
         if isinstance(plugin, GeneratorIndex):

@@ -18,7 +18,7 @@ import device
 import general
 import midi
 from common.types import Color
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from control_surfaces import (
     GenericFader,
     GenericKnob,

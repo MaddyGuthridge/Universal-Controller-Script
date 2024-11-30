@@ -30,15 +30,6 @@ from . import exceptions
 from .logger import log, verbosity
 from .profiler import ProfilerContext, profilerDecoration
 
-from .context_manager import (
-    getContext,
-    resetContext,
-    unsafeResetContext,
-    catchContextResetException
-)
-
-from .extension_manager import ExtensionManager
-
 # Import devices and plugins
 import devices
 import integrations

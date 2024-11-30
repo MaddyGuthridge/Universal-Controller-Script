@@ -11,7 +11,7 @@ more details.
 """
 import transport
 import ui
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from common.plug_indexes import WindowIndex
 from common.types import Color
 from devices import DeviceShadow

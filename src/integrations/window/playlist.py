@@ -19,7 +19,7 @@ import general
 from common import getContext
 from common.tracks import PlaylistTrack
 from common.types import Color
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from common.plug_indexes import WindowIndex, FlIndex
 from common.util.api_fixes import getFirstPlaylistSelection
 from control_surfaces import consts
