@@ -11,7 +11,7 @@ more details.
 """
 from typing import Any
 from common.types import Color
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex, FlIndex
 from common.util.grid_mapper import GridCell
 from control_surfaces import Note

@@ -14,7 +14,7 @@ from typing import Optional
 import device
 
 from control_surfaces.event_patterns import BasicPattern
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from fl_classes import FlMidiMsg
 from control_surfaces import (
     StandardModWheel,
@@ -106,7 +106,7 @@ class LaunchkeyMk3_25_37(Device):
     def getDrumPadSize(cls) -> tuple[int, int]:
         return 2, 8
 
-    def getDeviceNumber(self) -> int:
+    def get_device_number(self) -> int:
         if (
             'MIDIIN2' in device.getName()
             or 'DAW' in device.getName()

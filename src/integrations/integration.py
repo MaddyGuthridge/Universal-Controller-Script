@@ -13,11 +13,9 @@ more details.
 
 from typing import final
 from common import log, verbosity
-from common.util.abstract_method_error import AbstractMethodError
-from common.plug_indexes import WindowIndex, FlIndex
+from common.plug_indexes import FlIndex
 from control_surfaces import ControlEvent
 from devices import DeviceShadow
-from abc import abstractmethod
 
 
 class Integration:
@@ -80,17 +78,6 @@ class Integration:
         """
         self._shadow.apply(thorough)
 
-    @classmethod
-    @abstractmethod
-    def create(cls, shadow: DeviceShadow) -> 'Integration':
-        """
-        Create and return an instance of this integration
-
-        NOTE: On release of Python 3.11, upgrade to `Self` type and remove
-        redefinitions in abstract subclasses
-        """
-        raise AbstractMethodError(cls)
-
     def processEvent(self, mapping: ControlEvent, index: FlIndex) -> bool:
         """
         Process a MIDI event that has been sent to this integration.
@@ -140,128 +127,14 @@ class Integration:
         * `index` (`FlIndex`): index of active plugin or window
         """
 
-
-class PluginIntegration(Integration):
-    """
-    Plugin integration, used to represent VSTs and FL Studio generators and
-    effects.
-
-    ## Methods to implement:
-
-    * `@classmethod getPlugIds(cls) -> tuple[str, ...]` return a tuple of all
-      the plugin names that this integration can handle.
-
-    * `@classmethod create(cls, shadow: DeviceShadow) -> Self` create an
-      instance of this integration. This is used so that we can ensure type
-      safety of the constructor when plugins are instantiated.
-    """
-
-    @classmethod
-    @abstractmethod
-    def getPlugIds(cls) -> tuple[str, ...]:
+    def isEnabled(self) -> bool:
         """
-        Returns the names of the plugins this class should be associated with.
+        Return whether the integration should be active
 
-        Used to identify and map this integration to the plugin
+        By default, this returns `True`, but if the integration has nothing to
+        do, returning `False` can save some processing time
 
         ### Returns:
-        * `tuple[str, ...]`: plugin names
+        * `bool`: whether the integration should be enabled
         """
-        raise AbstractMethodError()
-
-    @classmethod
-    @abstractmethod
-    def create(cls, shadow: DeviceShadow) -> 'PluginIntegration':
-        """
-        Create and return an instance of this integration
-
-        This method should be implemented by every plugin definition
-        """
-        raise AbstractMethodError(cls)
-
-
-class WindowIntegration(Integration):
-    """
-    FL Studio window integrations
-
-    * Mixer
-
-    * Channel rack
-
-    * Playlist
-
-    * Piano roll
-
-    * Browser
-
-    Methods to implement:
-    * `@classmethod getWindowId(cls) -> WindowIndex` return a the window index
-      that this plugin should be active for.
-
-    * `@classmethod create(cls, shadow: DeviceShadow) -> Self` create an
-      instance of this plugin. This is used so that we can ensure type safety
-      of the constructor when plugins are instantiated.
-    """
-
-    @classmethod
-    @abstractmethod
-    def getWindowId(cls) -> WindowIndex:
-        """
-        Returns the ID of the window this class should be associated with.
-
-        Used to identify and map to the plugin
-
-        ### Returns:
-        * `int`: window ID
-        """
-        raise AbstractMethodError()
-
-    @classmethod
-    @abstractmethod
-    def create(cls, shadow: DeviceShadow) -> 'WindowIntegration':
-        """
-        Create and return an instance of this plugin
-
-        This method should be implemented by every plugin definition
-        """
-        raise AbstractMethodError(cls)
-
-
-class CoreIntegration(Integration):
-    """
-    Core integrations, representing integrations that are active independent of
-    a VST, FL Studio plugin or window.
-
-    Methods to implement:
-    * `@classmethod shouldBeActive(cls) -> bool` return whether the integration
-      should currently be active.
-
-    * `@classmethod create(cls, shadow: DeviceShadow) -> Self` create an
-      instance of this integration. This is used so that we can ensure type
-      safety of the constructor when integrations are instantiated, although
-      imo this is a yucky solution, which I'm planning to fix to close #151
-    """
-
-    @classmethod
-    @abstractmethod
-    def shouldBeActive(cls) -> bool:
-        """
-        Returns whether this integration is currently active, meaning it is
-        open to processing events, and will impact the overall device state
-
-        If the integration should be active, this should return `True`.
-
-        ### Returns:
-        * `bool`: whether the integration should be active
-        """
-        raise AbstractMethodError(cls)
-
-    @classmethod
-    @abstractmethod
-    def create(cls, shadow: DeviceShadow) -> 'CoreIntegration':
-        """
-        Create and return an instance of this integration
-
-        This method should be implemented by every integration definition
-        """
-        raise AbstractMethodError(cls)
+        return True

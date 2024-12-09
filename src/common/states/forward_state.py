@@ -21,7 +21,7 @@ from fl_classes import FlMidiMsg
 from fl_classes import isMidiMsgStandard, isMidiMsgSysex
 from common.util.events import (
     decodeForwardedEvent,
-    eventToString,
+    event_to_string,
     forwardEvent,
     isEventForwarded,
     isEventForwardedHereFrom
@@ -52,7 +52,7 @@ def outputForwarded(event: FlMidiMsg):
         )
     log(
         "device.forward.in",
-        "Output event to device: " + eventToString(event)
+        "Output event to device: " + event_to_string(event)
     )
 
 
@@ -63,7 +63,7 @@ class ForwardState(DeviceState):
     """
 
     def __init__(self, device: 'Device') -> None:
-        if device.getDeviceNumber() == 1:
+        if device.get_device_number() == 1:
             raise ValueError(
                 "The main device should be configured to use the main "
                 "'Universal Controller' script, rather than the 'Universal "
@@ -93,6 +93,6 @@ class ForwardState(DeviceState):
             forwardEvent(event)
             log(
                 "device.forward.out",
-                "Dispatched event to main script: " + eventToString(event)
+                "Dispatched event to main script: " + event_to_string(event)
             )
         event.handled = True

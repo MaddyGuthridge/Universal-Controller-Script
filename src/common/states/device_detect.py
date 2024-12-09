@@ -20,7 +20,7 @@ from consts import UNIVERSAL_DEVICE_ENQUIRY
 from common.exceptions import DeviceRecognizeError
 from common import log, verbosity
 from fl_classes import isMidiMsgSysex, FlMidiMsg
-from common.util.events import eventToString
+from common.util.events import event_to_string
 
 from . import IScriptState, ErrorState, DeviceState
 
@@ -157,14 +157,14 @@ class WaitingForDevice(IScriptState):
                     LOG_CAT,
                     f"Recognized device via sysex: {dev.getId()}",
                     verbosity.INFO,
-                    eventToString(event)
+                    event_to_string(event)
                 )
                 common.getContext().setState(self._to.create(dev))
             except DeviceRecognizeError as e:
                 log(
                     LOG_CAT,
                     f"Failed to recognize device via sysex, using fallback "
-                    f"method {eventToString(event)}",
+                    f"method {event_to_string(event)}",
                     verbosity.INFO,
                 )
                 try:

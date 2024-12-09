@@ -10,7 +10,7 @@ more details.
 from typing import Any
 from common.param import Param
 from common.types import Color
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from common.plug_indexes import GeneratorIndex
 from control_surfaces import Fader, Knob, Encoder
 from control_surfaces import ControlShadowEvent

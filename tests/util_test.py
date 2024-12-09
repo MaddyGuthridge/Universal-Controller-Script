@@ -11,8 +11,8 @@ more details.
 """
 
 from common.util.dict_tools import (
-    recursiveMergeDictionaries,
-    expandDictShorthand
+    recursive_merge_dictionaries,
+    expand_dict_shorthand
 )
 from common.util.snap import snap
 
@@ -34,7 +34,7 @@ def test_expand_dict_shorthand():
             "c": 4
         }
     }
-    assert expandDictShorthand(t) == exp
+    assert expand_dict_shorthand(t) == exp
 
 
 def test_expand_dict_shorthand_complex():
@@ -58,7 +58,7 @@ def test_expand_dict_shorthand_complex():
             "c": 4
         }
     }
-    assert expandDictShorthand(t) == exp
+    assert expand_dict_shorthand(t) == exp
 
 
 def test_recursive_merge_simple():
@@ -82,7 +82,7 @@ def test_recursive_merge_simple():
         },
         "d": 4
     }
-    assert recursiveMergeDictionaries(ref, over) == exp
+    assert recursive_merge_dictionaries(ref, over) == exp
 
 
 def test_snap():

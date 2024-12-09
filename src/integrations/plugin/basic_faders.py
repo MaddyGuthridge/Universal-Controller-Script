@@ -13,7 +13,7 @@ more details.
 """
 from typing import Union
 from common.types import Color
-from common.extension_manager import ExtensionManager
+from common.__old_extension_manager import ExtensionManager
 from devices import DeviceShadow
 from integrations import PluginIntegration
 from integrations.mapping_strategies import (

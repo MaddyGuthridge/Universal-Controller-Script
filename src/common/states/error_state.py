@@ -23,7 +23,7 @@ from common.exceptions import (
     EventDispatchError,
     InvalidConfigError,
 )
-from common.util.events import eventToString
+from common.util.events import event_to_string
 from . import IScriptState
 
 
@@ -152,5 +152,5 @@ class ErrorState(IScriptState):
     def processEvent(self, event: FlMidiMsg) -> None:
         log(
             "bootstrap.device.type_detect",
-            f"Received event: {eventToString(event)}"
+            f"Received event: {event_to_string(event)}"
         )

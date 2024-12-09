@@ -12,7 +12,7 @@ more details.
 """
 
 from fl_classes import FlMidiMsg
-from common.util.events import decodeForwardedEvent, isEventForwarded
+from common.util.events import decode_forwarded_event, is_event_forwarded
 from . import IValueStrategy
 
 
@@ -28,12 +28,12 @@ class ForwardedStrategy(IValueStrategy):
         # The value is already matching, so we can cheat somewhat with getting
         # the data out
         return self._strat.getValueFromEvent(
-            decodeForwardedEvent(event),
+            decode_forwarded_event(event),
             value,
         )
 
     def getChannelFromEvent(self, event: FlMidiMsg):
-        return self._strat.getChannelFromEvent(decodeForwardedEvent(event))
+        return self._strat.getChannelFromEvent(decode_forwarded_event(event))
 
 
 class ForwardedUnionStrategy(IValueStrategy):
@@ -46,13 +46,13 @@ class ForwardedUnionStrategy(IValueStrategy):
         self._strat_forward = ForwardedStrategy(strat)
 
     def getValueFromEvent(self, event: FlMidiMsg, value: float) -> float:
-        if isEventForwarded(event):
+        if is_event_forwarded(event):
             return self._strat_forward.getValueFromEvent(event, value)
         else:
             return self._strat.getValueFromEvent(event, value)
 
     def getChannelFromEvent(self, event: FlMidiMsg):
-        if isEventForwarded(event):
+        if is_event_forwarded(event):
             return self._strat_forward.getChannelFromEvent(event)
         else:
             return self._strat.getChannelFromEvent(event)

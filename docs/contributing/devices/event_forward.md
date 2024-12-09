@@ -1,6 +1,8 @@
 
 # Event Forwarding
 
+FIXME: Update this for the v2.0 release
+
 For devices that use multiple ports, the Universal Controller Script uses a
 many-to-one one-to-many model for processing events. The main script should be
 assigned to the MIDI port for your controller, and the forwarder script should
