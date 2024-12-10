@@ -1,5 +1,5 @@
 """
-devices > akai > mpk > mini
+devices > akai > mpk > mini > plus
 
 Device definitions for Akai Pro
 
@@ -10,6 +10,6 @@ This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
 
-__all__ = ['mk3', 'plus',]
+__all__ = ['mpk_mini_plus']
 
-from . import (mk3, plus)
+from . import (mpk_mini_plus)
