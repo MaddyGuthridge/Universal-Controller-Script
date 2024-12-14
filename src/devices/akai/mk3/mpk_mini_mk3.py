@@ -1,5 +1,5 @@
 """
-devices > akai > mpk_mini_mk3
+devices > akai > mpk > mini > mpk_mini_mk3
 
 Device definitions for Akai MPK Mini Mk3
 
