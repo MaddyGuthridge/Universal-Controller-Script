@@ -1,3 +1,0 @@
-[flake8]
-exclude = .git,__pycache__,.venv,.env,old,build,dist,fl_typing
-; max-complexity = 10

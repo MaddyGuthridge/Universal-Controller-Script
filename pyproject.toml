@@ -1,10 +1,33 @@
 [tool.poetry]
+package-mode = false
 name = "universal-controller-script"
 version = "1.2.1"
 description = "A free and open source program that integrates with FL Studio to provide deep integration between hardware controllers and software."
 authors = ["Maddy Guthridge <hello@maddyguthridge.com>"]
 license = "GPL v3"
 readme = "README.md"
+
+[tool.mypy]
+files = ["src", "tests"]
+check_untyped_defs = true
+warn_return_any = true
+show_column_numbers = true
+
+[tool.coverage.run]
+branch = true
+omit = ["src/fl_typing"]
+
+[tool.coverage.report]
+exclude_also = [
+    'if TYPE_CHECKING:',
+    'return NotImplemented',
+    '@overload',
+    'raise AssertionError',
+    'raise NotImplementedError',
+]
+
+[tool.flake8]
+exclude = ['.git', '__pycache__', 'dist', 'site']
 
 [tool.poetry.dependencies]
 python = "^3.9.1"
@@ -20,6 +43,7 @@ mypy = "^1.13.0"
 pytest = "^8.3.4"
 autopep8 = "^2.3.1"
 jestspectation = "^1.4.3"
+flake8-pyproject = "^1.2.3"
 
 [build-system]
 requires = ["poetry-core"]
