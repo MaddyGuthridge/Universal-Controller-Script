@@ -36,7 +36,7 @@ typing-extensions = "^4.12.2"
 jestspectation = "^1.4.3"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.6.9"
+coverage = "^7.6.10"
 flake8 = "^7.1.1"
 isort = "^5.13.2"
 mypy = "^1.14.1"
