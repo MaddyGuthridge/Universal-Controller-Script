@@ -37,9 +37,9 @@ class AkaiRelativeStrategy(IValueStrategy):
             event.outEv = event.inEv - 0x80
         else:
             event.outEv = event.inEv
-        #event.isIncrement = 1
-        # 1-63 are right turns; 64-127 is a left turn
-        #inc = event.data2 if event.data2 < 64 else (event.data2 - 128)
+        # event.isIncrement = 1
+        # # 1-63 are right turns; 64-127 is a left turn
+        # inc = event.data2 if event.data2 < 64 else (event.data2 - 128)
         inc = event.outEv
         return clamp((inc / 127) * self.__scaling + value, 0.0, 1.0)
 
