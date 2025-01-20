@@ -206,17 +206,17 @@ colors = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "jestspectation"
-version = "1.4.3"
+version = "1.4.5"
 description = "Pattern matching tools to test complex data structures"
 optional = false
-python-versions = "<4.0,>=3.9"
+python-versions = ">=3.9"
 files = [
-    {file = "jestspectation-1.4.3-py3-none-any.whl", hash = "sha256:7883f81db9dd10199b67220f46067314c5562092ce12fd4e5002b10e2e188635"},
-    {file = "jestspectation-1.4.3.tar.gz", hash = "sha256:9a961ba0279753e76c33080bfe915ba6a63661a969e9aa62fb65b95ac211f32b"},
+    {file = "jestspectation-1.4.5-py3-none-any.whl", hash = "sha256:22f86f6b7b103b4244018510027a9b453f677097d7dfd4580a6d89e782669f0a"},
+    {file = "jestspectation-1.4.5.tar.gz", hash = "sha256:ef709fd51d2e72950fc093c34d1fc5eacec568a8756a4f7f649cd5f6ba949570"},
 ]
 
 [package.dependencies]
-typing-extensions = ">=4.5.0,<5.0.0"
+typing-extensions = ">=4.5.0"
 
 [[package]]
 name = "jsonschema"
@@ -449,4 +449,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9.1"
-content-hash = "89a193fb8a9fa8b0384d1167e2a33e2311643ba8b9016d8cd4ac16dfe55a3ada"
+content-hash = "43ba55015a679c7323828e9127cb6810fb2c2ec79c8718a082fd84b7af27dacb"
