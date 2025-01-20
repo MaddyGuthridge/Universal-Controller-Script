@@ -33,7 +33,7 @@ exclude = ['.git', '__pycache__', 'dist', 'site']
 python = "^3.9.1"
 fl-studio-api-stubs = "^33.2.0"
 typing-extensions = "^4.12.2"
-jestspectation = "^1.4.3"
+jestspectation = "^1.4.5"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.6.10"
@@ -42,7 +42,7 @@ isort = "^5.13.2"
 mypy = "^1.14.1"
 pytest = "^8.3.4"
 autopep8 = "^2.3.1"
-jestspectation = "^1.4.3"
+jestspectation = "^1.4.5"
 flake8-pyproject = "^1.2.3"
 
 [build-system]
