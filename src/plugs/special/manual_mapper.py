@@ -13,10 +13,13 @@ Authors:
 This code is licensed under the GPL v3 license. Refer to the LICENSE file for
 more details.
 """
+
 from typing import Optional
 import device
 import general
 import midi
+from common.logger import verbosity
+from common.logger.logger import log
 from common.types import Color
 from common.extension_manager import ExtensionManager
 from control_surfaces import (
@@ -32,10 +35,7 @@ from plugs import SpecialPlugin
 
 # Only assign to CC values that are undefined by the MIDI spec
 AVAILABLE_CCS = (
-    [3, 9, 14, 15]
-    + list(range(20, 32))
-    + list(range(85, 91))
-    + list(range(102, 120))
+    [3, 9, 14, 15] + list(range(20, 32)) + list(range(85, 91)) + list(range(102, 120))
 )
 NUM_CCS = len(AVAILABLE_CCS)  # = 40
 
@@ -52,32 +52,44 @@ class ManualMapper(SpecialPlugin):
     def __init__(self, shadow: DeviceShadow) -> None:
         shadow.setMinimal(True)
         self._faders_start = 0
-        self._knobs_start = len(shadow.bindMatches(
-            # https://github.com/python/mypy/issues/4717 is the bane of my
-            # existence
-            GenericFader,  # type: ignore
-            self.eFaders,
-            self.tFaders,
-            allow_substitution=False,
-            one_type=False,
-            args_generator=...,
-        ))
-        self._encoders_start = len(shadow.bindMatches(
-            Encoder,
-            self.eEncoders,
-            self.tEncoders,
-            allow_substitution=False,
-            one_type=False,
-            args_generator=...,
-        )) + self._knobs_start
-        self._mods_start = len(shadow.bindMatches(
-            GenericKnob,  # type: ignore
-            self.eKnobs,
-            self.tKnobs,
-            allow_substitution=False,
-            one_type=False,
-            args_generator=...,
-        )) + self._encoders_start
+        self._knobs_start = len(
+            shadow.bindMatches(
+                # https://github.com/python/mypy/issues/4717 is the bane of my
+                # existence
+                GenericFader,  # type: ignore
+                self.eFaders,
+                self.tFaders,
+                allow_substitution=False,
+                one_type=False,
+                args_generator=...,
+            )
+        )
+        self._encoders_start = (
+            len(
+                shadow.bindMatches(
+                    Encoder,
+                    self.eEncoders,
+                    self.tEncoders,
+                    allow_substitution=False,
+                    one_type=False,
+                    args_generator=...,
+                )
+            )
+            + self._knobs_start
+        )
+        self._mods_start = (
+            len(
+                shadow.bindMatches(
+                    GenericKnob,  # type: ignore
+                    self.eKnobs,
+                    self.tKnobs,
+                    allow_substitution=False,
+                    one_type=False,
+                    args_generator=...,
+                )
+            )
+            + self._encoders_start
+        )
         shadow.bindMatches(
             ModXY,
             self.eMods,
@@ -88,7 +100,7 @@ class ManualMapper(SpecialPlugin):
         super().__init__(shadow, [])
 
     @classmethod
-    def create(cls, shadow: DeviceShadow) -> 'SpecialPlugin':
+    def create(cls, shadow: DeviceShadow) -> "SpecialPlugin":
         return cls(shadow)
 
     @classmethod
@@ -167,10 +179,19 @@ class ManualMapper(SpecialPlugin):
         event_id = cls.calcEventId(channel, cc)
         # If that event ID isn't invalid
         if event_id is not None:
-            control.connected = True
-            control.annotation = device.getLinkedParamName(event_id)
-            control.color = Color.ENABLED
-            control.value = device.getLinkedValue(event_id)
+            try:
+                control.connected = True
+                control.annotation = device.getLinkedParamName(event_id)
+                control.color = Color.ENABLED
+                control.value = device.getLinkedValue(event_id)
+            except RuntimeError as e:
+                log(
+                    "plugs.special.manual_mapper",
+                    "error when ticking linked param",
+                    verbosity.ERROR,
+                    f"Event ID was {event_id}, exception was {e}",
+                )
+                control.connected = False
         else:
             control.connected = False
 
