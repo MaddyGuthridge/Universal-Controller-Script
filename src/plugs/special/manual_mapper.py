@@ -35,7 +35,10 @@ from plugs import SpecialPlugin
 
 # Only assign to CC values that are undefined by the MIDI spec
 AVAILABLE_CCS = (
-    [3, 9, 14, 15] + list(range(20, 32)) + list(range(85, 91)) + list(range(102, 120))
+    [3, 9, 14, 15]
+    + list(range(20, 32))
+    + list(range(85, 91))
+    + list(range(102, 120))
 )
 NUM_CCS = len(AVAILABLE_CCS)  # = 40
 
